@@ -7,12 +7,16 @@ public class Vertex {
 
 	private Set<Vertex> _neighbours;
 
-	private Vertex() {
+	private String id;
+
+	private Vertex(String id) {
+		this.id = id;
 		_neighbours = new HashSet<Vertex>();
 	}
 
 	public static Vertex makeVertex() {
-		return new Vertex();
+		int id = (int) (Math.random() * 100000000);
+		return Vertex.makeVertex("id_" + String.valueOf(id));
 	}
 
 	Set<Vertex> getNeighbours() {
@@ -29,6 +33,14 @@ public class Vertex {
 			applier.apply(vertex);
 		}
 
+	}
+
+	public static Vertex makeVertex(String id) {
+		return new Vertex(id);
+	}
+
+	public String getId() {
+		return id;
 	}
 
 }

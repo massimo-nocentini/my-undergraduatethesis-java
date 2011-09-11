@@ -1,7 +1,5 @@
 package JSBMLInterface;
 
-import model.OurModel;
-
 import org.sbml.jsbml.Model;
 
 public class SBMLWrapper {
@@ -20,16 +18,6 @@ public class SBMLWrapper {
 		}
 
 		return new SBMLWrapper(sbmlModel);
-	}
-
-	// TODO move this method from here into Connector
-	public OurModel importSBML(Model sbmlModel) {
-		if (this.isEmpty()) {
-			return OurModel.MakeEmptyModel();
-		}
-
-		// per adesso posso far ritornare lo stesso un modello vuoto
-		return OurModel.MakeEmptyModel();
 	}
 
 	public boolean isEmpty() {

@@ -1,9 +1,15 @@
 package model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import junit.framework.Assert;
 
 import org.junit.Test;
 
@@ -89,4 +95,22 @@ public class VertexUnitTest {
 		assertFalse(collectedNeighbours.contains(c));
 	}
 
+	@Test
+	public void makeVertexWithId() {
+		String id = "someId";
+		Vertex v = Vertex.makeVertex(id);
+
+		Assert.assertNotNull(v);
+		assertSame(id, v.getId());
+		assertEquals(id, v.getId());
+	}
+
+	@Test
+	public void makeVertexWithoutSpecifingId() {
+		Vertex v = Vertex.makeVertex();
+
+		Assert.assertNotNull(v);
+		Assert.assertNotNull(v.getId());
+		assertTrue(v.getId().length() > 0);
+	}
 }
