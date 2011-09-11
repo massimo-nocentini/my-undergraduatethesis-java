@@ -7,7 +7,7 @@ import java.util.Set;
 
 import org.junit.Test;
 
-public class NetTest {
+public class VertexUnitTest {
 	@Test
 	public void createVertex() {
 		Vertex vertex = Vertex.makeVertex();
