@@ -7,6 +7,8 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -29,6 +31,60 @@ import org.sbml.jsbml.Species;
 import org.sbml.jsbml.SpeciesReference;
 
 public class JSBMLearningTest {
+
+	@Test
+	public void SBMLCheckingNONUniquenessOfSpeciesInAllReactantSets() {
+		try {
+			Map<String, Species> result = new HashMap<String, Species>();
+
+			boolean uniqueness = true;
+
+			SBMLDocument document = (new SBMLReader())
+					.readSBML("sbml-test-files/allCpdsMetabSmmReactionsCompounds.xml");
+			Model model = document.getModel();
+			label: for (Reaction reaction : model.getListOfReactions()) {
+				for (SpeciesReference species : reaction.getListOfReactants()) {
+
+					String domainObjectId = species.getSpeciesInstance()
+							.getId();
+					String domainObjectName = species.getSpeciesInstance()
+							.getName();
+
+					if (result.containsKey(domainObjectId) == false) {
+						result.put(domainObjectId, species.getSpeciesInstance());
+					} else if (result.get(domainObjectId).equals(
+							species.getSpeciesInstance())
+							&& result.get(domainObjectId) == species
+									.getSpeciesInstance()) {
+						uniqueness = false;
+						break label;
+					} else {
+						Assert.fail("The species with id "
+								+ domainObjectId
+								+ " and with name "
+								+ domainObjectName
+								+ " belong to at least two reactants sets of "
+								+ "different reactions but are not an equivalent species"
+								+ "respect the one already known. UNEXPECTED CONTEXT");
+
+					}
+
+				}
+			}
+
+			Assert.assertFalse("Uniqueness of species among reactants sets "
+					+ "is assured, while is known for the metabolic net"
+					+ "under test that uniqueness of species is violated.",
+					uniqueness);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		} catch (XMLStreamException e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		}
+
+	}
 
 	// @Test
 	public void SBMLReading() {
