@@ -16,7 +16,6 @@ public class OurModel {
 	}
 
 	public static OurModel MakeEmptyModel() {
-		// TODO Auto-generated method stub
 		return new OurModel();
 	}
 

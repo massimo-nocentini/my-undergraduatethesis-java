@@ -31,15 +31,11 @@ public class SBMLWrapperUnitTest {
 	public void wrapSBMLModelWithSomeSpeciesButNoReactions()
 			throws NullSBMLModelArgumentException {
 		Model sbmlModel = new Model();
-		Species aSpecie = new Species();
-		Species anotherSpecie = new Species();
 
-		// add a test to the learning tests to check if the adding
-		// of a species works correctly and add a comment here
-		// to reference that test
-
-		sbmlModel.addSpecies(aSpecie);
-		sbmlModel.addSpecies(anotherSpecie);
+		// the method createSpecies has the side effect to add
+		// the returned new species directly in the model automatically.
+		sbmlModel.createSpecies();
+		sbmlModel.createSpecies();
 
 		SBMLWrapper wrapper = SBMLWrapper.wrap(sbmlModel);
 

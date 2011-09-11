@@ -1,11 +1,16 @@
 package jSBMLearning;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.FileNotFoundException;
 
 import javax.xml.stream.XMLStreamException;
 
+import org.junit.Test;
 import org.sbml.jsbml.Compartment;
 import org.sbml.jsbml.Creator;
 import org.sbml.jsbml.History;
@@ -101,5 +106,61 @@ public class JSBMLearningTest {
 		public void stateChanged(SBaseChangedEvent ev) {
 			System.out.println("[CHG] " + ev);
 		}
+	}
+
+	@Test
+	public void createSpecies() {
+		Model sbmlModel = new Model();
+
+		Species aSpecie = sbmlModel.createSpecies();
+		Species anotherSpecie = sbmlModel.createSpecies();
+
+		assertNotNull(aSpecie);
+		assertNotNull(anotherSpecie);
+	}
+
+	@Test
+	/**
+	 * This method shows that if the species are build with
+	 * different id, that they are not equivalent
+	 */
+	public void speciesCreatedByModelWithDifferentIdAreDistinct() {
+		Model sbmlModel = new Model();
+
+		Species aSpecie = sbmlModel.createSpecies("id1");
+		Species anotherSpecie = sbmlModel.createSpecies("id2");
+
+		assertNotSame(aSpecie, anotherSpecie);
+		assertFalse(aSpecie.equals(anotherSpecie));
+	}
+
+	@Test
+	/**
+	 * This method shows that if the species are build with
+	 * different id, that they are not equivalent
+	 */
+	public void speciesCreatedByModelWithoutIdAreEquivalent() {
+		Model sbmlModel = new Model();
+
+		Species aSpecie = sbmlModel.createSpecies();
+		Species anotherSpecie = sbmlModel.createSpecies();
+
+		assertNotSame(aSpecie, anotherSpecie);
+		assertTrue(aSpecie.equals(anotherSpecie));
+	}
+
+	@Test
+	public void createAndCheckModelBelongingSpecies() {
+		Model sbmlModel = new Model();
+
+		Species aSpecie = sbmlModel.createSpecies("id1");
+		Species anotherSpecie = sbmlModel.createSpecies("id2");
+
+		Species thirdSpecies = new Species("id3");
+
+		assertTrue(sbmlModel.getListOfSpecies().contains(aSpecie));
+		assertTrue(sbmlModel.getListOfSpecies().contains(anotherSpecie));
+		assertFalse("The model contains a species standalone created.",
+				sbmlModel.getListOfSpecies().contains(thirdSpecies));
 	}
 }

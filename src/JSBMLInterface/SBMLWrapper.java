@@ -22,6 +22,7 @@ public class SBMLWrapper {
 		return new SBMLWrapper(sbmlModel);
 	}
 
+	// TODO move this method from here into Connector
 	public OurModel importSBML(Model sbmlModel) {
 		if (this.isEmpty()) {
 			return OurModel.MakeEmptyModel();
