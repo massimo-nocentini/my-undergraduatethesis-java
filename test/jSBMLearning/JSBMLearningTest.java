@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 
 import javax.xml.stream.XMLStreamException;
 
-import org.junit.Test;
 import org.sbml.jsbml.Compartment;
 import org.sbml.jsbml.Creator;
 import org.sbml.jsbml.History;
@@ -25,7 +24,7 @@ import org.sbml.jsbml.SpeciesReference;
 
 public class JSBMLearningTest {
 
-	@Test
+	// @Test
 	public void SBMLReading() {
 		try {
 			SBMLDocument document = (new SBMLReader())
@@ -44,7 +43,7 @@ public class JSBMLearningTest {
 
 	}
 
-	@Test
+	// @Test
 	public void testSBMLWriting() {
 		// Create a new SBMLDocument, using SBML level 2 version 4.
 		SBMLDocument doc = new SBMLDocument(2, 4);
