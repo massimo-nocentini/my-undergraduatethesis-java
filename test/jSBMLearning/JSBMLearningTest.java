@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 
 import javax.xml.stream.XMLStreamException;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.sbml.jsbml.Compartment;
 import org.sbml.jsbml.Creator;
@@ -162,5 +163,37 @@ public class JSBMLearningTest {
 		assertTrue(sbmlModel.getListOfSpecies().contains(anotherSpecie));
 		assertFalse("The model contains a species standalone created.",
 				sbmlModel.getListOfSpecies().contains(thirdSpecies));
+	}
+
+	@Test
+	public void createReaction() {
+		Model sbmlModel = new Model();
+
+		Reaction reaction = sbmlModel.createReaction("someid");
+
+		assertNotNull(reaction);
+	}
+
+	@Test
+	public void characterizeReaction() {
+		Model sbmlModel = new Model();
+
+		Species reactant = sbmlModel.createSpecies("id1");
+		Species product = sbmlModel.createSpecies("id2");
+		Species outsideSpecies = sbmlModel.createSpecies("out");
+
+		Reaction reaction = sbmlModel.createReaction("reaction_id");
+		// add a test in the learning test to keep the species reference
+		SpeciesReference reactantReference = reaction.createReactant(reactant);
+		SpeciesReference productReference = reaction.createProduct(product);
+
+		Assert.assertTrue(reaction.getListOfReactants().contains(
+				reactantReference));
+		Assert.assertTrue(reaction.getListOfProducts().contains(
+				productReference));
+		Assert.assertFalse(reaction.getListOfReactants().contains(
+				outsideSpecies));
+		Assert.assertFalse(reaction.getListOfReactants().contains(
+				outsideSpecies));
 	}
 }

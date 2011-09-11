@@ -33,12 +33,14 @@ public class SBMLWrapper {
 	}
 
 	public boolean isEmpty() {
+
+		boolean ret = false;
 		if (sbmlModel.getListOfSpecies().size() == 0
 				&& sbmlModel.getListOfReactions().size() == 0) {
-			return true;
+			ret = true;
 		}
 
-		return false;
+		return ret;
 	}
 
 }
