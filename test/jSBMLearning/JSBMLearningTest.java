@@ -228,6 +228,7 @@ public class JSBMLearningTest {
 		Reaction reaction = sbmlModel.createReaction("someid");
 
 		assertNotNull(reaction);
+		assertTrue(sbmlModel.getListOfReactions().contains(reaction));
 	}
 
 	@Test
@@ -247,6 +248,10 @@ public class JSBMLearningTest {
 				reactantReference));
 		Assert.assertTrue(reaction.getListOfProducts().contains(
 				productReference));
+		Assert.assertFalse(reaction.getListOfReactants().contains(
+				productReference));
+		Assert.assertFalse(reaction.getListOfProducts().contains(
+				reactantReference));
 		Assert.assertFalse(reaction.getListOfReactants().contains(
 				outsideSpecies));
 		Assert.assertFalse(reaction.getListOfReactants().contains(

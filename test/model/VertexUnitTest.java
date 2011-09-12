@@ -3,6 +3,7 @@ package model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
@@ -10,6 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import junit.framework.Assert;
+import model.Vertex.VertexInstancesCounter;
 
 import org.junit.Test;
 
@@ -92,6 +94,7 @@ public class VertexUnitTest {
 		assertTrue(collectedNeighbours.contains(a));
 		assertTrue(collectedNeighbours.contains(b));
 		assertEquals(vertex.getNeighbours(), collectedNeighbours);
+		assertNotSame(vertex.getNeighbours(), collectedNeighbours);
 		assertFalse(collectedNeighbours.contains(c));
 	}
 
@@ -112,5 +115,32 @@ public class VertexUnitTest {
 		Assert.assertNotNull(v);
 		Assert.assertNotNull(v.getId());
 		assertTrue(v.getId().length() > 0);
+	}
+
+	@Test
+	public void newVerticesHaveDifferentId() {
+		Vertex v1 = Vertex.makeVertex();
+		Vertex v2 = Vertex.makeVertex();
+
+		Assert.assertNotSame(v1, v2);
+		Assert.assertTrue(v1.getId().equals(v2.getId()) == false);
+	}
+
+	@Test
+	public void newVerticesHaveConsecutiveId() {
+
+		// catch the count of the vertices added so far
+		int count = VertexInstancesCounter.getCount();
+
+		// increment the counter
+		Vertex v1 = Vertex.makeVertex();
+
+		// increment the counter another time
+		Vertex v2 = Vertex.makeVertex();
+
+		Assert.assertEquals(Vertex.IdPrefix + String.valueOf(count + 1),
+				v1.getId());
+		Assert.assertEquals(Vertex.IdPrefix + String.valueOf(count + 2),
+				v2.getId());
 	}
 }

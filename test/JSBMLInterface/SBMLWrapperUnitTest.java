@@ -56,8 +56,6 @@ public class SBMLWrapperUnitTest {
 			throws NullSBMLModelArgumentException {
 		Model sbmlModel = new Model();
 
-		// the method createSpecies has the side effect to add
-		// the returned new species directly in the model automatically.
 		sbmlModel.createSpecies("id1");
 		sbmlModel.createSpecies("id2");
 
@@ -79,7 +77,7 @@ public class SBMLWrapperUnitTest {
 		Species product = sbmlModel.createSpecies("id2");
 
 		Reaction reaction = sbmlModel.createReaction("reaction_id");
-		// add a test in the learning test to keep the species reference
+
 		reaction.createReactant(reactant);
 		reaction.createProduct(product);
 

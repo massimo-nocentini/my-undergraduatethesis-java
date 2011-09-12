@@ -5,6 +5,25 @@ import java.util.Set;
 
 public class Vertex {
 
+	static String IdPrefix = "id_";
+
+	static class VertexInstancesCounter {
+		private static int count;
+
+		static {
+			count = 0;
+		}
+
+		synchronized static int makeNewId() {
+			count = count + 1;
+			return count;
+		}
+
+		static int getCount() {
+			return count;
+		}
+	}
+
 	private Set<Vertex> _neighbours;
 
 	private String id;
@@ -15,8 +34,8 @@ public class Vertex {
 	}
 
 	public static Vertex makeVertex() {
-		int id = (int) (Math.random() * 100000000);
-		return Vertex.makeVertex("id_" + String.valueOf(id));
+		int id = VertexInstancesCounter.makeNewId();
+		return Vertex.makeVertex(IdPrefix + String.valueOf(id));
 	}
 
 	Set<Vertex> getNeighbours() {
