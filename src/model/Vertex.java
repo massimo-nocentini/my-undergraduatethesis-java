@@ -62,4 +62,14 @@ public class Vertex {
 		return id;
 	}
 
+	public boolean isYourNeighbourhoodEquals(Set<Vertex> products) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean isYourNeighbourhoodEmpty() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

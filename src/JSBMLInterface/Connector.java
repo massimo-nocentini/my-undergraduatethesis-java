@@ -20,49 +20,92 @@ public class Connector {
 
 	public Set<Vertex> readReaction(Reaction reaction) {
 
-		Set<Vertex> result = new HashSet<Vertex>();
-		for (SpeciesReference sRef : reaction.getListOfReactants()) {
+		return this.readReaction(reaction,
+				new VertexHandlerListenerNullObject());
+	}
 
-			Vertex domainVertex = Vertex.makeVertex();
+	public Set<Vertex> readReaction(Reaction reaction,
+			VertexGenerationWithSourceListener listener) {
 
-			result.add(domainVertex);
+		Set<Vertex> reactants = this.convertToVertexSet(
+				reaction.getListOfReactants(), new FromReactorDriver(listener));
 
-			this.explodeSingleSpecies(domainVertex,
-					reaction.getListOfProducts());
+		Set<Vertex> products = this.convertToVertexSet(
+				reaction.getListOfProducts(), new FromProductDriver(listener));
+
+		this.updateNeighbourhoodByCrossProduct(reactants, products);
+
+		if (reaction.isReversible()) {
+			this.updateNeighbourhoodByCrossProduct(products, reactants);
 		}
+
+		Set<Vertex> result = new HashSet<Vertex>();
+		result.addAll(reactants);
+		result.addAll(products);
 
 		return result;
 	}
 
-	private void explodeSingleSpecies(Vertex domainVertex,
-			ListOf<SpeciesReference> range) {
-
-		// for (SpeciesReference rangeObject : range) {
-		// String rangeObjectId = rangeObject.getSpeciesInstance().getId();
-		//
-		// if (result.containsKey(rangeObjectId) == false) {
-		// Vertex reachedVertex = Vertex.makeVertex(rangeObjectId);
-		// result.put(rangeObjectId, reachedVertex);
-		// }
-		//
-		// Vertex reachedVertex = result.get(rangeObjectId);
-		// domainVertex.addNeighbour(reachedVertex);
-		//
-		// }
+	private void updateNeighbourhoodByCrossProduct(Set<Vertex> domainSet,
+			Set<Vertex> rangeSet) {
+		for (Vertex domainVertex : domainSet) {
+			for (Vertex rangeVertex : rangeSet) {
+				domainVertex.addNeighbour(rangeVertex);
+			}
+		}
 	}
 
 	public Set<Vertex> convertToVertexSet(
 			ListOf<SpeciesReference> listOfSpeciesReference) {
 
+		return this.convertToVertexSet(listOfSpeciesReference,
+				new VertexHandlerListenerNullObject());
+	}
+
+	public Set<Vertex> convertToVertexSet(
+			ListOf<SpeciesReference> listOfSpeciesReference,
+			VertexGenerationListener listener) {
+
 		Set<Vertex> result = new HashSet<Vertex>();
 
 		for (SpeciesReference sRef : listOfSpeciesReference) {
 
-			Vertex domainVertex = Vertex.makeVertex();
+			Vertex newVertex = Vertex.makeVertex();
 
-			result.add(domainVertex);
+			listener.newVertexGenerated(newVertex);
+
+			result.add(newVertex);
 		}
 
 		return result;
 	}
+
+	public class FromReactorDriver implements VertexGenerationListener {
+
+		private final VertexGenerationWithSourceListener listener;
+
+		public FromReactorDriver(VertexGenerationWithSourceListener listener) {
+			this.listener = listener;
+		}
+
+		@Override
+		public void newVertexGenerated(Vertex vertex) {
+			listener.newVertexFromReactor(vertex);
+		}
+	}
+
+	public class FromProductDriver implements VertexGenerationListener {
+
+		private final VertexGenerationWithSourceListener listener;
+
+		public FromProductDriver(VertexGenerationWithSourceListener listener) {
+			this.listener = listener;
+		}
+
+		@Override
+		public void newVertexGenerated(Vertex vertex) {
+			this.listener.newVertexFromProduct(vertex);
+		}
+	}
+
 }

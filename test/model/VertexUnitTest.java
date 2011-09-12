@@ -143,4 +143,22 @@ public class VertexUnitTest {
 		Assert.assertEquals(Vertex.IdPrefix + String.valueOf(count + 2),
 				v2.getId());
 	}
+
+	// @Test
+	// public void newVerticesHaveConsecutiveId() {
+	//
+	// // catch the count of the vertices added so far
+	// int count = VertexInstancesCounter.getCount();
+	//
+	// // increment the counter
+	// Vertex v1 = Vertex.makeVertex();
+	//
+	// // increment the counter another time
+	// Vertex v2 = Vertex.makeVertex();
+	//
+	// Assert.assertEquals(Vertex.IdPrefix + String.valueOf(count + 1),
+	// v1.getId());
+	// Assert.assertEquals(Vertex.IdPrefix + String.valueOf(count + 2),
+	// v2.getId());
+	// }
 }

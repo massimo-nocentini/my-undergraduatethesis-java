@@ -1,8 +1,10 @@
 package JSBMLInterface;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import model.Vertex;
@@ -21,34 +23,6 @@ public class ConnectorUnitTest {
 	}
 
 	@Test
-	public void checkVerticesCreationBasedOnOneToOneReaction() {
-		Connector connector = Connector.makeConnector();
-		Model sbmlModel = new Model();
-
-		String idReactant = "id1";
-		String idProduct = "id2";
-		Species reactant = sbmlModel.createSpecies(idReactant);
-		Species product = sbmlModel.createSpecies(idProduct);
-
-		Reaction reaction = sbmlModel.createReaction("reaction_id");
-		// add a test in the learning test to keep the species reference
-		reaction.createReactant(reactant);
-		reaction.createProduct(product);
-
-		Set<Vertex> vertices = connector.readReaction(reaction);
-
-		Vertex a = Vertex.makeVertex();
-		Vertex b = Vertex.makeVertex();
-		Vertex outSide = Vertex.makeVertex();
-
-		// assertEquals(2, vertices.size());
-		// assertTrue(vertices.contains(a));
-		// assertTrue(vertices.contains(b));
-		// assertFalse(vertices.contains(outSide));
-
-	}
-
-	@Test
 	public void convertListOfSpeciesReferenceInSetOfVertices() {
 		Connector connector = Connector.makeConnector();
 		Model sbmlModel = new Model();
@@ -63,17 +37,49 @@ public class ConnectorUnitTest {
 		reaction.createReactant(reactant1);
 		reaction.createReactant(reactant2);
 
+		final Set<Vertex> collectedVertices = new HashSet<Vertex>();
+
+		Vertex outSide = Vertex.makeVertex();
+		Set<Vertex> vertices = connector.convertToVertexSet(
+				reaction.getListOfReactants(), new VertexGenerationListener() {
+
+					@Override
+					public void newVertexGenerated(Vertex vertex) {
+						collectedVertices.add(vertex);
+					}
+				});
+
+		// here I repeat the control on the size because I'm using a different
+		// overload of the test below.
+		assertEquals(2, vertices.size());
+		assertEquals(2, collectedVertices.size());
+
+		assertEquals(collectedVertices, vertices);
+		assertFalse(vertices.contains(outSide));
+
+	}
+
+	@Test
+	public void convertListOfSpeciesReferenceInSetOfVerticesWithoutListeningNewVertex() {
+		Connector connector = Connector.makeConnector();
+		Model sbmlModel = new Model();
+
+		Species reactant1 = sbmlModel.createSpecies("id1");
+		Species reactant2 = sbmlModel.createSpecies("id2");
+
+		Reaction reaction = sbmlModel.createReaction("reaction_id");
+
+		// I'll use the reactants list just because I want a list of
+		// species references to work with without loss of generality
+		reaction.createReactant(reactant1);
+		reaction.createReactant(reactant2);
+
 		Set<Vertex> vertices = connector.convertToVertexSet(reaction
 				.getListOfReactants());
 
-		Vertex a = Vertex.makeVertex();
-		Vertex b = Vertex.makeVertex();
-		Vertex outSide = Vertex.makeVertex();
-
+		// the only assertion that I can do here is to impose that the returned
+		// set contains exactly two vertex
 		assertEquals(2, vertices.size());
-		// assertTrue(vertices.contains(a));
-		// assertTrue(vertices.contains(b));
-		// assertFalse(vertices.contains(outSide));
 
 	}
 

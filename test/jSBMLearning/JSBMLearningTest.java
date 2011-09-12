@@ -33,7 +33,7 @@ import org.sbml.jsbml.SpeciesReference;
 public class JSBMLearningTest {
 
 	@Test
-	public void SBMLCheckingNONUniquenessOfSpeciesInAllReactantSets() {
+	public void SBMLCheckingNONUniquenessIDOfSpeciesInAllReactantSets() {
 		try {
 			Map<String, Species> result = new HashMap<String, Species>();
 
@@ -72,9 +72,10 @@ public class JSBMLearningTest {
 				}
 			}
 
-			Assert.assertFalse("Uniqueness of species among reactants sets "
-					+ "is assured, while is known for the metabolic net"
-					+ "under test that uniqueness of species is violated.",
+			Assert.assertFalse(
+					"Uniqueness by meta id of species among reactants sets "
+							+ "is assured, while is known for the metabolic net"
+							+ "under test that uniqueness of species is violated.",
 					uniqueness);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
