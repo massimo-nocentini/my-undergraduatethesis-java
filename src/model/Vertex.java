@@ -24,13 +24,13 @@ public class Vertex {
 		}
 	}
 
-	private Set<Vertex> _neighbours;
+	private Set<Vertex> neighbours;
 
 	private String id;
 
 	private Vertex(String id) {
 		this.id = id;
-		_neighbours = new HashSet<Vertex>();
+		neighbours = new HashSet<Vertex>();
 	}
 
 	public static Vertex makeVertex() {
@@ -39,16 +39,16 @@ public class Vertex {
 	}
 
 	Set<Vertex> getNeighbours() {
-		return _neighbours;
+		return neighbours;
 	}
 
 	public Vertex addNeighbour(Vertex neigtbour) {
-		this._neighbours.add(neigtbour);
+		this.neighbours.add(neigtbour);
 		return this;
 	}
 
 	public void doOnNeighbours(INeighbourApplier applier) {
-		for (Vertex vertex : this._neighbours) {
+		for (Vertex vertex : this.neighbours) {
 			applier.apply(vertex);
 		}
 
@@ -63,13 +63,11 @@ public class Vertex {
 	}
 
 	public boolean isYourNeighbourhoodEquals(Set<Vertex> products) {
-		// TODO Auto-generated method stub
-		return false;
+		return this.neighbours.equals(products);
 	}
 
 	public boolean isYourNeighbourhoodEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return this.neighbours.size() == 0;
 	}
 
 }

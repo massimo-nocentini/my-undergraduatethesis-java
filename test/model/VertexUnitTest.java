@@ -144,21 +144,105 @@ public class VertexUnitTest {
 				v2.getId());
 	}
 
-	// @Test
-	// public void newVerticesHaveConsecutiveId() {
-	//
-	// // catch the count of the vertices added so far
-	// int count = VertexInstancesCounter.getCount();
-	//
-	// // increment the counter
-	// Vertex v1 = Vertex.makeVertex();
-	//
-	// // increment the counter another time
-	// Vertex v2 = Vertex.makeVertex();
-	//
-	// Assert.assertEquals(Vertex.IdPrefix + String.valueOf(count + 1),
-	// v1.getId());
-	// Assert.assertEquals(Vertex.IdPrefix + String.valueOf(count + 2),
-	// v2.getId());
-	// }
+	@Test
+	public void emptyNeighbourhood() {
+
+		Vertex v1 = Vertex.makeVertex();
+
+		Assert.assertTrue(v1.isYourNeighbourhoodEmpty());
+		Assert.assertEquals(0, v1.getNeighbours().size());
+	}
+
+	@Test
+	public void nonEmptyNeighbourhood() {
+
+		Vertex v1 = Vertex.makeVertex();
+		Vertex v2 = Vertex.makeVertex();
+
+		v1.addNeighbour(v2);
+
+		Assert.assertFalse(v1.isYourNeighbourhoodEmpty());
+		Assert.assertTrue(v1.getNeighbours().size() > 0);
+	}
+
+	@Test
+	public void neighbourhoodEquals() {
+
+		Vertex v1 = Vertex.makeVertex();
+		Vertex v2 = Vertex.makeVertex();
+		Vertex v3 = Vertex.makeVertex();
+		Vertex v4 = Vertex.makeVertex();
+
+		v1.addNeighbour(v2);
+		v1.addNeighbour(v3);
+		v1.addNeighbour(v4);
+
+		Set<Vertex> expected = new HashSet<Vertex>();
+
+		expected.add(v2);
+		expected.add(v3);
+		expected.add(v4);
+
+		Assert.assertFalse(v1.isYourNeighbourhoodEmpty());
+		Assert.assertTrue(v1.isYourNeighbourhoodEquals(expected));
+	}
+
+	@Test
+	public void neighbourhoodNotEquals() {
+
+		Vertex v1 = Vertex.makeVertex();
+		Vertex v2 = Vertex.makeVertex();
+		Vertex v3 = Vertex.makeVertex();
+		Vertex v4 = Vertex.makeVertex();
+
+		v1.addNeighbour(v2);
+		v1.addNeighbour(v3);
+		v1.addNeighbour(v4);
+
+		Set<Vertex> anotherNeighbourhood = new HashSet<Vertex>();
+		Vertex v5 = Vertex.makeVertex();
+
+		anotherNeighbourhood.add(v3);
+		anotherNeighbourhood.add(v5);
+
+		Assert.assertFalse(v1.isYourNeighbourhoodEmpty());
+		Assert.assertFalse(v1.isYourNeighbourhoodEquals(anotherNeighbourhood));
+	}
+
+	@Test
+	public void neighbourhoodEqualsVacouslyTrue() {
+
+		Vertex v1 = Vertex.makeVertex();
+		Vertex v3 = Vertex.makeVertex();
+		Vertex v4 = Vertex.makeVertex();
+
+		// v1 has empty neighbourhood
+
+		Set<Vertex> anotherNeighbourhood = new HashSet<Vertex>();
+		Vertex v5 = Vertex.makeVertex();
+
+		anotherNeighbourhood.add(v3);
+		anotherNeighbourhood.add(v4);
+		anotherNeighbourhood.add(v5);
+
+		Assert.assertFalse(v1.isYourNeighbourhoodEquals(anotherNeighbourhood));
+	}
+
+	@Test
+	public void neighbourhoodEqualsVacouslyTrueReversed() {
+
+		Vertex v1 = Vertex.makeVertex();
+		Vertex v2 = Vertex.makeVertex();
+		Vertex v3 = Vertex.makeVertex();
+		Vertex v4 = Vertex.makeVertex();
+
+		v1.addNeighbour(v2);
+		v1.addNeighbour(v3);
+		v1.addNeighbour(v4);
+
+		Set<Vertex> anotherNeighbourhood = new HashSet<Vertex>();
+
+		Assert.assertFalse(v1.isYourNeighbourhoodEquals(anotherNeighbourhood));
+	}
+
 }
