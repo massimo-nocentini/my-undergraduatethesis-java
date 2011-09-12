@@ -1,7 +1,6 @@
 package JSBMLInterface;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
 import java.util.Set;
 
 import model.Vertex;
@@ -20,39 +19,50 @@ public class Connector {
 	}
 
 	public Set<Vertex> readReaction(Reaction reaction) {
-		Map<String, Vertex> result = new HashMap<String, Vertex>();
 
+		Set<Vertex> result = new HashSet<Vertex>();
 		for (SpeciesReference sRef : reaction.getListOfReactants()) {
 
-			String domainObjectId = sRef.getSpeciesInstance().getId();
+			Vertex domainVertex = Vertex.makeVertex();
 
-			if (result.containsKey(domainObjectId) == false) {
-				Vertex domainVertex = Vertex.makeVertex(domainObjectId);
-				result.put(domainObjectId, domainVertex);
-			}
-
-			Vertex domainVertex = result.get(domainObjectId);
+			result.add(domainVertex);
 
 			this.explodeSingleSpecies(domainVertex,
-					reaction.getListOfProducts(), result);
+					reaction.getListOfProducts());
 		}
 
-		return null;
+		return result;
 	}
 
 	private void explodeSingleSpecies(Vertex domainVertex,
-			ListOf<SpeciesReference> range, Map<String, Vertex> result) {
-		for (SpeciesReference rangeObject : range) {
-			String rangeObjectId = rangeObject.getSpeciesInstance().getId();
+			ListOf<SpeciesReference> range) {
 
-			if (result.containsKey(rangeObjectId) == false) {
-				Vertex reachedVertex = Vertex.makeVertex(rangeObjectId);
-				result.put(rangeObjectId, reachedVertex);
-			}
+		// for (SpeciesReference rangeObject : range) {
+		// String rangeObjectId = rangeObject.getSpeciesInstance().getId();
+		//
+		// if (result.containsKey(rangeObjectId) == false) {
+		// Vertex reachedVertex = Vertex.makeVertex(rangeObjectId);
+		// result.put(rangeObjectId, reachedVertex);
+		// }
+		//
+		// Vertex reachedVertex = result.get(rangeObjectId);
+		// domainVertex.addNeighbour(reachedVertex);
+		//
+		// }
+	}
 
-			Vertex reachedVertex = result.get(rangeObjectId);
-			domainVertex.addNeighbour(reachedVertex);
+	public Set<Vertex> convertToVertexSet(
+			ListOf<SpeciesReference> listOfSpeciesReference) {
 
+		Set<Vertex> result = new HashSet<Vertex>();
+
+		for (SpeciesReference sRef : listOfSpeciesReference) {
+
+			Vertex domainVertex = Vertex.makeVertex();
+
+			result.add(domainVertex);
 		}
+
+		return result;
 	}
 }
