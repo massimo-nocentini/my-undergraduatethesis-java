@@ -93,9 +93,12 @@ public class JSBMLearningTest {
 			SBMLDocument document = (new SBMLReader())
 					.readSBML("sbml-test-files/allCpdsMetabSmmReactionsCompounds.xml");
 			Model model = document.getModel();
+
+			@SuppressWarnings("unused")
 			ListOf<Reaction> listOfReactions = model.getListOfReactions();
+
+			@SuppressWarnings("unused")
 			ListOf<Species> listOfSpecies = model.getListOfSpecies();
-			int a = 3;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			fail(e.getMessage());

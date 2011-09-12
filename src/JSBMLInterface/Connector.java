@@ -18,12 +18,6 @@ public class Connector {
 		return new Connector();
 	}
 
-	public Set<Vertex> readReaction(Reaction reaction) {
-
-		return this.readReaction(reaction,
-				new VertexHandlerListenerNullObject());
-	}
-
 	public Set<Vertex> readReaction(Reaction reaction,
 			VertexGenerationWithSourceListener listener) {
 
@@ -68,6 +62,8 @@ public class Connector {
 
 		Set<Vertex> result = new HashSet<Vertex>();
 
+		// TODO: do something with sRef, maybe use it for
+		// characterize in detail the new vertex.
 		for (SpeciesReference sRef : listOfSpeciesReference) {
 
 			Vertex newVertex = Vertex.makeVertex();

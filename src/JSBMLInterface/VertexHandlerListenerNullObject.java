@@ -14,14 +14,10 @@ public class VertexHandlerListenerNullObject implements
 
 	@Override
 	public void newVertexFromReactor(Vertex vertex) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void newVertexFromProduct(Vertex vertex) {
-		// TODO Auto-generated method stub
-
 	}
 
 }

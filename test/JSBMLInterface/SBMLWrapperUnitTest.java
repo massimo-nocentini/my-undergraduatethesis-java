@@ -35,7 +35,9 @@ public class SBMLWrapperUnitTest {
 	public void wrapNullSBMLModel() {
 		Model sbmlModel = null;
 		try {
+			@SuppressWarnings("unused")
 			SBMLWrapper wrapper = SBMLWrapper.wrap(sbmlModel);
+
 			Assert.fail("This point shouldn't be reached.");
 		} catch (NullSBMLModelArgumentException e) {
 			// I want this exception, in this case nothing
