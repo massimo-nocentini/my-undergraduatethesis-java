@@ -62,11 +62,11 @@ public class Vertex {
 		return id;
 	}
 
-	public boolean isYourNeighbourhoodEquals(Set<Vertex> products) {
+	public boolean isYourNeighborhoodEquals(Set<Vertex> products) {
 		return this.neighbours.equals(products);
 	}
 
-	public boolean isYourNeighbourhoodEmpty() {
+	public boolean isYourNeighborhoodEmpty() {
 		return this.neighbours.size() == 0;
 	}
 

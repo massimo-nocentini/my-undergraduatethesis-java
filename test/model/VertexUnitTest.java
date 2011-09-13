@@ -149,24 +149,24 @@ public class VertexUnitTest {
 
 		Vertex v1 = Vertex.makeVertex();
 
-		Assert.assertTrue(v1.isYourNeighbourhoodEmpty());
+		Assert.assertTrue(v1.isYourNeighborhoodEmpty());
 		Assert.assertEquals(0, v1.getNeighbours().size());
 	}
 
 	@Test
-	public void nonEmptyNeighbourhood() {
+	public void nonEmptyNeighborhood() {
 
 		Vertex v1 = Vertex.makeVertex();
 		Vertex v2 = Vertex.makeVertex();
 
 		v1.addNeighbour(v2);
 
-		Assert.assertFalse(v1.isYourNeighbourhoodEmpty());
+		Assert.assertFalse(v1.isYourNeighborhoodEmpty());
 		Assert.assertTrue(v1.getNeighbours().size() > 0);
 	}
 
 	@Test
-	public void neighbourhoodEquals() {
+	public void neighborhoodEquals() {
 
 		Vertex v1 = Vertex.makeVertex();
 		Vertex v2 = Vertex.makeVertex();
@@ -183,8 +183,8 @@ public class VertexUnitTest {
 		expected.add(v3);
 		expected.add(v4);
 
-		Assert.assertFalse(v1.isYourNeighbourhoodEmpty());
-		Assert.assertTrue(v1.isYourNeighbourhoodEquals(expected));
+		Assert.assertFalse(v1.isYourNeighborhoodEmpty());
+		Assert.assertTrue(v1.isYourNeighborhoodEquals(expected));
 	}
 
 	@Test
@@ -205,8 +205,8 @@ public class VertexUnitTest {
 		anotherNeighbourhood.add(v3);
 		anotherNeighbourhood.add(v5);
 
-		Assert.assertFalse(v1.isYourNeighbourhoodEmpty());
-		Assert.assertFalse(v1.isYourNeighbourhoodEquals(anotherNeighbourhood));
+		Assert.assertFalse(v1.isYourNeighborhoodEmpty());
+		Assert.assertFalse(v1.isYourNeighborhoodEquals(anotherNeighbourhood));
 	}
 
 	@Test
@@ -214,18 +214,18 @@ public class VertexUnitTest {
 
 		Vertex v1 = Vertex.makeVertex();
 
-		// v1 has empty neighbourhood
+		// v1 has empty neighborhood
 
-		Set<Vertex> anotherNeighbourhood = new HashSet<Vertex>();
+		Set<Vertex> anotherNeighborhood = new HashSet<Vertex>();
 		Vertex v3 = Vertex.makeVertex();
 		Vertex v4 = Vertex.makeVertex();
 		Vertex v5 = Vertex.makeVertex();
 
-		anotherNeighbourhood.add(v3);
-		anotherNeighbourhood.add(v4);
-		anotherNeighbourhood.add(v5);
+		anotherNeighborhood.add(v3);
+		anotherNeighborhood.add(v4);
+		anotherNeighborhood.add(v5);
 
-		Assert.assertFalse(v1.isYourNeighbourhoodEquals(anotherNeighbourhood));
+		Assert.assertFalse(v1.isYourNeighborhoodEquals(anotherNeighborhood));
 	}
 
 	@Test
@@ -240,9 +240,10 @@ public class VertexUnitTest {
 		v1.addNeighbour(v3);
 		v1.addNeighbour(v4);
 
-		Set<Vertex> anotherNeighbourhood = new HashSet<Vertex>();
+		// empty testing neighborhood
+		Set<Vertex> anotherNeighborhood = new HashSet<Vertex>();
 
-		Assert.assertFalse(v1.isYourNeighbourhoodEquals(anotherNeighbourhood));
+		Assert.assertFalse(v1.isYourNeighborhoodEquals(anotherNeighborhood));
 	}
 
 }

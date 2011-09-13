@@ -60,11 +60,11 @@ public class ReadingNonReversibleReactionsUnitTest {
 		assertEquals(1, products.size());
 
 		for (Vertex vertex : reactants) {
-			assertTrue(vertex.isYourNeighbourhoodEquals(products));
+			assertTrue(vertex.isYourNeighborhoodEquals(products));
 		}
 
 		for (Vertex vertex : products) {
-			assertTrue(vertex.isYourNeighbourhoodEmpty());
+			assertTrue(vertex.isYourNeighborhoodEmpty());
 		}
 	}
 
