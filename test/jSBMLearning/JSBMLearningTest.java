@@ -7,7 +7,9 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.stream.XMLStreamException;
@@ -260,5 +262,133 @@ public class JSBMLearningTest {
 				outsideSpecies));
 		Assert.assertFalse(reaction.getListOfReactants().contains(
 				outsideSpecies));
+	}
+
+	@Test
+	public void uniquenessOfSpeciesIdInsideModelWithOneCompartment() {
+		this.uniquenessTestCommonMethod("sbml-test-files/allCpdsMetabSmmReactionsCompounds.xml");
+	}
+
+	@Test
+	public void uniquenessOfSpeciesIdInsideModelWithMultipleCompartments() {
+		/**
+		 * In this file there exists the species with id=CARDIOLIPIN that is
+		 * defined twice, one that belong to two different compartments at the
+		 * same time
+		 */
+		this.uniquenessTestCommonMethod("sbml-test-files/"
+				+ "allCpdsMetabSmmReactionsCompounds_multipleCompartments.xml");
+	}
+
+	private void uniquenessTestCommonMethod(String filePath) {
+		try {
+			Map<String, List<Species>> mapOfListOfSpecies = new HashMap<String, List<Species>>();
+
+			SBMLDocument document = (new SBMLReader()).readSBML(filePath);
+
+			Model model = document.getModel();
+			for (Species species : model.getListOfSpecies()) {
+
+				String compartmentId = species.getCompartmentInstance().getId();
+
+				if (mapOfListOfSpecies.containsKey(compartmentId) == false) {
+					mapOfListOfSpecies.put(compartmentId,
+							new ArrayList<Species>());
+				}
+
+				mapOfListOfSpecies.get(compartmentId).add(species);
+
+			}
+
+			String violatingSpeciesId = null;
+			String violatedCompartment = null;
+			boolean uniquenessInsideCompartmentViolated = false;
+			List<String> listOfSpeciesIds = new ArrayList<String>();
+			label: for (List<Species> listOfSpecies : mapOfListOfSpecies
+					.values()) {
+
+				for (Species species : listOfSpecies) {
+					String speciesId = species.getId();
+					if (listOfSpeciesIds.contains(speciesId)) {
+
+						violatingSpeciesId = speciesId;
+						violatedCompartment = species.getCompartmentInstance()
+								.getId();
+						uniquenessInsideCompartmentViolated = true;
+						break label;
+					}
+				}
+
+				listOfSpeciesIds.clear();
+			}
+
+			if (uniquenessInsideCompartmentViolated == true) {
+				Assert.fail("The species with id "
+						+ violatingSpeciesId
+						+ " violates the uniqueness of id inside the compartment "
+						+ violatedCompartment);
+			}
+
+			// else the uniqueness is guaranteed
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		} catch (XMLStreamException e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		}
+	}
+
+	@Test
+	public void createSpeciesWithEqualsIdInTheSameCompartment() {
+		Model sbmlModel = new Model();
+
+		Compartment compartment = sbmlModel.createCompartment("compartment_id");
+
+		Species firstAdded = sbmlModel.createSpecies("id1", compartment);
+		Species secondAdded = sbmlModel.createSpecies("id1", compartment);
+
+		Assert.assertNotSame(firstAdded, secondAdded);
+		Assert.assertEquals(firstAdded, secondAdded);
+		Assert.assertEquals(1, sbmlModel.getListOfSpecies().size());
+	}
+
+	@Test
+	public void createSpeciesWithEqualsIdInDifferentCompartments() {
+		Model sbmlModel = new Model();
+
+		Compartment compartment = sbmlModel.createCompartment("compartment_id");
+		Compartment anotherCompartment = sbmlModel
+				.createCompartment("another_compartment_id");
+
+		Species firstAdded = sbmlModel.createSpecies("id1", compartment);
+		Species secondAdded = sbmlModel
+				.createSpecies("id1", anotherCompartment);
+
+		Assert.assertNotSame(firstAdded, secondAdded);
+		Assert.assertFalse(firstAdded.equals(secondAdded));
+
+		// guessing 1 is very hard! the two added species are not equals
+		// by the above test, although the count species in the model
+		// is 1, like if the second is ignored.
+		Assert.assertEquals(1, sbmlModel.getListOfSpecies().size());
+	}
+
+	@Test
+	public void createSpeciesWithDifferentIdInDifferentCompartments() {
+		Model sbmlModel = new Model();
+
+		Compartment compartment = sbmlModel.createCompartment("compartment_id");
+		Compartment anotherCompartment = sbmlModel
+				.createCompartment("another_compartment_id");
+
+		Species firstAdded = sbmlModel.createSpecies("id1", compartment);
+		Species secondAdded = sbmlModel
+				.createSpecies("id2", anotherCompartment);
+
+		Assert.assertNotSame(firstAdded, secondAdded);
+		Assert.assertFalse(firstAdded.equals(secondAdded));
+		Assert.assertEquals(2, sbmlModel.getListOfSpecies().size());
 	}
 }

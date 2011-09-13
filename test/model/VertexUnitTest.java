@@ -123,7 +123,7 @@ public class VertexUnitTest {
 		Vertex v2 = Vertex.makeVertex();
 
 		Assert.assertNotSame(v1, v2);
-		Assert.assertTrue(v1.getId().equals(v2.getId()) == false);
+		Assert.assertFalse(v1.getId().equals(v2.getId()));
 	}
 
 	@Test
@@ -213,12 +213,12 @@ public class VertexUnitTest {
 	public void neighbourhoodEqualsVacouslyTrue() {
 
 		Vertex v1 = Vertex.makeVertex();
-		Vertex v3 = Vertex.makeVertex();
-		Vertex v4 = Vertex.makeVertex();
 
 		// v1 has empty neighbourhood
 
 		Set<Vertex> anotherNeighbourhood = new HashSet<Vertex>();
+		Vertex v3 = Vertex.makeVertex();
+		Vertex v4 = Vertex.makeVertex();
 		Vertex v5 = Vertex.makeVertex();
 
 		anotherNeighbourhood.add(v3);
