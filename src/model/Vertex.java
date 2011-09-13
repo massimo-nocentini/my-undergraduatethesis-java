@@ -3,6 +3,8 @@ package model;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.sbml.jsbml.Species;
+
 public class Vertex {
 
 	static String IdPrefix = "id_";
@@ -26,10 +28,12 @@ public class Vertex {
 
 	private Set<Vertex> neighbours;
 
-	private String id;
+	private String species_id;
+
+	private String compartment_id;
 
 	private Vertex(String id) {
-		this.id = id;
+		this.species_id = id;
 		neighbours = new HashSet<Vertex>();
 	}
 
@@ -59,7 +63,7 @@ public class Vertex {
 	}
 
 	public String getId() {
-		return id;
+		return species_id;
 	}
 
 	public boolean isYourNeighborhoodEquals(Set<Vertex> products) {
@@ -70,4 +74,20 @@ public class Vertex {
 		return this.neighbours.size() == 0;
 	}
 
+	public static Vertex makeVertex(Species species) {
+		Vertex result = Vertex.makeVertex();
+
+		result.species_id = species.getId();
+		result.compartment_id = species.getCompartmentInstance().getId();
+
+		return result;
+	}
+
+	public boolean isYourSpeciesId(String speciesId) {
+		return this.species_id.equals(speciesId);
+	}
+
+	public boolean isYourCompartmentId(String compartmentId) {
+		return this.compartment_id.equals(compartmentId);
+	}
 }

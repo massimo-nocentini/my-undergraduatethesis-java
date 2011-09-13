@@ -14,6 +14,9 @@ import junit.framework.Assert;
 import model.Vertex.VertexInstancesCounter;
 
 import org.junit.Test;
+import org.sbml.jsbml.Compartment;
+import org.sbml.jsbml.Model;
+import org.sbml.jsbml.Species;
 
 public class VertexUnitTest {
 	@Test
@@ -245,5 +248,97 @@ public class VertexUnitTest {
 
 		Assert.assertFalse(v1.isYourNeighborhoodEquals(anotherNeighborhood));
 	}
+
+	@Test
+	public void fetchSpeciesCharacteristicData() {
+		Model sbmlModel = new Model();
+
+		String compartmentId = "compartment_id";
+		Compartment compartment = sbmlModel.createCompartment(compartmentId);
+
+		String speciesId = "species_id";
+		Species firstAdded = sbmlModel.createSpecies(speciesId, compartment);
+
+		Vertex vertex = Vertex.makeVertex(firstAdded);
+
+		Assert.assertNotNull(vertex);
+		Assert.assertTrue(vertex.isYourSpeciesId(speciesId));
+		Assert.assertTrue(vertex.isYourCompartmentId(compartmentId));
+		Assert.assertFalse(vertex.isYourSpeciesId(""));
+		Assert.assertFalse(vertex.isYourCompartmentId(""));
+	}
+
+	@Test
+	public void vertexEquivalenceSameSpeciesIdSameCompartmentId() {
+		Model sbmlModel = new Model();
+
+		String compartmentId = "compartment_id";
+		Compartment compartment = sbmlModel.createCompartment(compartmentId);
+
+		String anotherCompartmentId = "anotherCompartment_id";
+		Compartment anotherCompartment = sbmlModel
+				.createCompartment(anotherCompartmentId);
+
+		Species firstAdded = sbmlModel.createSpecies("species_id", compartment);
+		Species secondAdded = sbmlModel.createSpecies("anotherSpecies_id",
+				anotherCompartment);
+
+		Vertex vertex = Vertex.makeVertex(firstAdded);
+		Vertex anotherVertex = Vertex.makeVertex(secondAdded);
+
+		Assert.assertNotSame(vertex, anotherVertex);
+		Assert.assertFalse(vertex.equals(anotherVertex));
+	}
+	// @Test
+	// public void createSpeciesWithEqualsIdInTheSameCompartment() {
+	// Model sbmlModel = new Model();
+	//
+	// Compartment compartment = sbmlModel.createCompartment("compartment_id");
+	//
+	// Species firstAdded = sbmlModel.createSpecies("id1", compartment);
+	// Species secondAdded = sbmlModel.createSpecies("id1", compartment);
+	//
+	// Assert.assertNotSame(firstAdded, secondAdded);
+	// Assert.assertEquals(firstAdded, secondAdded);
+	// Assert.assertEquals(1, sbmlModel.getListOfSpecies().size());
+	// }
+	//
+	// @Test
+	// public void createSpeciesWithEqualsIdInDifferentCompartments() {
+	// Model sbmlModel = new Model();
+	//
+	// Compartment compartment = sbmlModel.createCompartment("compartment_id");
+	// Compartment anotherCompartment = sbmlModel
+	// .createCompartment("another_compartment_id");
+	//
+	// Species firstAdded = sbmlModel.createSpecies("id1", compartment);
+	// Species secondAdded = sbmlModel
+	// .createSpecies("id1", anotherCompartment);
+	//
+	// Assert.assertNotSame(firstAdded, secondAdded);
+	// Assert.assertFalse(firstAdded.equals(secondAdded));
+	//
+	// // guessing 1 is very hard! the two added species are not equals
+	// // by the above test, although the count species in the model
+	// // is 1, like if the second is ignored.
+	// Assert.assertEquals(1, sbmlModel.getListOfSpecies().size());
+	// }
+	//
+	// @Test
+	// public void createSpeciesWithDifferentIdInDifferentCompartments() {
+	// Model sbmlModel = new Model();
+	//
+	// Compartment compartment = sbmlModel.createCompartment("compartment_id");
+	// Compartment anotherCompartment = sbmlModel
+	// .createCompartment("another_compartment_id");
+	//
+	// Species firstAdded = sbmlModel.createSpecies("id1", compartment);
+	// Species secondAdded = sbmlModel
+	// .createSpecies("id2", anotherCompartment);
+	//
+	// Assert.assertNotSame(firstAdded, secondAdded);
+	// Assert.assertFalse(firstAdded.equals(secondAdded));
+	// Assert.assertEquals(2, sbmlModel.getListOfSpecies().size());
+	// }
 
 }

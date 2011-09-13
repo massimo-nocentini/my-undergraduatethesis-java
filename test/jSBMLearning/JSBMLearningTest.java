@@ -112,7 +112,7 @@ public class JSBMLearningTest {
 	}
 
 	// @Test
-	public void testSBMLWriting() {
+	public void SBMLWriting() {
 		// Create a new SBMLDocument, using SBML level 2 version 4.
 		SBMLDocument doc = new SBMLDocument(2, 4);
 		doc.addChangeListener(new SBaseChangedListener_InnerClass());
@@ -341,6 +341,37 @@ public class JSBMLearningTest {
 	}
 
 	@Test
+	public void everySpeciesShouldBeContainedInSomeCompartment() {
+		try {
+			SBMLDocument document = (new SBMLReader())
+					.readSBML("sbml-test-files/allCpdsMetabSmmReactionsCompounds.xml");
+
+			Model model = document.getModel();
+			String violatingSpeciesId = null;
+			boolean violated = false;
+			for (Species species : model.getListOfSpecies()) {
+
+				if (species.getCompartmentInstance() == null) {
+					violatingSpeciesId = species.getId();
+					violated = true;
+				}
+			}
+
+			if (violated == true) {
+				Assert.fail("The species with id " + violatingSpeciesId
+						+ " isn't cointained in any compartments.");
+			}
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		} catch (XMLStreamException e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		}
+	}
+
+	@Test
 	public void createSpeciesWithEqualsIdInTheSameCompartment() {
 		Model sbmlModel = new Model();
 
@@ -352,6 +383,17 @@ public class JSBMLearningTest {
 		Assert.assertNotSame(firstAdded, secondAdded);
 		Assert.assertEquals(firstAdded, secondAdded);
 		Assert.assertEquals(1, sbmlModel.getListOfSpecies().size());
+
+		Assert.assertNotNull(firstAdded.getCompartmentInstance());
+
+		/**
+		 * Here instead of gaining an exception during the creation of the
+		 * species (because I'm trying to add a second species with an id
+		 * already used by another species in the same compartment) we have a
+		 * valid species object (instantiated in memory) but with no compartment
+		 * associated with.
+		 */
+		Assert.assertNull(secondAdded.getCompartmentInstance());
 	}
 
 	@Test
