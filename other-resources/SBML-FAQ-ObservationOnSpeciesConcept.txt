@@ -1,0 +1,16 @@
+from: http://sbml.org/Documents/FAQ#The_SBML_notion_of_a_species_seems_peculiar.2C_doesn.27t_it.3F
+
+The SBML notion of a species seems peculiar, doesn't it?
+
+Well, no, or yes, depending on your definition of "peculiar".
+
+The SBML construct called species represents a pool, that is, a set of "things" that are treated as being indistinguishable from the standpoint of the processes (reactions) in which they participate. When the "same" species (a chemical or other thing) is present in different compartments, each must be treated as a different pool. The reason for this is because the concentrations or partial pressures being different in the various compartments means that the chemical activities are different as well. Also, the pH of different compartments being different, the electrochemical properties of a given chemical entity could be different (think about an enzyme in the cytosol and a lysosome). Analytical software will therefore have to construct different state variables for the different pools, even if the pools contain the same kind of "thing". This is actually a common concept in biochemical simulation, dating back to some of the earliest simulation software.
+
+If you need to express a link between species with different identifiers, you can use the species type construct available in SBML Level 2, or else use the SBML annotation mechanism.
+Can I have two species with the same name attribute value?
+
+Yes, this is perfectly legal SBML. Of course, you would only want to do that if the species are actually the same conceptual type of entity—you wouldn't want to give the same names to, say, glucose-6-phosphate and ATP in a model, because it wouldn't make any sense.
+
+Species and compartment identifiers in SBML refer to "things" that can participate in dynamical behaviors, but each identifier does not have to refer to a single unique entity. It is possible that the same conceptual entity appears in multiple contexts in a model. Since a species must be given a unique identifier in each compartment in which it appears (see the answer to the previous question for an explanation of why), it is convenient to give the species definitions all the same names. It will usually make more sense to humans that way, and software can track the separate amounts of species in the different compartments by their identifiers.
+
+In SBML Level 2, there are additional explicit constructs for species types and compartment types. If you are using names to convey the idea that different entities are the same conceptual "thing" despite having different identifiers, you may want to indicate the relationship more strongly by defining common species types or compartment types, and then declaring the species/compartments to be of the appropriate types. 
