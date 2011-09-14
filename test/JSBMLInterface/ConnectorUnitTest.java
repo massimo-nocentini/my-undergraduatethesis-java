@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -41,7 +42,8 @@ public class ConnectorUnitTest {
 
 		Vertex outSide = Vertex.makeVertex();
 		Set<Vertex> vertices = connector.convertToVertexSet(
-				reaction.getListOfReactants(), new VertexGenerationListener() {
+				reaction.getListOfReactants(), new HashMap<Vertex, Vertex>(),
+				new VertexGenerationListener() {
 
 					@Override
 					public void newVertexGenerated(Vertex vertex) {
@@ -58,29 +60,4 @@ public class ConnectorUnitTest {
 		assertFalse(vertices.contains(outSide));
 
 	}
-
-	@Test
-	public void convertListOfSpeciesReferenceInSetOfVerticesWithoutListeningNewVertex() {
-		Connector connector = Connector.makeConnector();
-		Model sbmlModel = new Model();
-
-		Species reactant1 = sbmlModel.createSpecies("id1");
-		Species reactant2 = sbmlModel.createSpecies("id2");
-
-		Reaction reaction = sbmlModel.createReaction("reaction_id");
-
-		// I'll use the reactants list just because I want a list of
-		// species references to work with without loss of generality
-		reaction.createReactant(reactant1);
-		reaction.createReactant(reactant2);
-
-		Set<Vertex> vertices = connector.convertToVertexSet(reaction
-				.getListOfReactants());
-
-		// the only assertion that I can do here is to impose that the returned
-		// set contains exactly two vertex
-		assertEquals(2, vertices.size());
-
-	}
-
 }

@@ -89,6 +89,40 @@ public class JSBMLearningTest {
 
 	}
 
+	@Test
+	public void SBMLCheckingSpeciesBelongingBothReactantAndProductsSets() {
+		try {
+
+			SBMLDocument document = (new SBMLReader())
+					.readSBML("sbml-test-files/allCpdsMetabSmmReactionsCompounds.xml");
+
+			boolean atLeastOneSpeciesIsBothReatorAndProductInTheSameReation = false;
+			Model model = document.getModel();
+			for (Reaction reaction : model.getListOfReactions()) {
+				for (SpeciesReference species : reaction.getListOfReactants()) {
+
+					if (reaction.getListOfProducts().contains(species)) {
+						atLeastOneSpeciesIsBothReatorAndProductInTheSameReation = true;
+
+					}
+				}
+			}
+
+			if (atLeastOneSpeciesIsBothReatorAndProductInTheSameReation == false) {
+				Assert.fail("No species belong to both side of a reaction. "
+						+ "But this is absurd because is known that in this model the "
+						+ "RNA species belong to both side of at least one reaction.");
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		} catch (XMLStreamException e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		}
+
+	}
+
 	// @Test
 	public void SBMLReading() {
 		try {

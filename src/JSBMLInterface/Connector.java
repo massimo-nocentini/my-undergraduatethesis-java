@@ -1,6 +1,8 @@
 package JSBMLInterface;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import model.Vertex;
@@ -21,11 +23,15 @@ public class Connector {
 	public Set<Vertex> readReaction(Reaction reaction,
 			VertexGenerationWithSourceListener listener) {
 
+		Map<Vertex, Vertex> knownVertices = new HashMap<Vertex, Vertex>();
+
 		Set<Vertex> reactants = this.convertToVertexSet(
-				reaction.getListOfReactants(), new FromReactorDriver(listener));
+				reaction.getListOfReactants(), knownVertices,
+				new FromReactorDriver(listener));
 
 		Set<Vertex> products = this.convertToVertexSet(
-				reaction.getListOfProducts(), new FromProductDriver(listener));
+				reaction.getListOfProducts(), knownVertices,
+				new FromProductDriver(listener));
 
 		this.updateNeighbourhoodByCrossProduct(reactants, products);
 
@@ -50,26 +56,22 @@ public class Connector {
 	}
 
 	public Set<Vertex> convertToVertexSet(
-			ListOf<SpeciesReference> listOfSpeciesReference) {
-
-		return this.convertToVertexSet(listOfSpeciesReference,
-				new VertexHandlerListenerNullObject());
-	}
-
-	public Set<Vertex> convertToVertexSet(
 			ListOf<SpeciesReference> listOfSpeciesReference,
-			VertexGenerationListener listener) {
+			Map<Vertex, Vertex> knownVertices, VertexGenerationListener listener) {
 
 		Set<Vertex> result = new HashSet<Vertex>();
 
-		// TODO: do something with sRef, maybe use it for
-		// characterize in detail the new vertex.
 		for (SpeciesReference sRef : listOfSpeciesReference) {
 
-			Vertex newVertex = Vertex.makeVertex();
+			Vertex newVertex = Vertex.makeVertex(sRef.getSpeciesInstance());
+
+			if (knownVertices.containsKey(newVertex) == true) {
+				newVertex = knownVertices.get(newVertex);
+			} else {
+				knownVertices.put(newVertex, newVertex);
+			}
 
 			listener.newVertexGenerated(newVertex);
-
 			result.add(newVertex);
 		}
 
@@ -87,6 +89,7 @@ public class Connector {
 		@Override
 		public void newVertexGenerated(Vertex vertex) {
 			listener.newVertexFromReactor(vertex);
+			listener.newVertexGenerated(vertex);
 		}
 	}
 
@@ -101,6 +104,7 @@ public class Connector {
 		@Override
 		public void newVertexGenerated(Vertex vertex) {
 			this.listener.newVertexFromProduct(vertex);
+			listener.newVertexGenerated(vertex);
 		}
 	}
 

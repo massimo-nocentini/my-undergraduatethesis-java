@@ -131,4 +131,8 @@ public class Vertex {
 		return true;
 	}
 
+	public boolean haveYouSelfLoop() {
+		return this.neighbours.contains(this);
+	}
+
 }
