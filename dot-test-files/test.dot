@@ -1,0 +1,21 @@
+digraph G {
+	ratio=1;
+	center = true;
+	edge [arrowsize=.5, weight=.1];
+	a -> b [color="gray"];
+	b -> c;
+	b -> e;
+	c -> d;
+	e -> f;
+	e -> d;
+
+	//{rank=same; a b;}
+	//{rank=same; c d e f;}
+ 	
+	a [label="",shape=circle,height=0.12,width=0.12,fontsize=1,color="black",style=filled, group=1];
+	b [label="",shape=circle,height=0.12,width=0.12,fontsize=1, group=1];
+	c [label="",shape=circle,height=0.12,width=0.12,fontsize=1, group=2];
+	d [label="",shape=circle,height=0.12,width=0.12,fontsize=1,color="black",style=filled, group=2];
+	e [label="",shape=circle,height=0.12,width=0.12,fontsize=1, group=2];
+	f [label="",shape=circle,height=0.12,width=0.12,fontsize=1,color="black",style=filled, group=3];
+}
