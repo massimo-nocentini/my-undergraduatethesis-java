@@ -329,56 +329,5 @@ public class VertexUnitTest {
 		Assert.assertNotSame(vertex, anotherVertex);
 		Assert.assertTrue(vertex.equals(anotherVertex));
 	}
-	// @Test
-	// public void createSpeciesWithEqualsIdInTheSameCompartment() {
-	// Model sbmlModel = new Model();
-	//
-	// Compartment compartment = sbmlModel.createCompartment("compartment_id");
-	//
-	// Species firstAdded = sbmlModel.createSpecies("id1", compartment);
-	// Species secondAdded = sbmlModel.createSpecies("id1", compartment);
-	//
-	// Assert.assertNotSame(firstAdded, secondAdded);
-	// Assert.assertEquals(firstAdded, secondAdded);
-	// Assert.assertEquals(1, sbmlModel.getListOfSpecies().size());
-	// }
-	//
-	// @Test
-	// public void createSpeciesWithEqualsIdInDifferentCompartments() {
-	// Model sbmlModel = new Model();
-	//
-	// Compartment compartment = sbmlModel.createCompartment("compartment_id");
-	// Compartment anotherCompartment = sbmlModel
-	// .createCompartment("another_compartment_id");
-	//
-	// Species firstAdded = sbmlModel.createSpecies("id1", compartment);
-	// Species secondAdded = sbmlModel
-	// .createSpecies("id1", anotherCompartment);
-	//
-	// Assert.assertNotSame(firstAdded, secondAdded);
-	// Assert.assertFalse(firstAdded.equals(secondAdded));
-	//
-	// // guessing 1 is very hard! the two added species are not equals
-	// // by the above test, although the count species in the model
-	// // is 1, like if the second is ignored.
-	// Assert.assertEquals(1, sbmlModel.getListOfSpecies().size());
-	// }
-	//
-	// @Test
-	// public void createSpeciesWithDifferentIdInDifferentCompartments() {
-	// Model sbmlModel = new Model();
-	//
-	// Compartment compartment = sbmlModel.createCompartment("compartment_id");
-	// Compartment anotherCompartment = sbmlModel
-	// .createCompartment("another_compartment_id");
-	//
-	// Species firstAdded = sbmlModel.createSpecies("id1", compartment);
-	// Species secondAdded = sbmlModel
-	// .createSpecies("id2", anotherCompartment);
-	//
-	// Assert.assertNotSame(firstAdded, secondAdded);
-	// Assert.assertFalse(firstAdded.equals(secondAdded));
-	// Assert.assertEquals(2, sbmlModel.getListOfSpecies().size());
-	// }
 
 }
