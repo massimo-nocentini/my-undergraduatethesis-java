@@ -269,25 +269,65 @@ public class VertexUnitTest {
 	}
 
 	@Test
-	public void vertexEquivalenceSameSpeciesIdSameCompartmentId() {
-		Model sbmlModel = new Model();
+	public void vertexEquivalenceSameSpeciesIdDifferentCompartmentId() {
 
 		String compartmentId = "compartment_id";
-		Compartment compartment = sbmlModel.createCompartment(compartmentId);
+		Compartment compartment = new Compartment(compartmentId);
 
 		String anotherCompartmentId = "anotherCompartment_id";
-		Compartment anotherCompartment = sbmlModel
-				.createCompartment(anotherCompartmentId);
+		Compartment anotherCompartment = new Compartment(anotherCompartmentId);
 
-		Species firstAdded = sbmlModel.createSpecies("species_id", compartment);
-		Species secondAdded = sbmlModel.createSpecies("anotherSpecies_id",
-				anotherCompartment);
+		String speciesId = "species_id";
+		Species firstAdded = new Species(speciesId);
+		firstAdded.setCompartment(compartment);
+
+		Species secondAdded = new Species(speciesId);
+		secondAdded.setCompartment(anotherCompartment);
 
 		Vertex vertex = Vertex.makeVertex(firstAdded);
 		Vertex anotherVertex = Vertex.makeVertex(secondAdded);
 
 		Assert.assertNotSame(vertex, anotherVertex);
 		Assert.assertFalse(vertex.equals(anotherVertex));
+	}
+
+	@Test
+	public void vertexEquivalenceDifferentSpeciesIdSameCompartmentId() {
+
+		String compartmentId = "compartment_id";
+		Compartment compartment = new Compartment(compartmentId);
+
+		Species firstAdded = new Species("species_id");
+		firstAdded.setCompartment(compartment);
+
+		Species secondAdded = new Species("another_species_id");
+		secondAdded.setCompartment(compartment);
+
+		Vertex vertex = Vertex.makeVertex(firstAdded);
+		Vertex anotherVertex = Vertex.makeVertex(secondAdded);
+
+		Assert.assertNotSame(vertex, anotherVertex);
+		Assert.assertFalse(vertex.equals(anotherVertex));
+	}
+
+	@Test
+	public void vertexEquivalenceEqualsSpeciesIdSameCompartmentId() {
+
+		String compartmentId = "compartment_id";
+		Compartment compartment = new Compartment(compartmentId);
+
+		String speciesId = "species_id";
+		Species firstAdded = new Species(speciesId);
+		firstAdded.setCompartment(compartment);
+
+		Species secondAdded = new Species(speciesId);
+		secondAdded.setCompartment(compartment);
+
+		Vertex vertex = Vertex.makeVertex(firstAdded);
+		Vertex anotherVertex = Vertex.makeVertex(secondAdded);
+
+		Assert.assertNotSame(vertex, anotherVertex);
+		Assert.assertTrue(vertex.equals(anotherVertex));
 	}
 	// @Test
 	// public void createSpeciesWithEqualsIdInTheSameCompartment() {
