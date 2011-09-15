@@ -41,6 +41,7 @@ public class ConnectorUnitTest {
 		final Set<Vertex> collectedVertices = new HashSet<Vertex>();
 
 		Vertex outSide = Vertex.makeVertex();
+
 		Set<Vertex> vertices = connector.convertToVertexSet(
 				reaction.getListOfReactants(), new HashMap<Vertex, Vertex>(),
 				new VertexHandlingListener() {

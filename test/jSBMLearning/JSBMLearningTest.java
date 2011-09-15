@@ -9,8 +9,10 @@ import static org.junit.Assert.fail;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -82,6 +84,97 @@ public class JSBMLearningTest {
 				}
 
 			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		} catch (XMLStreamException e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		}
+	}
+
+	@Test
+	public void SBMLCheckingContinuityOfReactantAndProductSetsWithToyModel() {
+
+		Model model = new Model();
+
+		Compartment compartment = model.createCompartment("compartment_id");
+
+		Species reactant = model.createSpecies("id1", compartment);
+		Species productreactant = model.createSpecies("id2", compartment);
+		Species product = model.createSpecies("id3", compartment);
+
+		Reaction reaction = model.createReaction("reaction_id");
+		reaction.setReversible(false);
+
+		// add a test in the learning test to keep the species reference
+		reaction.createReactant(reactant);
+		reaction.createProduct(productreactant);
+
+		Reaction anothReaction = model.createReaction("another_reaction_id");
+		anothReaction.setReversible(false);
+
+		// add a test in the learning test to keep the species reference
+		anothReaction.createReactant(productreactant);
+		anothReaction.createProduct(product);
+
+		boolean thereExistsAtLeastOneReactionThatIsContinue = verifyContinuityOfReactions(model);
+
+		Assert.assertTrue(thereExistsAtLeastOneReactionThatIsContinue);
+
+	}
+
+	private boolean verifyContinuityOfReactions(Model model) {
+
+		Set<ListOf<SpeciesReference>> setOfProducts = new HashSet<ListOf<SpeciesReference>>();
+
+		for (Reaction runnerReaction : model.getListOfReactions()) {
+
+			setOfProducts.add(runnerReaction.getListOfProducts());
+		}
+
+		boolean thereExistsAtLeastOneReactionThatIsContinue = false;
+
+		for (Reaction runnerReaction : model.getListOfReactions()) {
+
+			label: for (ListOf<SpeciesReference> listOfProducts : setOfProducts) {
+				ListOf<SpeciesReference> listOfReactants = runnerReaction
+						.getListOfReactants();
+				if (listOfProducts.size() == listOfReactants.size()) {
+					for (SpeciesReference speciesReference : listOfProducts) {
+						if (listOfReactants.contains(speciesReference) == false) {
+							continue label;
+						}
+					}
+					thereExistsAtLeastOneReactionThatIsContinue = true;
+
+					for (SpeciesReference speciesReference : runnerReaction
+							.getListOfReactants()) {
+						if (runnerReaction.getListOfProducts().contains(
+								speciesReference)) {
+							Assert.fail();
+
+						}
+					}
+					// break label;
+				}
+			}
+		}
+		return thereExistsAtLeastOneReactionThatIsContinue;
+	}
+
+	@Test
+	public void SBMLCheckingContinuityOfReactantAndProductSets() {
+		try {
+			SBMLDocument document = (new SBMLReader())
+					.readSBML("sbml-test-files/allCpdsMetabSmmReactionsCompounds.xml");
+
+			Model model = document.getModel();
+
+			boolean thereExistsAtLeastOneReactionThatIsContinue = verifyContinuityOfReactions(model);
+
+			Assert.assertTrue(thereExistsAtLeastOneReactionThatIsContinue);
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			fail(e.getMessage());

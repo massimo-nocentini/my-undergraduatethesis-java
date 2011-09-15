@@ -1,5 +1,6 @@
 package JSBMLInterface;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -22,8 +23,13 @@ public class Connector {
 
 	public Set<Vertex> readReaction(Reaction reaction,
 			VertexHandlingWithSourceListener listener) {
+		return this.readReaction(reaction, listener,
+				new HashMap<Vertex, Vertex>());
+	}
 
-		Map<Vertex, Vertex> knownVertices = new HashMap<Vertex, Vertex>();
+	public Set<Vertex> readReaction(Reaction reaction,
+			VertexHandlingWithSourceListener listener,
+			Map<Vertex, Vertex> knownVertices) {
 
 		Set<Vertex> reactants = this.convertToVertexSet(
 				reaction.getListOfReactants(), knownVertices,
@@ -74,7 +80,7 @@ public class Connector {
 		return result;
 	}
 
-	public class FromReactantDriver extends AbstractVertexHandlingListener {
+	protected class FromReactantDriver extends AbstractVertexHandlingListener {
 
 		public FromReactantDriver(VertexHandlingWithSourceListener listener) {
 			super(listener);
@@ -86,7 +92,7 @@ public class Connector {
 		}
 	}
 
-	public class FromProductDriver extends AbstractVertexHandlingListener {
+	protected class FromProductDriver extends AbstractVertexHandlingListener {
 
 		public FromProductDriver(VertexHandlingWithSourceListener listener) {
 			super(listener);
@@ -96,6 +102,19 @@ public class Connector {
 		public void onVertexHandled(Vertex vertex) {
 			this.getListener().productVertexHandled(vertex);
 		}
+	}
+
+	public Set<Vertex> readReactions(
+			Collection<Reaction> collectionOfReactions,
+			VertexHandlingWithSourceListener vertexHandlingWithSourceListener) {
+
+		Map<Vertex, Vertex> knownVertices = new HashMap<Vertex, Vertex>();
+		for (Reaction reaction : collectionOfReactions) {
+			this.readReaction(reaction, vertexHandlingWithSourceListener,
+					knownVertices);
+		}
+
+		return knownVertices.keySet();
 	}
 
 }
