@@ -27,7 +27,7 @@ public class Connector {
 
 		Set<Vertex> reactants = this.convertToVertexSet(
 				reaction.getListOfReactants(), knownVertices,
-				new FromReactorDriver(listener));
+				new FromReactantDriver(listener));
 
 		Set<Vertex> products = this.convertToVertexSet(
 				reaction.getListOfProducts(), knownVertices,
@@ -74,9 +74,9 @@ public class Connector {
 		return result;
 	}
 
-	public class FromReactorDriver extends AbstractVertexHandlingListener {
+	public class FromReactantDriver extends AbstractVertexHandlingListener {
 
-		public FromReactorDriver(VertexHandlingWithSourceListener listener) {
+		public FromReactantDriver(VertexHandlingWithSourceListener listener) {
 			super(listener);
 		}
 
