@@ -74,33 +74,27 @@ public class Connector {
 		return result;
 	}
 
-	public class FromReactorDriver implements VertexHandlingListener {
-
-		private final VertexHandlingWithSourceListener listener;
+	public class FromReactorDriver extends AbstractVertexHandlingListener {
 
 		public FromReactorDriver(VertexHandlingWithSourceListener listener) {
-			this.listener = listener;
+			super(listener);
 		}
 
 		@Override
-		public void vertexHandled(Vertex vertex) {
-			listener.reactantVertexHandled(vertex);
-			listener.vertexHandled(vertex);
+		public void onVertexHandled(Vertex vertex) {
+			this.getListener().reactantVertexHandled(vertex);
 		}
 	}
 
-	public class FromProductDriver implements VertexHandlingListener {
-
-		private final VertexHandlingWithSourceListener listener;
+	public class FromProductDriver extends AbstractVertexHandlingListener {
 
 		public FromProductDriver(VertexHandlingWithSourceListener listener) {
-			this.listener = listener;
+			super(listener);
 		}
 
 		@Override
-		public void vertexHandled(Vertex vertex) {
-			this.listener.productVertexHandled(vertex);
-			listener.vertexHandled(vertex);
+		public void onVertexHandled(Vertex vertex) {
+			this.getListener().productVertexHandled(vertex);
 		}
 	}
 

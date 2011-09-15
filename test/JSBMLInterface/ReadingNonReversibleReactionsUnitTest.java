@@ -4,7 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import model.Vertex;
@@ -209,8 +211,8 @@ public class ReadingNonReversibleReactionsUnitTest {
 		// TODO: should be useful to ask a vertex if it match some
 		// species instead of checking every time the condition below.
 		for (Vertex vertex : products) {
-			if (vertex.isYourCompartmentId(commonSpecies.getCompartment())
-					&& vertex.isYourSpeciesId(commonSpecies.getId())) {
+
+			if (vertex.isYourOrigin(commonSpecies)) {
 				assertFalse(vertex.isYourNeighborhoodEmpty());
 				continue;
 			}
@@ -238,12 +240,20 @@ public class ReadingNonReversibleReactionsUnitTest {
 
 		final Set<Vertex> reactants = new HashSet<Vertex>();
 		final Set<Vertex> products = new HashSet<Vertex>();
+		final Map<Vertex, Integer> handledVertices = new HashMap<Vertex, Integer>();
 
 		Set<Vertex> vertices = connector.readReaction(reaction,
 				new VertexHandlingWithSourceListener() {
 
 					@Override
 					public void vertexHandled(Vertex vertex) {
+						if (handledVertices.containsKey(vertex) == false) {
+							handledVertices.put(vertex, 0);
+						}
+
+						Integer previousCount = handledVertices.get(vertex);
+						handledVertices.put(vertex,
+								previousCount.intValue() + 1);
 					}
 
 					@Override
@@ -259,6 +269,13 @@ public class ReadingNonReversibleReactionsUnitTest {
 
 		assertEquals(1, vertices.size());
 
+		assertEquals(handledVertices.keySet(), vertices);
+
+		// I consider only the first argument of the array because by the line
+		// above the vertices set has exactly one element.
+		assertEquals(2, handledVertices.get((Vertex) (vertices.toArray()[0]))
+				.intValue());
+
 		assertEquals(1, reactants.size());
 		assertEquals(1, products.size());
 
@@ -272,5 +289,4 @@ public class ReadingNonReversibleReactionsUnitTest {
 
 		assertTrue(((Vertex) (reactants.toArray()[0])).haveYouSelfLoop());
 	}
-
 }

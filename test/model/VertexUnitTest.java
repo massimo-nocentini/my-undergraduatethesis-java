@@ -311,23 +311,20 @@ public class VertexUnitTest {
 	}
 
 	@Test
-	public void vertexEquivalenceEqualsSpeciesIdSameCompartmentId() {
+	public void vertexIsYourOrigin() {
 
 		String compartmentId = "compartment_id";
 		Compartment compartment = new Compartment(compartmentId);
 
-		String speciesId = "species_id";
-		Species firstAdded = new Species(speciesId);
+		Species firstAdded = new Species("species_id");
 		firstAdded.setCompartment(compartment);
 
-		Species secondAdded = new Species(speciesId);
+		Species secondAdded = new Species("another_species_id");
 		secondAdded.setCompartment(compartment);
 
 		Vertex vertex = Vertex.makeVertex(firstAdded);
-		Vertex anotherVertex = Vertex.makeVertex(secondAdded);
 
-		Assert.assertNotSame(vertex, anotherVertex);
-		Assert.assertTrue(vertex.equals(anotherVertex));
+		Assert.assertTrue(vertex.isYourOrigin(firstAdded));
+		Assert.assertFalse(vertex.isYourOrigin(secondAdded));
 	}
-
 }

@@ -135,4 +135,8 @@ public class Vertex {
 		return this.neighbours.contains(this);
 	}
 
+	public boolean isYourOrigin(Species aSpecies) {
+		return this.isYourSpeciesId(aSpecies.getId())
+				&& this.isYourCompartmentId(aSpecies.getCompartment());
+	}
 }
