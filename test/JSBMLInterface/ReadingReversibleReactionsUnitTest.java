@@ -17,7 +17,7 @@ import org.sbml.jsbml.Model;
 import org.sbml.jsbml.Reaction;
 import org.sbml.jsbml.Species;
 
-public class ReadingNonReversibleReactionsUnitTest {
+public class ReadingReversibleReactionsUnitTest {
 
 	@Test
 	public void checkVerticesCreationBasedOnOneToOneReaction() {
@@ -33,7 +33,7 @@ public class ReadingNonReversibleReactionsUnitTest {
 		Species product = sbmlModel.createSpecies(idProduct, compartment);
 
 		Reaction reaction = sbmlModel.createReaction("reaction_id");
-		reaction.setReversible(false);
+		reaction.setReversible(true);
 
 		// add a test in the learning test to keep the species reference
 		reaction.createReactant(reactant);
@@ -70,7 +70,7 @@ public class ReadingNonReversibleReactionsUnitTest {
 		}
 
 		for (Vertex vertex : products) {
-			assertTrue(vertex.isYourNeighborhoodEmpty());
+			assertTrue(vertex.isYourNeighborhoodEquals(reactants));
 		}
 	}
 
@@ -96,7 +96,7 @@ public class ReadingNonReversibleReactionsUnitTest {
 				.createSpecies(idProduct + "3", compartment);
 
 		Reaction reaction = sbmlModel.createReaction("reaction_id");
-		reaction.setReversible(false);
+		reaction.setReversible(true);
 
 		// add a test in the learning test to keep the species reference
 		reaction.createReactant(reactant1);
@@ -109,6 +109,7 @@ public class ReadingNonReversibleReactionsUnitTest {
 		final Set<Vertex> products = new HashSet<Vertex>();
 
 		final Set<Vertex> collectedOneByOneVertices = new HashSet<Vertex>();
+
 		Set<Vertex> vertices = connector.readReaction(reaction,
 				new VertexHandlingWithSourceListener() {
 
@@ -139,7 +140,7 @@ public class ReadingNonReversibleReactionsUnitTest {
 		}
 
 		for (Vertex vertex : products) {
-			assertTrue(vertex.isYourNeighborhoodEmpty());
+			assertTrue(vertex.isYourNeighborhoodEquals(reactants));
 		}
 	}
 
@@ -165,7 +166,7 @@ public class ReadingNonReversibleReactionsUnitTest {
 				.createSpecies(idProduct + "3", compartment);
 
 		Reaction reaction = sbmlModel.createReaction("reaction_id");
-		reaction.setReversible(false);
+		reaction.setReversible(true);
 
 		// add a test in the learning test to keep the species reference
 		reaction.createReactant(reactant1);
@@ -205,18 +206,30 @@ public class ReadingNonReversibleReactionsUnitTest {
 		assertEquals(4, products.size());
 
 		for (Vertex vertex : reactants) {
+			if (vertex.isYourOrigin(commonSpecies)) {
+				Set<Vertex> extendedNeighborhood = new HashSet<Vertex>(products);
+				extendedNeighborhood.addAll(reactants);
+				assertFalse(vertex.isYourNeighborhoodEmpty());
+				assertTrue(vertex.haveYouSelfLoop());
+				assertTrue(vertex
+						.isYourNeighborhoodEquals(extendedNeighborhood));
+				continue;
+			}
 			assertTrue(vertex.isYourNeighborhoodEquals(products));
 		}
 
 		for (Vertex vertex : products) {
-
 			if (vertex.isYourOrigin(commonSpecies)) {
+				Set<Vertex> extendedNeighborhood = new HashSet<Vertex>(
+						reactants);
+				extendedNeighborhood.addAll(products);
 				assertFalse(vertex.isYourNeighborhoodEmpty());
 				assertTrue(vertex.haveYouSelfLoop());
+				assertTrue(vertex
+						.isYourNeighborhoodEquals(extendedNeighborhood));
 				continue;
 			}
-
-			assertTrue(vertex.isYourNeighborhoodEmpty());
+			assertTrue(vertex.isYourNeighborhoodEquals(reactants));
 		}
 	}
 
@@ -231,7 +244,7 @@ public class ReadingNonReversibleReactionsUnitTest {
 		Species species = sbmlModel.createSpecies("id1", compartment);
 
 		Reaction reaction = sbmlModel.createReaction("reaction_id");
-		reaction.setReversible(false);
+		reaction.setReversible(true);
 
 		// add a test in the learning test to keep the species reference
 		reaction.createReactant(species);
@@ -283,7 +296,7 @@ public class ReadingNonReversibleReactionsUnitTest {
 		}
 
 		for (Vertex vertex : products) {
-			assertFalse(vertex.isYourNeighborhoodEmpty());
+			assertTrue(vertex.isYourNeighborhoodEquals(reactants));
 		}
 
 		assertTrue(((Vertex) (reactants.toArray()[0])).haveYouSelfLoop());
