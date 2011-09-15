@@ -46,7 +46,7 @@ public class ConnectorUnitTest {
 				new VertexGenerationListener() {
 
 					@Override
-					public void newVertexGenerated(Vertex vertex) {
+					public void vertexHandled(Vertex vertex) {
 						collectedVertices.add(vertex);
 					}
 				});

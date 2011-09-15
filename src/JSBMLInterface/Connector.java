@@ -67,7 +67,7 @@ public class Connector {
 				knownVertices.put(newVertex, newVertex);
 			}
 
-			listener.newVertexGenerated(newVertex);
+			listener.vertexHandled(newVertex);
 			result.add(newVertex);
 		}
 
@@ -83,9 +83,9 @@ public class Connector {
 		}
 
 		@Override
-		public void newVertexGenerated(Vertex vertex) {
-			listener.newVertexFromReactor(vertex);
-			listener.newVertexGenerated(vertex);
+		public void vertexHandled(Vertex vertex) {
+			listener.reactantVertexHandled(vertex);
+			listener.vertexHandled(vertex);
 		}
 	}
 
@@ -98,9 +98,9 @@ public class Connector {
 		}
 
 		@Override
-		public void newVertexGenerated(Vertex vertex) {
-			this.listener.newVertexFromProduct(vertex);
-			listener.newVertexGenerated(vertex);
+		public void vertexHandled(Vertex vertex) {
+			this.listener.productVertexHandled(vertex);
+			listener.vertexHandled(vertex);
 		}
 	}
 

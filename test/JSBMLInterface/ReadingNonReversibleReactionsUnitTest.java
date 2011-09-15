@@ -44,16 +44,16 @@ public class ReadingNonReversibleReactionsUnitTest {
 				new VertexGenerationWithSourceListener() {
 
 					@Override
-					public void newVertexGenerated(Vertex vertex) {
+					public void vertexHandled(Vertex vertex) {
 					}
 
 					@Override
-					public void newVertexFromReactor(Vertex vertex) {
+					public void reactantVertexHandled(Vertex vertex) {
 						reactants.add(vertex);
 					}
 
 					@Override
-					public void newVertexFromProduct(Vertex vertex) {
+					public void productVertexHandled(Vertex vertex) {
 						products.add(vertex);
 					}
 				});
@@ -111,17 +111,17 @@ public class ReadingNonReversibleReactionsUnitTest {
 				new VertexGenerationWithSourceListener() {
 
 					@Override
-					public void newVertexGenerated(Vertex vertex) {
+					public void vertexHandled(Vertex vertex) {
 						collectedOneByOneVertices.add(vertex);
 					}
 
 					@Override
-					public void newVertexFromReactor(Vertex vertex) {
+					public void reactantVertexHandled(Vertex vertex) {
 						reactants.add(vertex);
 					}
 
 					@Override
-					public void newVertexFromProduct(Vertex vertex) {
+					public void productVertexHandled(Vertex vertex) {
 						products.add(vertex);
 					}
 				});
@@ -181,17 +181,17 @@ public class ReadingNonReversibleReactionsUnitTest {
 				new VertexGenerationWithSourceListener() {
 
 					@Override
-					public void newVertexGenerated(Vertex vertex) {
+					public void vertexHandled(Vertex vertex) {
 						collectedOneByOneVertices.add(vertex);
 					}
 
 					@Override
-					public void newVertexFromReactor(Vertex vertex) {
+					public void reactantVertexHandled(Vertex vertex) {
 						reactants.add(vertex);
 					}
 
 					@Override
-					public void newVertexFromProduct(Vertex vertex) {
+					public void productVertexHandled(Vertex vertex) {
 						products.add(vertex);
 					}
 				});
@@ -243,16 +243,16 @@ public class ReadingNonReversibleReactionsUnitTest {
 				new VertexGenerationWithSourceListener() {
 
 					@Override
-					public void newVertexGenerated(Vertex vertex) {
+					public void vertexHandled(Vertex vertex) {
 					}
 
 					@Override
-					public void newVertexFromReactor(Vertex vertex) {
+					public void reactantVertexHandled(Vertex vertex) {
 						reactants.add(vertex);
 					}
 
 					@Override
-					public void newVertexFromProduct(Vertex vertex) {
+					public void productVertexHandled(Vertex vertex) {
 						products.add(vertex);
 					}
 				});

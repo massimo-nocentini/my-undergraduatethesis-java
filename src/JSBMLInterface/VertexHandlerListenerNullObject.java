@@ -6,18 +6,18 @@ public class VertexHandlerListenerNullObject implements
 		VertexGenerationWithSourceListener {
 
 	@Override
-	public void newVertexGenerated(Vertex vertex) {
+	public void vertexHandled(Vertex vertex) {
 		// my way to do nothing when a new vertex is generated is do actually
 		// nothing
 
 	}
 
 	@Override
-	public void newVertexFromReactor(Vertex vertex) {
+	public void reactantVertexHandled(Vertex vertex) {
 	}
 
 	@Override
-	public void newVertexFromProduct(Vertex vertex) {
+	public void productVertexHandled(Vertex vertex) {
 	}
 
 }
