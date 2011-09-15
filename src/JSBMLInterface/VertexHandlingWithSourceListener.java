@@ -2,8 +2,8 @@ package JSBMLInterface;
 
 import model.Vertex;
 
-public interface VertexGenerationWithSourceListener extends
-		VertexGenerationListener {
+public interface VertexHandlingWithSourceListener extends
+		VertexHandlingListener {
 
 	public abstract void reactantVertexHandled(Vertex vertex);
 

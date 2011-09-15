@@ -21,7 +21,7 @@ public class Connector {
 	}
 
 	public Set<Vertex> readReaction(Reaction reaction,
-			VertexGenerationWithSourceListener listener) {
+			VertexHandlingWithSourceListener listener) {
 
 		Map<Vertex, Vertex> knownVertices = new HashMap<Vertex, Vertex>();
 
@@ -53,7 +53,7 @@ public class Connector {
 
 	public Set<Vertex> convertToVertexSet(
 			ListOf<SpeciesReference> listOfSpeciesReference,
-			Map<Vertex, Vertex> knownVertices, VertexGenerationListener listener) {
+			Map<Vertex, Vertex> knownVertices, VertexHandlingListener listener) {
 
 		Set<Vertex> result = new HashSet<Vertex>();
 
@@ -74,11 +74,11 @@ public class Connector {
 		return result;
 	}
 
-	public class FromReactorDriver implements VertexGenerationListener {
+	public class FromReactorDriver implements VertexHandlingListener {
 
-		private final VertexGenerationWithSourceListener listener;
+		private final VertexHandlingWithSourceListener listener;
 
-		public FromReactorDriver(VertexGenerationWithSourceListener listener) {
+		public FromReactorDriver(VertexHandlingWithSourceListener listener) {
 			this.listener = listener;
 		}
 
@@ -89,11 +89,11 @@ public class Connector {
 		}
 	}
 
-	public class FromProductDriver implements VertexGenerationListener {
+	public class FromProductDriver implements VertexHandlingListener {
 
-		private final VertexGenerationWithSourceListener listener;
+		private final VertexHandlingWithSourceListener listener;
 
-		public FromProductDriver(VertexGenerationWithSourceListener listener) {
+		public FromProductDriver(VertexHandlingWithSourceListener listener) {
 			this.listener = listener;
 		}
 

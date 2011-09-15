@@ -43,7 +43,7 @@ public class ConnectorUnitTest {
 		Vertex outSide = Vertex.makeVertex();
 		Set<Vertex> vertices = connector.convertToVertexSet(
 				reaction.getListOfReactants(), new HashMap<Vertex, Vertex>(),
-				new VertexGenerationListener() {
+				new VertexHandlingListener() {
 
 					@Override
 					public void vertexHandled(Vertex vertex) {

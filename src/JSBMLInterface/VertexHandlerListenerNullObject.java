@@ -3,7 +3,7 @@ package JSBMLInterface;
 import model.Vertex;
 
 public class VertexHandlerListenerNullObject implements
-		VertexGenerationWithSourceListener {
+		VertexHandlingWithSourceListener {
 
 	@Override
 	public void vertexHandled(Vertex vertex) {

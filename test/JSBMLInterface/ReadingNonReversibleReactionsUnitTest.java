@@ -41,7 +41,7 @@ public class ReadingNonReversibleReactionsUnitTest {
 		final Set<Vertex> products = new HashSet<Vertex>();
 
 		Set<Vertex> vertices = connector.readReaction(reaction,
-				new VertexGenerationWithSourceListener() {
+				new VertexHandlingWithSourceListener() {
 
 					@Override
 					public void vertexHandled(Vertex vertex) {
@@ -108,7 +108,7 @@ public class ReadingNonReversibleReactionsUnitTest {
 
 		final Set<Vertex> collectedOneByOneVertices = new HashSet<Vertex>();
 		Set<Vertex> vertices = connector.readReaction(reaction,
-				new VertexGenerationWithSourceListener() {
+				new VertexHandlingWithSourceListener() {
 
 					@Override
 					public void vertexHandled(Vertex vertex) {
@@ -178,7 +178,7 @@ public class ReadingNonReversibleReactionsUnitTest {
 
 		final Set<Vertex> collectedOneByOneVertices = new HashSet<Vertex>();
 		Set<Vertex> vertices = connector.readReaction(reaction,
-				new VertexGenerationWithSourceListener() {
+				new VertexHandlingWithSourceListener() {
 
 					@Override
 					public void vertexHandled(Vertex vertex) {
@@ -240,7 +240,7 @@ public class ReadingNonReversibleReactionsUnitTest {
 		final Set<Vertex> products = new HashSet<Vertex>();
 
 		Set<Vertex> vertices = connector.readReaction(reaction,
-				new VertexGenerationWithSourceListener() {
+				new VertexHandlingWithSourceListener() {
 
 					@Override
 					public void vertexHandled(Vertex vertex) {
