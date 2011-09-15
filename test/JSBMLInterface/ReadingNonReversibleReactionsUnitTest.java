@@ -153,7 +153,7 @@ public class ReadingNonReversibleReactionsUnitTest {
 		String idProduct = "id_Product_";
 		Species reactant1 = sbmlModel.createSpecies(idReactant + "1",
 				compartment);
-		Species reactant2 = sbmlModel.createSpecies(idReactant + "2",
+		Species commonSpecies = sbmlModel.createSpecies(idReactant + "2",
 				compartment);
 		Species product1 = sbmlModel
 				.createSpecies(idProduct + "1", compartment);
@@ -167,7 +167,8 @@ public class ReadingNonReversibleReactionsUnitTest {
 
 		// add a test in the learning test to keep the species reference
 		reaction.createReactant(reactant1);
-		reaction.createReactant(reactant2);
+		reaction.createReactant(commonSpecies);
+		reaction.createProduct(commonSpecies);
 		reaction.createProduct(product1);
 		reaction.createProduct(product2);
 		reaction.createProduct(product3);
@@ -199,13 +200,21 @@ public class ReadingNonReversibleReactionsUnitTest {
 		assertEquals(collectedOneByOneVertices, vertices);
 
 		assertEquals(2, reactants.size());
-		assertEquals(3, products.size());
+		assertEquals(4, products.size());
 
 		for (Vertex vertex : reactants) {
 			assertTrue(vertex.isYourNeighborhoodEquals(products));
 		}
 
+		// TODO: should be useful to ask a vertex if it match some
+		// species instead of checking every time the condition below.
 		for (Vertex vertex : products) {
+			if (vertex.isYourCompartmentId(commonSpecies.getCompartment())
+					&& vertex.isYourSpeciesId(commonSpecies.getId())) {
+				assertFalse(vertex.isYourNeighborhoodEmpty());
+				continue;
+			}
+
 			assertTrue(vertex.isYourNeighborhoodEmpty());
 		}
 	}

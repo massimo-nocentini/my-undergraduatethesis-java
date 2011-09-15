@@ -39,11 +39,7 @@ public class Connector {
 			this.updateNeighbourhoodByCrossProduct(products, reactants);
 		}
 
-		Set<Vertex> result = new HashSet<Vertex>();
-		result.addAll(reactants);
-		result.addAll(products);
-
-		return result;
+		return knownVertices.keySet();
 	}
 
 	private void updateNeighbourhoodByCrossProduct(Set<Vertex> domainSet,
