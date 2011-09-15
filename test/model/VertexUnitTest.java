@@ -148,7 +148,7 @@ public class VertexUnitTest {
 	}
 
 	@Test
-	public void emptyNeighbourhood() {
+	public void emptyNeighborhood() {
 
 		Vertex v1 = Vertex.makeVertex();
 
@@ -191,7 +191,7 @@ public class VertexUnitTest {
 	}
 
 	@Test
-	public void neighbourhoodNotEquals() {
+	public void neighborhoodNotEquals() {
 
 		Vertex v1 = Vertex.makeVertex();
 		Vertex v2 = Vertex.makeVertex();
@@ -232,7 +232,7 @@ public class VertexUnitTest {
 	}
 
 	@Test
-	public void neighbourhoodEqualsVacouslyTrueReversed() {
+	public void neighborhoodEqualsVacouslyTrueReversed() {
 
 		Vertex v1 = Vertex.makeVertex();
 		Vertex v2 = Vertex.makeVertex();
@@ -247,6 +247,33 @@ public class VertexUnitTest {
 		Set<Vertex> anotherNeighborhood = new HashSet<Vertex>();
 
 		Assert.assertFalse(v1.isYourNeighborhoodEquals(anotherNeighborhood));
+	}
+
+	@Test
+	public void neighborhoodDoesntContainsDoubles() {
+
+		Vertex v1 = Vertex.makeVertex();
+		Vertex v2 = Vertex.makeVertex();
+		Vertex v3 = Vertex.makeVertex();
+		Vertex v4 = Vertex.makeVertex();
+
+		v1.addNeighbour(v2);
+		v1.addNeighbour(v3);
+		v1.addNeighbour(v4);
+
+		// doubling
+		v1.addNeighbour(v2);
+		v1.addNeighbour(v3);
+		v1.addNeighbour(v4);
+
+		// empty testing neighborhood
+		Set<Vertex> anotherNeighborhood = new HashSet<Vertex>();
+		anotherNeighborhood.add(v2);
+		anotherNeighborhood.add(v3);
+		anotherNeighborhood.add(v4);
+
+		Assert.assertEquals(3, v1.getNeighbours().size());
+		Assert.assertTrue(v1.isYourNeighborhoodEquals(anotherNeighborhood));
 	}
 
 	@Test

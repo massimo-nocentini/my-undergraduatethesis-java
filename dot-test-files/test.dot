@@ -9,6 +9,10 @@ digraph G {
 	e -> f;
 	e -> d;
 
+	e -> d;
+	e -> e;
+	e -> e;
+
 	//{rank=same; a b;}
 	//{rank=same; c d e f;}
  	

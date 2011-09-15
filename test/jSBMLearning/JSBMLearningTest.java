@@ -35,6 +35,63 @@ import org.sbml.jsbml.SpeciesReference;
 public class JSBMLearningTest {
 
 	@Test
+	public void SBMLCheckingNONUniquenessOfSpeciesInReactantAndProductSets() {
+		try {
+			List<Species> result = new ArrayList<Species>();
+
+			SBMLDocument document = (new SBMLReader())
+					.readSBML("sbml-test-files/allCpdsMetabSmmReactionsCompounds.xml");
+
+			Model model = document.getModel();
+			for (Reaction reaction : model.getListOfReactions()) {
+
+				result.clear();
+				for (SpeciesReference species : reaction.getListOfReactants()) {
+
+					String domainObjectId = species.getSpeciesInstance()
+							.getId();
+					String domainObjectName = species.getSpeciesInstance()
+							.getName();
+
+					if (result.contains(species)) {
+						Assert.fail("The species with id "
+								+ domainObjectId
+								+ " and with name "
+								+ domainObjectName
+								+ " appears more tha one time in reactants set of"
+								+ " reaction " + reaction.getId());
+					}
+				}
+
+				result.clear();
+				for (SpeciesReference species : reaction.getListOfProducts()) {
+
+					String domainObjectId = species.getSpeciesInstance()
+							.getId();
+					String domainObjectName = species.getSpeciesInstance()
+							.getName();
+
+					if (result.contains(species)) {
+						Assert.fail("The species with id "
+								+ domainObjectId
+								+ " and with name "
+								+ domainObjectName
+								+ " appears more tha one time in products set of"
+								+ " reaction " + reaction.getId());
+					}
+				}
+
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		} catch (XMLStreamException e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		}
+	}
+
+	@Test
 	public void SBMLCheckingNONUniquenessIDOfSpeciesInAllReactantSets() {
 		try {
 			Map<String, Species> result = new HashMap<String, Species>();
