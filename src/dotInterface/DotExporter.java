@@ -1,8 +1,12 @@
 package dotInterface;
 
+import java.util.Set;
 
 public interface DotExporter {
+
 	void buildVertexDefinition(VertexDotInfoProvider vertex);
 
-	String getOutput();
+	Set<String> getGraphDotBody();
+
+	String getCompleteContent();
 }

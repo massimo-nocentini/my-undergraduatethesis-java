@@ -1,25 +1,58 @@
 package dotInterface;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class SimpleExporter implements DotExporter {
 
-	StringBuilder verticesDefinitionDotRepresentation;
+	Set<String> verticesDefinitionDotRepresentation;
 
 	public SimpleExporter() {
-		verticesDefinitionDotRepresentation = new StringBuilder();
+		verticesDefinitionDotRepresentation = new HashSet<String>();
 	}
 
 	@Override
-	public String getOutput() {
-		return verticesDefinitionDotRepresentation.toString();
+	public Set<String> getGraphDotBody() {
+		Set<String> result = new HashSet<String>();
+
+		result.addAll(verticesDefinitionDotRepresentation);
+
+		return result;
 	}
 
 	@Override
 	public void buildVertexDefinition(
 			VertexDotInfoProvider vertexDotInfoProvider) {
 
-		String id = vertexDotInfoProvider.provideId();
+		verticesDefinitionDotRepresentation.add(vertexDotInfoProvider
+				.provideId());
+	}
 
-		verticesDefinitionDotRepresentation.append(id);
+	@Override
+	public String getCompleteContent() {
+
+		StringBuilder result = new StringBuilder();
+
+		result.append("digraph G {" + DotFileUtilHandler.getNewLineSeparator());
+
+		collectSetOfElementsInto(result, verticesDefinitionDotRepresentation);
+
+		result.append("}");
+
+		return result.toString();
+	}
+
+	private void collectSetOfElementsInto(StringBuilder result,
+			Set<String> elements) {
+		for (String dotElement : elements) {
+			result.append(dotElement.concat(";").concat(
+					DotFileUtilHandler.getNewLineSeparator()));
+		}
+	}
+
+	@Override
+	public String toString() {
+		return this.getCompleteContent();
 	}
 
 }

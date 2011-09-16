@@ -3,7 +3,10 @@ package model;
 import java.util.HashSet;
 import java.util.Set;
 
-public class OurModel {
+import dotInterface.DotExportable;
+import dotInterface.DotExporter;
+
+public class OurModel implements DotExportable {
 
 	private Set<Vertex> vertices;
 
@@ -23,6 +26,13 @@ public class OurModel {
 		OurModel ourModel = OurModel.makeEmptyModel();
 		ourModel.vertices.addAll(vertices);
 		return ourModel;
+	}
+
+	@Override
+	public void acceptExporter(DotExporter exporter) {
+		for (Vertex vertex : vertices) {
+			exporter.buildVertexDefinition(vertex);
+		}
 	}
 
 }

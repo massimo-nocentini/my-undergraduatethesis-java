@@ -1,11 +1,10 @@
 package dotInterface;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.HashSet;
+import java.util.Set;
 
 import junit.framework.Assert;
+import model.OurModel;
 import model.Vertex;
 
 import org.junit.After;
@@ -13,8 +12,6 @@ import org.junit.Test;
 import org.sbml.jsbml.Species;
 
 public class DotExportableUnitTest {
-
-	private static final String DotOutputFolder = "dot-test-files/tests-output/";
 
 	@Test
 	public void simpleNodeWithoutNeighboursDotExporting() {
@@ -31,60 +28,67 @@ public class DotExportableUnitTest {
 		DotExporter exporter = new SimpleExporter();
 		exportable.acceptExporter(exporter);
 
-		String dotModel = exporter.getOutput();
+		Set<String> expectedDotModel = new HashSet<String>();
 
-		Assert.assertEquals(speciesId.concat(compartmentId), dotModel);
+		expectedDotModel.add(v.provideId());
 
-		this.writeDotRepresentationInTestFolder(dotModel,
-				"simpleNodeWithoutNeighboursDotExporting");
+		Assert.assertEquals(expectedDotModel, exporter.getGraphDotBody());
+
+		DotFileUtilHandler.MakeHandler().writeDotRepresentationInTestFolder(
+				exporter, "simpleNodeWithoutNeighboursDotExporting");
 	}
 
-	private void writeDotRepresentationInTestFolder(String content,
-			String filename) {
+	@Test
+	public void simpleThreeNodeChainDotExporting() {
 
-		FileWriter outFile;
-		String filenameWithExtension = filename.concat(".dot");
+		String firstSpeciesId = "first_species_id";
+		String secondSpeciesId = "second_species_id";
+		String thirdSpeciesId = "third_species_id";
 
-		String savingFilename = DotExportableUnitTest.DotOutputFolder
-				.concat(filenameWithExtension);
+		String compartmentId = "compartment_id";
 
-		String completedContent = "digraph G {"
-				+ System.getProperty("line.separator") + content
-				+ System.getProperty("line.separator") + "}";
+		Species firstSpecies = new Species(firstSpeciesId);
+		Species secondSpecies = new Species(secondSpeciesId);
+		Species thirdSpecies = new Species(thirdSpeciesId);
 
-		try {
-			outFile = new FileWriter(savingFilename);
-			PrintWriter out = new PrintWriter(outFile);
-			out.write(completedContent);
-			out.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		firstSpecies.setCompartment(compartmentId);
+		secondSpecies.setCompartment(compartmentId);
+		thirdSpecies.setCompartment(compartmentId);
 
+		Vertex v = Vertex.makeVertex(firstSpecies);
+		Vertex v2 = Vertex.makeVertex(secondSpecies);
+		Vertex v3 = Vertex.makeVertex(thirdSpecies);
+
+		v.addNeighbour(v2);
+		v2.addNeighbour(v3);
+
+		Set<Vertex> vertices = new HashSet<Vertex>();
+		vertices.add(v);
+		vertices.add(v2);
+		vertices.add(v3);
+
+		OurModel ourModel = OurModel.makeModel(vertices);
+
+		DotExportable exportable = ourModel;
+
+		DotExporter exporter = new SimpleExporter();
+		exportable.acceptExporter(exporter);
+
+		Set<String> expectedDotModel = new HashSet<String>();
+
+		expectedDotModel.add(v.provideId());
+		expectedDotModel.add(v2.provideId());
+		expectedDotModel.add(v3.provideId());
+
+		Assert.assertEquals(expectedDotModel, exporter.getGraphDotBody());
+
+		DotFileUtilHandler.MakeHandler().writeDotRepresentationInTestFolder(
+				exporter, "simpleThreeNodeChainDotExporting");
 	}
 
 	@After
 	public void invokeDotCompilationForAllGeneratedFiles() {
-		File dir = new File(DotExportableUnitTest.DotOutputFolder);
-
-		for (File file : dir.listFiles()) {
-
-			String dotCommand = "dot -Tsvg " + file.getAbsolutePath() + " -o "
-					+ file.getAbsolutePath().replace(".dot", "") + ".svg";
-
-			// String command = "/bin/bash -c \"" + dotCommand + "\"";
-			String command = dotCommand;
-
-			try {
-				Runtime.getRuntime().exec(command).waitFor();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
+		DotFileUtilHandler.MakeHandler().evaluateDotFilesInOutputFolder();
 	}
+
 }
