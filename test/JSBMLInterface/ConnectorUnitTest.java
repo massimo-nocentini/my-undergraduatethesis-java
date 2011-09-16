@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import junit.framework.Assert;
+import model.OurModel;
 import model.Vertex;
 
 import org.junit.Test;
@@ -60,5 +62,51 @@ public class ConnectorUnitTest {
 		assertEquals(collectedVertices, vertices);
 		assertFalse(vertices.contains(outSide));
 
+	}
+
+	@Test
+	public void parseModel() {
+		String path = "sbml-test-files/allCpdsMetabSmmReactionsCompounds.xml";
+
+		Connector connector = Connector.makeConnector();
+
+		Model sbmlModel = connector.parseModel(path);
+
+		Assert.assertNotNull(sbmlModel);
+	}
+
+	@Test
+	public void parseModelInducingErrors() {
+		String path = null;
+
+		Connector connector = Connector.makeConnector();
+
+		Model sbmlModel = connector.parseModel(path);
+
+		Assert.assertNull(sbmlModel);
+	}
+
+	@Test
+	public void makeOurModel() {
+		String path = "sbml-test-files/allCpdsMetabSmmReactionsCompounds.xml";
+
+		Connector connector = Connector.makeConnector();
+
+		OurModel model = connector.makeOurModel(path);
+
+		Assert.assertNotNull(model);
+		Assert.assertFalse(model.isEmpty());
+	}
+
+	@Test
+	public void makeOurModelInducingError() {
+		String path = null;
+
+		Connector connector = Connector.makeConnector();
+
+		OurModel model = connector.makeOurModel(path);
+
+		Assert.assertNotNull(model);
+		Assert.assertTrue(model.isEmpty());
 	}
 }

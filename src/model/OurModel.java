@@ -15,8 +15,14 @@ public class OurModel {
 		return vertices.size() == 0;
 	}
 
-	public static OurModel MakeEmptyModel() {
+	public static OurModel makeEmptyModel() {
 		return new OurModel();
+	}
+
+	public static OurModel makeModel(Set<Vertex> vertices) {
+		OurModel ourModel = OurModel.makeEmptyModel();
+		ourModel.vertices.addAll(vertices);
+		return ourModel;
 	}
 
 }

@@ -9,13 +9,13 @@ public class OurModelUnitTest {
 
 	@Test
 	public void creation() {
-		OurModel model = OurModel.MakeEmptyModel();
+		OurModel model = OurModel.makeEmptyModel();
 		assertNotNull(model);
 	}
 
 	@Test
 	public void emptyAfterCreation() {
-		OurModel model = OurModel.MakeEmptyModel();
+		OurModel model = OurModel.makeEmptyModel();
 		assertTrue(model.isEmpty());
 	}
 }

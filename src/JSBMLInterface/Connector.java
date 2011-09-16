@@ -1,15 +1,22 @@
 package JSBMLInterface;
 
+import java.io.FileNotFoundException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.xml.stream.XMLStreamException;
+
+import model.OurModel;
 import model.Vertex;
 
 import org.sbml.jsbml.ListOf;
+import org.sbml.jsbml.Model;
 import org.sbml.jsbml.Reaction;
+import org.sbml.jsbml.SBMLDocument;
+import org.sbml.jsbml.SBMLReader;
 import org.sbml.jsbml.SpeciesReference;
 
 public class Connector {
@@ -115,6 +122,49 @@ public class Connector {
 		}
 
 		return knownVertices.keySet();
+	}
+
+	public Set<Vertex> readReactions(Collection<Reaction> collectionOfReactions) {
+
+		Map<Vertex, Vertex> knownVertices = new HashMap<Vertex, Vertex>();
+		for (Reaction reaction : collectionOfReactions) {
+			this.readReaction(reaction, new VertexHandlerListenerNullObject(),
+					knownVertices);
+		}
+
+		return knownVertices.keySet();
+	}
+
+	public Model parseModel(String path) {
+		SBMLDocument document = null;
+		Model model = null;
+		try {
+			document = (new SBMLReader()).readSBML(path);
+		} catch (FileNotFoundException e) {
+		} catch (XMLStreamException e) {
+		} catch (Exception e) {
+		}
+
+		if (document != null) {
+			model = document.getModel();
+		}
+
+		return model;
+	}
+
+	public OurModel makeOurModel(String path) {
+		Connector connector = Connector.makeConnector();
+		Model sbmlModel = connector.parseModel(path);
+
+		if (sbmlModel == null) {
+			// TODO: signal that some errors happened before this point
+			return OurModel.makeEmptyModel();
+		}
+
+		Set<Vertex> vertices = connector.readReactions(sbmlModel
+				.getListOfReactions());
+
+		return OurModel.makeModel(vertices);
 	}
 
 }
