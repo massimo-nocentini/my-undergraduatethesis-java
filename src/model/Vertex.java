@@ -5,7 +5,11 @@ import java.util.Set;
 
 import org.sbml.jsbml.Species;
 
-public class Vertex {
+import dotInterface.DotExportable;
+import dotInterface.DotExporter;
+import dotInterface.VertexDotInfoProvider;
+
+public class Vertex implements DotExportable, VertexDotInfoProvider {
 
 	static String IdPrefix = "id_";
 
@@ -62,6 +66,7 @@ public class Vertex {
 		return new Vertex(id);
 	}
 
+	// TODO: this method have no more sense to exists
 	public String getId() {
 		return species_id;
 	}
@@ -138,5 +143,15 @@ public class Vertex {
 	public boolean isYourOrigin(Species aSpecies) {
 		return this.isYourSpeciesId(aSpecies.getId())
 				&& this.isYourCompartmentId(aSpecies.getCompartment());
+	}
+
+	@Override
+	public void acceptExporter(DotExporter exporter) {
+		exporter.buildVertexDefinition(this);
+	}
+
+	@Override
+	public String provideId() {
+		return species_id.trim().concat(compartment_id.trim());
 	}
 }
