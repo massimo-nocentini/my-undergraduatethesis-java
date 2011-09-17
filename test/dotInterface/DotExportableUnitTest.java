@@ -32,7 +32,8 @@ public class DotExportableUnitTest {
 
 		expectedDotModel.add(v.provideId());
 
-		Assert.assertEquals(expectedDotModel, exporter.getGraphDotBody());
+		Assert.assertTrue(exporter
+				.isVertexDefinitionPartEquals(expectedDotModel));
 
 		DotFileUtilHandler.MakeHandler().writeDotRepresentationInTestFolder(
 				exporter, "simpleNodeWithoutNeighboursDotExporting");
@@ -80,7 +81,8 @@ public class DotExportableUnitTest {
 		expectedDotModel.add(v2.provideId());
 		expectedDotModel.add(v3.provideId());
 
-		Assert.assertEquals(expectedDotModel, exporter.getGraphDotBody());
+		Assert.assertTrue(exporter
+				.isVertexDefinitionPartEquals(expectedDotModel));
 
 		DotFileUtilHandler.MakeHandler().writeDotRepresentationInTestFolder(
 				exporter, "simpleThreeNodeChainDotExporting");

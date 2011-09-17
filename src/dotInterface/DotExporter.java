@@ -1,12 +1,10 @@
 package dotInterface;
 
-import java.util.Set;
+import java.io.Writer;
 
-public interface DotExporter {
+public interface DotExporter extends DotDocumentPartHandler {
 
-	void buildVertexDefinition(VertexDotInfoProvider vertex);
+	DotExporter buildVertexDefinition(VertexDotInfoProvider vertexInfo);
 
-	Set<String> getGraphDotBody();
-
-	String getCompleteContent();
+	DotExporter collectCompleteContent(Writer outputPlugObject);
 }

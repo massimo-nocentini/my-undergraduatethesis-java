@@ -12,6 +12,18 @@ public class DotFileUtilHandler {
 		return System.getProperty("line.separator");
 	}
 
+	public static String getFileSeparator() {
+		return System.getProperty("file.separator");
+	}
+
+	public static String getPathSeparator() {
+		return System.getProperty("path.separator");
+	}
+
+	public static String getTabString() {
+		return "\t";
+	}
+
 	private DotFileUtilHandler() {
 	}
 
@@ -28,12 +40,18 @@ public class DotFileUtilHandler {
 		String savingFilename = DotFileUtilHandler.DotOutputFolder
 				.concat(filenameWithExtension);
 
-		String completedContent = dotExporter.getCompleteContent();
-
 		try {
 			outFile = new FileWriter(savingFilename);
 			PrintWriter out = new PrintWriter(outFile);
-			out.write(completedContent);
+
+			out.append("digraph G {".concat(DotFileUtilHandler
+					.getNewLineSeparator()));
+
+			dotExporter.collectCompleteContent(EndLineFillerWriter
+					.MakeWrapper(out));
+
+			out.append("}");
+
 			out.close();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -54,10 +72,8 @@ public class DotFileUtilHandler {
 			try {
 				Runtime.getRuntime().exec(command).waitFor();
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
