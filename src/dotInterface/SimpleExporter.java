@@ -8,12 +8,14 @@ import java.util.Set;
 
 public class SimpleExporter implements DotExporter {
 
-	Set<String> verticesDefinitionDotRepresentation;
-	Set<String> generalSettingsDotRepresentation;
+	private Set<String> verticesDefinitionDotRepresentation;
+	private Set<String> generalSettingsDotRepresentation;
+	private Set<String> edgeDefinitionDotRepresentation;
 
 	public SimpleExporter() {
 		verticesDefinitionDotRepresentation = new HashSet<String>();
 		generalSettingsDotRepresentation = new HashSet<String>();
+		edgeDefinitionDotRepresentation = new HashSet<String>();
 
 		initGeneralSettings();
 	}
@@ -95,12 +97,8 @@ public class SimpleExporter implements DotExporter {
 	public DotDocumentPartHandler collectGeneralSettingsPart(
 			Writer outputPlugObject) {
 
-		try {
-			collectSetOfElementsInto(outputPlugObject,
-					generalSettingsDotRepresentation);
-		} catch (Exception e) {
-		}
-
+		collectSetOfElementsInto(outputPlugObject,
+				generalSettingsDotRepresentation);
 		return this;
 	}
 
@@ -116,8 +114,26 @@ public class SimpleExporter implements DotExporter {
 	@Override
 	public DotDocumentPartHandler collectEdgeDefinitionPart(
 			Writer outputPlugObject) {
-		// TODO Auto-generated method stub
-		return null;
+
+		collectSetOfElementsInto(outputPlugObject,
+				edgeDefinitionDotRepresentation);
+		return this;
+	}
+
+	@Override
+	public boolean isEdgeDefinitionPartEquals(Set<String> part) {
+		return edgeDefinitionDotRepresentation.equals(part);
+	}
+
+	@Override
+	public DotExporter buildEdgeDefinition(Edge edge) {
+		StringBuilder edgeDefinition = new StringBuilder();
+
+		edge.collectEdgeInto(edgeDefinition);
+
+		edgeDefinitionDotRepresentation.add(edgeDefinition.toString());
+
+		return this;
 	}
 
 }

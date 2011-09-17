@@ -7,6 +7,8 @@ public interface DotDocumentPartHandler {
 
 	boolean isVertexDefinitionPartEquals(Set<String> part);
 
+	boolean isEdgeDefinitionPartEquals(Set<String> part);
+
 	DotDocumentPartHandler collectGeneralSettingsPart(Writer outputPlugObject);
 
 	DotDocumentPartHandler collectEdgeDefinitionPart(Writer outputPlugObject);

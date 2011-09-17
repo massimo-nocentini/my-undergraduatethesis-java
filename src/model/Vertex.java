@@ -7,6 +7,7 @@ import org.sbml.jsbml.Species;
 
 import dotInterface.DotExportable;
 import dotInterface.DotExporter;
+import dotInterface.Edge;
 import dotInterface.VertexDotInfoProvider;
 
 public class Vertex implements DotExportable, VertexDotInfoProvider {
@@ -152,6 +153,10 @@ public class Vertex implements DotExportable, VertexDotInfoProvider {
 	@Override
 	public void acceptExporter(DotExporter exporter) {
 		exporter.buildVertexDefinition(this);
+
+		for (Vertex neighbour : neighbours) {
+			exporter.buildEdgeDefinition(Edge.makeEdge(this, neighbour));
+		}
 	}
 
 	@Override

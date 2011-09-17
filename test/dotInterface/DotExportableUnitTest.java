@@ -11,6 +11,8 @@ import org.junit.After;
 import org.junit.Test;
 import org.sbml.jsbml.Species;
 
+import JSBMLInterface.Connector;
+
 public class DotExportableUnitTest {
 
 	@Test
@@ -72,23 +74,31 @@ public class DotExportableUnitTest {
 		vertices.add(v2);
 		vertices.add(v3);
 
-		OurModel ourModel = OurModel.makeModel(vertices);
-
-		DotExportable exportable = ourModel;
+		DotExportable exportable = OurModel.makeModel(vertices);
 
 		DotExporter exporter = new SimpleExporter();
 		exportable.acceptExporter(exporter);
 
-		Set<String> expectedDotModel = new HashSet<String>();
+		Set<String> expectedVertexDefinitionPart = new HashSet<String>();
 
-		expectedDotModel.add(v.provideId().concat(
+		expectedVertexDefinitionPart.add(v.provideId().concat(
 				" [color=\"black\", style=filled]"));
-		expectedDotModel.add(v2.provideId());
-		expectedDotModel.add(v3.provideId().concat(
+		expectedVertexDefinitionPart.add(v2.provideId());
+		expectedVertexDefinitionPart.add(v3.provideId().concat(
 				" [color=\"black\", style=filled]"));
+
+		Set<String> expectedEdgeDefinitionPart = new HashSet<String>();
+
+		expectedEdgeDefinitionPart.add(v.provideId().concat(" -> ")
+				.concat(v2.provideId()));
+		expectedEdgeDefinitionPart.add(v2.provideId().concat(" -> ")
+				.concat(v3.provideId()));
 
 		Assert.assertTrue(exporter
-				.isVertexDefinitionPartEquals(expectedDotModel));
+				.isVertexDefinitionPartEquals(expectedVertexDefinitionPart));
+
+		Assert.assertTrue(exporter
+				.isEdgeDefinitionPartEquals(expectedEdgeDefinitionPart));
 
 		DotFileUtilHandler.MakeHandler().writeDotRepresentationInTestFolder(
 				exporter, "simpleThreeNodeChainDotExporting");
@@ -97,6 +107,22 @@ public class DotExportableUnitTest {
 	@After
 	public void invokeDotCompilationForAllGeneratedFiles() {
 		DotFileUtilHandler.MakeHandler().evaluateDotFilesInOutputFolder();
+
+		this.draw_allCpdsMetabSmmReactionsCompoundsSbmlModel();
+	}
+
+	public void draw_allCpdsMetabSmmReactionsCompoundsSbmlModel() {
+		String path = "sbml-test-files/allCpdsMetabSmmReactionsCompounds.xml";
+
+		Connector connector = Connector.makeConnector();
+
+		DotExportable exportable = connector.makeOurModel(path);
+
+		DotExporter exporter = new SimpleExporter();
+		exportable.acceptExporter(exporter);
+
+		DotFileUtilHandler.MakeHandler().writeDotRepresentationInTestFolder(
+				exporter, "allCpdsMetabSmmReactionsCompounds");
 	}
 
 }

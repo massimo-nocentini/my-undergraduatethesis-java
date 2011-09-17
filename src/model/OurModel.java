@@ -31,7 +31,7 @@ public class OurModel implements DotExportable {
 	@Override
 	public void acceptExporter(DotExporter exporter) {
 		for (Vertex vertex : vertices) {
-			exporter.buildVertexDefinition(vertex);
+			vertex.acceptExporter(exporter);
 		}
 	}
 
