@@ -6,7 +6,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 public class DotFileUtilHandler {
-	public static final String DotOutputFolder = "dot-test-files/tests-output/";
+	public static String getDotOutputFolder() {
+		return "dot-test-files".concat(DotFileUtilHandler.getFileSeparator())
+				.concat("tests-output")
+				.concat(DotFileUtilHandler.getFileSeparator());
+	}
 
 	public static String getNewLineSeparator() {
 		return System.getProperty("line.separator");
@@ -37,8 +41,8 @@ public class DotFileUtilHandler {
 		FileWriter outFile;
 		String filenameWithExtension = filename.concat(".dot");
 
-		String savingFilename = DotFileUtilHandler.DotOutputFolder
-				.concat(filenameWithExtension);
+		String savingFilename = DotFileUtilHandler.getDotOutputFolder().concat(
+				filenameWithExtension);
 
 		try {
 			outFile = new FileWriter(savingFilename);
@@ -60,7 +64,7 @@ public class DotFileUtilHandler {
 	}
 
 	public void evaluateDotFilesInOutputFolder() {
-		File dir = new File(DotFileUtilHandler.DotOutputFolder);
+		File dir = new File(DotFileUtilHandler.getDotOutputFolder());
 
 		for (File file : dir.listFiles()) {
 
