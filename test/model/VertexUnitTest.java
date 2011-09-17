@@ -26,6 +26,71 @@ public class VertexUnitTest {
 	}
 
 	@Test
+	public void checkingIsSinkFalse() {
+		Vertex vertex = Vertex.makeVertex();
+		Vertex a = Vertex.makeVertex();
+		Vertex b = Vertex.makeVertex();
+
+		vertex.addNeighbour(a).addNeighbour(b);
+
+		assertFalse(vertex.isSink());
+	}
+
+	@Test
+	public void checkingIsSinkTrue() {
+		Vertex vertex = Vertex.makeVertex();
+		Vertex a = Vertex.makeVertex();
+		Vertex b = Vertex.makeVertex();
+
+		vertex.addNeighbour(a).addNeighbour(b);
+
+		assertTrue(a.isSink());
+		assertTrue(b.isSink());
+	}
+
+	@Test
+	public void checkingIsSourceFalse() {
+		Vertex vertex = Vertex.makeVertex();
+		Vertex a = Vertex.makeVertex();
+		Vertex b = Vertex.makeVertex();
+
+		vertex.addNeighbour(a).addNeighbour(b);
+
+		assertFalse(a.isSource());
+		assertFalse(b.isSource());
+	}
+
+	@Test
+	public void checkingIsSourceTrue() {
+		Vertex vertex = Vertex.makeVertex();
+		Vertex a = Vertex.makeVertex();
+		Vertex b = Vertex.makeVertex();
+
+		vertex.addNeighbour(a).addNeighbour(b);
+
+		assertTrue(vertex.isSource());
+	}
+
+	@Test
+	public void checkingIsNotSourceNorSink() {
+		Vertex vertex = Vertex.makeVertex();
+		Vertex a = Vertex.makeVertex();
+		Vertex b = Vertex.makeVertex();
+
+		vertex.addNeighbour(a);
+		a.addNeighbour(b);
+
+		assertTrue(vertex.isSource());
+		assertFalse(vertex.isSink());
+
+		assertFalse(a.isSource());
+		assertFalse(a.isSink());
+
+		assertFalse(b.isSource());
+		assertTrue(b.isSink());
+	}
+
+	@Test
 	public void vertexEmptyNeighboursSet() {
 		Vertex vertex = Vertex.makeVertex();
 		Set<Vertex> neighbours = vertex.getNeighbours();

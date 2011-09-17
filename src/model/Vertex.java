@@ -36,9 +36,12 @@ public class Vertex implements DotExportable, VertexDotInfoProvider {
 
 	private String compartment_id;
 
+	private Set<Vertex> directAncestors;
+
 	private Vertex(String id) {
 		this.species_id = id;
 		neighbours = new HashSet<Vertex>();
+		directAncestors = new HashSet<Vertex>();
 	}
 
 	public static Vertex makeVertex() {
@@ -50,8 +53,9 @@ public class Vertex implements DotExportable, VertexDotInfoProvider {
 		return neighbours;
 	}
 
-	public Vertex addNeighbour(Vertex neigtbour) {
-		this.neighbours.add(neigtbour);
+	public Vertex addNeighbour(Vertex neighbour) {
+		this.neighbours.add(neighbour);
+		neighbour.directAncestors.add(this);
 		return this;
 	}
 
@@ -153,5 +157,13 @@ public class Vertex implements DotExportable, VertexDotInfoProvider {
 	@Override
 	public String provideId() {
 		return species_id.trim().concat(compartment_id.trim());
+	}
+
+	public boolean isSink() {
+		return neighbours.size() == 0;
+	}
+
+	public boolean isSource() {
+		return directAncestors.size() == 0;
 	}
 }
