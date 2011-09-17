@@ -5,12 +5,21 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import JSBMLInterface.Connector;
+
 public class DotFileUtilHandler {
+
+	private String filename;
+	private File file;
 
 	public static String getDotOutputFolder() {
 		return "dot-test-files".concat(DotFileUtilHandler.getFileSeparator())
 				.concat("tests-output")
 				.concat(DotFileUtilHandler.getFileSeparator());
+	}
+
+	public static String getSbmlExampleModelsFolder() {
+		return "sbml-test-files".concat(DotFileUtilHandler.getFileSeparator());
 	}
 
 	public static String getNewLineSeparator() {
@@ -29,15 +38,23 @@ public class DotFileUtilHandler {
 		return "\t";
 	}
 
-	private DotFileUtilHandler() {
+	private DotFileUtilHandler(String filename) {
+		this.filename = filename;
 	}
 
-	public static DotFileUtilHandler MakeHandler() {
-		return new DotFileUtilHandler();
+	public static DotFileUtilHandler MakeHandler(String filename) {
+		return new DotFileUtilHandler(filename);
 	}
 
-	public void writeDotRepresentationInTestFolder(DotExporter dotExporter,
-			String filename) {
+	public static DotFileUtilHandler MakeHandlerForExistingFile(String filename) {
+		DotFileUtilHandler dotFileUtilHandler = new DotFileUtilHandler(filename);
+		dotFileUtilHandler.file = new File(filename);
+		return dotFileUtilHandler;
+
+	}
+
+	public DotFileUtilHandler writeDotRepresentationInTestFolder(
+			DotExporter dotExporter) {
 
 		FileWriter outFile;
 		String filenameWithExtension = filename.concat(".dot");
@@ -58,30 +75,61 @@ public class DotFileUtilHandler {
 			out.append("}");
 
 			out.close();
+
+			// only now we can set the destination, all the dot model generation
+			// steps are successfully completed
+			file = new File(savingFilename);
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
+		return this;
 	}
 
-	public void evaluateDotFilesInOutputFolder() {
+	public static void EvaluateDotFilesInOutputFolder() {
 		File dir = new File(DotFileUtilHandler.getDotOutputFolder());
 
-		for (File file : dir.listFiles()) {
-
-			String dotCommand = "dot -Tsvg " + file.getAbsolutePath() + " -o "
-					+ file.getAbsolutePath().replace(".dot", "") + ".svg";
-
-			String command = dotCommand;
-
-			try {
-				Runtime.getRuntime().exec(command).waitFor();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		for (File existingFile : dir.listFiles()) {
+			DotFileUtilHandler.MakeHandlerForExistingFile(
+					existingFile.getAbsolutePath()).produceSvgOutput();
 		}
+	}
+
+	public void produceSvgOutput() {
+
+		String dotCommand = "dot -Tsvg " + file.getAbsolutePath() + " -o "
+				+ file.getAbsolutePath().replace(".dot", "") + ".svg";
+
+		String command = dotCommand;
+
+		try {
+			Runtime.getRuntime().exec(command).waitFor();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	protected static DotFileUtilHandler MakeHandlerForExampleSbmlModel(
+			String sbmlExampleSelector) {
+
+		String sourceRelativeFileName = DotFileUtilHandler
+				.getSbmlExampleModelsFolder().concat(sbmlExampleSelector)
+				.concat(".xml");
+
+		Connector connector = Connector.makeConnector();
+
+		DotExportable exportable = connector
+				.makeOurModel(sourceRelativeFileName);
+
+		DotExporter exporter = new SimpleExporter();
+		exportable.acceptExporter(exporter);
+
+		return DotFileUtilHandler.MakeHandler(sbmlExampleSelector)
+				.writeDotRepresentationInTestFolder(exporter);
+
 	}
 
 }

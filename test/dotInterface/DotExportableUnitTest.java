@@ -7,11 +7,8 @@ import junit.framework.Assert;
 import model.OurModel;
 import model.Vertex;
 
-import org.junit.After;
 import org.junit.Test;
 import org.sbml.jsbml.Species;
-
-import JSBMLInterface.Connector;
 
 public class DotExportableUnitTest {
 
@@ -41,8 +38,10 @@ public class DotExportableUnitTest {
 		Assert.assertTrue(exporter
 				.isVertexDefinitionPartEquals(expectedDotModel));
 
-		DotFileUtilHandler.MakeHandler().writeDotRepresentationInTestFolder(
-				exporter, "simpleNodeWithoutNeighboursDotExporting");
+		DotFileUtilHandler
+				.MakeHandler("simpleNodeWithoutNeighboursDotExporting")
+				.writeDotRepresentationInTestFolder(exporter)
+				.produceSvgOutput();
 	}
 
 	@Test
@@ -100,29 +99,36 @@ public class DotExportableUnitTest {
 		Assert.assertTrue(exporter
 				.isEdgeDefinitionPartEquals(expectedEdgeDefinitionPart));
 
-		DotFileUtilHandler.MakeHandler().writeDotRepresentationInTestFolder(
-				exporter, "simpleThreeNodeChainDotExporting");
+		DotFileUtilHandler.MakeHandler("simpleThreeNodeChainDotExporting")
+				.writeDotRepresentationInTestFolder(exporter)
+				.produceSvgOutput();
 	}
 
-	@After
-	public void invokeDotCompilationForAllGeneratedFiles() {
-		DotFileUtilHandler.MakeHandler().evaluateDotFilesInOutputFolder();
-
-		this.draw_allCpdsMetabSmmReactionsCompoundsSbmlModel();
-	}
-
-	public void draw_allCpdsMetabSmmReactionsCompoundsSbmlModel() {
-		String path = "sbml-test-files/allCpdsMetabSmmReactionsCompounds.xml";
-
-		Connector connector = Connector.makeConnector();
-
-		DotExportable exportable = connector.makeOurModel(path);
-
-		DotExporter exporter = new SimpleExporter();
-		exportable.acceptExporter(exporter);
-
-		DotFileUtilHandler.MakeHandler().writeDotRepresentationInTestFolder(
-				exporter, "allCpdsMetabSmmReactionsCompounds");
+	// @Test
+	public void evaluateExampleSbmlModelDirectory() {
+		// DotFileUtilHandler.MakeHandlerForExampleSbmlModel(
+		// "allCpdsMetabSmmReactionsCompounds").produceSvgOutput();
+		//
+		// DotFileUtilHandler.MakeHandlerForExampleSbmlModel(
+		// "BartonellaQuintanaToulouse").produceSvgOutput();
+		//
+		// DotFileUtilHandler.MakeHandlerForExampleSbmlModel(
+		// "CandidatusSulciamuelleriSMDSEM").produceSvgOutput();
+		//
+		// DotFileUtilHandler.MakeHandlerForExampleSbmlModel("EscherichiaColiK12")
+		// .produceSvgOutput();
+		//
+		// DotFileUtilHandler.MakeHandlerForExampleSbmlModel(
+		// "MesorhizobiumLotiMAFF303099").produceSvgOutput();
+		//
+		// DotFileUtilHandler.MakeHandlerForExampleSbmlModel(
+		// "PseudomonasAeruginosaPAO1").produceSvgOutput();
+		//
+		// DotFileUtilHandler.MakeHandlerForExampleSbmlModel(
+		// "RhodobacterSphaeroides241").produceSvgOutput();
+		//
+		DotFileUtilHandler.MakeHandlerForExampleSbmlModel(
+				"RickettsiaMassiliaeMTU5").produceSvgOutput();
 	}
 
 }
