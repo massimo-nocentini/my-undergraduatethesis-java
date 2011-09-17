@@ -72,6 +72,28 @@ public class VertexUnitTest {
 	}
 
 	@Test
+	public void checkingIsolatedConsequence() {
+		Vertex vertex = Vertex.makeVertex();
+
+		assertFalse(vertex.isSource());
+		assertTrue(vertex.isSink());
+		assertTrue(vertex.isYourNeighborhoodEmpty());
+	}
+
+	@Test
+	public void checkingSelfLoopSourceSinkConsequence() {
+		Vertex vertex = Vertex.makeVertex();
+
+		vertex.addNeighbour(vertex);
+
+		// TODO: this situation is correct? We really need to model a self loop,
+		// however for now we are consistent
+		assertFalse(vertex.isSource());
+		assertFalse(vertex.isSink());
+		assertFalse(vertex.isYourNeighborhoodEmpty());
+	}
+
+	@Test
 	public void checkingIsNotSourceNorSink() {
 		Vertex vertex = Vertex.makeVertex();
 		Vertex a = Vertex.makeVertex();

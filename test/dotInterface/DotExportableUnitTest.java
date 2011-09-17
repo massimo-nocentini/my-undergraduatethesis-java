@@ -30,7 +30,11 @@ public class DotExportableUnitTest {
 
 		Set<String> expectedDotModel = new HashSet<String>();
 
-		expectedDotModel.add(v.provideId());
+		// TODO: here is present a duplication of the string
+		// " [color=\"black\", style=filled]" find a place where is more
+		// appropriate to put it in
+		expectedDotModel.add(v.provideId().concat(
+				" [color=\"black\", style=filled]"));
 
 		Assert.assertTrue(exporter
 				.isVertexDefinitionPartEquals(expectedDotModel));
@@ -77,9 +81,11 @@ public class DotExportableUnitTest {
 
 		Set<String> expectedDotModel = new HashSet<String>();
 
-		expectedDotModel.add(v.provideId());
+		expectedDotModel.add(v.provideId().concat(
+				" [color=\"black\", style=filled]"));
 		expectedDotModel.add(v2.provideId());
-		expectedDotModel.add(v3.provideId());
+		expectedDotModel.add(v3.provideId().concat(
+				" [color=\"black\", style=filled]"));
 
 		Assert.assertTrue(exporter
 				.isVertexDefinitionPartEquals(expectedDotModel));

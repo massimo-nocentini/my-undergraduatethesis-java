@@ -160,10 +160,17 @@ public class Vertex implements DotExportable, VertexDotInfoProvider {
 	}
 
 	public boolean isSink() {
-		return neighbours.size() == 0;
+		// TODO: ask if this condition is sufficient for the truth of this
+		// predicate
+		return neighbours.size() == 0;// && directAncestors.size() > 0;
 	}
 
 	public boolean isSource() {
-		return directAncestors.size() == 0;
+		return directAncestors.size() == 0 && neighbours.size() > 0;
+	}
+
+	@Override
+	public Vertex getVertexInstance() {
+		return this;
 	}
 }

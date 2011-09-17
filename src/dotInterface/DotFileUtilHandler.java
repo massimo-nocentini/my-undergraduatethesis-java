@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 public class DotFileUtilHandler {
+
 	public static String getDotOutputFolder() {
 		return "dot-test-files".concat(DotFileUtilHandler.getFileSeparator())
 				.concat("tests-output")

@@ -22,8 +22,17 @@ public class SimpleExporter implements DotExporter {
 	public DotExporter buildVertexDefinition(
 			VertexDotInfoProvider vertexDotInfoProvider) {
 
-		verticesDefinitionDotRepresentation.add(vertexDotInfoProvider
-				.provideId());
+		StringBuilder vertexRepresentation = new StringBuilder();
+
+		vertexRepresentation.append(vertexDotInfoProvider.provideId());
+
+		if (vertexDotInfoProvider.getVertexInstance().isSink()
+				|| vertexDotInfoProvider.getVertexInstance().isSource()) {
+			vertexRepresentation.append(" [color=\"black\", style=filled]");
+		}
+
+		verticesDefinitionDotRepresentation
+				.add(vertexRepresentation.toString());
 
 		return this;
 	}
