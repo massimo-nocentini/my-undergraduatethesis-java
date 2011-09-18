@@ -173,18 +173,24 @@ public class VertexUnitTest {
 		assertEquals(2, collectedNeighbours.size());
 		assertTrue(collectedNeighbours.contains(a));
 		assertTrue(collectedNeighbours.contains(b));
-		assertTrue(vertex.isYourNeighborhoodEquals(collectedNeighbours));
 		assertFalse(collectedNeighbours.contains(c));
+		assertTrue(vertex.isYourNeighborhoodEquals(collectedNeighbours));
 	}
 
 	@Test
 	public void makeVertexWithId() {
-		String id = "someId";
-		Vertex v = Vertex.makeVertex(id);
+		String species_id = "species_id";
+		String compartment_id = "compartment_id";
+
+		Species prototypeSpecies = new Species(species_id);
+		prototypeSpecies.setCompartment(compartment_id);
+
+		Vertex v = Vertex.makeVertex(species_id, compartment_id);
 
 		Assert.assertNotNull(v);
-		assertSame(id, v.getId());
-		assertEquals(id, v.getId());
+		assertTrue(v.isYourOrigin(prototypeSpecies));
+		assertTrue(v.isYourSpeciesId(species_id));
+		assertTrue(v.isYourCompartmentId(compartment_id));
 	}
 
 	@Test

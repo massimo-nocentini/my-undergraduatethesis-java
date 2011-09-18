@@ -13,6 +13,7 @@ import dotInterface.VertexDotInfoProvider;
 public class Vertex implements DotExportable, VertexDotInfoProvider {
 
 	static String IdPrefix = "id_";
+	static String DummyCompartmentId = "dummy_compartment_id";
 
 	static class VertexInstancesCounter {
 		private static int count;
@@ -39,15 +40,18 @@ public class Vertex implements DotExportable, VertexDotInfoProvider {
 
 	private Set<Vertex> directAncestors;
 
-	private Vertex(String id) {
-		this.species_id = id;
+	private Vertex(String species_id, String compartment_id) {
+		this.species_id = species_id;
+		this.compartment_id = compartment_id;
+
 		neighbors = new HashSet<Vertex>();
 		directAncestors = new HashSet<Vertex>();
 	}
 
 	public static Vertex makeVertex() {
 		int id = VertexInstancesCounter.makeNewId();
-		return Vertex.makeVertex(IdPrefix + String.valueOf(id));
+		return Vertex.makeVertex(Vertex.IdPrefix.concat(String.valueOf(id)),
+				Vertex.DummyCompartmentId);
 	}
 
 	public Vertex addNeighbour(Vertex neighbour) {
@@ -63,8 +67,8 @@ public class Vertex implements DotExportable, VertexDotInfoProvider {
 
 	}
 
-	public static Vertex makeVertex(String id) {
-		return new Vertex(id);
+	public static Vertex makeVertex(String species_id, String compartment_id) {
+		return new Vertex(species_id, compartment_id);
 	}
 
 	// TODO: this method have no more sense to exists
@@ -81,12 +85,7 @@ public class Vertex implements DotExportable, VertexDotInfoProvider {
 	}
 
 	public static Vertex makeVertex(Species species) {
-		Vertex result = Vertex.makeVertex();
-
-		result.species_id = species.getId();
-		result.compartment_id = species.getCompartment();
-
-		return result;
+		return Vertex.makeVertex(species.getId(), species.getCompartment());
 	}
 
 	public boolean isYourSpeciesId(String speciesId) {
