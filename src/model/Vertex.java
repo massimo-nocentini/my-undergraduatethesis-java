@@ -61,7 +61,7 @@ public class Vertex implements DotExportable, VertexDotInfoProvider {
 		return this;
 	}
 
-	public void doOnNeighbours(INeighbourApplier applier) {
+	public void doOnNeighbors(INeighbourApplier applier) {
 		for (Vertex vertex : this.neighbors) {
 			applier.apply(vertex);
 		}

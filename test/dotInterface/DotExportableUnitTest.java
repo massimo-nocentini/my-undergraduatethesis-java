@@ -29,11 +29,8 @@ public class DotExportableUnitTest {
 
 		Set<String> expectedDotModel = new HashSet<String>();
 
-		// TODO: here is present a duplication of the string
-		// " [color=\"black\", style=filled]" find a place where is more
-		// appropriate to put it in
-		expectedDotModel.add(v.provideId().concat(
-				" [color=\"black\", style=filled]"));
+		expectedDotModel.add(exporter.decoreWithSourceSinkAttributes(v
+				.provideId()));
 
 		Assert.assertTrue(exporter
 				.isVertexDefinitionPartEquals(expectedDotModel));
@@ -80,11 +77,13 @@ public class DotExportableUnitTest {
 
 		Set<String> expectedVertexDefinitionPart = new HashSet<String>();
 
-		expectedVertexDefinitionPart.add(v.provideId().concat(
-				" [color=\"black\", style=filled]"));
+		expectedVertexDefinitionPart.add(exporter
+				.decoreWithSourceSinkAttributes(v.provideId()));
+
 		expectedVertexDefinitionPart.add(v2.provideId());
-		expectedVertexDefinitionPart.add(v3.provideId().concat(
-				" [color=\"black\", style=filled]"));
+
+		expectedVertexDefinitionPart.add(exporter
+				.decoreWithSourceSinkAttributes(v3.provideId()));
 
 		Set<String> expectedEdgeDefinitionPart = new HashSet<String>();
 

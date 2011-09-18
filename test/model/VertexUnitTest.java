@@ -168,7 +168,7 @@ public class VertexUnitTest {
 			}
 		};
 
-		vertex.doOnNeighbours(applier);
+		vertex.doOnNeighbors(applier);
 
 		assertEquals(2, collectedNeighbours.size());
 		assertTrue(collectedNeighbours.contains(a));

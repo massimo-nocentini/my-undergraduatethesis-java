@@ -24,19 +24,22 @@ public class SimpleExporter implements DotExporter {
 	public DotExporter buildVertexDefinition(
 			VertexDotInfoProvider vertexDotInfoProvider) {
 
-		StringBuilder vertexRepresentation = new StringBuilder();
-
-		vertexRepresentation.append(vertexDotInfoProvider.provideId());
+		String vertexRepresentation = vertexDotInfoProvider.provideId();
 
 		if (vertexDotInfoProvider.getVertexInstance().isSink()
 				|| vertexDotInfoProvider.getVertexInstance().isSource()) {
-			vertexRepresentation.append(" [color=\"black\", style=filled]");
+
+			vertexRepresentation = decoreWithSourceSinkAttributes(vertexRepresentation);
 		}
 
-		verticesDefinitionDotRepresentation
-				.add(vertexRepresentation.toString());
+		verticesDefinitionDotRepresentation.add(vertexRepresentation);
 
 		return this;
+	}
+
+	@Override
+	public String decoreWithSourceSinkAttributes(String string) {
+		return string.concat(" [color=\"black\", style=filled]");
 	}
 
 	private DotExporter collectSetOfElementsInto(Writer outputPlugObject,
@@ -134,6 +137,12 @@ public class SimpleExporter implements DotExporter {
 		edgeDefinitionDotRepresentation.add(edgeDefinition.toString());
 
 		return this;
+	}
+
+	@Override
+	public String buildInfixNeighborRelation(String string) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
