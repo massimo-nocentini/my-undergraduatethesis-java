@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import junit.framework.Assert;
-import model.Vertex.VertexInstancesCounter;
+import model.Vertex.VertexIntegerEnumerator;
 
 import org.junit.Test;
 import org.sbml.jsbml.Compartment;
@@ -229,13 +229,13 @@ public class VertexUnitTest {
 	public void checkConsecutiveGeneretionMakesDifferentVertices() {
 
 		// catch the count of the vertices added so far
-		int count = VertexInstancesCounter.getCurrentCount();
+		int count = VertexIntegerEnumerator.getCurrentEnumerationValue();
 
 		// increment the counter
 		Vertex v1 = Vertex.makeVertex();
 
 		// catch the new value of the counter
-		int secondCount = VertexInstancesCounter.getCurrentCount();
+		int secondCount = VertexIntegerEnumerator.getCurrentEnumerationValue();
 
 		// increment the counter another time
 		Vertex v2 = Vertex.makeVertex();

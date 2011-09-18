@@ -15,19 +15,19 @@ public class Vertex implements DotExportable, VertexDotInfoProvider {
 	private static String DummySpeciesId = "dummy_species_id";
 	private static String DummyCompartmentId = "dummy_compartment_id";
 
-	static class VertexInstancesCounter {
+	static class VertexIntegerEnumerator {
 		private static int count;
 
 		static {
 			count = 0;
 		}
 
-		synchronized static int makeNewId() {
+		synchronized static int enumerateNewVertex() {
 			count = count + 1;
 			return count;
 		}
 
-		static int getCurrentCount() {
+		static int getCurrentEnumerationValue() {
 			return count;
 		}
 	}
@@ -49,7 +49,7 @@ public class Vertex implements DotExportable, VertexDotInfoProvider {
 	}
 
 	public static Vertex makeVertex() {
-		int id = VertexInstancesCounter.makeNewId();
+		int id = VertexIntegerEnumerator.enumerateNewVertex();
 		return Vertex.makeVertex(
 				Vertex.DummySpeciesId.concat(String.valueOf(id)),
 				Vertex.DummyCompartmentId);
