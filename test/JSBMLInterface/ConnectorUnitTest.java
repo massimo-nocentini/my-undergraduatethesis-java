@@ -68,22 +68,30 @@ public class ConnectorUnitTest {
 	public void parseModel() {
 		String path = "sbml-test-files/allCpdsMetabSmmReactionsCompounds.xml";
 
-		Connector connector = Connector.makeConnector();
+		Connector connector = Connector.makeConnector(path).readModel();
 
-		Model sbmlModel = connector.readModel(path);
-
-		Assert.assertNotNull(sbmlModel);
+		Assert.assertTrue(connector.hadYouReadSuccessfully());
 	}
 
 	@Test
 	public void parseModelInducingErrors() {
 		String path = null;
 
-		Connector connector = Connector.makeConnector();
+		Connector connector = Connector.makeConnector(path).readModel();
 
-		Model sbmlModel = connector.readModel(path);
+		Assert.assertFalse(connector.hadYouReadSuccessfully());
+	}
 
-		Assert.assertNull(sbmlModel);
+	@Test
+	public void parseModelInducingErrorsExceptionTest() {
+		String path = null;
+		Connector connector = Connector.makeConnector(path).readModel();
+		try {
+			connector.parseModel();
+			Assert.fail("Impossible to had successfully read a SBML model from nowhere.");
+		} catch (NullPointerException e) {
+			Assert.assertFalse(connector.hadYouReadSuccessfully());
+		}
 	}
 
 	@Test
@@ -100,9 +108,11 @@ public class ConnectorUnitTest {
 	public void makeOurModelInducingError() {
 		String path = null;
 
-		OurModel model = OurModel.makeOurModel(path);
-
-		Assert.assertNotNull(model);
-		Assert.assertTrue(model.isEmpty());
+		try {
+			@SuppressWarnings("unused")
+			OurModel model = OurModel.makeOurModel(path);
+			Assert.fail("Impossible to had successfully create a OurModel object from nowhere.");
+		} catch (NullPointerException e) {
+		}
 	}
 }

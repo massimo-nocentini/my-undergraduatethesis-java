@@ -31,8 +31,8 @@ public class OurModel implements DotExportable {
 	}
 
 	public static OurModel makeOurModel(String path) {
-		Connector connector = Connector.makeConnector();
-		Set<Vertex> vertices = connector.parseModel(connector.readModel(path));
+		Connector connector = Connector.makeConnector(path);
+		Set<Vertex> vertices = connector.readModel().parseModel();
 
 		return OurModel.makeModel(vertices);
 	}

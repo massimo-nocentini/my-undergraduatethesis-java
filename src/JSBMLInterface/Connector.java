@@ -20,11 +20,19 @@ import org.sbml.jsbml.SpeciesReference;
 
 public class Connector {
 
-	private Connector() {
+	private Model sbmlModel;
+	private String path;
+
+	private Connector(String path) {
+		this.path = path;
 	}
 
 	public static Connector makeConnector() {
-		return new Connector();
+		return new Connector("");
+	}
+
+	public static Connector makeConnector(String path) {
+		return new Connector(path);
 	}
 
 	public Set<Vertex> readReaction(Reaction reaction,
@@ -130,9 +138,8 @@ public class Connector {
 				new VertexHandlerListenerNullObject());
 	}
 
-	public Model readModel(String path) {
+	public Connector readModel() {
 		SBMLDocument document = null;
-		Model model = null;
 		try {
 			document = (new SBMLReader()).readSBML(path);
 		} catch (FileNotFoundException e) {
@@ -141,24 +148,22 @@ public class Connector {
 		}
 
 		if (document != null) {
-			model = document.getModel();
+			this.sbmlModel = document.getModel();
 		}
 
-		return model;
+		return this;
 	}
 
-	public Set<Vertex> parseModel(Model sbmlModel) {
+	public Set<Vertex> parseModel() {
 
 		HashSet<Vertex> hashSet = new HashSet<Vertex>();
-
-		if (sbmlModel == null) {
-			// TODO: signal that some errors happened before this point, use
-			// log4j for example
-			return hashSet;
-		}
 
 		hashSet.addAll(this.readReactions(sbmlModel.getListOfReactions()));
 
 		return hashSet;
+	}
+
+	public boolean hadYouReadSuccessfully() {
+		return this.sbmlModel != null;
 	}
 }
