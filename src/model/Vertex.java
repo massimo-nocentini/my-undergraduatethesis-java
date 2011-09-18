@@ -72,11 +72,6 @@ public class Vertex implements DotExportable, VertexDotInfoProvider {
 		return new Vertex(species_id, compartment_id);
 	}
 
-	// TODO: this method have no more sense to exists
-	public String getId() {
-		return species_id;
-	}
-
 	public boolean isYourNeighborhoodEquals(Set<Vertex> products) {
 		return this.neighbors.equals(products);
 	}

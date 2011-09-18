@@ -198,17 +198,9 @@ public class VertexUnitTest {
 		Vertex v = Vertex.makeVertex();
 
 		Assert.assertNotNull(v);
-		Assert.assertNotNull(v.getId());
-		assertTrue(v.getId().length() > 0);
-	}
-
-	@Test
-	public void newVerticesHaveDifferentId() {
-		Vertex v1 = Vertex.makeVertex();
-		Vertex v2 = Vertex.makeVertex();
-
-		Assert.assertNotSame(v1, v2);
-		Assert.assertFalse(v1.getId().equals(v2.getId()));
+		Assert.assertFalse(v.isYourSpeciesId(""));
+		Assert.assertFalse(v.isYourCompartmentId(""));
+		Assert.assertFalse(v.isYourOrigin(new Species()));
 	}
 
 	@Test
@@ -217,6 +209,7 @@ public class VertexUnitTest {
 		Vertex v1 = Vertex.makeVertex();
 		Vertex v2 = Vertex.makeVertex();
 
+		Assert.assertNotSame(v1, v2);
 		Assert.assertTrue(v1.matchCompartmentWith(v2));
 		Assert.assertTrue(v2.matchCompartmentWith(v1));
 
