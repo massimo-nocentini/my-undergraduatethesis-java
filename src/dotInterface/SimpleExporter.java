@@ -110,6 +110,7 @@ public class SimpleExporter implements DotExporter {
 				.add("edge [arrowsize=.5, weight=.1, color=\"gray\"]");
 		generalSettingsDotRepresentation
 				.add("node [label=\"\",shape=circle,height=0.12,width=0.12,fontsize=1]");
+		// .add("node [shape=circle]");
 	}
 
 	@Override
