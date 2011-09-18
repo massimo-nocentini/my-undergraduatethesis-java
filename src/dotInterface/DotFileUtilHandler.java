@@ -5,7 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import JSBMLInterface.Connector;
+import model.OurModel;
 
 public class DotFileUtilHandler {
 
@@ -119,9 +119,7 @@ public class DotFileUtilHandler {
 				.getSbmlExampleModelsFolder().concat(sbmlExampleSelector)
 				.concat(".xml");
 
-		Connector connector = Connector.makeConnector();
-
-		DotExportable exportable = connector
+		DotExportable exportable = OurModel
 				.makeOurModel(sourceRelativeFileName);
 
 		DotExporter exporter = new SimpleExporter();
