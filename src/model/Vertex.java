@@ -31,7 +31,7 @@ public class Vertex implements DotExportable, VertexDotInfoProvider {
 		}
 	}
 
-	private Set<Vertex> neighbours;
+	private Set<Vertex> neighbors;
 
 	private String species_id;
 
@@ -41,7 +41,7 @@ public class Vertex implements DotExportable, VertexDotInfoProvider {
 
 	private Vertex(String id) {
 		this.species_id = id;
-		neighbours = new HashSet<Vertex>();
+		neighbors = new HashSet<Vertex>();
 		directAncestors = new HashSet<Vertex>();
 	}
 
@@ -50,18 +50,14 @@ public class Vertex implements DotExportable, VertexDotInfoProvider {
 		return Vertex.makeVertex(IdPrefix + String.valueOf(id));
 	}
 
-	Set<Vertex> getNeighbours() {
-		return neighbours;
-	}
-
 	public Vertex addNeighbour(Vertex neighbour) {
-		this.neighbours.add(neighbour);
+		this.neighbors.add(neighbour);
 		neighbour.directAncestors.add(this);
 		return this;
 	}
 
 	public void doOnNeighbours(INeighbourApplier applier) {
-		for (Vertex vertex : this.neighbours) {
+		for (Vertex vertex : this.neighbors) {
 			applier.apply(vertex);
 		}
 
@@ -77,11 +73,11 @@ public class Vertex implements DotExportable, VertexDotInfoProvider {
 	}
 
 	public boolean isYourNeighborhoodEquals(Set<Vertex> products) {
-		return this.neighbours.equals(products);
+		return this.neighbors.equals(products);
 	}
 
 	public boolean isYourNeighborhoodEmpty() {
-		return this.neighbours.size() == 0;
+		return this.neighbors.size() == 0;
 	}
 
 	public static Vertex makeVertex(Species species) {
@@ -142,7 +138,7 @@ public class Vertex implements DotExportable, VertexDotInfoProvider {
 	}
 
 	public boolean haveYouSelfLoop() {
-		return this.neighbours.contains(this);
+		return this.neighbors.contains(this);
 	}
 
 	public boolean isYourOrigin(Species aSpecies) {
@@ -154,7 +150,7 @@ public class Vertex implements DotExportable, VertexDotInfoProvider {
 	public void acceptExporter(DotExporter exporter) {
 		exporter.buildVertexDefinition(this);
 
-		for (Vertex neighbour : neighbours) {
+		for (Vertex neighbour : neighbors) {
 			exporter.buildEdgeDefinition(Edge.makeEdge(this, neighbour));
 		}
 	}
@@ -167,15 +163,23 @@ public class Vertex implements DotExportable, VertexDotInfoProvider {
 	public boolean isSink() {
 		// TODO: ask if this condition is sufficient for the truth of this
 		// predicate
-		return neighbours.size() == 0;// && directAncestors.size() > 0;
+		return neighbors.size() == 0;// && directAncestors.size() > 0;
 	}
 
 	public boolean isSource() {
-		return directAncestors.size() == 0 && neighbours.size() > 0;
+		return directAncestors.size() == 0 && neighbors.size() > 0;
 	}
 
 	@Override
 	public Vertex getVertexInstance() {
 		return this;
+	}
+
+	public boolean isYourNeighbour(Vertex a) {
+		return neighbors.contains(a);
+	}
+
+	public int countNeighbors() {
+		return neighbors.size();
 	}
 }

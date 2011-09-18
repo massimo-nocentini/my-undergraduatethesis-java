@@ -3,7 +3,6 @@ package model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
@@ -113,15 +112,6 @@ public class VertexUnitTest {
 	}
 
 	@Test
-	public void vertexEmptyNeighboursSet() {
-		Vertex vertex = Vertex.makeVertex();
-		Set<Vertex> neighbours = vertex.getNeighbours();
-
-		assertNotNull("Neighbours set is null", neighbours);
-		assertEquals(0, neighbours.size());
-	}
-
-	@Test
 	public void containsNeighbours() {
 		Vertex vertex = Vertex.makeVertex();
 		Vertex a = Vertex.makeVertex();
@@ -131,11 +121,10 @@ public class VertexUnitTest {
 
 		Vertex c = Vertex.makeVertex();
 
-		Set<Vertex> neighbours = vertex.getNeighbours();
-		assertEquals(2, neighbours.size());
-		assertTrue(neighbours.contains(a));
-		assertTrue(neighbours.contains(b));
-		assertFalse(neighbours.contains(c));
+		assertFalse(vertex.isYourNeighborhoodEmpty());
+		assertTrue(vertex.isYourNeighbour(a));
+		assertTrue(vertex.isYourNeighbour(b));
+		assertFalse(vertex.isYourNeighbour(c));
 	}
 
 	@Test
@@ -144,8 +133,9 @@ public class VertexUnitTest {
 		Vertex a = Vertex.makeVertex();
 
 		vertex.addNeighbour(a);
-		assertTrue(vertex.getNeighbours().contains(a));
-		assertFalse(a.getNeighbours().contains(vertex));
+
+		assertTrue(vertex.isYourNeighbour(a));
+		assertFalse(a.isYourNeighbour(vertex));
 	}
 
 	@Test
@@ -183,8 +173,7 @@ public class VertexUnitTest {
 		assertEquals(2, collectedNeighbours.size());
 		assertTrue(collectedNeighbours.contains(a));
 		assertTrue(collectedNeighbours.contains(b));
-		assertEquals(vertex.getNeighbours(), collectedNeighbours);
-		assertNotSame(vertex.getNeighbours(), collectedNeighbours);
+		assertTrue(vertex.isYourNeighborhoodEquals(collectedNeighbours));
 		assertFalse(collectedNeighbours.contains(c));
 	}
 
@@ -240,7 +229,7 @@ public class VertexUnitTest {
 		Vertex v1 = Vertex.makeVertex();
 
 		Assert.assertTrue(v1.isYourNeighborhoodEmpty());
-		Assert.assertEquals(0, v1.getNeighbours().size());
+		Assert.assertEquals(0, v1.countNeighbors());
 	}
 
 	@Test
@@ -252,7 +241,7 @@ public class VertexUnitTest {
 		v1.addNeighbour(v2);
 
 		Assert.assertFalse(v1.isYourNeighborhoodEmpty());
-		Assert.assertTrue(v1.getNeighbours().size() > 0);
+		Assert.assertTrue(v1.countNeighbors() > 0);
 	}
 
 	@Test
@@ -359,7 +348,7 @@ public class VertexUnitTest {
 		anotherNeighborhood.add(v3);
 		anotherNeighborhood.add(v4);
 
-		Assert.assertEquals(3, v1.getNeighbours().size());
+		Assert.assertEquals(3, v1.countNeighbors());
 		Assert.assertTrue(v1.isYourNeighborhoodEquals(anotherNeighborhood));
 	}
 
