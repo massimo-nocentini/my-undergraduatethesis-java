@@ -98,7 +98,7 @@ public class ConnectorUnitTest {
 	public void makeOurModel() {
 		String path = "sbml-test-files/allCpdsMetabSmmReactionsCompounds.xml";
 
-		OurModel model = OurModel.makeOurModel(path);
+		OurModel model = OurModel.makeOurModelFrom(path);
 
 		Assert.assertNotNull(model);
 		Assert.assertFalse(model.isEmpty());
@@ -110,7 +110,7 @@ public class ConnectorUnitTest {
 
 		try {
 			@SuppressWarnings("unused")
-			OurModel model = OurModel.makeOurModel(path);
+			OurModel model = OurModel.makeOurModelFrom(path);
 			Assert.fail("Impossible to had successfully create a OurModel object from nowhere.");
 		} catch (NullPointerException e) {
 		}

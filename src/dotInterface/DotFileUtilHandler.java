@@ -120,7 +120,7 @@ public class DotFileUtilHandler {
 				.concat(".xml");
 
 		DotExportable exportable = OurModel
-				.makeOurModel(sourceRelativeFileName);
+				.makeOurModelFrom(sourceRelativeFileName);
 
 		DotExporter exporter = new SimpleExporter();
 		exportable.acceptExporter(exporter);

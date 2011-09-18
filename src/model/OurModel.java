@@ -26,15 +26,15 @@ public class OurModel implements DotExportable {
 		return new OurModel(new HashSet<Vertex>());
 	}
 
-	public static OurModel makeModel(Set<Vertex> vertices) {
+	public static OurModel makeOurModelFrom(Set<Vertex> vertices) {
 		return new OurModel(vertices);
 	}
 
-	public static OurModel makeOurModel(String path) {
+	public static OurModel makeOurModelFrom(String path) {
 		Connector connector = Connector.makeConnector(path);
 		Set<Vertex> vertices = connector.readModel().parseModel();
 
-		return OurModel.makeModel(vertices);
+		return OurModel.makeOurModelFrom(vertices);
 	}
 
 	@Override

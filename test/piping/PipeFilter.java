@@ -2,9 +2,9 @@ package piping;
 
 import model.OurModel;
 
-import org.sbml.jsbml.Model;
+public abstract class PipeFilter {
 
-public class PipeFilter {
+	private OurModel ourModel;
 
 	public static PipeFilter Make(AvailableFilters filter) {
 		PipeFilter filterObject = null;
@@ -23,7 +23,12 @@ public class PipeFilter {
 		return true;
 	}
 
-	public OurModel parse(Model sbmlModel) {
-		return null;
+	public PipeFilter workOn(OurModel ourModel) {
+		this.ourModel = ourModel;
+		return this;
+	}
+
+	public boolean someoneSettedYouInitialModel() {
+		return this.ourModel != null;
 	}
 }

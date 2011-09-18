@@ -4,7 +4,6 @@ import junit.framework.Assert;
 import model.OurModel;
 
 import org.junit.Test;
-import org.sbml.jsbml.Model;
 
 public class BasicPipingUnitTest {
 
@@ -18,14 +17,14 @@ public class BasicPipingUnitTest {
 	}
 
 	@Test
-	public void parsingMethodAvailableOnPipeFilter() {
+	public void setInitialOurModel() {
 		PipeFilter simpleFilter = PipeFilter
 				.Make(AvailableFilters.SimpleFilter);
 
-		Model sbmlModel = null;
-		OurModel parsedModel = simpleFilter.parse(sbmlModel);
+		simpleFilter.workOn(OurModel.makeEmptyModel());
 
-		// Assert.assertNotNull(parsedModel);
-		// Assert.assertTrue(parsedModel.isEmpty());
+		Assert.assertTrue(simpleFilter.someoneSettedYouInitialModel());
+		Assert.assertEquals(SimplePipeFilter.class, simpleFilter.getClass());
 	}
+
 }

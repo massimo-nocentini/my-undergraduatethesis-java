@@ -73,7 +73,7 @@ public class DotExportableUnitTest {
 		vertices.add(v2);
 		vertices.add(v3);
 
-		DotExportable exportable = OurModel.makeModel(vertices);
+		DotExportable exportable = OurModel.makeOurModelFrom(vertices);
 
 		DotExporter exporter = new SimpleExporter();
 		exportable.acceptExporter(exporter);
@@ -121,7 +121,7 @@ public class DotExportableUnitTest {
 				expectedVertexDefinitionPart, expectedEdgeDefinitionPart,
 				exporter);
 
-		DotExportable exportable = OurModel.makeModel(vertices);
+		DotExportable exportable = OurModel.makeOurModelFrom(vertices);
 
 		exportable.acceptExporter(exporter);
 
