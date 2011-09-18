@@ -10,8 +10,5 @@ public interface DotExporter extends DotDocumentPartHandler {
 
 	DotExporter collectCompleteContent(Writer outputPlugObject);
 
-	// TODO: doesn't seem this class is the right home for this method.
-	String decoreWithSourceSinkAttributes(String string);
-
-	String buildInfixNeighborRelation(String string);
+	DotDecorationApplier useDecorationApplier();
 }

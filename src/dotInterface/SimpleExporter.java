@@ -11,11 +11,13 @@ public class SimpleExporter implements DotExporter {
 	private Set<String> verticesDefinitionDotRepresentation;
 	private Set<String> generalSettingsDotRepresentation;
 	private Set<String> edgeDefinitionDotRepresentation;
+	private DotDecorationApplier dotDecorationApplier;
 
 	public SimpleExporter() {
 		verticesDefinitionDotRepresentation = new HashSet<String>();
 		generalSettingsDotRepresentation = new HashSet<String>();
 		edgeDefinitionDotRepresentation = new HashSet<String>();
+		dotDecorationApplier = new SimpleDotDecorationApplier();
 
 		initGeneralSettings();
 	}
@@ -29,17 +31,13 @@ public class SimpleExporter implements DotExporter {
 		if (vertexDotInfoProvider.getVertexInstance().isSink()
 				|| vertexDotInfoProvider.getVertexInstance().isSource()) {
 
-			vertexRepresentation = decoreWithSourceSinkAttributes(vertexRepresentation);
+			vertexRepresentation = this.useDecorationApplier()
+					.decoreWithSourceSinkAttributes(vertexRepresentation);
 		}
 
 		verticesDefinitionDotRepresentation.add(vertexRepresentation);
 
 		return this;
-	}
-
-	@Override
-	public String decoreWithSourceSinkAttributes(String string) {
-		return string.concat(" [color=\"black\", style=filled]");
 	}
 
 	private DotExporter collectSetOfElementsInto(Writer outputPlugObject,
@@ -132,7 +130,7 @@ public class SimpleExporter implements DotExporter {
 	public DotExporter buildEdgeDefinition(Edge edge) {
 		StringBuilder edgeDefinition = new StringBuilder();
 
-		edge.collectEdgeInto(edgeDefinition);
+		edge.collectEdgeInto(edgeDefinition, this.useDecorationApplier());
 
 		edgeDefinitionDotRepresentation.add(edgeDefinition.toString());
 
@@ -140,9 +138,7 @@ public class SimpleExporter implements DotExporter {
 	}
 
 	@Override
-	public String buildInfixNeighborRelation(String string) {
-		// TODO Auto-generated method stub
-		return null;
+	public DotDecorationApplier useDecorationApplier() {
+		return this.dotDecorationApplier;
 	}
-
 }

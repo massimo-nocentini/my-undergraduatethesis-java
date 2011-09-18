@@ -16,9 +16,14 @@ public class Edge {
 		return new Edge(vertex, neighbour);
 	}
 
-	public Edge collectEdgeInto(StringBuilder edgeDefinition) {
-		edgeDefinition.append(vertex.provideId().concat(" -> ")
-				.concat(neighbour.provideId()));
+	public Edge collectEdgeInto(StringBuilder edgeDefinition,
+			DotDecorationApplier dotDecorationApplier) {
+
+		String composedString = dotDecorationApplier
+				.buildInfixNeighborRelation(vertex.provideId(),
+						neighbour.provideId());
+
+		edgeDefinition.append(composedString);
 
 		return this;
 	}

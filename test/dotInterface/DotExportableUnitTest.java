@@ -29,8 +29,8 @@ public class DotExportableUnitTest {
 
 		Set<String> expectedDotModel = new HashSet<String>();
 
-		expectedDotModel.add(exporter.decoreWithSourceSinkAttributes(v
-				.provideId()));
+		expectedDotModel.add(exporter.useDecorationApplier()
+				.decoreWithSourceSinkAttributes(v.provideId()));
 
 		Assert.assertTrue(exporter
 				.isVertexDefinitionPartEquals(expectedDotModel));
@@ -77,20 +77,21 @@ public class DotExportableUnitTest {
 
 		Set<String> expectedVertexDefinitionPart = new HashSet<String>();
 
-		expectedVertexDefinitionPart.add(exporter
+		expectedVertexDefinitionPart.add(exporter.useDecorationApplier()
 				.decoreWithSourceSinkAttributes(v.provideId()));
 
 		expectedVertexDefinitionPart.add(v2.provideId());
 
-		expectedVertexDefinitionPart.add(exporter
+		expectedVertexDefinitionPart.add(exporter.useDecorationApplier()
 				.decoreWithSourceSinkAttributes(v3.provideId()));
 
 		Set<String> expectedEdgeDefinitionPart = new HashSet<String>();
 
-		expectedEdgeDefinitionPart.add(v.provideId().concat(" -> ")
-				.concat(v2.provideId()));
-		expectedEdgeDefinitionPart.add(v2.provideId().concat(" -> ")
-				.concat(v3.provideId()));
+		expectedEdgeDefinitionPart.add(exporter.useDecorationApplier()
+				.buildInfixNeighborRelation(v.provideId(), v2.provideId()));
+
+		expectedEdgeDefinitionPart.add(exporter.useDecorationApplier()
+				.buildInfixNeighborRelation(v2.provideId(), v3.provideId()));
 
 		Assert.assertTrue(exporter
 				.isVertexDefinitionPartEquals(expectedVertexDefinitionPart));
