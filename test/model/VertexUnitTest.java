@@ -212,21 +212,38 @@ public class VertexUnitTest {
 	}
 
 	@Test
-	public void newVerticesHaveConsecutiveId() {
+	public void matchSpeciesCompartement() {
+
+		Vertex v1 = Vertex.makeVertex();
+		Vertex v2 = Vertex.makeVertex();
+
+		Assert.assertTrue(v1.matchCompartmentWith(v2));
+		Assert.assertTrue(v2.matchCompartmentWith(v1));
+
+		Assert.assertFalse(v1.matchSpeciesWith(v2));
+		Assert.assertFalse(v2.matchSpeciesWith(v1));
+
+	}
+
+	@Test
+	public void checkConsecutiveGeneretionMakesDifferentVertices() {
 
 		// catch the count of the vertices added so far
-		int count = VertexInstancesCounter.getCount();
+		int count = VertexInstancesCounter.getCurrentCount();
 
 		// increment the counter
 		Vertex v1 = Vertex.makeVertex();
 
+		// catch the new value of the counter
+		int secondCount = VertexInstancesCounter.getCurrentCount();
+
 		// increment the counter another time
 		Vertex v2 = Vertex.makeVertex();
 
-		Assert.assertEquals(Vertex.IdPrefix + String.valueOf(count + 1),
-				v1.getId());
-		Assert.assertEquals(Vertex.IdPrefix + String.valueOf(count + 2),
-				v2.getId());
+		Assert.assertFalse(v1.equals(v2));
+
+		Assert.assertEquals(secondCount, count + 1);
+
 	}
 
 	@Test

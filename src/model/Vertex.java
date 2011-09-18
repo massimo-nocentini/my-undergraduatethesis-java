@@ -12,8 +12,8 @@ import dotInterface.VertexDotInfoProvider;
 
 public class Vertex implements DotExportable, VertexDotInfoProvider {
 
-	static String IdPrefix = "id_";
-	static String DummyCompartmentId = "dummy_compartment_id";
+	private static String DummySpeciesId = "dummy_species_id";
+	private static String DummyCompartmentId = "dummy_compartment_id";
 
 	static class VertexInstancesCounter {
 		private static int count;
@@ -27,7 +27,7 @@ public class Vertex implements DotExportable, VertexDotInfoProvider {
 			return count;
 		}
 
-		static int getCount() {
+		static int getCurrentCount() {
 			return count;
 		}
 	}
@@ -50,7 +50,8 @@ public class Vertex implements DotExportable, VertexDotInfoProvider {
 
 	public static Vertex makeVertex() {
 		int id = VertexInstancesCounter.makeNewId();
-		return Vertex.makeVertex(Vertex.IdPrefix.concat(String.valueOf(id)),
+		return Vertex.makeVertex(
+				Vertex.DummySpeciesId.concat(String.valueOf(id)),
 				Vertex.DummyCompartmentId);
 	}
 
@@ -180,5 +181,13 @@ public class Vertex implements DotExportable, VertexDotInfoProvider {
 
 	public int countNeighbors() {
 		return neighbors.size();
+	}
+
+	public boolean matchCompartmentWith(Vertex otherVertex) {
+		return compartment_id.equals(otherVertex.compartment_id);
+	}
+
+	public boolean matchSpeciesWith(Vertex otherVertex) {
+		return species_id.equals(otherVertex.species_id);
 	}
 }
