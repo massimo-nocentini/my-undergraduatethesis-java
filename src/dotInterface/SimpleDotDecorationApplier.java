@@ -8,7 +8,7 @@ public class SimpleDotDecorationApplier implements DotDecorationApplier {
 	}
 
 	@Override
-	public String buildInfixNeighborRelation(String vertex, String neighbour) {
+	public String buildInfixNeighborhoodRelation(String vertex, String neighbour) {
 		return vertex.concat(" -> ").concat(neighbour);
 	}
 }

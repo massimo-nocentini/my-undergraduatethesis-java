@@ -20,7 +20,7 @@ public class Edge {
 			DotDecorationApplier dotDecorationApplier) {
 
 		String composedString = dotDecorationApplier
-				.buildInfixNeighborRelation(vertex.provideId(),
+				.buildInfixNeighborhoodRelation(vertex.provideId(),
 						neighbour.provideId());
 
 		edgeDefinition.append(composedString);

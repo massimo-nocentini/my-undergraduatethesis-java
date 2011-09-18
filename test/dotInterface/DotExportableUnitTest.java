@@ -27,13 +27,16 @@ public class DotExportableUnitTest {
 		DotExporter exporter = new SimpleExporter();
 		exportable.acceptExporter(exporter);
 
-		Set<String> expectedDotModel = new HashSet<String>();
+		Set<String> expectedVertexDefinitionPart = new HashSet<String>();
 
-		expectedDotModel.add(exporter.useDecorationApplier()
+		expectedVertexDefinitionPart.add(exporter.useDecorationApplier()
 				.decoreWithSourceSinkAttributes(v.provideId()));
 
 		Assert.assertTrue(exporter
-				.isVertexDefinitionPartEquals(expectedDotModel));
+				.isVertexDefinitionPartEquals(expectedVertexDefinitionPart));
+
+		Assert.assertTrue(exporter
+				.isEdgeDefinitionPartEquals(new HashSet<String>()));
 
 		DotFileUtilHandler
 				.MakeHandler("simpleNodeWithoutNeighboursDotExporting")
@@ -88,10 +91,10 @@ public class DotExportableUnitTest {
 		Set<String> expectedEdgeDefinitionPart = new HashSet<String>();
 
 		expectedEdgeDefinitionPart.add(exporter.useDecorationApplier()
-				.buildInfixNeighborRelation(v.provideId(), v2.provideId()));
+				.buildInfixNeighborhoodRelation(v.provideId(), v2.provideId()));
 
 		expectedEdgeDefinitionPart.add(exporter.useDecorationApplier()
-				.buildInfixNeighborRelation(v2.provideId(), v3.provideId()));
+				.buildInfixNeighborhoodRelation(v2.provideId(), v3.provideId()));
 
 		Assert.assertTrue(exporter
 				.isVertexDefinitionPartEquals(expectedVertexDefinitionPart));
