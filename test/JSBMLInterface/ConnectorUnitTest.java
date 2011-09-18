@@ -70,7 +70,7 @@ public class ConnectorUnitTest {
 
 		Connector connector = Connector.makeConnector();
 
-		Model sbmlModel = connector.parseModel(path);
+		Model sbmlModel = connector.readModel(path);
 
 		Assert.assertNotNull(sbmlModel);
 	}
@@ -81,7 +81,7 @@ public class ConnectorUnitTest {
 
 		Connector connector = Connector.makeConnector();
 
-		Model sbmlModel = connector.parseModel(path);
+		Model sbmlModel = connector.readModel(path);
 
 		Assert.assertNull(sbmlModel);
 	}
@@ -90,9 +90,7 @@ public class ConnectorUnitTest {
 	public void makeOurModel() {
 		String path = "sbml-test-files/allCpdsMetabSmmReactionsCompounds.xml";
 
-		Connector connector = Connector.makeConnector();
-
-		OurModel model = connector.makeOurModel(path);
+		OurModel model = OurModel.makeOurModel(path);
 
 		Assert.assertNotNull(model);
 		Assert.assertFalse(model.isEmpty());
@@ -102,9 +100,7 @@ public class ConnectorUnitTest {
 	public void makeOurModelInducingError() {
 		String path = null;
 
-		Connector connector = Connector.makeConnector();
-
-		OurModel model = connector.makeOurModel(path);
+		OurModel model = OurModel.makeOurModel(path);
 
 		Assert.assertNotNull(model);
 		Assert.assertTrue(model.isEmpty());

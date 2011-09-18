@@ -9,7 +9,6 @@ import java.util.Set;
 
 import javax.xml.stream.XMLStreamException;
 
-import model.OurModel;
 import model.Vertex;
 
 import org.sbml.jsbml.ListOf;
@@ -30,6 +29,7 @@ public class Connector {
 
 	public Set<Vertex> readReaction(Reaction reaction,
 			VertexHandlingWithSourceListener listener) {
+
 		return this.readReaction(reaction, listener,
 				new HashMap<Vertex, Vertex>());
 	}
@@ -126,16 +126,11 @@ public class Connector {
 
 	public Set<Vertex> readReactions(Collection<Reaction> collectionOfReactions) {
 
-		Map<Vertex, Vertex> knownVertices = new HashMap<Vertex, Vertex>();
-		for (Reaction reaction : collectionOfReactions) {
-			this.readReaction(reaction, new VertexHandlerListenerNullObject(),
-					knownVertices);
-		}
-
-		return knownVertices.keySet();
+		return this.readReactions(collectionOfReactions,
+				new VertexHandlerListenerNullObject());
 	}
 
-	public Model parseModel(String path) {
+	public Model readModel(String path) {
 		SBMLDocument document = null;
 		Model model = null;
 		try {
@@ -152,19 +147,18 @@ public class Connector {
 		return model;
 	}
 
-	public OurModel makeOurModel(String path) {
-		Connector connector = Connector.makeConnector();
-		Model sbmlModel = connector.parseModel(path);
+	public Set<Vertex> parseModel(Model sbmlModel) {
+
+		HashSet<Vertex> hashSet = new HashSet<Vertex>();
 
 		if (sbmlModel == null) {
-			// TODO: signal that some errors happened before this point
-			return OurModel.makeEmptyModel();
+			// TODO: signal that some errors happened before this point, use
+			// log4j for example
+			return hashSet;
 		}
 
-		Set<Vertex> vertices = connector.readReactions(sbmlModel
-				.getListOfReactions());
+		hashSet.addAll(this.readReactions(sbmlModel.getListOfReactions()));
 
-		return OurModel.makeModel(vertices);
+		return hashSet;
 	}
-
 }
