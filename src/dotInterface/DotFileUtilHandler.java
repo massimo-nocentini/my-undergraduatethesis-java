@@ -18,6 +18,11 @@ public class DotFileUtilHandler {
 				.concat(DotFileUtilHandler.getFileSeparator());
 	}
 
+	public static String getAbsoluteFileNameInTestOutputFolder(String fileName) {
+		return DotFileUtilHandler.getDotOutputFolder().concat(fileName)
+				.concat(".dot");
+	}
+
 	public static String getSbmlExampleModelsFolder() {
 		return "sbml-test-files".concat(DotFileUtilHandler.getFileSeparator());
 	}

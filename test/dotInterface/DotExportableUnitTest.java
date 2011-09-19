@@ -117,7 +117,7 @@ public class DotExportableUnitTest {
 		Set<String> expectedEdgeDefinitionPart = new HashSet<String>();
 		DotExporter exporter = new SimpleExporter();
 
-		this.MakeTarjanNetworkVertexSetWithRelation(vertices,
+		DotExportableUnitTest.makeTarjanNetworkVertexSetWithRelation(vertices,
 				expectedVertexDefinitionPart, expectedEdgeDefinitionPart,
 				exporter);
 
@@ -139,6 +139,14 @@ public class DotExportableUnitTest {
 				.produceSvgOutput();
 	}
 
+	public static OurModel MakeTarjanModel() {
+		HashSet<Vertex> vertices = new HashSet<Vertex>();
+		makeTarjanNetworkVertexSetWithRelation(vertices, new HashSet<String>(),
+				new HashSet<String>(), new SimpleExporter());
+
+		return OurModel.makeOurModelFrom(vertices);
+	}
+
 	/**
 	 * This method build the Tarjan network illustrated on page 158 of its
 	 * original article.
@@ -148,7 +156,7 @@ public class DotExportableUnitTest {
 	 * @param expectedEdgeDefinitionPart
 	 * @param exporter
 	 */
-	private void MakeTarjanNetworkVertexSetWithRelation(Set<Vertex> vertices,
+	static void makeTarjanNetworkVertexSetWithRelation(Set<Vertex> vertices,
 			Set<String> expectedVertexDefinitionPart,
 			Set<String> expectedEdgeDefinitionPart, DotExporter exporter) {
 
@@ -314,6 +322,16 @@ public class DotExportableUnitTest {
 		//
 		DotFileUtilHandler.MakeHandlerForExampleSbmlModel(
 				"RickettsiaMassiliaeMTU5").produceSvgOutput();
+	}
+
+	@Test
+	public void checkGetAbsoluteFileNameInTestOutputFolder() {
+		String filename = "printerPipeFilterOutput";
+		String expected = "dot-test-files/tests-output/".concat(filename)
+				.concat(".dot");
+
+		Assert.assertEquals(expected, DotFileUtilHandler
+				.getAbsoluteFileNameInTestOutputFolder(filename));
 	}
 
 }
