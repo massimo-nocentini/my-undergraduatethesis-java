@@ -18,7 +18,7 @@ public class BasicPipingUnitTest {
 		PipeFilter printerPipeFilter = PipeFilter.MakePrinterPipeFilter(string);
 
 		Assert.assertNotNull(printerPipeFilter);
-		Assert.assertTrue(printerPipeFilter.areYouAn(AvailableFilters.Printer));
+		Assert.assertTrue(printerPipeFilter.isYourTagEquals(AvailableFilters.Printer));
 	}
 
 	@Test
@@ -29,7 +29,7 @@ public class BasicPipingUnitTest {
 		printerPipeFilter = printerPipeFilter.workOn(OurModel.makeEmptyModel());
 
 		Assert.assertNotNull(printerPipeFilter);
-		Assert.assertTrue(printerPipeFilter.haveYouAnOurModel());
+		Assert.assertTrue(printerPipeFilter.isYourWorkingOurModelNotNull());
 	}
 
 	@Test
@@ -46,7 +46,8 @@ public class BasicPipingUnitTest {
 		PipeFilter printerPipeFilter = PipeFilter
 				.MakePrinterPipeFilter(pipelineName);
 
-		Assert.assertTrue(printerPipeFilter.isYourPipelineNameEquals(pipelineName));
+		Assert.assertTrue(printerPipeFilter
+				.isYourPipelineNameEquals(pipelineName));
 	}
 
 	@Test
@@ -59,9 +60,9 @@ public class BasicPipingUnitTest {
 				.workOn(DotExportableUnitTest.MakeTarjanModel());
 
 		Assert.assertNotNull(printerPipeFilter);
-		Assert.assertTrue(printerPipeFilter.someoneIsListeningYou());
+		Assert.assertTrue(printerPipeFilter.isYourListenerNotNull());
 		// the following looks like a regression test.
-		Assert.assertTrue(printerPipeFilter.haveYouAnOurModel());
+		Assert.assertTrue(printerPipeFilter.isYourWorkingOurModelNotNull());
 	}
 
 	@Test
@@ -75,7 +76,7 @@ public class BasicPipingUnitTest {
 			try {
 				workingFile.delete();
 			} catch (Exception e) {
-				Assert.fail("Impossible to prepare the context for test run.");
+				Assert.fail("Impossible to prepare the context for run this test.");
 			}
 		}
 

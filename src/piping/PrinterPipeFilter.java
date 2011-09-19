@@ -11,18 +11,24 @@ public class PrinterPipeFilter extends PipeFilter {
 	}
 
 	@Override
-	public boolean areYouAn(AvailableFilters other) {
+	public boolean isYourTagEquals(AvailableFilters other) {
 		return AvailableFilters.Printer.equals(other);
 	}
 
-	@Override
-	protected void computeAtomically() {
+	private void computeAtomically() {
 		DotExporter exporter = new SimpleExporter();
 		getOurModel().acceptExporter(exporter);
 
 		DotFileUtilHandler.MakeHandler(this.getPipelineName())
 				.writeDotRepresentationInTestFolder(exporter)
 				.produceSvgOutput();
+	}
+
+	@Override
+	public PipeFilter apply() {
+		computeAtomically();
+		getOutputListener().onOutputProduced(getOurModel());
+		return this;
 	}
 
 }
