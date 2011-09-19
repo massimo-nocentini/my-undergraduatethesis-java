@@ -80,7 +80,7 @@ public abstract class PipeFilter implements PipeFilterOutputListener {
 
 	public abstract boolean isYourTagEquals(AvailableFilters other);
 
-	protected abstract OurModel doYourComputation(OurModel inputModel);
+	protected abstract OurModel doYourComputationOn(OurModel inputModel);
 
 	public final PipeFilter apply() {
 
@@ -98,7 +98,7 @@ public abstract class PipeFilter implements PipeFilterOutputListener {
 	private void runDedicatedComputationAndNotifyOnListenerIfPresent(
 			OurModel inputModel) {
 
-		OurModel computedOurModel = this.doYourComputation(inputModel);
+		OurModel computedOurModel = this.doYourComputationOn(inputModel);
 
 		getOutputListener().onOutputProduced(computedOurModel);
 
@@ -135,5 +135,22 @@ public abstract class PipeFilter implements PipeFilterOutputListener {
 	public boolean isYourWorkingOurModelEquals(OurModel otherModel) {
 		return this.isYourWorkingOurModelNotNull()
 				&& this.ourModel.equals(otherModel);
+	}
+
+	protected final String formatPhaseIdentifier() {
+
+		return pipelineName.concat(fillWithPhaseInformation());
+	}
+
+	public boolean isYourPhaseIdentifier(String otherPhaseIdentifier) {
+		return formatPhaseIdentifier().equals(otherPhaseIdentifier);
+	}
+
+	public String fillWithPhaseInformation() {
+
+		String phaseIdentifier = this.getClass().getSimpleName();
+		String level = String.valueOf(computeLevelsOfWrapping());
+		return "-phase-".concat(phaseIdentifier).concat("-level-")
+				.concat(level);
 	}
 }

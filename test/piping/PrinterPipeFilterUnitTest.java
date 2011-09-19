@@ -24,10 +24,15 @@ public class PrinterPipeFilterUnitTest {
 
 	@Test
 	public void applyPrinterPipeFilter() {
-		String string = "tarjanSingleLevelTestPrinterPipeFilterOutput";
+		String pipeName = "tarjanSingleLevelTestPrinterPipeFilterOutput";
+
+		PipeFilter printerPipeFilter = PipeFilter
+				.MakePrinterPipeFilter(pipeName);
+
 		File workingFile = new File(
 				DotFileUtilHandler
-						.getAbsoluteFileNameInTestOutputFolder(string));
+						.getAbsoluteFileNameInTestOutputFolder(printerPipeFilter
+								.formatPhaseIdentifier()));
 
 		if (workingFile.exists()) {
 			try {
@@ -36,8 +41,6 @@ public class PrinterPipeFilterUnitTest {
 				Assert.fail("Impossible to prepare the context for run this test.");
 			}
 		}
-
-		PipeFilter printerPipeFilter = PipeFilter.MakePrinterPipeFilter(string);
 
 		final OurModel tarjanModel = DotExportableUnitTest.MakeTarjanModel();
 

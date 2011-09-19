@@ -47,6 +47,17 @@ public class BasicPipingUnitTest {
 	}
 
 	@Test
+	public void checkPipelinePhaseIdentifier() {
+		String pipelineName = "pipelineName";
+
+		PipeFilter printerPipeFilter = PipeFilter
+				.MakePrinterPipeFilter(pipelineName);
+
+		Assert.assertTrue(printerPipeFilter.isYourPhaseIdentifier(pipelineName
+				.concat(printerPipeFilter.fillWithPhaseInformation())));
+	}
+
+	@Test
 	public void acceptListenerPrinterPipeFilter() {
 		String string = "unimportantName";
 		PipeFilter printerPipeFilter = PipeFilter.MakePrinterPipeFilter(string);
