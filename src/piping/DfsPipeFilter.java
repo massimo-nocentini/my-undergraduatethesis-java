@@ -15,9 +15,8 @@ public class DfsPipeFilter extends PipeFilter {
 	}
 
 	@Override
-	protected OurModel doYourComputation() {
-
-		return getOurModel();
+	protected OurModel doYourComputation(OurModel ourModel) {
+		return OurModel.makeEmptyModel();
 	}
 
 }

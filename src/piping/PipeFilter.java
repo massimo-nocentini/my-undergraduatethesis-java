@@ -10,11 +10,14 @@ public abstract class PipeFilter implements PipeFilterOutputListener {
 	private PipeFilter wrappedPipeFilter;
 
 	protected PipeFilterOutputListener getOutputListener() {
-		return outputListener;
-	}
 
-	protected OurModel getOurModel() {
-		return ourModel;
+		PipeFilterOutputListener result = new NullPipeFilterOutputListener();
+
+		if (this.isYourListenerNotNull()) {
+			result = outputListener;
+		}
+
+		return result;
 	}
 
 	protected String getPipelineName() {
@@ -77,20 +80,28 @@ public abstract class PipeFilter implements PipeFilterOutputListener {
 
 	public abstract boolean isYourTagEquals(AvailableFilters other);
 
-	protected abstract OurModel doYourComputation();
+	protected abstract OurModel doYourComputation(OurModel inputModel);
 
 	public final PipeFilter apply() {
 
 		if (this.isYourWrappedPipeFilterNotNull()) {
 			wrappedPipeFilter.apply();
 		} else {
-			OurModel computedOurModel = this.doYourComputation();
-			if (this.isYourListenerNotNull()) {
-				getOutputListener().onOutputProduced(computedOurModel);
-			}
+			// TODO: in the refactored version the 'ourModel' will be given as
+			// parameter of this method.
+			this.runDedicatedComputationAndNotifyOnListenerIfPresent(ourModel);
 		}
 
 		return this;
+	}
+
+	private void runDedicatedComputationAndNotifyOnListenerIfPresent(
+			OurModel inputModel) {
+
+		OurModel computedOurModel = this.doYourComputation(inputModel);
+
+		getOutputListener().onOutputProduced(computedOurModel);
+
 	}
 
 	public static PipeFilter MakePrinterPipeFilter(String pipelineName) {
@@ -111,8 +122,9 @@ public abstract class PipeFilter implements PipeFilterOutputListener {
 	}
 
 	@Override
-	public void onOutputProduced(OurModel ourModel) {
-		this.ourModel = ourModel;
+	public void onOutputProduced(OurModel manufacturedModel) {
+		ourModel = manufacturedModel;
+		runDedicatedComputationAndNotifyOnListenerIfPresent(manufacturedModel);
 	}
 
 	public boolean isYourListenerEquals(PipeFilterOutputListener outputListener) {

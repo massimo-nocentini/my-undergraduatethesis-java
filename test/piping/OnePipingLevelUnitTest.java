@@ -108,4 +108,38 @@ public class OnePipingLevelUnitTest {
 		Assert.assertTrue(printerPipeFilter.isYourListenerEquals(dfsPipeFilter));
 		Assert.assertFalse(dfsPipeFilter.isYourListenerNotNull());
 	}
+
+	@Test
+	public void checkingDfsPipeFilterWorkWithOnePipeLevel() {
+		String pipelineName = "checkingDfsPipeFilterWorkWithOnePipeLevel";
+
+		PipeFilter printerPipeFilter = PipeFilter
+				.MakePrinterPipeFilter(pipelineName);
+
+		PipeFilter dfsPipeFilter = PipeFilter.MakeDfsPipeFilter(pipelineName);
+
+		final OurModel tarjanModel = DotExportableUnitTest.MakeTarjanModel();
+		final StringBuilder listenerSignalRecorder = new StringBuilder();
+		final String listenerActuallySignaledFlag = "signaled";
+
+		dfsPipeFilter.acceptOutputListener(new PipeFilterOutputListener() {
+
+			@Override
+			public void onOutputProduced(OurModel ourModel) {
+				Assert.assertNotSame(ourModel, tarjanModel);
+				Assert.assertFalse(ourModel.equals(tarjanModel));
+
+				// adding some information on the string builder in order
+				// to notify that this listener is actually signaled
+				listenerSignalRecorder.append(listenerActuallySignaledFlag);
+			}
+		});
+
+		// run the computation
+		dfsPipeFilter.pipeAfter(printerPipeFilter).workOn(tarjanModel).apply();
+
+		// check if the signal really happened on the listener
+		Assert.assertEquals(listenerActuallySignaledFlag,
+				listenerSignalRecorder.toString());
+	}
 }

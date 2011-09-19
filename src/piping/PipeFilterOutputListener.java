@@ -4,6 +4,6 @@ import model.OurModel;
 
 public interface PipeFilterOutputListener {
 
-	void onOutputProduced(OurModel ourModel);
+	void onOutputProduced(OurModel manufacturedModel);
 
 }

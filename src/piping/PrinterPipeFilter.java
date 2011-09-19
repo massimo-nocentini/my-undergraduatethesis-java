@@ -17,14 +17,15 @@ public class PrinterPipeFilter extends PipeFilter {
 	}
 
 	@Override
-	protected OurModel doYourComputation() {
+	protected OurModel doYourComputation(OurModel inputModel) {
+
 		DotExporter exporter = new SimpleExporter();
-		getOurModel().acceptExporter(exporter);
+		inputModel.acceptExporter(exporter);
 
 		DotFileUtilHandler.MakeHandler(this.getPipelineName())
 				.writeDotRepresentationInTestFolder(exporter)
 				.produceSvgOutput();
 
-		return getOurModel();
+		return inputModel;
 	}
 }
