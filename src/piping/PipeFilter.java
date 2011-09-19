@@ -2,11 +2,12 @@ package piping;
 
 import model.OurModel;
 
-public abstract class PipeFilter {
+public abstract class PipeFilter implements PipeFilterOutputListener {
 
 	private OurModel ourModel;
 	private PipeFilterOutputListener outputListener;
 	private String pipelineName;
+	private PipeFilter wrappedPipeFilter;
 
 	protected PipeFilterOutputListener getOutputListener() {
 		return outputListener;
@@ -25,7 +26,12 @@ public abstract class PipeFilter {
 	}
 
 	public PipeFilter workOn(OurModel ourModel) {
-		this.ourModel = ourModel;
+		if (this.doYouWrapSomePipeFilter()) {
+			wrappedPipeFilter.workOn(ourModel);
+		} else {
+			this.ourModel = ourModel;
+		}
+
 		return this;
 	}
 
@@ -43,16 +49,49 @@ public abstract class PipeFilter {
 	}
 
 	public boolean isYourLevelOfWrapping(int levelOfWrapping) {
-		return 0 == levelOfWrapping;
+		return this.computeLevelsOfWrapping() == levelOfWrapping;
+	}
+
+	private int computeLevelsOfWrapping() {
+		int levelsOfWrapping = 0;
+
+		if (this.doYouWrapSomePipeFilter()) {
+			levelsOfWrapping = 1 + wrappedPipeFilter.computeLevelsOfWrapping();
+		}
+
+		return levelsOfWrapping;
 	}
 
 	public boolean isYourPipelineNameEquals(String pipelineName) {
 		return this.pipelineName.equals(pipelineName);
 	}
 
+	public boolean isYourWrappedPipeFilterEquals(PipeFilter otherPipeFilter) {
+		return this.doYouWrapSomePipeFilter()
+				&& wrappedPipeFilter.equals(otherPipeFilter);
+	}
+
+	public boolean doYouWrapSomePipeFilter() {
+		return wrappedPipeFilter != null;
+	}
+
 	public abstract boolean isYourTagEquals(AvailableFilters other);
 
-	public abstract PipeFilter apply();
+	protected abstract OurModel doYourComputation();
+
+	public final PipeFilter apply() {
+
+		if (this.doYouWrapSomePipeFilter()) {
+			wrappedPipeFilter.apply();
+		} else {
+			OurModel computedOurModel = this.doYourComputation();
+			if (this.isYourListenerNotNull()) {
+				getOutputListener().onOutputProduced(computedOurModel);
+			}
+		}
+
+		return this;
+	}
 
 	public static PipeFilter MakePrinterPipeFilter(String pipelineName) {
 		PipeFilter filterObject = new PrinterPipeFilter(pipelineName);
@@ -60,4 +99,29 @@ public abstract class PipeFilter {
 		return filterObject;
 	}
 
+	public static PipeFilter MakeDfsPipeFilter(String pipelineName) {
+
+		return new DfsPipeFilter(pipelineName);
+	}
+
+	public PipeFilter pipeAfter(PipeFilter pipeFilterToWrap) {
+		wrappedPipeFilter = pipeFilterToWrap;
+		wrappedPipeFilter.acceptOutputListener(this);
+		return this;
+	}
+
+	@Override
+	public void onOutputProduced(OurModel ourModel) {
+		this.ourModel = ourModel;
+	}
+
+	public boolean isYourListenerEquals(PipeFilterOutputListener outputListener) {
+		return this.isYourListenerNotNull()
+				&& this.outputListener.equals(outputListener);
+	}
+
+	public boolean isYourWorkingOurModelEquals(OurModel otherModel) {
+		return this.isYourWorkingOurModelNotNull()
+				&& this.ourModel.equals(otherModel);
+	}
 }

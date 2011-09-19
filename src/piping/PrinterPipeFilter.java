@@ -1,5 +1,6 @@
 package piping;
 
+import model.OurModel;
 import dotInterface.DotExporter;
 import dotInterface.DotFileUtilHandler;
 import dotInterface.SimpleExporter;
@@ -15,20 +16,15 @@ public class PrinterPipeFilter extends PipeFilter {
 		return AvailableFilters.Printer.equals(other);
 	}
 
-	private void computeAtomically() {
+	@Override
+	protected OurModel doYourComputation() {
 		DotExporter exporter = new SimpleExporter();
 		getOurModel().acceptExporter(exporter);
 
 		DotFileUtilHandler.MakeHandler(this.getPipelineName())
 				.writeDotRepresentationInTestFolder(exporter)
 				.produceSvgOutput();
-	}
 
-	@Override
-	public PipeFilter apply() {
-		computeAtomically();
-		getOutputListener().onOutputProduced(getOurModel());
-		return this;
+		return getOurModel();
 	}
-
 }

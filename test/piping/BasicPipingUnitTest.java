@@ -1,25 +1,19 @@
 package piping;
 
-import java.io.File;
-
 import junit.framework.Assert;
 import model.OurModel;
 
 import org.junit.Test;
 
 import dotInterface.DotExportableUnitTest;
-import dotInterface.DotFileUtilHandler;
 
+/*
+ * In this test methods I use the PrinterPipeFilter but
+ * without loss of generality. I choose it because is the
+ * simplest pipe filter that I've right now (at the moment I'm typing)
+ * and it is sure that it works.
+ */
 public class BasicPipingUnitTest {
-
-	@Test
-	public void creationOfPrinterPipeFilter() {
-		String string = "unimportantName";
-		PipeFilter printerPipeFilter = PipeFilter.MakePrinterPipeFilter(string);
-
-		Assert.assertNotNull(printerPipeFilter);
-		Assert.assertTrue(printerPipeFilter.isYourTagEquals(AvailableFilters.Printer));
-	}
 
 	@Test
 	public void passingInitialOurModelToPrinterPipeFilter() {
@@ -65,45 +59,4 @@ public class BasicPipingUnitTest {
 		Assert.assertTrue(printerPipeFilter.isYourWorkingOurModelNotNull());
 	}
 
-	@Test
-	public void applyPrinterPipeFilter() {
-		String string = "tarjanSingleLevelTestPrinterPipeFilterOutput";
-		File workingFile = new File(
-				DotFileUtilHandler
-						.getAbsoluteFileNameInTestOutputFolder(string));
-
-		if (workingFile.exists()) {
-			try {
-				workingFile.delete();
-			} catch (Exception e) {
-				Assert.fail("Impossible to prepare the context for run this test.");
-			}
-		}
-
-		PipeFilter printerPipeFilter = PipeFilter.MakePrinterPipeFilter(string);
-
-		final OurModel tarjanModel = DotExportableUnitTest.MakeTarjanModel();
-
-		PipeFilterOutputListener listener = new PipeFilterOutputListener() {
-
-			@Override
-			public void onOutputProduced(OurModel ourModel) {
-				// first is checked this assert
-				Assert.assertSame(tarjanModel, ourModel);
-			}
-		};
-
-		printerPipeFilter = printerPipeFilter.acceptOutputListener(listener)
-				.workOn(tarjanModel).apply();
-
-		// second is checked this assert
-		Assert.assertNotNull(printerPipeFilter);
-
-		Assert.assertTrue(
-				"The filter application seem to be completed successfully "
-						+ "but the output file wasn't created",
-				workingFile.exists());
-
-		Assert.assertTrue("The file created is empty", workingFile.length() > 0);
-	}
 }
