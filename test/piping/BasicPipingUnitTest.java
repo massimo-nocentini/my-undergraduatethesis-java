@@ -20,14 +20,16 @@ public class BasicPipingUnitTest {
 		String string = "unimportantName";
 		PipeFilter printerPipeFilter = PipeFilter.MakePrinterPipeFilter(string);
 
-		printerPipeFilter = printerPipeFilter.workOn(OurModel.makeEmptyModel());
+		OurModel model = OurModel.makeEmptyModel();
+		printerPipeFilter = printerPipeFilter.workOn(model);
 
 		Assert.assertNotNull(printerPipeFilter);
 		Assert.assertTrue(printerPipeFilter.isYourWorkingOurModelNotNull());
+		Assert.assertTrue(printerPipeFilter.isYourWorkingOurModelEquals(model));
 	}
 
 	@Test
-	public void levelOfWrappingPipeFilter() {
+	public void zeroLevelOfWrappingPipeFilter() {
 		String string = "unimportantName";
 		PipeFilter printerPipeFilter = PipeFilter.MakePrinterPipeFilter(string);
 
@@ -50,13 +52,18 @@ public class BasicPipingUnitTest {
 		PipeFilter printerPipeFilter = PipeFilter.MakePrinterPipeFilter(string);
 
 		PipeFilterOutputListener listener = new NullPipeFilterOutputListener();
+		OurModel tarjanModel = DotExportableUnitTest.MakeTarjanModel();
 		printerPipeFilter = printerPipeFilter.acceptOutputListener(listener)
-				.workOn(DotExportableUnitTest.MakeTarjanModel());
+				.workOn(tarjanModel);
 
 		Assert.assertNotNull(printerPipeFilter);
 		Assert.assertTrue(printerPipeFilter.isYourListenerNotNull());
+		Assert.assertTrue(printerPipeFilter.isYourListenerEquals(listener));
 		// the following looks like a regression test.
 		Assert.assertTrue(printerPipeFilter.isYourWorkingOurModelNotNull());
+		Assert.assertTrue(printerPipeFilter
+				.isYourWorkingOurModelEquals(tarjanModel));
+
 	}
 
 }

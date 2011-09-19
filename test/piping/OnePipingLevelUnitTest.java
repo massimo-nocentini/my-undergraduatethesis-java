@@ -36,9 +36,10 @@ public class OnePipingLevelUnitTest {
 
 		Assert.assertFalse(printerPipeFilter
 				.isYourWrappedPipeFilterEquals(dfsPipeFilter));
+		Assert.assertFalse(printerPipeFilter.isYourWrappedPipeFilterNotNull());
 
-		Assert.assertTrue(dfsPipeFilter.doYouWrapSomePipeFilter());
-		Assert.assertFalse(printerPipeFilter.doYouWrapSomePipeFilter());
+		Assert.assertTrue(dfsPipeFilter.isYourWrappedPipeFilterNotNull());
+		Assert.assertFalse(printerPipeFilter.isYourWrappedPipeFilterNotNull());
 
 		Assert.assertTrue(dfsPipeFilter.isYourLevelOfWrapping(1));
 		Assert.assertTrue(printerPipeFilter.isYourLevelOfWrapping(0));
@@ -56,9 +57,12 @@ public class OnePipingLevelUnitTest {
 
 		dfsPipeFilter = dfsPipeFilter.pipeAfter(printerPipeFilter);
 
-		dfsPipeFilter.workOn(DotExportableUnitTest.MakeTarjanModel());
+		OurModel tarjanModel = DotExportableUnitTest.MakeTarjanModel();
+		dfsPipeFilter.workOn(tarjanModel);
 
 		Assert.assertTrue(printerPipeFilter.isYourWorkingOurModelNotNull());
+		Assert.assertTrue(printerPipeFilter
+				.isYourWorkingOurModelEquals(tarjanModel));
 
 		// until I call apply method and run the pipe backwards, all the filters
 		// except the head of the pipe haven't any model to work on.
@@ -80,6 +84,9 @@ public class OnePipingLevelUnitTest {
 		dfsPipeFilter.workOn(tarjanModel).apply();
 
 		Assert.assertTrue(printerPipeFilter.isYourWorkingOurModelNotNull());
+		Assert.assertTrue(printerPipeFilter
+				.isYourWorkingOurModelEquals(tarjanModel));
+
 		Assert.assertTrue(dfsPipeFilter.isYourWorkingOurModelNotNull());
 		// this assert assure very much things!
 		Assert.assertTrue(dfsPipeFilter
@@ -98,7 +105,7 @@ public class OnePipingLevelUnitTest {
 		dfsPipeFilter = dfsPipeFilter.pipeAfter(printerPipeFilter);
 
 		Assert.assertTrue(printerPipeFilter.isYourListenerNotNull());
-		Assert.assertFalse(dfsPipeFilter.isYourListenerNotNull());
 		Assert.assertTrue(printerPipeFilter.isYourListenerEquals(dfsPipeFilter));
+		Assert.assertFalse(dfsPipeFilter.isYourListenerNotNull());
 	}
 }

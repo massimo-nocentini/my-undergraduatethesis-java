@@ -26,7 +26,7 @@ public abstract class PipeFilter implements PipeFilterOutputListener {
 	}
 
 	public PipeFilter workOn(OurModel ourModel) {
-		if (this.doYouWrapSomePipeFilter()) {
+		if (this.isYourWrappedPipeFilterNotNull()) {
 			wrappedPipeFilter.workOn(ourModel);
 		} else {
 			this.ourModel = ourModel;
@@ -55,7 +55,7 @@ public abstract class PipeFilter implements PipeFilterOutputListener {
 	private int computeLevelsOfWrapping() {
 		int levelsOfWrapping = 0;
 
-		if (this.doYouWrapSomePipeFilter()) {
+		if (this.isYourWrappedPipeFilterNotNull()) {
 			levelsOfWrapping = 1 + wrappedPipeFilter.computeLevelsOfWrapping();
 		}
 
@@ -67,11 +67,11 @@ public abstract class PipeFilter implements PipeFilterOutputListener {
 	}
 
 	public boolean isYourWrappedPipeFilterEquals(PipeFilter otherPipeFilter) {
-		return this.doYouWrapSomePipeFilter()
+		return this.isYourWrappedPipeFilterNotNull()
 				&& wrappedPipeFilter.equals(otherPipeFilter);
 	}
 
-	public boolean doYouWrapSomePipeFilter() {
+	public boolean isYourWrappedPipeFilterNotNull() {
 		return wrappedPipeFilter != null;
 	}
 
@@ -81,7 +81,7 @@ public abstract class PipeFilter implements PipeFilterOutputListener {
 
 	public final PipeFilter apply() {
 
-		if (this.doYouWrapSomePipeFilter()) {
+		if (this.isYourWrappedPipeFilterNotNull()) {
 			wrappedPipeFilter.apply();
 		} else {
 			OurModel computedOurModel = this.doYourComputation();
