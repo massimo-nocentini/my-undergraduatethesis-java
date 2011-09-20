@@ -3,6 +3,7 @@ package model;
 import java.util.HashSet;
 import java.util.Set;
 
+import tarjan.DfsEventsListener;
 import JSBMLInterface.Connector;
 import dotInterface.DotExportable;
 import dotInterface.DotExporter;
@@ -42,6 +43,11 @@ public class OurModel implements DotExportable {
 		for (Vertex vertex : vertices) {
 			vertex.acceptExporter(exporter);
 		}
+	}
+
+	public OurModel runDepthFirstSearch(DfsEventsListener dfsEventListener) {
+		dfsEventListener.searchStarted();
+		return this;
 	}
 
 }

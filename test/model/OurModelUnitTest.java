@@ -6,6 +6,10 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import tarjan.DfsEventsListener;
+import tarjan.DfsEventsListenerNullImplementor;
+import dotInterface.DotExportableUnitTest;
+
 public class OurModelUnitTest {
 
 	@Test
@@ -20,10 +24,41 @@ public class OurModelUnitTest {
 		assertTrue(model.isEmpty());
 	}
 
+	/**
+	 * This test method establish the protocol of messages which a client have
+	 * to send to a OurModel object in order to request the run of a Depth First
+	 * Search algorithm on the network encapsulated by the OurModel object. <br>
+	 * <br>
+	 * This method ensures that the method {@link OurModel}
+	 * .runDepthFirstSearch(DfsEventsListener) return a reference to an instance
+	 * of the class OurModel and that instance must be the same instance which
+	 * receive the message (in other words the method runDepthFirstSearch is
+	 * fluent respect to its class).
+	 */
 	@Test
-	public void checkMinusMethod() {
-		// TODO: write down this test and implement the necessary logic to pass
-		// it. Bookmark fail.
-		Assert.fail();
+	public void applyDfsSearch() {
+
+		OurModel tarjanModel = DotExportableUnitTest.MakeTarjanModel();
+
+		DfsEventsListener dfsEventListener = new DfsEventsListenerNullImplementor();
+
+		OurModel returnedtarjanModel = tarjanModel
+				.runDepthFirstSearch(dfsEventListener);
+
+		Assert.assertNotNull(returnedtarjanModel);
+		Assert.assertSame(tarjanModel, returnedtarjanModel);
+
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void applyDfsSearchWithNullListenerThrowsException() {
+
+		OurModel tarjanModel = DotExportableUnitTest.MakeTarjanModel();
+
+		DfsEventsListener dfsEventListener = null;
+
+		@SuppressWarnings("unused")
+		OurModel returnedtarjanModel = tarjanModel
+				.runDepthFirstSearch(dfsEventListener);
 	}
 }
