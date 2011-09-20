@@ -57,7 +57,7 @@ public class OnePipingLevelUnitTest {
 
 		dfsPipeFilter = dfsPipeFilter.pipeAfter(printerPipeFilter);
 
-		OurModel tarjanModel = DotExportableUnitTest.MakeTarjanModel();
+		OurModel tarjanModel = DotExportableUnitTest.makeTarjanModel();
 		dfsPipeFilter.workOn(tarjanModel);
 
 		Assert.assertTrue(printerPipeFilter.isYourWorkingOurModelNotNull());
@@ -80,7 +80,7 @@ public class OnePipingLevelUnitTest {
 
 		dfsPipeFilter = dfsPipeFilter.pipeAfter(printerPipeFilter);
 
-		OurModel tarjanModel = DotExportableUnitTest.MakeTarjanModel();
+		OurModel tarjanModel = DotExportableUnitTest.makeTarjanModel();
 		dfsPipeFilter.workOn(tarjanModel).apply();
 
 		Assert.assertTrue(printerPipeFilter.isYourWorkingOurModelNotNull());
@@ -118,7 +118,7 @@ public class OnePipingLevelUnitTest {
 
 		PipeFilter dfsPipeFilter = PipeFilter.MakeDfsPipeFilter(pipelineName);
 
-		final OurModel tarjanModel = DotExportableUnitTest.MakeTarjanModel();
+		final OurModel tarjanModel = DotExportableUnitTest.makeTarjanModel();
 		final StringBuilder listenerSignalRecorder = new StringBuilder();
 		final String listenerActuallySignaledFlag = "signaled";
 

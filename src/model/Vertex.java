@@ -12,6 +12,9 @@ import dotInterface.VertexDotInfoProvider;
 
 public class Vertex implements DotExportable, VertexDotInfoProvider {
 
+	/**
+	 * Dummy value
+	 */
 	private static String DummySpeciesId = "dummy_species_id";
 	private static String DummyCompartmentId = "dummy_compartment_id";
 

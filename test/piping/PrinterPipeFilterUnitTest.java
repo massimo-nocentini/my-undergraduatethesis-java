@@ -42,7 +42,7 @@ public class PrinterPipeFilterUnitTest {
 			}
 		}
 
-		final OurModel tarjanModel = DotExportableUnitTest.MakeTarjanModel();
+		final OurModel tarjanModel = DotExportableUnitTest.makeTarjanModel();
 
 		PipeFilterOutputListener listener = new PipeFilterOutputListener() {
 

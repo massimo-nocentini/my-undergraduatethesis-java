@@ -6,4 +6,8 @@ public class DfsEventsListenerNullImplementor implements DfsEventsListener {
 	public void searchStarted() {
 	}
 
+	@Override
+	public void searchCompleted() {
+	}
+
 }

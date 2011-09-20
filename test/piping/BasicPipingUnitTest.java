@@ -63,7 +63,7 @@ public class BasicPipingUnitTest {
 		PipeFilter printerPipeFilter = PipeFilter.MakePrinterPipeFilter(string);
 
 		PipeFilterOutputListener listener = new NullPipeFilterOutputListener();
-		OurModel tarjanModel = DotExportableUnitTest.MakeTarjanModel();
+		OurModel tarjanModel = DotExportableUnitTest.makeTarjanModel();
 		printerPipeFilter = printerPipeFilter.acceptOutputListener(listener)
 				.workOn(tarjanModel);
 

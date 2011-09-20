@@ -139,7 +139,7 @@ public class DotExportableUnitTest {
 				.produceSvgOutput();
 	}
 
-	public static OurModel MakeTarjanModel() {
+	public static OurModel makeTarjanModel() {
 		HashSet<Vertex> vertices = new HashSet<Vertex>();
 		makeTarjanNetworkVertexSetWithRelation(vertices, new HashSet<String>(),
 				new HashSet<String>(), new SimpleExporter());
