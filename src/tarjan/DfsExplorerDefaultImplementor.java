@@ -2,8 +2,8 @@ package tarjan;
 
 import java.util.Map;
 
-import model.VertexLogicApplier;
 import model.Vertex;
+import model.VertexLogicApplier;
 
 public class DfsExplorerDefaultImplementor implements DfsExplorer {
 
@@ -47,13 +47,13 @@ public class DfsExplorerDefaultImplementor implements DfsExplorer {
 		dfsEventsListener.searchStarted();
 	}
 
-	@Override
-	public void searchCompleted() {
-		dfsEventsListener.searchCompleted();
-	}
-
 	public static DfsExplorer Make() {
 		return new DfsExplorerDefaultImplementor();
+	}
+
+	@Override
+	public void searchCompleted(Map<Vertex, VertexDfsMetadata> map) {
+		dfsEventsListener.searchCompleted(map);
 	}
 
 }

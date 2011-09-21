@@ -18,4 +18,8 @@ public class VertexDfsMetadata {
 		}
 		return this;
 	}
+
+	public boolean isExplored() {
+		return explored;
+	}
 }

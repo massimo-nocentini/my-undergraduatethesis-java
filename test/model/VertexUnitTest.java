@@ -489,11 +489,20 @@ public class VertexUnitTest {
 		Species secondAdded = new Species("another_species_id");
 		secondAdded.setCompartment(compartment);
 
+		Species thirdAdded = new Species("another_another_species_id");
+		thirdAdded.setCompartment(compartment);
+
 		Vertex vertex = Vertex.makeVertex(firstAdded);
 		Vertex otherVertex = Vertex.makeVertex(secondAdded);
+		Vertex anotherVertex = Vertex.makeVertex(thirdAdded);
 
 		Assert.assertEquals(vertex.compareTo(otherVertex),
 				-otherVertex.compareTo(vertex));
+
+		Assert.assertEquals(
+				vertex.compareTo(otherVertex) > 0
+						&& otherVertex.compareTo(anotherVertex) > 0,
+				vertex.compareTo(anotherVertex) > 0);
 	}
 
 	@Test
@@ -505,10 +514,15 @@ public class VertexUnitTest {
 		Species firstAdded = new Species("species_id");
 		firstAdded.setCompartment(compartment);
 
+		Species secondAdded = new Species("another_species_id");
+		secondAdded.setCompartment(compartment);
+
 		Vertex vertex = Vertex.makeVertex(firstAdded);
 		Vertex otherVertex = Vertex.makeVertex(firstAdded);
+		Vertex anotherVertex = Vertex.makeVertex(secondAdded);
 
-		Assert.assertEquals(0, vertex.compareTo(otherVertex));
-		Assert.assertEquals(0, otherVertex.compareTo(vertex));
+		Assert.assertEquals(vertex.compareTo(otherVertex) == 0, vertex
+				.compareTo(anotherVertex) == otherVertex
+				.compareTo(anotherVertex));
 	}
 }

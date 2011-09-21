@@ -68,13 +68,12 @@ public class OurModel implements DotExportable {
 
 		dfsVertexExplorer.searchStarted(map);
 
-		for (Entry<Vertex, VertexDfsMetadata> entry : map
-				.entrySet()) {
+		for (Entry<Vertex, VertexDfsMetadata> entry : map.entrySet()) {
 
 			entry.getValue().ifNotExplored(dfsVertexExplorer);
 		}
 
-		dfsVertexExplorer.searchCompleted();
+		dfsVertexExplorer.searchCompleted(map);
 
 		return this;
 	}

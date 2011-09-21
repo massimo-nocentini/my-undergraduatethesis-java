@@ -12,5 +12,5 @@ public interface DfsExplorer {
 
 	void searchStarted(Map<Vertex, VertexDfsMetadata> map);
 
-	void searchCompleted();
+	void searchCompleted(Map<Vertex, VertexDfsMetadata> map);
 }
