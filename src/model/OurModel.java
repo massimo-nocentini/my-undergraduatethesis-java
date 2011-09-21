@@ -1,11 +1,13 @@
 package model;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import tarjan.DfsEventsListener;
+import tarjan.DfsExplorer;
+import tarjan.VertexDfsMetadata;
 import JSBMLInterface.Connector;
 import dotInterface.DotExportable;
 import dotInterface.DotExporter;
@@ -51,47 +53,21 @@ public class OurModel implements DotExportable {
 		}
 	}
 
-	public OurModel runDepthFirstSearch(DfsEventsListener dfsEventListener) {
-		dfsEventListener.searchStarted();
-		// TODO: decide if sort the vertices or use a datastructure that capture
-		// some order. (SortedTreeSet o qualcosa di simile)
-		Map<Vertex, BooleanInstance> map = new HashMap<Vertex, OurModel.BooleanInstance>();
+	public OurModel runDepthFirstSearch(DfsExplorer dfsVertexExplorer) {
+		Map<Vertex, VertexDfsMetadata> map = new HashMap<Vertex, VertexDfsMetadata>();
 
 		for (Vertex v : vertices) {
-			map.put(v, new BooleanInstance(v));
+			map.put(v, new VertexDfsMetadata(v));
 		}
 
-		DfsVertexExplorer vertexExplorer = null;
+		dfsVertexExplorer.searchStarted(Collections.unmodifiableMap(map));
 
 		for (Vertex v : vertices) {
-			map.get(v).ifNotExplored(vertexExplorer);
+			map.get(v).ifNotExplored(dfsVertexExplorer);
 		}
 
-		dfsEventListener.searchCompleted();
+		dfsVertexExplorer.searchCompleted();
 		return this;
 	}
 
-	// TODO portare questa interfaccia in un file a se stante
-	private interface DfsVertexExplorer {
-		void explore(Vertex v);
-	}
-
-	// TODO: questa potrebbe diventare un decoratore della classe Vertex
-	private static class BooleanInstance {
-		private boolean explored;
-		private final Vertex vertex;
-
-		BooleanInstance(Vertex v) {
-			this.vertex = v;
-			this.explored = false;
-		}
-
-		public BooleanInstance ifNotExplored(DfsVertexExplorer vertexExplorer) {
-			if (explored == false) {
-				this.explored = true;
-				vertexExplorer.explore(vertex);
-			}
-			return this;
-		}
-	}
 }

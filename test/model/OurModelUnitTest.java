@@ -2,17 +2,14 @@ package model;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
 import junit.framework.Assert;
 
 import org.junit.Test;
 
 import tarjan.DfsEventsListener;
 import tarjan.DfsEventsListenerNullImplementor;
+import tarjan.DfsExplorer;
+import tarjan.DfsExplorerDefaultImplementor;
 import dotInterface.DotExportableUnitTest;
 
 public class OurModelUnitTest {
@@ -47,8 +44,12 @@ public class OurModelUnitTest {
 
 		DfsEventsListener dfsEventListener = new DfsEventsListenerNullImplementor();
 
+		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.Make();
+
+		dfsExplorer.acceptDfsEventsListener(dfsEventListener);
+
 		OurModel returnedtarjanModel = tarjanModel
-				.runDepthFirstSearch(dfsEventListener);
+				.runDepthFirstSearch(dfsExplorer);
 
 		Assert.assertNotNull(returnedtarjanModel);
 		Assert.assertSame(tarjanModel, returnedtarjanModel);
@@ -62,69 +63,12 @@ public class OurModelUnitTest {
 
 		DfsEventsListener dfsEventListener = null;
 
-		tarjanModel.runDepthFirstSearch(dfsEventListener);
+		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.Make();
+
+		dfsExplorer.acceptDfsEventsListener(dfsEventListener);
+
+		tarjanModel.runDepthFirstSearch(dfsExplorer);
+
 	}
 
-	@Test
-	public void checkingStartEndNotificationDfsSearchWithEmptyModel() {
-
-		OurModel tarjanModel = OurModel.makeEmptyModel();
-
-		final String startSearchNotificationName = "Search Started";
-
-		final String completeSearchNotificationName = "Search Completed";
-
-		final Set<String> expectedSearchEventNotifications = new HashSet<String>();
-
-		DfsEventsListener dfsEventListener = new DfsEventsListener() {
-
-			@Override
-			public void searchStarted() {
-				expectedSearchEventNotifications
-						.add(startSearchNotificationName);
-			}
-
-			@Override
-			public void searchCompleted() {
-				expectedSearchEventNotifications
-						.add(completeSearchNotificationName);
-			}
-		};
-
-		tarjanModel.runDepthFirstSearch(dfsEventListener);
-
-		Assert.assertEquals(2, expectedSearchEventNotifications.size());
-
-		Assert.assertTrue(expectedSearchEventNotifications
-				.contains(startSearchNotificationName));
-
-		Assert.assertTrue(expectedSearchEventNotifications
-				.contains(completeSearchNotificationName));
-	}
-
-	@Test
-	public void checkingPreVisitPostVisitOneVertex() {
-
-		Vertex v = Vertex.makeVertex();
-
-		OurModel tarjanModel = OurModel.makeOurModelFrom(new HashSet<Vertex>(
-				Arrays.<Vertex> asList(v)));
-
-		final Set<Integer> expectedSearchEventNotifications = new HashSet<Integer>();
-
-		DfsEventsListener dfsEventListener = new DfsEventsListener() {
-
-			@Override
-			public void searchStarted() {
-			}
-
-			@Override
-			public void searchCompleted() {
-			}
-		};
-
-		tarjanModel.runDepthFirstSearch(dfsEventListener);
-
-		Assert.assertEquals(2, expectedSearchEventNotifications.size());
-	}
 }
