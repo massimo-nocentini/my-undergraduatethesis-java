@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import junit.framework.Assert;
 import model.OurModel;
@@ -125,7 +126,12 @@ public class DfsExplorerUnitTest {
 		final Vertex v2 = Vertex.makeVertex();
 		final Vertex v3 = Vertex.makeVertex();
 
-		OurModel tarjanModel = OurModel.makeOurModelFrom(new HashSet<Vertex>(
+		v.addNeighbour(v2);
+		v.addNeighbour(v3);
+
+		v3.addNeighbour(v2);
+
+		OurModel tarjanModel = OurModel.makeOurModelFrom(new TreeSet<Vertex>(
 				Arrays.<Vertex> asList(v, v2, v3)));
 
 		final List<Vertex> expectedOrderedPrevisitInvocation = new LinkedList<Vertex>();

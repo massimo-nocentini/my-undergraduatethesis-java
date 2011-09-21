@@ -6,7 +6,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import junit.framework.Assert;
@@ -136,6 +139,33 @@ public class VertexUnitTest {
 
 		assertTrue(vertex.isYourNeighbour(a));
 		assertFalse(a.isYourNeighbour(vertex));
+	}
+
+	@Test
+	public void addingNeighborsOrderIsPreservedByVertex() {
+		Vertex vertex = Vertex.makeVertex();
+		Vertex a1 = Vertex.makeVertex();
+		Vertex a2 = Vertex.makeVertex();
+		Vertex a3 = Vertex.makeVertex();
+
+		vertex.addNeighbour(a1);
+		vertex.addNeighbour(a2);
+		vertex.addNeighbour(a3);
+
+		List<Vertex> desiredNeighborsSequence = new LinkedList<Vertex>(
+				Arrays.asList(a1, a2, a3));
+
+		final List<Vertex> actualNeighborsSequence = new LinkedList<Vertex>();
+
+		vertex.doOnNeighbors(new INeighbourApplier() {
+
+			@Override
+			public void apply(Vertex neighbourVertex) {
+				actualNeighborsSequence.add(neighbourVertex);
+			}
+		});
+
+		Assert.assertEquals(desiredNeighborsSequence, actualNeighborsSequence);
 	}
 
 	@Test
@@ -431,6 +461,24 @@ public class VertexUnitTest {
 
 	@Test
 	public void vertexIsYourOrigin() {
+
+		String compartmentId = "compartment_id";
+		Compartment compartment = new Compartment(compartmentId);
+
+		Species firstAdded = new Species("species_id");
+		firstAdded.setCompartment(compartment);
+
+		Species secondAdded = new Species("another_species_id");
+		secondAdded.setCompartment(compartment);
+
+		Vertex vertex = Vertex.makeVertex(firstAdded);
+
+		Assert.assertTrue(vertex.isYourOrigin(firstAdded));
+		Assert.assertFalse(vertex.isYourOrigin(secondAdded));
+	}
+
+	@Test
+	public void vertexComparableEquals() {
 
 		String compartmentId = "compartment_id";
 		Compartment compartment = new Compartment(compartmentId);

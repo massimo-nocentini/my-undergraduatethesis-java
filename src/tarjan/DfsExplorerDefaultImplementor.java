@@ -17,11 +17,14 @@ public class DfsExplorerDefaultImplementor implements DfsExplorer {
 	public void exploreVertex(Vertex v) {
 		dfsEventsListener.preVisit(v);
 
+		final DfsExplorer thisExplorer = this;
+
 		INeighbourApplier dfsRecursivelyNeighborsApplier = new INeighbourApplier() {
 
 			@Override
 			public void apply(Vertex vertex) {
-
+				exploredVertexMetadatasMap.get(vertex).ifNotExplored(
+						thisExplorer);
 			}
 		};
 
@@ -38,6 +41,7 @@ public class DfsExplorerDefaultImplementor implements DfsExplorer {
 	@Override
 	public void searchStarted(
 			Map<Vertex, VertexDfsMetadata> exploredVertexMetadatasMap) {
+
 		this.exploredVertexMetadatasMap = exploredVertexMetadatasMap;
 
 		dfsEventsListener.searchStarted();

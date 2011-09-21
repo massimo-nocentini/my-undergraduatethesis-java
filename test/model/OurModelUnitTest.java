@@ -2,6 +2,13 @@ package model;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+
 import junit.framework.Assert;
 
 import org.junit.Test;
@@ -24,6 +31,41 @@ public class OurModelUnitTest {
 	public void emptyAfterCreation() {
 		OurModel model = OurModel.makeEmptyModel();
 		assertTrue(model.isEmpty());
+	}
+
+	@Test
+	public void addingNeighborsOrderIsPreservedByVertex() {
+		Vertex vertex = Vertex.makeVertex();
+		Vertex a1 = Vertex.makeVertex();
+		Vertex a2 = Vertex.makeVertex();
+		Vertex a3 = Vertex.makeVertex();
+
+		vertex.addNeighbour(a1);
+		vertex.addNeighbour(a2);
+		vertex.addNeighbour(a3);
+
+		Set<Vertex> vertices = new TreeSet<Vertex>();
+		vertices.add(vertex);
+		vertices.add(a1);
+		vertices.add(a2);
+		vertices.add(a3);
+
+		OurModel customModel = OurModel.makeOurModelFrom(vertices);
+
+		List<Vertex> desiredNeighborsSequence = new LinkedList<Vertex>(
+				Arrays.asList(a1, a2, a3));
+
+		final List<Vertex> actualNeighborsSequence = new LinkedList<Vertex>();
+
+		vertex.doOnNeighbors(new INeighbourApplier() {
+
+			@Override
+			public void apply(Vertex neighbourVertex) {
+				actualNeighborsSequence.add(neighbourVertex);
+			}
+		});
+
+		Assert.assertEquals(desiredNeighborsSequence, actualNeighborsSequence);
 	}
 
 	/**

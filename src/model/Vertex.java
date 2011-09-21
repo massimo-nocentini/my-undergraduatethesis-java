@@ -1,7 +1,7 @@
 package model;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.sbml.jsbml.Species;
 
@@ -10,7 +10,8 @@ import dotInterface.DotExporter;
 import dotInterface.Edge;
 import dotInterface.VertexDotInfoProvider;
 
-public class Vertex implements DotExportable, VertexDotInfoProvider {
+public class Vertex implements DotExportable, VertexDotInfoProvider,
+		Comparable<Vertex> {
 
 	/**
 	 * Dummy value
@@ -47,15 +48,18 @@ public class Vertex implements DotExportable, VertexDotInfoProvider {
 		this.species_id = species_id;
 		this.compartment_id = compartment_id;
 
-		neighbors = new HashSet<Vertex>();
-		directAncestors = new HashSet<Vertex>();
+		neighbors = new TreeSet<Vertex>();
+		directAncestors = new TreeSet<Vertex>();
 	}
 
 	public static Vertex makeVertex() {
 		int id = VertexIntegerEnumerator.enumerateNewVertex();
-		return Vertex.makeVertex(
+
+		Vertex createdVertex = Vertex.makeVertex(
 				Vertex.DummySpeciesId.concat(String.valueOf(id)),
 				Vertex.DummyCompartmentId);
+
+		return createdVertex;
 	}
 
 	public Vertex addNeighbour(Vertex neighbour) {
@@ -187,5 +191,16 @@ public class Vertex implements DotExportable, VertexDotInfoProvider {
 
 	public boolean matchSpeciesWith(Vertex otherVertex) {
 		return species_id.equals(otherVertex.species_id);
+	}
+
+	@Override
+	public int compareTo(Vertex o) {
+		int comparison = this.compartment_id.compareTo(o.compartment_id);
+
+		if (comparison == 0) {
+			comparison = this.species_id.compareTo(o.species_id);
+		}
+
+		return comparison;
 	}
 }

@@ -1,10 +1,12 @@
 package model;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 import tarjan.DfsExplorer;
 import tarjan.VertexDfsMetadata;
@@ -17,7 +19,9 @@ public class OurModel implements DotExportable {
 	private Set<Vertex> vertices;
 
 	private OurModel(Set<Vertex> vertices) {
-		this.vertices = new HashSet<Vertex>();
+
+		this.vertices = new TreeSet<Vertex>();
+
 		for (Vertex vertex : vertices) {
 			this.vertices.add(vertex);
 		}
@@ -54,20 +58,36 @@ public class OurModel implements DotExportable {
 	}
 
 	public OurModel runDepthFirstSearch(DfsExplorer dfsVertexExplorer) {
-		Map<Vertex, VertexDfsMetadata> map = new HashMap<Vertex, VertexDfsMetadata>();
+
+		Map<Vertex, VertexDfsMetadata> unmodifiableMap = makeDfsVertexMetadataMap();
+
+		dfsVertexExplorer.searchStarted(unmodifiableMap);
+
+		// for (Vertex v : vertices) {
+		// unmodifiableMap.get(v).ifNotExplored(dfsVertexExplorer);
+		// }
+
+		for (Entry<Vertex, VertexDfsMetadata> entry : unmodifiableMap
+				.entrySet()) {
+			entry.getValue().ifNotExplored(dfsVertexExplorer);
+		}
+
+		dfsVertexExplorer.searchCompleted();
+		return this;
+	}
+
+	private Map<Vertex, VertexDfsMetadata> makeDfsVertexMetadataMap() {
+
+		Map<Vertex, VertexDfsMetadata> map = new TreeMap<Vertex, VertexDfsMetadata>();
 
 		for (Vertex v : vertices) {
 			map.put(v, new VertexDfsMetadata(v));
 		}
 
-		dfsVertexExplorer.searchStarted(Collections.unmodifiableMap(map));
+		Map<Vertex, VertexDfsMetadata> unmodifiableMap = Collections
+				.unmodifiableMap(map);
 
-		for (Vertex v : vertices) {
-			map.get(v).ifNotExplored(dfsVertexExplorer);
-		}
-
-		dfsVertexExplorer.searchCompleted();
-		return this;
+		return unmodifiableMap;
 	}
 
 }
