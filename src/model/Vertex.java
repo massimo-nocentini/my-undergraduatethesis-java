@@ -69,7 +69,7 @@ public class Vertex implements DotExportable, VertexDotInfoProvider,
 	}
 
 	public void doOnNeighbors(VertexLogicApplier applier) {
-		for (Vertex vertex : this.neighbors) {
+		for (Vertex vertex : neighbors) {
 			applier.apply(vertex);
 		}
 

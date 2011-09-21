@@ -51,24 +51,26 @@ public class OurModel implements DotExportable {
 	}
 
 	@Override
-	public void acceptExporter(DotExporter exporter) {
-		for (Vertex vertex : vertices) {
-			vertex.acceptExporter(exporter);
-		}
+	public void acceptExporter(final DotExporter exporter) {
+
+		doOnVertices(new VertexLogicApplier() {
+
+			@Override
+			public void apply(Vertex vertex) {
+				vertex.acceptExporter(exporter);
+			}
+		});
 	}
 
 	public OurModel runDepthFirstSearch(DfsExplorer dfsVertexExplorer) {
 
-		Map<Vertex, VertexDfsMetadata> unmodifiableMap = makeDfsVertexMetadataMap();
+		Map<Vertex, VertexDfsMetadata> map = makeDfsVertexMetadataMap();
 
-		dfsVertexExplorer.searchStarted(unmodifiableMap);
+		dfsVertexExplorer.searchStarted(map);
 
-		// for (Vertex v : vertices) {
-		// unmodifiableMap.get(v).ifNotExplored(dfsVertexExplorer);
-		// }
-
-		for (Entry<Vertex, VertexDfsMetadata> entry : unmodifiableMap
+		for (Entry<Vertex, VertexDfsMetadata> entry : map
 				.entrySet()) {
+
 			entry.getValue().ifNotExplored(dfsVertexExplorer);
 		}
 
@@ -79,16 +81,24 @@ public class OurModel implements DotExportable {
 
 	private Map<Vertex, VertexDfsMetadata> makeDfsVertexMetadataMap() {
 
-		Map<Vertex, VertexDfsMetadata> map = new TreeMap<Vertex, VertexDfsMetadata>();
+		final Map<Vertex, VertexDfsMetadata> map = new TreeMap<Vertex, VertexDfsMetadata>();
 
-		for (Vertex v : vertices) {
-			map.put(v, new VertexDfsMetadata(v));
+		doOnVertices(new VertexLogicApplier() {
+
+			@Override
+			public void apply(Vertex vertex) {
+				map.put(vertex, new VertexDfsMetadata(vertex));
+			}
+		});
+
+		return Collections.unmodifiableMap(map);
+	}
+
+	public void doOnVertices(VertexLogicApplier vertexLogicApplier) {
+		for (Vertex vertex : vertices) {
+			vertexLogicApplier.apply(vertex);
 		}
 
-		Map<Vertex, VertexDfsMetadata> unmodifiableMap = Collections
-				.unmodifiableMap(map);
-
-		return unmodifiableMap;
 	}
 
 }

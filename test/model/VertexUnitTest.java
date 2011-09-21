@@ -478,7 +478,7 @@ public class VertexUnitTest {
 	}
 
 	@Test
-	public void vertexComparableEquals() {
+	public void vertexComparableMathContract() {
 
 		String compartmentId = "compartment_id";
 		Compartment compartment = new Compartment(compartmentId);
@@ -490,8 +490,25 @@ public class VertexUnitTest {
 		secondAdded.setCompartment(compartment);
 
 		Vertex vertex = Vertex.makeVertex(firstAdded);
+		Vertex otherVertex = Vertex.makeVertex(secondAdded);
 
-		Assert.assertTrue(vertex.isYourOrigin(firstAdded));
-		Assert.assertFalse(vertex.isYourOrigin(secondAdded));
+		Assert.assertEquals(vertex.compareTo(otherVertex),
+				-otherVertex.compareTo(vertex));
+	}
+
+	@Test
+	public void vertexComparableEquals() {
+
+		String compartmentId = "compartment_id";
+		Compartment compartment = new Compartment(compartmentId);
+
+		Species firstAdded = new Species("species_id");
+		firstAdded.setCompartment(compartment);
+
+		Vertex vertex = Vertex.makeVertex(firstAdded);
+		Vertex otherVertex = Vertex.makeVertex(firstAdded);
+
+		Assert.assertEquals(0, vertex.compareTo(otherVertex));
+		Assert.assertEquals(0, otherVertex.compareTo(vertex));
 	}
 }

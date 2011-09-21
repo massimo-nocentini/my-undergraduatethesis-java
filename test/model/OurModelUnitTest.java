@@ -40,10 +40,6 @@ public class OurModelUnitTest {
 		Vertex a2 = Vertex.makeVertex();
 		Vertex a3 = Vertex.makeVertex();
 
-		vertex.addNeighbour(a1);
-		vertex.addNeighbour(a2);
-		vertex.addNeighbour(a3);
-
 		Set<Vertex> vertices = new TreeSet<Vertex>();
 		vertices.add(vertex);
 		vertices.add(a1);
@@ -52,20 +48,20 @@ public class OurModelUnitTest {
 
 		OurModel customModel = OurModel.makeOurModelFrom(vertices);
 
-		List<Vertex> desiredNeighborsSequence = new LinkedList<Vertex>(
-				Arrays.asList(a1, a2, a3));
+		List<Vertex> desiredVerticesSequence = new LinkedList<Vertex>(
+				Arrays.asList(vertex, a1, a2, a3));
 
-		final List<Vertex> actualNeighborsSequence = new LinkedList<Vertex>();
+		final List<Vertex> actualVerticesSequence = new LinkedList<Vertex>();
 
-		vertex.doOnNeighbors(new VertexLogicApplier() {
+		customModel.doOnVertices(new VertexLogicApplier() {
 
 			@Override
 			public void apply(Vertex neighbourVertex) {
-				actualNeighborsSequence.add(neighbourVertex);
+				actualVerticesSequence.add(neighbourVertex);
 			}
 		});
 
-		Assert.assertEquals(desiredNeighborsSequence, actualNeighborsSequence);
+		Assert.assertEquals(desiredVerticesSequence, actualVerticesSequence);
 	}
 
 	/**
