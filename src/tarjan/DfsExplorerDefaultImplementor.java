@@ -2,7 +2,7 @@ package tarjan;
 
 import java.util.Map;
 
-import model.INeighbourApplier;
+import model.VertexLogicApplier;
 import model.Vertex;
 
 public class DfsExplorerDefaultImplementor implements DfsExplorer {
@@ -19,7 +19,7 @@ public class DfsExplorerDefaultImplementor implements DfsExplorer {
 
 		final DfsExplorer thisExplorer = this;
 
-		INeighbourApplier dfsRecursivelyNeighborsApplier = new INeighbourApplier() {
+		VertexLogicApplier dfsRecursivelyNeighborsApplier = new VertexLogicApplier() {
 
 			@Override
 			public void apply(Vertex vertex) {

@@ -157,7 +157,7 @@ public class VertexUnitTest {
 
 		final List<Vertex> actualNeighborsSequence = new LinkedList<Vertex>();
 
-		vertex.doOnNeighbors(new INeighbourApplier() {
+		vertex.doOnNeighbors(new VertexLogicApplier() {
 
 			@Override
 			public void apply(Vertex neighbourVertex) {
@@ -190,7 +190,7 @@ public class VertexUnitTest {
 
 		final Set<Vertex> collectedNeighbours = new HashSet<Vertex>();
 
-		INeighbourApplier applier = new INeighbourApplier() {
+		VertexLogicApplier applier = new VertexLogicApplier() {
 
 			@Override
 			public void apply(Vertex vertex) {

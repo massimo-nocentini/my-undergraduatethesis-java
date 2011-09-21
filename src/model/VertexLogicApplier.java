@@ -1,6 +1,6 @@
 package model;
 
-public interface INeighbourApplier {
+public interface VertexLogicApplier {
 
 	void apply(Vertex vertex);
 }

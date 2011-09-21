@@ -57,7 +57,7 @@ public class OurModelUnitTest {
 
 		final List<Vertex> actualNeighborsSequence = new LinkedList<Vertex>();
 
-		vertex.doOnNeighbors(new INeighbourApplier() {
+		vertex.doOnNeighbors(new VertexLogicApplier() {
 
 			@Override
 			public void apply(Vertex neighbourVertex) {

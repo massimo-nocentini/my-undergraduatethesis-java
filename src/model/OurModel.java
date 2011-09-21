@@ -73,6 +73,7 @@ public class OurModel implements DotExportable {
 		}
 
 		dfsVertexExplorer.searchCompleted();
+
 		return this;
 	}
 
