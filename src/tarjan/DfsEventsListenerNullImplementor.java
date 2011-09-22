@@ -7,10 +7,6 @@ import model.Vertex;
 public class DfsEventsListenerNullImplementor implements DfsEventsListener {
 
 	@Override
-	public void searchStarted() {
-	}
-
-	@Override
 	public void postVisit(Vertex v) {
 	}
 
@@ -20,7 +16,11 @@ public class DfsEventsListenerNullImplementor implements DfsEventsListener {
 
 	@Override
 	public void searchCompleted(Map<Vertex, VertexDfsMetadata> map) {
-		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void searchStarted(Map<Vertex, VertexDfsMetadata> map) {
 
 	}
 

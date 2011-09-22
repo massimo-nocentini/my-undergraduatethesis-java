@@ -33,12 +33,6 @@ public class DfsExplorerUnitTest {
 		DfsEventsListener dfsEventListener = new DfsEventsListener() {
 
 			@Override
-			public void searchStarted() {
-				expectedSearchEventNotifications
-						.add(startSearchNotificationName);
-			}
-
-			@Override
 			public void postVisit(Vertex v) {
 			}
 
@@ -50,6 +44,13 @@ public class DfsExplorerUnitTest {
 			public void searchCompleted(Map<Vertex, VertexDfsMetadata> map) {
 				expectedSearchEventNotifications
 						.add(completeSearchNotificationName);
+			}
+
+			@Override
+			public void searchStarted(
+					Map<Vertex, VertexDfsMetadata> exploredVertexMetadatasMap) {
+				expectedSearchEventNotifications
+						.add(startSearchNotificationName);
 			}
 		};
 
@@ -80,10 +81,6 @@ public class DfsExplorerUnitTest {
 		DfsEventsListener dfsEventListener = new DfsEventsListener() {
 
 			@Override
-			public void searchStarted() {
-			}
-
-			@Override
 			public void postVisit(Vertex v) {
 			}
 
@@ -99,6 +96,12 @@ public class DfsExplorerUnitTest {
 				}
 
 				signalRecorder.append(signalFlag);
+			}
+
+			@Override
+			public void searchStarted(
+					Map<Vertex, VertexDfsMetadata> exploredVertexMetadatasMap) {
+
 			}
 		};
 
@@ -132,10 +135,6 @@ public class DfsExplorerUnitTest {
 		DfsEventsListener dfsEventListener = new DfsEventsListener() {
 
 			@Override
-			public void searchStarted() {
-			}
-
-			@Override
 			public void postVisit(Vertex vertex) {
 				Assert.assertEquals(v, vertex);
 				listenedEvents.add(postVisitFlag);
@@ -150,6 +149,11 @@ public class DfsExplorerUnitTest {
 			@Override
 			public void searchCompleted(Map<Vertex, VertexDfsMetadata> map) {
 			}
+
+			@Override
+			public void searchStarted(
+					Map<Vertex, VertexDfsMetadata> exploredVertexMetadatasMap) {
+			}
 		};
 
 		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.Make();
@@ -161,6 +165,85 @@ public class DfsExplorerUnitTest {
 				.runDepthFirstSearch(dfsExplorer);
 
 		Assert.assertEquals(expectedListenedEvents, listenedEvents);
+
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public void expectingExceptionWhenTryingUpdateSearchMapsOnSearchStarted() {
+
+		final Vertex v = Vertex.makeVertex();
+
+		OurModel tarjanModel = OurModel.makeOurModelFrom(new HashSet<Vertex>(
+				Arrays.<Vertex> asList(v)));
+
+		DfsEventsListener dfsEventListener = new DfsEventsListener() {
+
+			@Override
+			public void postVisit(Vertex vertex) {
+			}
+
+			@Override
+			public void preVisit(Vertex vertex) {
+			}
+
+			@Override
+			public void searchCompleted(Map<Vertex, VertexDfsMetadata> map) {
+				Vertex erroneousVerte = Vertex.makeVertex();
+				map.put(erroneousVerte, new VertexDfsMetadata(erroneousVerte));
+			}
+
+			@Override
+			public void searchStarted(
+					Map<Vertex, VertexDfsMetadata> exploredVertexMetadatasMap) {
+			}
+		};
+
+		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.Make();
+
+		dfsExplorer.acceptDfsEventsListener(dfsEventListener);
+
+		@SuppressWarnings("unused")
+		OurModel returnedtarjanModel = tarjanModel
+				.runDepthFirstSearch(dfsExplorer);
+
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public void expectingExceptionWhenTryingUpdateSearchMapsOnSearchCompleted() {
+
+		final Vertex v = Vertex.makeVertex();
+
+		OurModel tarjanModel = OurModel.makeOurModelFrom(new HashSet<Vertex>(
+				Arrays.<Vertex> asList(v)));
+
+		DfsEventsListener dfsEventListener = new DfsEventsListener() {
+
+			@Override
+			public void postVisit(Vertex vertex) {
+			}
+
+			@Override
+			public void preVisit(Vertex vertex) {
+			}
+
+			@Override
+			public void searchCompleted(Map<Vertex, VertexDfsMetadata> map) {
+			}
+
+			@Override
+			public void searchStarted(Map<Vertex, VertexDfsMetadata> map) {
+				Vertex erroneousVerte = Vertex.makeVertex();
+				map.put(erroneousVerte, new VertexDfsMetadata(erroneousVerte));
+			}
+		};
+
+		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.Make();
+
+		dfsExplorer.acceptDfsEventsListener(dfsEventListener);
+
+		@SuppressWarnings("unused")
+		OurModel returnedtarjanModel = tarjanModel
+				.runDepthFirstSearch(dfsExplorer);
 
 	}
 
@@ -195,10 +278,6 @@ public class DfsExplorerUnitTest {
 		DfsEventsListener dfsEventListener = new DfsEventsListener() {
 
 			@Override
-			public void searchStarted() {
-			}
-
-			@Override
 			public void postVisit(Vertex vertex) {
 				actualOrderedPostvisitInvocation.add(vertex);
 			}
@@ -210,7 +289,11 @@ public class DfsExplorerUnitTest {
 
 			@Override
 			public void searchCompleted(Map<Vertex, VertexDfsMetadata> map) {
-				// TODO Auto-generated method stub
+			}
+
+			@Override
+			public void searchStarted(
+					Map<Vertex, VertexDfsMetadata> exploredVertexMetadatasMap) {
 
 			}
 		};
