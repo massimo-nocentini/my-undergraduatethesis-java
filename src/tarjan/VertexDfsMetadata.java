@@ -18,9 +18,8 @@ public class VertexDfsMetadata {
 	public VertexDfsMetadata ifNotExplored(DfsExplorer vertexExplorer,
 			Vertex explorationCauseVertex) {
 
-		if (explored == false) {
-			explored = true;
-
+		if (isExplored() == false) {
+			toggle();
 			if (explorationCauseVertex != null) {
 				vertexExplorer
 						.newVertexExplored(explorationCauseVertex, vertex);
@@ -34,5 +33,12 @@ public class VertexDfsMetadata {
 
 	public boolean isExplored() {
 		return explored;
+	}
+
+	public VertexDfsMetadata toggle() {
+		if (isExplored() == false) {
+			explored = !explored;
+		}
+		return this;
 	}
 }

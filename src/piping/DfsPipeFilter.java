@@ -1,6 +1,13 @@
 package piping;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import model.OurModel;
+import model.Vertex;
+import tarjan.DfsEventsListenerTreeBuilder;
+import tarjan.DfsExplorer;
+import tarjan.DfsExplorerDefaultImplementor;
 
 public class DfsPipeFilter extends PipeFilter {
 
@@ -16,7 +23,18 @@ public class DfsPipeFilter extends PipeFilter {
 
 	@Override
 	protected OurModel doYourComputationOn(OurModel ourModel) {
-		return OurModel.makeEmptyModel();
-	}
 
+		DfsEventsListenerTreeBuilder dfsEventListener = new DfsEventsListenerTreeBuilder();
+
+		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.make();
+
+		dfsExplorer.acceptDfsEventsListener(dfsEventListener);
+
+		ourModel.runDepthFirstSearch(dfsExplorer);
+
+		Set<Vertex> vertices = new HashSet<Vertex>();
+		dfsEventListener.fillCollectedVertices(vertices);
+
+		return OurModel.makeOurModelFrom(vertices);
+	}
 }

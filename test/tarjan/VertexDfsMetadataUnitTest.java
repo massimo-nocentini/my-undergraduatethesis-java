@@ -71,6 +71,12 @@ public class VertexDfsMetadataUnitTest {
 			}
 
 			@Override
+			public void newVertexExplored(Vertex explorationCauseVertex,
+					Vertex vertex) {
+
+			}
+
+			@Override
 			public void exploreVertex(Vertex v) {
 
 			}
@@ -79,14 +85,7 @@ public class VertexDfsMetadataUnitTest {
 			public void acceptDfsEventsListener(DfsEventsListener listener) {
 
 			}
-
-			@Override
-			public void newVertexExplored(Vertex explorationCauseVertex,
-					Vertex vertex) {
-
-			}
 		};
-
 		vertexExplorer.acceptDfsEventsListener(eventListener);
 		metadata.ifNotExplored(vertexExplorer);
 
@@ -154,7 +153,7 @@ public class VertexDfsMetadataUnitTest {
 			}
 		};
 
-		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.Make();
+		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.make();
 
 		dfsExplorer.acceptDfsEventsListener(dfsEventListener);
 
@@ -169,5 +168,16 @@ public class VertexDfsMetadataUnitTest {
 
 		Assert.assertEquals(expectedExplorationMap.get(v),
 				actualExplorationMap.get(v));
+	}
+
+	@Test
+	public void checkToggleMethod() {
+
+		final Vertex v = Vertex.makeVertex();
+		VertexDfsMetadata metadata = new VertexDfsMetadata(v);
+
+		Assert.assertFalse(metadata.isExplored());
+		Assert.assertTrue(metadata.toggle().isExplored());
+		Assert.assertTrue(metadata.toggle().isExplored());
 	}
 }

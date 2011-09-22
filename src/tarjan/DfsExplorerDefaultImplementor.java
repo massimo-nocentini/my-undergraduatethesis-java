@@ -48,7 +48,7 @@ public class DfsExplorerDefaultImplementor implements DfsExplorer {
 		dfsEventsListener.searchStarted(exploredVertexMetadatasMap);
 	}
 
-	public static DfsExplorer Make() {
+	public static DfsExplorer make() {
 		return new DfsExplorerDefaultImplementor();
 	}
 

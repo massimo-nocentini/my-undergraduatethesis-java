@@ -82,7 +82,7 @@ public class OurModelUnitTest {
 
 		DfsEventsListener dfsEventListener = new DfsEventsListenerNullImplementor();
 
-		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.Make();
+		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.make();
 
 		dfsExplorer.acceptDfsEventsListener(dfsEventListener);
 
@@ -101,7 +101,7 @@ public class OurModelUnitTest {
 
 		DfsEventsListener dfsEventListener = null;
 
-		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.Make();
+		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.make();
 
 		dfsExplorer.acceptDfsEventsListener(dfsEventListener);
 

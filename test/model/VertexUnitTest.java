@@ -559,4 +559,22 @@ public class VertexUnitTest {
 				.compareTo(anotherVertex) == otherVertex
 				.compareTo(anotherVertex));
 	}
+
+	@Test
+	public void checkCloneStaticMethod() {
+
+		String compartmentId = "compartment_id";
+		Compartment compartment = new Compartment(compartmentId);
+
+		Species firstAdded = new Species("species_id");
+		firstAdded.setCompartment(compartment);
+
+		Vertex vertex = Vertex.makeVertex(firstAdded);
+
+		Vertex clonedVertex = Vertex.cloneOnlyCharacteristicsFields(vertex);
+
+		Assert.assertEquals(vertex, clonedVertex);
+		Assert.assertNotSame(vertex, clonedVertex);
+		Assert.assertTrue(clonedVertex.isYourNeighborhoodEmpty());
+	}
 }

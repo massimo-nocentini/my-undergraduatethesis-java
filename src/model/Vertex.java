@@ -210,4 +210,9 @@ public class Vertex implements DotExportable, VertexDotInfoProvider,
 
 		return comparison;
 	}
+
+	public static Vertex cloneOnlyCharacteristicsFields(Vertex vertex) {
+
+		return Vertex.makeVertex(vertex.species_id, vertex.compartment_id);
+	}
 }

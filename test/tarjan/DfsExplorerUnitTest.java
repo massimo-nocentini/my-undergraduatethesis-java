@@ -60,7 +60,7 @@ public class DfsExplorerUnitTest {
 			}
 		};
 
-		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.Make();
+		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.make();
 
 		dfsExplorer.acceptDfsEventsListener(dfsEventListener);
 
@@ -117,7 +117,7 @@ public class DfsExplorerUnitTest {
 			}
 		};
 
-		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.Make();
+		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.make();
 
 		dfsExplorer.acceptDfsEventsListener(dfsEventListener);
 
@@ -173,7 +173,7 @@ public class DfsExplorerUnitTest {
 			}
 		};
 
-		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.Make();
+		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.make();
 
 		dfsExplorer.acceptDfsEventsListener(dfsEventListener);
 
@@ -220,7 +220,7 @@ public class DfsExplorerUnitTest {
 			}
 		};
 
-		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.Make();
+		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.make();
 
 		dfsExplorer.acceptDfsEventsListener(dfsEventListener);
 
@@ -265,7 +265,7 @@ public class DfsExplorerUnitTest {
 			}
 		};
 
-		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.Make();
+		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.make();
 
 		dfsExplorer.acceptDfsEventsListener(dfsEventListener);
 
@@ -331,7 +331,7 @@ public class DfsExplorerUnitTest {
 			}
 		};
 
-		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.Make();
+		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.make();
 
 		dfsExplorer.acceptDfsEventsListener(dfsEventListener);
 

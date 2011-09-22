@@ -1,5 +1,6 @@
 package model;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
@@ -97,6 +98,64 @@ public class OurModel implements DotExportable {
 		for (Vertex vertex : vertices) {
 			vertexLogicApplier.apply(vertex);
 		}
+
+	}
+
+	public static OurModel makePapadimitriouModel() {
+
+		final Vertex vA = Vertex.makeVertex();
+		final Vertex vB = Vertex.makeVertex();
+		final Vertex vE = Vertex.makeVertex();
+		final Vertex vI = Vertex.makeVertex();
+		final Vertex vJ = Vertex.makeVertex();
+		final Vertex vC = Vertex.makeVertex();
+		final Vertex vD = Vertex.makeVertex();
+		final Vertex vG = Vertex.makeVertex();
+		final Vertex vH = Vertex.makeVertex();
+		final Vertex vK = Vertex.makeVertex();
+		final Vertex vL = Vertex.makeVertex();
+		final Vertex vF = Vertex.makeVertex();
+
+		vA.addNeighbour(vB);
+		vA.addNeighbour(vE);
+
+		vB.addNeighbour(vA);
+
+		vE.addNeighbour(vA);
+		vE.addNeighbour(vI);
+		vE.addNeighbour(vJ);
+
+		vI.addNeighbour(vE);
+		vI.addNeighbour(vJ);
+
+		vJ.addNeighbour(vE);
+		vJ.addNeighbour(vI);
+
+		vC.addNeighbour(vD);
+		vC.addNeighbour(vH);
+		vC.addNeighbour(vG);
+
+		vD.addNeighbour(vH);
+		vD.addNeighbour(vC);
+
+		vG.addNeighbour(vH);
+		vG.addNeighbour(vC);
+		vG.addNeighbour(vK);
+
+		vH.addNeighbour(vD);
+		vH.addNeighbour(vC);
+		vH.addNeighbour(vG);
+		vH.addNeighbour(vK);
+		vH.addNeighbour(vL);
+
+		vK.addNeighbour(vH);
+		vK.addNeighbour(vG);
+
+		vL.addNeighbour(vH);
+
+		return OurModel.makeOurModelFrom(new TreeSet<Vertex>(
+				Arrays.<Vertex> asList(vA, vB, vC, vD, vE, vF, vG, vH, vI, vJ,
+						vK, vL)));
 
 	}
 
