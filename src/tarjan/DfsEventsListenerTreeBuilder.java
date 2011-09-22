@@ -31,4 +31,10 @@ public class DfsEventsListenerTreeBuilder implements DfsEventsListener {
 
 	}
 
+	@Override
+	public void newVertexExplored(Vertex explorationCauseVertex, Vertex vertex) {
+		// TODO Auto-generated method stub
+
+	}
+
 }

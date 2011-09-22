@@ -14,4 +14,6 @@ public interface DfsEventsListener {
 
 	void searchStarted(Map<Vertex, VertexDfsMetadata> map);
 
+	void newVertexExplored(Vertex explorationCauseVertex, Vertex vertex);
+
 }

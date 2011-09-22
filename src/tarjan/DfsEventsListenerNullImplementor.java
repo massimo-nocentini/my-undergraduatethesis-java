@@ -24,4 +24,9 @@ public class DfsEventsListenerNullImplementor implements DfsEventsListener {
 
 	}
 
+	@Override
+	public void newVertexExplored(Vertex explorationCauseVertex, Vertex vertex) {
+
+	}
+
 }

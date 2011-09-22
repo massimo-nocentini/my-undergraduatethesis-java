@@ -208,6 +208,40 @@ public class VertexUnitTest {
 	}
 
 	@Test
+	public void encapsulatedNeighboursDoApplyWithNeighborhoodRelation() {
+
+		final Vertex vertex = Vertex.makeVertex();
+		Vertex a = Vertex.makeVertex();
+		Vertex b = Vertex.makeVertex();
+
+		vertex.addNeighbour(a).addNeighbour(b);
+
+		Vertex c = Vertex.makeVertex();
+
+		final Set<Vertex> collectedNeighbours = new HashSet<Vertex>();
+
+		VertexLogicApplierWithNeighborhoodRelation applier = new VertexLogicApplierWithNeighborhoodRelation() {
+
+			@Override
+			public void apply(Vertex parent, Vertex neighbour) {
+				collectedNeighbours.add(neighbour);
+
+				Assert.assertEquals(vertex, parent);
+				Assert.assertSame(vertex, parent);
+			}
+
+		};
+
+		vertex.doOnNeighbors(applier);
+
+		assertEquals(2, collectedNeighbours.size());
+		assertTrue(collectedNeighbours.contains(a));
+		assertTrue(collectedNeighbours.contains(b));
+		assertFalse(collectedNeighbours.contains(c));
+		assertTrue(vertex.isYourNeighborhoodEquals(collectedNeighbours));
+	}
+
+	@Test
 	public void makeVertexWithId() {
 		String species_id = "species_id";
 		String compartment_id = "compartment_id";

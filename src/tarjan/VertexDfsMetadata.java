@@ -12,10 +12,23 @@ public class VertexDfsMetadata {
 	}
 
 	public VertexDfsMetadata ifNotExplored(DfsExplorer vertexExplorer) {
+		return ifNotExplored(vertexExplorer, null);
+	}
+
+	public VertexDfsMetadata ifNotExplored(DfsExplorer vertexExplorer,
+			Vertex explorationCauseVertex) {
+
 		if (explored == false) {
 			explored = true;
+
+			if (explorationCauseVertex != null) {
+				vertexExplorer
+						.newVertexExplored(explorationCauseVertex, vertex);
+			}
+
 			vertexExplorer.exploreVertex(vertex);
 		}
+
 		return this;
 	}
 

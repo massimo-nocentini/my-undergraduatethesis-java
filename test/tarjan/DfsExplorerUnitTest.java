@@ -52,6 +52,12 @@ public class DfsExplorerUnitTest {
 				expectedSearchEventNotifications
 						.add(startSearchNotificationName);
 			}
+
+			@Override
+			public void newVertexExplored(Vertex explorationCauseVertex,
+					Vertex vertex) {
+
+			}
 		};
 
 		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.Make();
@@ -101,6 +107,12 @@ public class DfsExplorerUnitTest {
 			@Override
 			public void searchStarted(
 					Map<Vertex, VertexDfsMetadata> exploredVertexMetadatasMap) {
+
+			}
+
+			@Override
+			public void newVertexExplored(Vertex explorationCauseVertex,
+					Vertex vertex) {
 
 			}
 		};
@@ -154,6 +166,11 @@ public class DfsExplorerUnitTest {
 			public void searchStarted(
 					Map<Vertex, VertexDfsMetadata> exploredVertexMetadatasMap) {
 			}
+
+			@Override
+			public void newVertexExplored(Vertex explorationCauseVertex,
+					Vertex vertex) {
+			}
 		};
 
 		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.Make();
@@ -196,6 +213,11 @@ public class DfsExplorerUnitTest {
 			public void searchStarted(
 					Map<Vertex, VertexDfsMetadata> exploredVertexMetadatasMap) {
 			}
+
+			@Override
+			public void newVertexExplored(Vertex explorationCauseVertex,
+					Vertex vertex) {
+			}
 		};
 
 		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.Make();
@@ -234,6 +256,12 @@ public class DfsExplorerUnitTest {
 			public void searchStarted(Map<Vertex, VertexDfsMetadata> map) {
 				Vertex erroneousVerte = Vertex.makeVertex();
 				map.put(erroneousVerte, new VertexDfsMetadata(erroneousVerte));
+			}
+
+			@Override
+			public void newVertexExplored(Vertex explorationCauseVertex,
+					Vertex vertex) {
+
 			}
 		};
 
@@ -296,6 +324,11 @@ public class DfsExplorerUnitTest {
 					Map<Vertex, VertexDfsMetadata> exploredVertexMetadatasMap) {
 
 			}
+
+			@Override
+			public void newVertexExplored(Vertex explorationCauseVertex,
+					Vertex vertex) {
+			}
 		};
 
 		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.Make();
@@ -316,4 +349,5 @@ public class DfsExplorerUnitTest {
 				actualOrderedPostvisitInvocation);
 
 	}
+
 }

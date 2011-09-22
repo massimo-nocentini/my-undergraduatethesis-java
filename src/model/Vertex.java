@@ -75,6 +75,13 @@ public class Vertex implements DotExportable, VertexDotInfoProvider,
 
 	}
 
+	public void doOnNeighbors(VertexLogicApplierWithNeighborhoodRelation applier) {
+		for (Vertex neighbour : neighbors) {
+			applier.apply(this, neighbour);
+		}
+
+	}
+
 	public static Vertex makeVertex(String species_id, String compartment_id) {
 		return new Vertex(species_id, compartment_id);
 	}
