@@ -1,0 +1,68 @@
+
+digraph C {
+  bgcolor=white
+	//rankdir=LR
+ordering=out
+
+  node [width=0.25, shape=circle, style=filled]//, label=""]
+	
+	a -> b;
+	b -> c;
+	b -> a;
+	c -> b;
+
+
+	 //{ group="MyGroup"; a; b; c; }
+
+	g -> d;
+	d -> e;
+	e -> g;
+	d -> f;
+	f -> g;
+	f -> e;
+
+	 //{ rank=same; g; d; e; f; }
+
+	h -> i;
+	h -> m;
+	m -> l;
+	i -> l;
+	l -> h;
+
+	// { rank=same; h; i; l; m; }
+
+	a -> d;
+	c -> g;
+
+	h -> f;
+	l -> f;
+
+	//{ rank=same; a; b; c; }
+ subgraph cluster0 {
+    //node [style=filled, color=white];
+    //style=filled;
+    color=transparent;
+    rank=same;
+	a; b; c;
+  }
+
+ subgraph cluster1 {
+    //node [style=filled, color=white];
+    //style=filled;
+    color=transparent;
+    rank=same;
+	g; d; e; f;
+  }
+
+ subgraph cluster2 {
+    //node [style=filled, color=white];
+    //style=filled;
+    color=transparent;
+    rank=same;
+	h; i; l; m; 
+  }
+
+	//{ rank=same; g; d; e; f; }
+	//{ rank=same; h; i; l; m; }
+	  
+}

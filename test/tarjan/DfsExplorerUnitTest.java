@@ -15,7 +15,6 @@ import model.Vertex;
 
 import org.junit.Test;
 
-import dotInterface.DotExportableUnitTest;
 
 public class DfsExplorerUnitTest {
 
@@ -78,7 +77,7 @@ public class DfsExplorerUnitTest {
 	@Test
 	public void assuringAllVerticesAreExploredAtTheEndOfDFS() {
 
-		OurModel tarjanModel = DotExportableUnitTest.makeTarjanModel();
+		OurModel tarjanModel = OurModel.makeTarjanModel();
 
 		final String signalFlag = "signaled";
 

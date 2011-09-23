@@ -5,7 +5,6 @@ import model.OurModel;
 
 import org.junit.Test;
 
-import dotInterface.DotExportableUnitTest;
 
 /*
  * In this test methods I use the PrinterPipeFilter but
@@ -23,7 +22,6 @@ public class BasicPipingUnitTest {
 		OurModel model = OurModel.makeEmptyModel();
 		printerPipeFilter = printerPipeFilter.workOn(model);
 
-		Assert.assertNotNull(printerPipeFilter);
 		Assert.assertTrue(printerPipeFilter.isYourWorkingOurModelNotNull());
 		Assert.assertTrue(printerPipeFilter.isYourWorkingOurModelEquals(model));
 	}
@@ -54,7 +52,7 @@ public class BasicPipingUnitTest {
 				.MakePrinterPipeFilter(pipelineName);
 
 		Assert.assertTrue(printerPipeFilter.isYourPhaseIdentifier(pipelineName
-				.concat(printerPipeFilter.fillWithPhaseInformation())));
+				.concat(printerPipeFilter.collectPhaseInformation())));
 	}
 
 	@Test
@@ -63,7 +61,8 @@ public class BasicPipingUnitTest {
 		PipeFilter printerPipeFilter = PipeFilter.MakePrinterPipeFilter(string);
 
 		PipeFilterOutputListener listener = new NullPipeFilterOutputListener();
-		OurModel tarjanModel = DotExportableUnitTest.makeTarjanModel();
+
+		OurModel tarjanModel = OurModel.makeTarjanModel();
 		printerPipeFilter = printerPipeFilter.acceptOutputListener(listener)
 				.workOn(tarjanModel);
 

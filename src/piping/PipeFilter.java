@@ -139,17 +139,31 @@ public abstract class PipeFilter implements PipeFilterOutputListener {
 
 	protected final String formatPhaseIdentifier() {
 
-		return pipelineName.concat(fillWithPhaseInformation());
+		return pipelineName.concat(collectPhaseInformation());
 	}
 
 	public boolean isYourPhaseIdentifier(String otherPhaseIdentifier) {
 		return formatPhaseIdentifier().equals(otherPhaseIdentifier);
 	}
 
-	public String fillWithPhaseInformation() {
+	/**
+	 * This method collect the informations relative to the application of this
+	 * filter. This informations returned are build on top of these components:
+	 * <ul>
+	 * <li>phase identifier (which for now is computed by getting the classname
+	 * of this object's class)
+	 * <li>the level of depth where this filter happen to do its job
+	 * </ul>
+	 * 
+	 * @return a string with the previously described informations formatted in
+	 *         some way (encapsulated by this method)
+	 */
+	public String collectPhaseInformation() {
 
 		String phaseIdentifier = this.getClass().getSimpleName();
+
 		String level = String.valueOf(computeLevelsOfWrapping());
+
 		return "-phase-".concat(phaseIdentifier).concat("-level-")
 				.concat(level);
 	}

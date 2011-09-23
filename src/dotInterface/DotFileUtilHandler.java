@@ -12,15 +12,35 @@ public class DotFileUtilHandler {
 	private String filename;
 	private File file;
 
-	public static String getDotOutputFolder() {
+	/**
+	 * This method define where is the dot output folder that will contain all
+	 * the .dot files generated using this program.
+	 * 
+	 * @return a string capturing the relative path to the dot output folder.
+	 */
+	public static String dotOutputFolderPathName() {
 		return "dot-test-files".concat(DotFileUtilHandler.getFileSeparator())
 				.concat("tests-output")
 				.concat(DotFileUtilHandler.getFileSeparator());
 	}
 
-	public static String getAbsoluteFileNameInTestOutputFolder(String fileName) {
-		return DotFileUtilHandler.getDotOutputFolder().concat(fileName)
-				.concat(".dot");
+	/**
+	 * This static method make a File object ready for use, redirecting the
+	 * simple file name to a .dot file that (will) resides in the dot output
+	 * file folder.
+	 * 
+	 * @param fileName
+	 *            simple file name without information on path and extensions
+	 * @return a File instance pointing to a .dot output file in folder
+	 *         specified by the constant
+	 *         {@link DotFileUtilHandler#dotOutputFolderPathName()}
+	 */
+	public static File makeDotOutputFile(String fileName) {
+
+		String relativeFileName = DotFileUtilHandler.dotOutputFolderPathName()
+				.concat(fileName).concat(".dot");
+
+		return new File(relativeFileName);
 	}
 
 	public static String getSbmlExampleModelsFolder() {
@@ -64,8 +84,8 @@ public class DotFileUtilHandler {
 		FileWriter outFile;
 		String filenameWithExtension = filename.concat(".dot");
 
-		String savingFilename = DotFileUtilHandler.getDotOutputFolder().concat(
-				filenameWithExtension);
+		String savingFilename = DotFileUtilHandler.dotOutputFolderPathName()
+				.concat(filenameWithExtension);
 
 		try {
 			outFile = new FileWriter(savingFilename);
@@ -93,7 +113,7 @@ public class DotFileUtilHandler {
 	}
 
 	public static void EvaluateDotFilesInOutputFolder() {
-		File dir = new File(DotFileUtilHandler.getDotOutputFolder());
+		File dir = new File(DotFileUtilHandler.dotOutputFolderPathName());
 
 		for (File existingFile : dir.listFiles()) {
 			DotFileUtilHandler.MakeHandlerForExistingFile(

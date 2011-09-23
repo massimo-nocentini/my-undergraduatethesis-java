@@ -17,7 +17,6 @@ import tarjan.DfsEventsListener;
 import tarjan.DfsEventsListenerNullImplementor;
 import tarjan.DfsExplorer;
 import tarjan.DfsExplorerDefaultImplementor;
-import dotInterface.DotExportableUnitTest;
 
 public class OurModelUnitTest {
 
@@ -78,7 +77,7 @@ public class OurModelUnitTest {
 	@Test
 	public void applyDfsSearch() {
 
-		OurModel tarjanModel = DotExportableUnitTest.makeTarjanModel();
+		OurModel tarjanModel = OurModel.makeTarjanModel();
 
 		DfsEventsListener dfsEventListener = new DfsEventsListenerNullImplementor();
 
@@ -97,7 +96,7 @@ public class OurModelUnitTest {
 	@Test(expected = NullPointerException.class)
 	public void applyDfsSearchWithNullListenerThrowsException() {
 
-		OurModel tarjanModel = DotExportableUnitTest.makeTarjanModel();
+		OurModel tarjanModel = OurModel.makeTarjanModel();
 
 		DfsEventsListener dfsEventListener = null;
 

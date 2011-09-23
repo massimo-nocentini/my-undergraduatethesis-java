@@ -7,7 +7,6 @@ import model.OurModel;
 
 import org.junit.Test;
 
-import dotInterface.DotExportableUnitTest;
 import dotInterface.DotFileUtilHandler;
 
 public class PrinterPipeFilterUnitTest {
@@ -29,10 +28,9 @@ public class PrinterPipeFilterUnitTest {
 		PipeFilter printerPipeFilter = PipeFilter
 				.MakePrinterPipeFilter(pipeName);
 
-		File workingFile = new File(
-				DotFileUtilHandler
-						.getAbsoluteFileNameInTestOutputFolder(printerPipeFilter
-								.formatPhaseIdentifier()));
+		File workingFile = DotFileUtilHandler
+				.makeDotOutputFile(printerPipeFilter
+						.formatPhaseIdentifier());
 
 		if (workingFile.exists()) {
 			try {
@@ -42,7 +40,7 @@ public class PrinterPipeFilterUnitTest {
 			}
 		}
 
-		final OurModel tarjanModel = DotExportableUnitTest.makeTarjanModel();
+		final OurModel tarjanModel = OurModel.makeTarjanModel();
 
 		PipeFilterOutputListener listener = new PipeFilterOutputListener() {
 
@@ -74,10 +72,9 @@ public class PrinterPipeFilterUnitTest {
 		PipeFilter printerPipeFilter = PipeFilter
 				.MakePrinterPipeFilter(pipeName);
 
-		File workingFile = new File(
-				DotFileUtilHandler
-						.getAbsoluteFileNameInTestOutputFolder(printerPipeFilter
-								.formatPhaseIdentifier()));
+		File workingFile = DotFileUtilHandler
+				.makeDotOutputFile(printerPipeFilter
+						.formatPhaseIdentifier());
 
 		if (workingFile.exists()) {
 			try {

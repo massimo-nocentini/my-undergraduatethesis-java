@@ -9,7 +9,6 @@ import model.Vertex;
 
 import org.junit.Test;
 
-import dotInterface.DotExportableUnitTest;
 import dotInterface.DotFileUtilHandler;
 
 public class OnePipingLevelUnitTest {
@@ -174,7 +173,7 @@ public class OnePipingLevelUnitTest {
 
 		dfsPipeFilter = dfsPipeFilter.pipeAfter(printerPipeFilter);
 
-		OurModel tarjanModel = DotExportableUnitTest.makeTarjanModel();
+		OurModel tarjanModel = OurModel.makeTarjanModel();
 		dfsPipeFilter.workOn(tarjanModel);
 
 		Assert.assertTrue(printerPipeFilter.isYourWorkingOurModelNotNull());
@@ -197,7 +196,7 @@ public class OnePipingLevelUnitTest {
 
 		dfsPipeFilter = dfsPipeFilter.pipeAfter(printerPipeFilter);
 
-		OurModel tarjanModel = DotExportableUnitTest.makeTarjanModel();
+		OurModel tarjanModel = OurModel.makeTarjanModel();
 		dfsPipeFilter.workOn(tarjanModel).apply();
 
 		Assert.assertTrue(printerPipeFilter.isYourWorkingOurModelNotNull());
@@ -235,7 +234,7 @@ public class OnePipingLevelUnitTest {
 
 		PipeFilter dfsPipeFilter = PipeFilter.MakeDfsPipeFilter(pipelineName);
 
-		final OurModel tarjanModel = DotExportableUnitTest.makeTarjanModel();
+		final OurModel tarjanModel = OurModel.makeTarjanModel();
 		final StringBuilder listenerSignalRecorder = new StringBuilder();
 		final String listenerActuallySignaledFlag = "signaled";
 

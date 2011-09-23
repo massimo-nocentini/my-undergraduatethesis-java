@@ -1,0 +1,16 @@
+
+digraph C {
+  bgcolor=white
+  node [shape=circle, style=filled, label=""]
+  a [width=0.25]
+  b [width=0.5]
+  c [width=0.75]
+  /* d [width=0.1, fillcolor="#00FF0002", color="#00FF0002", label="thisone"] */
+  /* e [width=0.1, fillcolor="#00FF00", color="#00FF00", label="thatone"] */
+  a -> b -> c // -> d -> e
+  a -> a [ label="12345", color=transparent]
+  /* b -> b [ taillabel="345", labelangle=90, color=transparent] */
+  b -> b [ taillabel="345", labelangle=45, labeldistance=2 color=transparent]
+  c -> c [ headlabel="aa345", labeldistance=2, color=transparent]
+  
+}
