@@ -3,14 +3,15 @@ package piping;
 public class PipeFilterFactory {
 
 	public static PipeFilter MakeDfsPipeFilter() {
-
 		return new DfsPipeFilter();
 	}
 
 	public static PipeFilter MakePrinterPipeFilter() {
-		PipeFilter filterObject = new PrinterPipeFilter();
+		return new PrinterPipeFilter();
+	}
 
-		return filterObject;
+	public static PipeFilter MakeByPassPipeFilter() {
+		return new ByPassPipeFilter();
 	}
 
 }

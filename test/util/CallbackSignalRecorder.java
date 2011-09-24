@@ -2,18 +2,21 @@ package util;
 
 public class CallbackSignalRecorder {
 
-	private boolean signaled;
+	private int count;
 
 	public CallbackSignalRecorder() {
-		signaled = false;
+		count = 0;
 	}
 
 	public boolean isSignaled() {
-		return signaled;
+		return count > 0;
 	}
 
 	public void signal() {
-		signaled = true;
+		count = count + 1;
 	}
 
+	public boolean isCountOfSignals(int i) {
+		return count == i;
+	}
 }

@@ -1,6 +1,8 @@
 package piping;
 
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.TreeSet;
 
 import junit.framework.Assert;
@@ -9,12 +11,13 @@ import model.Vertex;
 
 import org.junit.Test;
 
+import util.CallbackSignalRecorder;
 import dotInterface.DotFileUtilHandler;
 
 public class OnePipingLevelUnitTest {
 
 	@Test
-	public void buildOnePipeLevel() {
+	public void checkingWrappedPipeFiltersOnPipeOfDepthThree() {
 
 		PipeFilter printerPipeFilter = PipeFilterFactory
 				.MakePrinterPipeFilter();
@@ -55,8 +58,46 @@ public class OnePipingLevelUnitTest {
 		secondPrinterPipeFilter.pipeAfter(dfsPipeFilter
 				.pipeAfter(printerPipeFilter));
 
-		secondPrinterPipeFilter.workOn(OurModel.makePapadimitriouModel())
-				.apply(pipelineName, OurModel.makePapadimitriouModel());
+		secondPrinterPipeFilter.apply(pipelineName,
+				OurModel.makePapadimitriouModel());
+
+		Assert.assertTrue(secondPrinterPipeFilter.isYourLevelOfWrapping(2));
+
+		// Assert.assertSame(firstPrinterPipeFilter, dfsPipeFilter);
+		// Assert.assertTrue(dfsPipeFilter
+		// .isYourWrappedPipeFilterEquals(printerPipeFilter));
+		//
+		// Assert.assertFalse(printerPipeFilter
+		// .isYourWrappedPipeFilterEquals(dfsPipeFilter));
+		// Assert.assertFalse(printerPipeFilter.isYourWrappedPipeFilterNotNull());
+		//
+		// Assert.assertTrue(dfsPipeFilter.isYourWrappedPipeFilterNotNull());
+		// Assert.assertFalse(printerPipeFilter.isYourWrappedPipeFilterNotNull());
+		//
+		// Assert.assertTrue(dfsPipeFilter.isYourLevelOfWrapping(1));
+		// Assert.assertTrue(printerPipeFilter.isYourLevelOfWrapping(0));
+
+	}
+
+	@Test
+	public void OnePipingLevelUnitTest_Printer_DFS_PrinterPipe_Papadimitriou_SingleRoot() {
+		String pipelineName = "OnePipingLevelUnitTest_Printer_DFS_PrinterPipe_Papadimitriou_SingleRoot";
+
+		PipeFilter printerPipeFilter = PipeFilterFactory
+				.MakePrinterPipeFilter();
+
+		PipeFilter dfsPipeFilter = PipeFilterFactory.MakeDfsPipeFilter();
+
+		PipeFilter secondPrinterPipeFilter = PipeFilterFactory
+				.MakePrinterPipeFilter();
+
+		secondPrinterPipeFilter.pipeAfter(dfsPipeFilter
+				.pipeAfter(printerPipeFilter));
+
+		secondPrinterPipeFilter.apply(pipelineName,
+				OurModel.makePapadimitriouModel());
+
+		Assert.assertTrue(secondPrinterPipeFilter.isYourLevelOfWrapping(2));
 
 		// Assert.assertSame(firstPrinterPipeFilter, dfsPipeFilter);
 		// Assert.assertTrue(dfsPipeFilter
@@ -101,8 +142,7 @@ public class OnePipingLevelUnitTest {
 		secondPrinterPipeFilter.pipeAfter(dfsPipeFilter
 				.pipeAfter(printerPipeFilter));
 
-		secondPrinterPipeFilter.workOn(simpleModel).apply(pipelineName,
-				simpleModel);
+		secondPrinterPipeFilter.apply(pipelineName, simpleModel);
 
 		// Assert.assertSame(firstPrinterPipeFilter, dfsPipeFilter);
 		// Assert.assertTrue(dfsPipeFilter
@@ -135,8 +175,7 @@ public class OnePipingLevelUnitTest {
 
 		secondPrinterPipeFilter.pipeAfter(dfsPipeFilter);
 
-		secondPrinterPipeFilter.workOn(bartonellaModel).apply(pipelineName,
-				bartonellaModel);
+		secondPrinterPipeFilter.apply(pipelineName, bartonellaModel);
 
 		// Assert.assertSame(firstPrinterPipeFilter, dfsPipeFilter);
 		// Assert.assertTrue(dfsPipeFilter
@@ -155,7 +194,7 @@ public class OnePipingLevelUnitTest {
 	}
 
 	@Test
-	public void checkWorkOnWithOnePipeLevel() {
+	public void checkManufacturedModelInOneLevelPipe() {
 
 		PipeFilter printerPipeFilter = PipeFilterFactory
 				.MakePrinterPipeFilter();
@@ -164,58 +203,39 @@ public class OnePipingLevelUnitTest {
 
 		dfsPipeFilter = dfsPipeFilter.pipeAfter(printerPipeFilter);
 
-		OurModel tarjanModel = OurModel.makeTarjanModel();
-		dfsPipeFilter.workOn(tarjanModel);
-
-		Assert.assertTrue(printerPipeFilter.isYourWorkingOurModelNotNull());
-		Assert.assertTrue(printerPipeFilter
-				.isYourWorkingOurModelEquals(tarjanModel));
-
-		// until I call apply method and run the pipe backwards, all the filters
-		// except the head of the pipe haven't any model to work on.
-		Assert.assertFalse(dfsPipeFilter.isYourWorkingOurModelNotNull());
-	}
-
-	@Test
-	public void checkPresenceOfModelInWrapperFilterAfterApply() {
-		String pipelineName = "checkPresenceOfModelInWrapperFilterAfterApply";
-
-		PipeFilter printerPipeFilter = PipeFilterFactory
-				.MakePrinterPipeFilter();
-
-		PipeFilter dfsPipeFilter = PipeFilterFactory.MakeDfsPipeFilter();
-
-		dfsPipeFilter = dfsPipeFilter.pipeAfter(printerPipeFilter);
+		final CallbackSignalRecorder callbackSignalRecorder = new CallbackSignalRecorder();
 
 		OurModel tarjanModel = OurModel.makeTarjanModel();
 
-		OurModel outputModel = dfsPipeFilter.workOn(tarjanModel).apply(
-				pipelineName, tarjanModel);
+		final List<OurModel> actualList = new LinkedList<OurModel>();
 
-		Assert.assertTrue(printerPipeFilter.isYourWorkingOurModelNotNull());
-		Assert.assertTrue(printerPipeFilter
-				.isYourWorkingOurModelEquals(tarjanModel));
+		OurModel outputModel = dfsPipeFilter.applyWithListener(
+				"checkManufacturedModelInOneLevelPipe", tarjanModel,
+				new PipeFilterComputationListener() {
 
-		Assert.assertTrue(dfsPipeFilter.isYourWorkingOurModelNotNull());
-		// this assert assure very much things!
-		Assert.assertTrue(dfsPipeFilter
-				.isYourWorkingOurModelEquals(tarjanModel));
+					@Override
+					public void onSkippedComputation(PipeFilter pipeFilter,
+							String collectedPhaseInformation,
+							OurModel inputModel) {
+
+						Assert.fail("The computation must continue, no reason to stop it.");
+					}
+
+					@Override
+					public void onComputationStarted(String pipelineIdentifier,
+							OurModel inputModel) {
+
+						callbackSignalRecorder.signal();
+						actualList.add(inputModel);
+					}
+				});
+
+		Assert.assertEquals(2, actualList.size());
+		Assert.assertTrue(callbackSignalRecorder.isCountOfSignals(2));
+		Assert.assertFalse(tarjanModel.equals(outputModel));
+		Assert.assertSame(tarjanModel, actualList.get(0));
+		Assert.assertSame(tarjanModel, actualList.get(1));
 	}
-
-	// @Test
-	// public void checkAcceptListenerWithOnePipeLevel() {
-	//
-	// PipeFilter printerPipeFilter = PipeFilterFactory
-	// .MakePrinterPipeFilter();
-	//
-	// PipeFilter dfsPipeFilter = PipeFilterFactory.MakeDfsPipeFilter();
-	//
-	// dfsPipeFilter = dfsPipeFilter.pipeAfter(printerPipeFilter);
-	//
-	// Assert.assertTrue(printerPipeFilter.isYourListenerNotNull());
-	// Assert.assertTrue(printerPipeFilter.isYourListenerEquals(dfsPipeFilter));
-	// Assert.assertFalse(dfsPipeFilter.isYourListenerNotNull());
-	// }
 
 	@Test
 	public void checkingDfsPipeFilterWorkWithOnePipeLevel() {
@@ -226,11 +246,11 @@ public class OnePipingLevelUnitTest {
 
 		PipeFilter dfsPipeFilter = PipeFilterFactory.MakeDfsPipeFilter();
 
-		final OurModel tarjanModel = OurModel.makeTarjanModel();
+		OurModel tarjanModel = OurModel.makeTarjanModel();
 
 		// run the computation
 		OurModel outputModel = dfsPipeFilter.pipeAfter(printerPipeFilter)
-				.workOn(tarjanModel).apply(pipelineName, tarjanModel);
+				.apply(pipelineName, tarjanModel);
 
 		Assert.assertNotSame(outputModel, tarjanModel);
 		Assert.assertFalse(outputModel.equals(tarjanModel));

@@ -4,6 +4,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -17,6 +18,7 @@ import tarjan.DfsEventsListener;
 import tarjan.DfsEventsListenerNullImplementor;
 import tarjan.DfsExplorer;
 import tarjan.DfsExplorerDefaultImplementor;
+import util.CallbackSignalRecorder;
 
 public class OurModelUnitTest {
 
@@ -75,7 +77,26 @@ public class OurModelUnitTest {
 	 * fluent respect to its class).
 	 */
 	@Test
-	public void applyDfsSearch() {
+	public void applyDfsSearchOnAllVertices() {
+
+		OurModel tarjanModel = OurModel.makeTarjanModel();
+
+		DfsEventsListener dfsEventListener = new DfsEventsListenerNullImplementor();
+
+		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.make();
+
+		dfsExplorer.acceptDfsEventsListener(dfsEventListener);
+
+		OurModel returnedtarjanModel = tarjanModel
+				.runDepthFirstSearch(dfsExplorer);
+
+		Assert.assertNotNull(returnedtarjanModel);
+		Assert.assertSame(tarjanModel, returnedtarjanModel);
+
+	}
+
+	@Test
+	public void applyDfsSearchForSingleVertex() {
 
 		OurModel tarjanModel = OurModel.makeTarjanModel();
 
@@ -108,4 +129,83 @@ public class OurModelUnitTest {
 
 	}
 
+	@Test
+	public void retrieveVertexAndApplyLogic() {
+		String compartment_id = "compartment_id";
+		String species_id = "species_id";
+		final Vertex v = Vertex.makeVertex(species_id, compartment_id);
+		Vertex v2 = Vertex.makeVertex();
+		Vertex v3 = Vertex.makeVertex();
+
+		v.addNeighbour(v2);
+
+		Set<Vertex> vertices = new HashSet<Vertex>();
+		vertices.add(v);
+		vertices.add(v2);
+		vertices.add(v3);
+
+		final Vertex exampleVertex = Vertex.makeVertex(species_id,
+				compartment_id);
+
+		final CallbackSignalRecorder recorder = new CallbackSignalRecorder();
+
+		VertexLogicApplier logicApplier = new VertexLogicApplier() {
+
+			@Override
+			public void apply(Vertex vertex) {
+				Assert.assertEquals(exampleVertex, vertex);
+				Assert.assertNotSame(exampleVertex, vertex);
+
+				Assert.assertFalse(v.isYourNeighborhoodEmpty());
+				Assert.assertTrue(exampleVertex.isYourNeighborhoodEmpty());
+
+				recorder.signal();
+			}
+		};
+
+		OurModel someModel = OurModel.makeOurModelFrom(vertices);
+		OurModel outputModel = someModel.findVertexByExampleAndApplyLogicOnIt(
+				exampleVertex, logicApplier);
+
+		Assert.assertSame(someModel, outputModel);
+		Assert.assertTrue(recorder.isSignaled());
+	}
+
+	@Test
+	public void retrieveVertexAndApplyLogic_VacouslySearch() {
+		String compartment_id = "compartment_id";
+		String species_id = "species_id";
+		final Vertex v = Vertex.makeVertex(species_id, compartment_id);
+		Vertex v2 = Vertex.makeVertex();
+		Vertex v3 = Vertex.makeVertex();
+
+		v.addNeighbour(v2);
+
+		Set<Vertex> vertices = new HashSet<Vertex>();
+		vertices.add(v);
+		vertices.add(v2);
+		vertices.add(v3);
+
+		final Vertex exampleVertex = Vertex.makeVertex(
+				"some_different_species_id", compartment_id);
+
+		final CallbackSignalRecorder recorder = new CallbackSignalRecorder();
+
+		VertexLogicApplier logicApplier = new VertexLogicApplier() {
+
+			@Override
+			public void apply(Vertex vertex) {
+				Assert.fail("This logic shouldn't be applied, the example vertex is not in the model.");
+				recorder.signal();
+			}
+		};
+
+		OurModel someModel = OurModel.makeOurModelFrom(vertices);
+
+		@SuppressWarnings("unused")
+		OurModel outputModel = someModel.findVertexByExampleAndApplyLogicOnIt(
+				exampleVertex, logicApplier);
+
+		Assert.assertFalse(recorder.isSignaled());
+	}
 }

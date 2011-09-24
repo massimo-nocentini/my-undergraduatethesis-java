@@ -12,8 +12,8 @@ import dotInterface.DotFileUtilHandler;
 public class PrinterPipeFilterUnitTest {
 
 	@Test
-	public void applyPrinterPipeFilter() {
-		String pipeName = "tarjanSingleLevelTestPrinterPipeFilterOutput";
+	public void applicationOfPrinterPipeFilterOnTarjanModel() {
+		String pipeName = "applicationOfPrinterPipeFilterOnTarjanModel";
 
 		PipeFilter printerPipeFilter = PipeFilterFactory
 				.MakePrinterPipeFilter();
@@ -32,8 +32,7 @@ public class PrinterPipeFilterUnitTest {
 
 		final OurModel tarjanModel = OurModel.makeTarjanModel();
 
-		OurModel outputModel = printerPipeFilter.workOn(tarjanModel).apply(
-				pipeName, tarjanModel);
+		OurModel outputModel = printerPipeFilter.apply(pipeName, tarjanModel);
 
 		Assert.assertSame(tarjanModel, outputModel);
 
@@ -46,8 +45,8 @@ public class PrinterPipeFilterUnitTest {
 	}
 
 	@Test
-	public void papadimitriouModelPrinterPipeFilter() {
-		String pipeName = "papadimitriouModelPrinterPipeFilterOutput";
+	public void applicationOfPrinterPipeFilterOnPapadimitriouModel() {
+		String pipeName = "applicationOfPrinterPipeFilterOnPapadimitriouModel";
 
 		PipeFilter printerPipeFilter = PipeFilterFactory
 				.MakePrinterPipeFilter();
@@ -66,8 +65,8 @@ public class PrinterPipeFilterUnitTest {
 
 		final OurModel papadimitriouModel = OurModel.makePapadimitriouModel();
 
-		OurModel outputModel = printerPipeFilter.workOn(papadimitriouModel)
-				.apply(pipeName, papadimitriouModel);
+		OurModel outputModel = printerPipeFilter.apply(pipeName,
+				papadimitriouModel);
 
 		Assert.assertSame(papadimitriouModel, outputModel);
 

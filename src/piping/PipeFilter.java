@@ -4,27 +4,12 @@ import model.OurModel;
 
 public abstract class PipeFilter {
 
-	private OurModel ourModel;
 	private PipeFilter wrappedPipeFilter;
 
 	/**
 	 * Package access for the constructor, only the factory can call it
 	 */
 	PipeFilter() {
-	}
-
-	public PipeFilter workOn(OurModel ourModel) {
-		if (this.isYourWrappedPipeFilterNotNull()) {
-			wrappedPipeFilter.workOn(ourModel);
-		} else {
-			this.ourModel = ourModel;
-		}
-
-		return this;
-	}
-
-	public boolean isYourWorkingOurModelNotNull() {
-		return ourModel != null;
 	}
 
 	public boolean isYourLevelOfWrapping(int levelOfWrapping) {
@@ -66,8 +51,8 @@ public abstract class PipeFilter {
 			OurModel inputModel,
 			PipeFilterComputationListener computationListener) {
 
-		computationListener
-				.computationStartedWithPipelineIdentifier(formatPhaseIdentifier(pipelineName));
+		computationListener.onComputationStarted(
+				formatPhaseIdentifier(pipelineName), inputModel);
 
 		OurModel workingModel = inputModel;
 
@@ -75,8 +60,6 @@ public abstract class PipeFilter {
 
 			workingModel = wrappedPipeFilter.applyWithListener(pipelineName,
 					workingModel, computationListener);
-
-			ourModel = workingModel;
 		}
 
 		workingModel = doYourComputationOn(pipelineName, workingModel,
@@ -88,11 +71,6 @@ public abstract class PipeFilter {
 	public PipeFilter pipeAfter(PipeFilter pipeFilterToWrap) {
 		wrappedPipeFilter = pipeFilterToWrap;
 		return this;
-	}
-
-	public boolean isYourWorkingOurModelEquals(OurModel otherModel) {
-		return this.isYourWorkingOurModelNotNull()
-				&& this.ourModel.equals(otherModel);
 	}
 
 	protected final String formatPhaseIdentifier(String pipelineName) {

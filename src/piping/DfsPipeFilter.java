@@ -1,7 +1,7 @@
 package piping;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import model.OurModel;
 import model.Vertex;
@@ -29,7 +29,7 @@ public class DfsPipeFilter extends PipeFilter {
 
 		inputModel.runDepthFirstSearch(dfsExplorer);
 
-		Set<Vertex> vertices = new HashSet<Vertex>();
+		Set<Vertex> vertices = new TreeSet<Vertex>();
 		dfsEventListener.fillCollectedVertices(vertices);
 
 		return OurModel.makeOurModelFrom(vertices);

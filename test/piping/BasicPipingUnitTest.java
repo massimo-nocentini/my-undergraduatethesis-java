@@ -7,30 +7,43 @@ import org.junit.Test;
 
 import util.CallbackSignalRecorder;
 
-/*
- * In this test methods I use the PrinterPipeFilter but
- * without loss of generality. I choose it because is the
- * simplest pipe filter that I've right now (at the moment I'm typing)
- * and it is sure that it works.
- */
 public class BasicPipingUnitTest {
 
 	@Test
-	public void passingInitialOurModelToPrinterPipeFilter() {
-		PipeFilter printerPipeFilter = PipeFilterFactory
-				.MakePrinterPipeFilter();
+	public void passingInitialOurModelToByPassPipeFilter() {
 
-		OurModel model = OurModel.makeEmptyModel();
-		printerPipeFilter = printerPipeFilter.workOn(model);
+		PipeFilter printerPipeFilter = PipeFilterFactory.MakeByPassPipeFilter();
 
-		Assert.assertTrue(printerPipeFilter.isYourWorkingOurModelNotNull());
-		Assert.assertTrue(printerPipeFilter.isYourWorkingOurModelEquals(model));
+		final OurModel inputModel = OurModel.makeEmptyModel();
+		final CallbackSignalRecorder callbackSignalRecorder = new CallbackSignalRecorder();
+
+		@SuppressWarnings("unused")
+		OurModel outputModel = printerPipeFilter.applyWithListener(
+				"pipelineName", inputModel,
+				new PipeFilterComputationListener() {
+
+					@Override
+					public void onSkippedComputation(PipeFilter pipeFilter,
+							String collectedPhaseInformation,
+							OurModel inputModel) {
+
+					}
+
+					@Override
+					public void onComputationStarted(String pipelineIdentifier,
+							OurModel innerInputModel) {
+
+						callbackSignalRecorder.signal();
+						Assert.assertEquals(inputModel, innerInputModel);
+					}
+				});
+
+		Assert.assertTrue(callbackSignalRecorder.isSignaled());
 	}
 
 	@Test
 	public void zeroLevelOfWrappingPipeFilter() {
-		PipeFilter printerPipeFilter = PipeFilterFactory
-				.MakePrinterPipeFilter();
+		PipeFilter printerPipeFilter = PipeFilterFactory.MakeByPassPipeFilter();
 
 		Assert.assertTrue(printerPipeFilter.isYourLevelOfWrapping(0));
 	}
@@ -47,8 +60,8 @@ public class BasicPipingUnitTest {
 		PipeFilterComputationListener listener = new PipeFilterComputationListener() {
 
 			@Override
-			public void computationStartedWithPipelineIdentifier(
-					String pipelineIdentifier) {
+			public void onComputationStarted(String pipelineIdentifier,
+					OurModel inputModel) {
 
 				callbackSignalRecorder.signal();
 
@@ -56,6 +69,14 @@ public class BasicPipingUnitTest {
 						pipelineName.concat("-").concat(
 								printerPipeFilter.collectPhaseInformation()),
 						pipelineIdentifier);
+
+			}
+
+			@Override
+			public void onSkippedComputation(PipeFilter pipeFilter,
+					String collectedPhaseInformation, OurModel inputModel) {
+
+				Assert.fail("The computation must continue, no reason to stop it.");
 			}
 
 		};
@@ -65,27 +86,4 @@ public class BasicPipingUnitTest {
 
 		Assert.assertTrue(callbackSignalRecorder.isSignaled());
 	}
-
-	// @Test
-	// public void acceptListenerPrinterPipeFilter() {
-	//
-	// PipeFilter printerPipeFilter = PipeFilterFactory
-	// .MakePrinterPipeFilter();
-	//
-	// PipeFilterOutputListener listener = new NullPipeFilterOutputListener();
-	//
-	// OurModel tarjanModel = OurModel.makeTarjanModel();
-	// printerPipeFilter = printerPipeFilter.acceptOutputListener(listener)
-	// .workOn(tarjanModel);
-	//
-	// Assert.assertNotNull(printerPipeFilter);
-	// Assert.assertTrue(printerPipeFilter.isYourListenerNotNull());
-	// Assert.assertTrue(printerPipeFilter.isYourListenerEquals(listener));
-	// // the following looks like a regression test.
-	// Assert.assertTrue(printerPipeFilter.isYourWorkingOurModelNotNull());
-	// Assert.assertTrue(printerPipeFilter
-	// .isYourWorkingOurModelEquals(tarjanModel));
-	//
-	// }
-
 }

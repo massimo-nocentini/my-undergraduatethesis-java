@@ -32,4 +32,17 @@ public class PipeFilterFactoryUnitTest {
 				.isYourTagEquals(AvailableFilters.Printer));
 	}
 
+	/**
+	 * This test assures that the factory PipeFilterFactory builds a ByPass
+	 * filter correctly
+	 */
+	@Test
+	public void creationOfByPassPipeFilter() {
+		PipeFilter byPassPipeFilter = PipeFilterFactory.MakeByPassPipeFilter();
+
+		Assert.assertNotNull(byPassPipeFilter);
+		Assert.assertTrue(byPassPipeFilter
+				.isYourTagEquals(AvailableFilters.ByPass));
+	}
+
 }

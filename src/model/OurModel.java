@@ -82,6 +82,27 @@ public class OurModel implements DotExportable {
 		return this;
 	}
 
+	public OurModel runDepthFirstSearch(final DfsExplorer dfsVertexExplorer,
+			final Vertex startingVertex) {
+
+		final Map<Vertex, VertexDfsMetadata> map = makeDfsVertexMetadataMap();
+
+		dfsVertexExplorer.searchStarted(map);
+
+		findVertexByExampleAndApplyLogicOnIt(startingVertex,
+				new VertexLogicApplier() {
+
+					@Override
+					public void apply(Vertex vertex) {
+						map.get(vertex).ifNotExplored(dfsVertexExplorer);
+					}
+				});
+
+		dfsVertexExplorer.searchCompleted(map);
+
+		return this;
+	}
+
 	private Map<Vertex, VertexDfsMetadata> makeDfsVertexMetadataMap() {
 
 		final Map<Vertex, VertexDfsMetadata> map = new TreeMap<Vertex, VertexDfsMetadata>();
@@ -272,6 +293,7 @@ public class OurModel implements DotExportable {
 	 */
 	public static OurModel makeTarjanModel() {
 		HashSet<Vertex> vertices = new HashSet<Vertex>();
+
 		OurModel.makeTarjanNetworkVertexSetWithRelation(vertices,
 				new HashSet<String>(), new HashSet<String>(),
 				new SimpleExporter());
@@ -335,6 +357,25 @@ public class OurModel implements DotExportable {
 				Arrays.<Vertex> asList(vA, vB, vC, vD, vE, vF, vG, vH, vI, vJ,
 						vK, vL)));
 
+	}
+
+	public OurModel findVertexByExampleAndApplyLogicOnIt(
+			final Vertex exampleVertex, final VertexLogicApplier logicApplier) {
+
+		if (vertices.contains(exampleVertex)) {
+			doOnVertices(new VertexLogicApplier() {
+
+				@Override
+				public void apply(Vertex vertex) {
+
+					if (vertex.equals(exampleVertex)) {
+						logicApplier.apply(vertex);
+					}
+				}
+			});
+		}
+
+		return this;
 	}
 
 }

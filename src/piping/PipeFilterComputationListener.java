@@ -1,7 +1,12 @@
 package piping;
 
+import model.OurModel;
+
 public interface PipeFilterComputationListener {
 
-	void computationStartedWithPipelineIdentifier(String pipelineIdentifier);
+	void onComputationStarted(String pipelineIdentifier, OurModel inputModel);
+
+	void onSkippedComputation(PipeFilter pipeFilter,
+			String collectedPhaseInformation, OurModel inputModel);
 
 }

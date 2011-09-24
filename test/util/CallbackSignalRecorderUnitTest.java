@@ -32,4 +32,25 @@ public class CallbackSignalRecorderUnitTest {
 
 	}
 
+	@Test
+	public void checkEmptySignalCount() {
+		CallbackSignalRecorder callbackSignalRecorder = new CallbackSignalRecorder();
+
+		Assert.assertTrue(callbackSignalRecorder.isCountOfSignals(0));
+
+	}
+
+	@Test
+	public void checkNonEmptySignalCount() {
+		CallbackSignalRecorder callbackSignalRecorder = new CallbackSignalRecorder();
+
+		callbackSignalRecorder.signal();
+		callbackSignalRecorder.signal();
+		callbackSignalRecorder.signal();
+		callbackSignalRecorder.signal();
+
+		Assert.assertTrue(callbackSignalRecorder.isCountOfSignals(4));
+
+	}
+
 }
