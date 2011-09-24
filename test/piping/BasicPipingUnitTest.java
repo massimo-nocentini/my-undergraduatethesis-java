@@ -5,6 +5,7 @@ import model.OurModel;
 
 import org.junit.Test;
 
+import util.CallbackSignalRecorder;
 
 /*
  * In this test methods I use the PrinterPipeFilter but
@@ -16,8 +17,8 @@ public class BasicPipingUnitTest {
 
 	@Test
 	public void passingInitialOurModelToPrinterPipeFilter() {
-		String string = "unimportantName";
-		PipeFilter printerPipeFilter = PipeFilter.MakePrinterPipeFilter(string);
+		PipeFilter printerPipeFilter = PipeFilterFactory
+				.MakePrinterPipeFilter();
 
 		OurModel model = OurModel.makeEmptyModel();
 		printerPipeFilter = printerPipeFilter.workOn(model);
@@ -28,52 +29,63 @@ public class BasicPipingUnitTest {
 
 	@Test
 	public void zeroLevelOfWrappingPipeFilter() {
-		String string = "unimportantName";
-		PipeFilter printerPipeFilter = PipeFilter.MakePrinterPipeFilter(string);
+		PipeFilter printerPipeFilter = PipeFilterFactory
+				.MakePrinterPipeFilter();
 
 		Assert.assertTrue(printerPipeFilter.isYourLevelOfWrapping(0));
 	}
 
 	@Test
-	public void checkOverallPipelineNameOfPipeFilter() {
-		String pipelineName = "pipelineName";
-		PipeFilter printerPipeFilter = PipeFilter
-				.MakePrinterPipeFilter(pipelineName);
-
-		Assert.assertTrue(printerPipeFilter
-				.isYourPipelineNameEquals(pipelineName));
-	}
-
-	@Test
 	public void checkPipelinePhaseIdentifier() {
-		String pipelineName = "pipelineName";
+		final String pipelineName = "pipelineName";
 
-		PipeFilter printerPipeFilter = PipeFilter
-				.MakePrinterPipeFilter(pipelineName);
+		final PipeFilter printerPipeFilter = PipeFilterFactory
+				.MakePrinterPipeFilter();
 
-		Assert.assertTrue(printerPipeFilter.isYourPhaseIdentifier(pipelineName
-				.concat(printerPipeFilter.collectPhaseInformation())));
+		final CallbackSignalRecorder callbackSignalRecorder = new CallbackSignalRecorder();
+
+		PipeFilterComputationListener listener = new PipeFilterComputationListener() {
+
+			@Override
+			public void computationStartedWithPipelineIdentifier(
+					String pipelineIdentifier) {
+
+				callbackSignalRecorder.signal();
+
+				Assert.assertEquals(
+						pipelineName.concat("-").concat(
+								printerPipeFilter.collectPhaseInformation()),
+						pipelineIdentifier);
+			}
+
+		};
+
+		printerPipeFilter.applyWithListener(pipelineName,
+				OurModel.makeEmptyModel(), listener);
+
+		Assert.assertTrue(callbackSignalRecorder.isSignaled());
 	}
 
-	@Test
-	public void acceptListenerPrinterPipeFilter() {
-		String string = "unimportantName";
-		PipeFilter printerPipeFilter = PipeFilter.MakePrinterPipeFilter(string);
-
-		PipeFilterOutputListener listener = new NullPipeFilterOutputListener();
-
-		OurModel tarjanModel = OurModel.makeTarjanModel();
-		printerPipeFilter = printerPipeFilter.acceptOutputListener(listener)
-				.workOn(tarjanModel);
-
-		Assert.assertNotNull(printerPipeFilter);
-		Assert.assertTrue(printerPipeFilter.isYourListenerNotNull());
-		Assert.assertTrue(printerPipeFilter.isYourListenerEquals(listener));
-		// the following looks like a regression test.
-		Assert.assertTrue(printerPipeFilter.isYourWorkingOurModelNotNull());
-		Assert.assertTrue(printerPipeFilter
-				.isYourWorkingOurModelEquals(tarjanModel));
-
-	}
+	// @Test
+	// public void acceptListenerPrinterPipeFilter() {
+	//
+	// PipeFilter printerPipeFilter = PipeFilterFactory
+	// .MakePrinterPipeFilter();
+	//
+	// PipeFilterOutputListener listener = new NullPipeFilterOutputListener();
+	//
+	// OurModel tarjanModel = OurModel.makeTarjanModel();
+	// printerPipeFilter = printerPipeFilter.acceptOutputListener(listener)
+	// .workOn(tarjanModel);
+	//
+	// Assert.assertNotNull(printerPipeFilter);
+	// Assert.assertTrue(printerPipeFilter.isYourListenerNotNull());
+	// Assert.assertTrue(printerPipeFilter.isYourListenerEquals(listener));
+	// // the following looks like a regression test.
+	// Assert.assertTrue(printerPipeFilter.isYourWorkingOurModelNotNull());
+	// Assert.assertTrue(printerPipeFilter
+	// .isYourWorkingOurModelEquals(tarjanModel));
+	//
+	// }
 
 }

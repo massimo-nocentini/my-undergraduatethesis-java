@@ -15,6 +15,7 @@ import model.Vertex;
 
 import org.junit.Test;
 
+import util.CallbackSignalRecorder;
 
 public class DfsExplorerUnitTest {
 
@@ -79,9 +80,7 @@ public class DfsExplorerUnitTest {
 
 		OurModel tarjanModel = OurModel.makeTarjanModel();
 
-		final String signalFlag = "signaled";
-
-		final StringBuilder signalRecorder = new StringBuilder();
+		final CallbackSignalRecorder callbackSignalRecorder = new CallbackSignalRecorder();
 
 		DfsEventsListener dfsEventListener = new DfsEventsListener() {
 
@@ -100,7 +99,7 @@ public class DfsExplorerUnitTest {
 					Assert.assertTrue(entry.getValue().isExplored());
 				}
 
-				signalRecorder.append(signalFlag);
+				callbackSignalRecorder.signal();
 			}
 
 			@Override
@@ -122,7 +121,7 @@ public class DfsExplorerUnitTest {
 
 		tarjanModel.runDepthFirstSearch(dfsExplorer);
 
-		Assert.assertEquals(signalFlag, signalRecorder.toString());
+		Assert.assertTrue(callbackSignalRecorder.isSignaled());
 
 	}
 

@@ -7,22 +7,20 @@ import dotInterface.SimpleExporter;
 
 public class PrinterPipeFilter extends PipeFilter {
 
-	public PrinterPipeFilter(String pipelineName) {
-		super(pipelineName);
-	}
-
 	@Override
 	public boolean isYourTagEquals(AvailableFilters other) {
 		return AvailableFilters.Printer.equals(other);
 	}
 
 	@Override
-	protected OurModel doYourComputationOn(OurModel inputModel) {
+	protected OurModel doYourComputationOn(String pipelineName,
+			OurModel inputModel,
+			PipeFilterComputationListener computationListener) {
 
 		DotExporter exporter = new SimpleExporter();
 		inputModel.acceptExporter(exporter);
 
-		DotFileUtilHandler.MakeHandler(formatPhaseIdentifier())
+		DotFileUtilHandler.MakeHandler(formatPhaseIdentifier(pipelineName))
 				.writeDotRepresentationInTestFolder(exporter)
 				.produceSvgOutput();
 

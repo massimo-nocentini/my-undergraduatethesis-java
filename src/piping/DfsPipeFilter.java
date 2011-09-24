@@ -11,18 +11,15 @@ import tarjan.DfsExplorerDefaultImplementor;
 
 public class DfsPipeFilter extends PipeFilter {
 
-	public DfsPipeFilter(String pipelineName) {
-		super(pipelineName);
-		// TODO Auto-generated constructor stub
-	}
-
 	@Override
 	public boolean isYourTagEquals(AvailableFilters other) {
 		return AvailableFilters.DFS.equals(other);
 	}
 
 	@Override
-	protected OurModel doYourComputationOn(OurModel ourModel) {
+	protected OurModel doYourComputationOn(String pipelineName,
+			OurModel inputModel,
+			PipeFilterComputationListener computationListener) {
 
 		DfsEventsListenerTreeBuilder dfsEventListener = new DfsEventsListenerTreeBuilder();
 
@@ -30,7 +27,7 @@ public class DfsPipeFilter extends PipeFilter {
 
 		dfsExplorer.acceptDfsEventsListener(dfsEventListener);
 
-		ourModel.runDepthFirstSearch(dfsExplorer);
+		inputModel.runDepthFirstSearch(dfsExplorer);
 
 		Set<Vertex> vertices = new HashSet<Vertex>();
 		dfsEventListener.fillCollectedVertices(vertices);

@@ -13,6 +13,8 @@ import model.Vertex;
 
 import org.junit.Test;
 
+import util.CallbackSignalRecorder;
+
 public class VertexDfsMetadataUnitTest {
 
 	@Test
@@ -99,8 +101,7 @@ public class VertexDfsMetadataUnitTest {
 		final Vertex v2 = Vertex.makeVertex();
 		final Vertex v3 = Vertex.makeVertex();
 
-		final String signalFlag = "signaled";
-		final StringBuilder signalRecorder = new StringBuilder();
+		final CallbackSignalRecorder callbackSignalRecorder = new CallbackSignalRecorder();
 
 		v.addNeighbour(v2);
 		v.addNeighbour(v3);
@@ -144,7 +145,7 @@ public class VertexDfsMetadataUnitTest {
 			public void newVertexExplored(Vertex explorationCauseVertex,
 					Vertex vertex) {
 
-				signalRecorder.append(signalFlag);
+				callbackSignalRecorder.signal();
 
 				if (actualExplorationMap.containsKey(explorationCauseVertex) == false) {
 					actualExplorationMap.put(explorationCauseVertex, actualSet);
@@ -161,7 +162,7 @@ public class VertexDfsMetadataUnitTest {
 		OurModel returnedtarjanModel = tarjanModel
 				.runDepthFirstSearch(dfsExplorer);
 
-		Assert.assertTrue(signalRecorder.length() > 0);
+		Assert.assertTrue(callbackSignalRecorder.isSignaled());
 
 		Assert.assertEquals(1, expectedExplorationMap.size());
 		Assert.assertEquals(1, actualExplorationMap.size());

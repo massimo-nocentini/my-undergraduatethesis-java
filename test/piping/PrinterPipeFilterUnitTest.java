@@ -12,25 +12,15 @@ import dotInterface.DotFileUtilHandler;
 public class PrinterPipeFilterUnitTest {
 
 	@Test
-	public void creationOfPrinterPipeFilter() {
-		String string = "unimportantName";
-		PipeFilter printerPipeFilter = PipeFilter.MakePrinterPipeFilter(string);
-
-		Assert.assertNotNull(printerPipeFilter);
-		Assert.assertTrue(printerPipeFilter
-				.isYourTagEquals(AvailableFilters.Printer));
-	}
-
-	@Test
 	public void applyPrinterPipeFilter() {
 		String pipeName = "tarjanSingleLevelTestPrinterPipeFilterOutput";
 
-		PipeFilter printerPipeFilter = PipeFilter
-				.MakePrinterPipeFilter(pipeName);
+		PipeFilter printerPipeFilter = PipeFilterFactory
+				.MakePrinterPipeFilter();
 
 		File workingFile = DotFileUtilHandler
 				.makeDotOutputFile(printerPipeFilter
-						.formatPhaseIdentifier());
+						.formatPhaseIdentifier(pipeName));
 
 		if (workingFile.exists()) {
 			try {
@@ -42,20 +32,10 @@ public class PrinterPipeFilterUnitTest {
 
 		final OurModel tarjanModel = OurModel.makeTarjanModel();
 
-		PipeFilterOutputListener listener = new PipeFilterOutputListener() {
+		OurModel outputModel = printerPipeFilter.workOn(tarjanModel).apply(
+				pipeName, tarjanModel);
 
-			@Override
-			public void onOutputProduced(OurModel ourModel) {
-				// first is checked this assert
-				Assert.assertSame(tarjanModel, ourModel);
-			}
-		};
-
-		printerPipeFilter = printerPipeFilter.acceptOutputListener(listener)
-				.workOn(tarjanModel).apply();
-
-		// second is checked this assert
-		Assert.assertNotNull(printerPipeFilter);
+		Assert.assertSame(tarjanModel, outputModel);
 
 		Assert.assertTrue(
 				"The filter application seem to be completed successfully "
@@ -69,12 +49,12 @@ public class PrinterPipeFilterUnitTest {
 	public void papadimitriouModelPrinterPipeFilter() {
 		String pipeName = "papadimitriouModelPrinterPipeFilterOutput";
 
-		PipeFilter printerPipeFilter = PipeFilter
-				.MakePrinterPipeFilter(pipeName);
+		PipeFilter printerPipeFilter = PipeFilterFactory
+				.MakePrinterPipeFilter();
 
 		File workingFile = DotFileUtilHandler
 				.makeDotOutputFile(printerPipeFilter
-						.formatPhaseIdentifier());
+						.formatPhaseIdentifier(pipeName));
 
 		if (workingFile.exists()) {
 			try {
@@ -86,20 +66,10 @@ public class PrinterPipeFilterUnitTest {
 
 		final OurModel papadimitriouModel = OurModel.makePapadimitriouModel();
 
-		PipeFilterOutputListener listener = new PipeFilterOutputListener() {
+		OurModel outputModel = printerPipeFilter.workOn(papadimitriouModel)
+				.apply(pipeName, papadimitriouModel);
 
-			@Override
-			public void onOutputProduced(OurModel ourModel) {
-				// first is checked this assert
-				Assert.assertSame(papadimitriouModel, ourModel);
-			}
-		};
-
-		printerPipeFilter = printerPipeFilter.acceptOutputListener(listener)
-				.workOn(papadimitriouModel).apply();
-
-		// second is checked this assert
-		Assert.assertNotNull(printerPipeFilter);
+		Assert.assertSame(papadimitriouModel, outputModel);
 
 		Assert.assertTrue(
 				"The filter application seem to be completed successfully "

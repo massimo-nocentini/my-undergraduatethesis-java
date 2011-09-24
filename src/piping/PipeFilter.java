@@ -2,30 +2,15 @@ package piping;
 
 import model.OurModel;
 
-public abstract class PipeFilter implements PipeFilterOutputListener {
+public abstract class PipeFilter {
 
 	private OurModel ourModel;
-	private PipeFilterOutputListener outputListener;
-	private String pipelineName;
 	private PipeFilter wrappedPipeFilter;
 
-	protected PipeFilterOutputListener getOutputListener() {
-
-		PipeFilterOutputListener result = new NullPipeFilterOutputListener();
-
-		if (this.isYourListenerNotNull()) {
-			result = outputListener;
-		}
-
-		return result;
-	}
-
-	protected String getPipelineName() {
-		return pipelineName;
-	}
-
-	public PipeFilter(String pipelineName) {
-		this.pipelineName = pipelineName;
+	/**
+	 * Package access for the constructor, only the factory can call it
+	 */
+	PipeFilter() {
 	}
 
 	public PipeFilter workOn(OurModel ourModel) {
@@ -38,17 +23,8 @@ public abstract class PipeFilter implements PipeFilterOutputListener {
 		return this;
 	}
 
-	public PipeFilter acceptOutputListener(PipeFilterOutputListener listener) {
-		this.outputListener = listener;
-		return this;
-	}
-
 	public boolean isYourWorkingOurModelNotNull() {
 		return ourModel != null;
-	}
-
-	public boolean isYourListenerNotNull() {
-		return outputListener != null;
 	}
 
 	public boolean isYourLevelOfWrapping(int levelOfWrapping) {
@@ -65,10 +41,6 @@ public abstract class PipeFilter implements PipeFilterOutputListener {
 		return levelsOfWrapping;
 	}
 
-	public boolean isYourPipelineNameEquals(String pipelineName) {
-		return this.pipelineName.equals(pipelineName);
-	}
-
 	public boolean isYourWrappedPipeFilterEquals(PipeFilter otherPipeFilter) {
 		return this.isYourWrappedPipeFilterNotNull()
 				&& wrappedPipeFilter.equals(otherPipeFilter);
@@ -80,56 +52,42 @@ public abstract class PipeFilter implements PipeFilterOutputListener {
 
 	public abstract boolean isYourTagEquals(AvailableFilters other);
 
-	protected abstract OurModel doYourComputationOn(OurModel inputModel);
+	protected abstract OurModel doYourComputationOn(String pipelineName,
+			OurModel inputModel,
+			PipeFilterComputationListener computationListener);
 
-	public final PipeFilter apply() {
+	public final OurModel apply(String pipelineName, OurModel inputModel) {
+
+		return applyWithListener(pipelineName, inputModel,
+				new PipeFilterComputationListenerNullObject());
+	}
+
+	public final OurModel applyWithListener(String pipelineName,
+			OurModel inputModel,
+			PipeFilterComputationListener computationListener) {
+
+		computationListener
+				.computationStartedWithPipelineIdentifier(formatPhaseIdentifier(pipelineName));
+
+		OurModel workingModel = inputModel;
 
 		if (this.isYourWrappedPipeFilterNotNull()) {
-			wrappedPipeFilter.apply();
-		} else {
-			// TODO: in the refactored version the 'ourModel' will be given as
-			// parameter of this method.
-			this.runDedicatedComputationAndNotifyOnListenerIfPresent(ourModel);
+
+			workingModel = wrappedPipeFilter.applyWithListener(pipelineName,
+					workingModel, computationListener);
+
+			ourModel = workingModel;
 		}
 
-		return this;
-	}
+		workingModel = doYourComputationOn(pipelineName, workingModel,
+				computationListener);
 
-	private void runDedicatedComputationAndNotifyOnListenerIfPresent(
-			OurModel inputModel) {
-
-		OurModel computedOurModel = this.doYourComputationOn(inputModel);
-
-		getOutputListener().onOutputProduced(computedOurModel);
-
-	}
-
-	public static PipeFilter MakePrinterPipeFilter(String pipelineName) {
-		PipeFilter filterObject = new PrinterPipeFilter(pipelineName);
-
-		return filterObject;
-	}
-
-	public static PipeFilter MakeDfsPipeFilter(String pipelineName) {
-
-		return new DfsPipeFilter(pipelineName);
+		return workingModel;
 	}
 
 	public PipeFilter pipeAfter(PipeFilter pipeFilterToWrap) {
 		wrappedPipeFilter = pipeFilterToWrap;
-		wrappedPipeFilter.acceptOutputListener(this);
 		return this;
-	}
-
-	@Override
-	public void onOutputProduced(OurModel manufacturedModel) {
-		ourModel = manufacturedModel;
-		runDedicatedComputationAndNotifyOnListenerIfPresent(manufacturedModel);
-	}
-
-	public boolean isYourListenerEquals(PipeFilterOutputListener outputListener) {
-		return this.isYourListenerNotNull()
-				&& this.outputListener.equals(outputListener);
 	}
 
 	public boolean isYourWorkingOurModelEquals(OurModel otherModel) {
@@ -137,13 +95,8 @@ public abstract class PipeFilter implements PipeFilterOutputListener {
 				&& this.ourModel.equals(otherModel);
 	}
 
-	protected final String formatPhaseIdentifier() {
-
-		return pipelineName.concat(collectPhaseInformation());
-	}
-
-	public boolean isYourPhaseIdentifier(String otherPhaseIdentifier) {
-		return formatPhaseIdentifier().equals(otherPhaseIdentifier);
+	protected final String formatPhaseIdentifier(String pipelineName) {
+		return pipelineName.concat("-").concat(collectPhaseInformation());
 	}
 
 	/**
@@ -164,7 +117,6 @@ public abstract class PipeFilter implements PipeFilterOutputListener {
 
 		String level = String.valueOf(computeLevelsOfWrapping());
 
-		return "-phase-".concat(phaseIdentifier).concat("-level-")
-				.concat(level);
+		return "phase-".concat(phaseIdentifier).concat("-level-").concat(level);
 	}
 }

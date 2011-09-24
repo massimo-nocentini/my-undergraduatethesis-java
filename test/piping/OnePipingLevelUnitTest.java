@@ -14,22 +14,12 @@ import dotInterface.DotFileUtilHandler;
 public class OnePipingLevelUnitTest {
 
 	@Test
-	public void creationOfPrinterPipeFilter() {
-		String pipelineName = "pipelineName";
-		PipeFilter dfsPipeFilter = PipeFilter.MakeDfsPipeFilter(pipelineName);
-
-		Assert.assertNotNull(dfsPipeFilter);
-		Assert.assertTrue(dfsPipeFilter.isYourTagEquals(AvailableFilters.DFS));
-	}
-
-	@Test
 	public void buildOnePipeLevel() {
-		String pipelineName = "pipelineName";
 
-		PipeFilter printerPipeFilter = PipeFilter
-				.MakePrinterPipeFilter(pipelineName);
+		PipeFilter printerPipeFilter = PipeFilterFactory
+				.MakePrinterPipeFilter();
 
-		PipeFilter dfsPipeFilter = PipeFilter.MakeDfsPipeFilter(pipelineName);
+		PipeFilter dfsPipeFilter = PipeFilterFactory.MakeDfsPipeFilter();
 
 		PipeFilter dfsPipeFilterAfterPipe = dfsPipeFilter
 				.pipeAfter(printerPipeFilter);
@@ -54,19 +44,19 @@ public class OnePipingLevelUnitTest {
 	public void OnePipingLevelUnitTest_Printer_DFS_PrinterPipe_Papadimitriou() {
 		String pipelineName = "OnePipingLevelUnitTest_Printer_DFS_PrinterPipe_Papadimitriou";
 
-		PipeFilter printerPipeFilter = PipeFilter
-				.MakePrinterPipeFilter(pipelineName);
+		PipeFilter printerPipeFilter = PipeFilterFactory
+				.MakePrinterPipeFilter();
 
-		PipeFilter dfsPipeFilter = PipeFilter.MakeDfsPipeFilter(pipelineName);
+		PipeFilter dfsPipeFilter = PipeFilterFactory.MakeDfsPipeFilter();
 
-		PipeFilter secondPrinterPipeFilter = PipeFilter
-				.MakePrinterPipeFilter(pipelineName);
+		PipeFilter secondPrinterPipeFilter = PipeFilterFactory
+				.MakePrinterPipeFilter();
 
 		secondPrinterPipeFilter.pipeAfter(dfsPipeFilter
 				.pipeAfter(printerPipeFilter));
 
 		secondPrinterPipeFilter.workOn(OurModel.makePapadimitriouModel())
-				.apply();
+				.apply(pipelineName, OurModel.makePapadimitriouModel());
 
 		// Assert.assertSame(firstPrinterPipeFilter, dfsPipeFilter);
 		// Assert.assertTrue(dfsPipeFilter
@@ -100,18 +90,19 @@ public class OnePipingLevelUnitTest {
 		OurModel simpleModel = OurModel.makeOurModelFrom(new TreeSet<Vertex>(
 				Arrays.<Vertex> asList(v, v2, v3)));
 
-		PipeFilter printerPipeFilter = PipeFilter
-				.MakePrinterPipeFilter(pipelineName);
+		PipeFilter printerPipeFilter = PipeFilterFactory
+				.MakePrinterPipeFilter();
 
-		PipeFilter dfsPipeFilter = PipeFilter.MakeDfsPipeFilter(pipelineName);
+		PipeFilter dfsPipeFilter = PipeFilterFactory.MakeDfsPipeFilter();
 
-		PipeFilter secondPrinterPipeFilter = PipeFilter
-				.MakePrinterPipeFilter(pipelineName);
+		PipeFilter secondPrinterPipeFilter = PipeFilterFactory
+				.MakePrinterPipeFilter();
 
 		secondPrinterPipeFilter.pipeAfter(dfsPipeFilter
 				.pipeAfter(printerPipeFilter));
 
-		secondPrinterPipeFilter.workOn(simpleModel).apply();
+		secondPrinterPipeFilter.workOn(simpleModel).apply(pipelineName,
+				simpleModel);
 
 		// Assert.assertSame(firstPrinterPipeFilter, dfsPipeFilter);
 		// Assert.assertTrue(dfsPipeFilter
@@ -137,14 +128,15 @@ public class OnePipingLevelUnitTest {
 				.getSbmlExampleModelsFolder().concat(
 						"BartonellaQuintanaToulouse.xml"));
 
-		PipeFilter dfsPipeFilter = PipeFilter.MakeDfsPipeFilter(pipelineName);
+		PipeFilter dfsPipeFilter = PipeFilterFactory.MakeDfsPipeFilter();
 
-		PipeFilter secondPrinterPipeFilter = PipeFilter
-				.MakePrinterPipeFilter(pipelineName);
+		PipeFilter secondPrinterPipeFilter = PipeFilterFactory
+				.MakePrinterPipeFilter();
 
 		secondPrinterPipeFilter.pipeAfter(dfsPipeFilter);
 
-		secondPrinterPipeFilter.workOn(bartonellaModel).apply();
+		secondPrinterPipeFilter.workOn(bartonellaModel).apply(pipelineName,
+				bartonellaModel);
 
 		// Assert.assertSame(firstPrinterPipeFilter, dfsPipeFilter);
 		// Assert.assertTrue(dfsPipeFilter
@@ -164,12 +156,11 @@ public class OnePipingLevelUnitTest {
 
 	@Test
 	public void checkWorkOnWithOnePipeLevel() {
-		String pipelineName = "pipelineName";
 
-		PipeFilter printerPipeFilter = PipeFilter
-				.MakePrinterPipeFilter(pipelineName);
+		PipeFilter printerPipeFilter = PipeFilterFactory
+				.MakePrinterPipeFilter();
 
-		PipeFilter dfsPipeFilter = PipeFilter.MakeDfsPipeFilter(pipelineName);
+		PipeFilter dfsPipeFilter = PipeFilterFactory.MakeDfsPipeFilter();
 
 		dfsPipeFilter = dfsPipeFilter.pipeAfter(printerPipeFilter);
 
@@ -189,15 +180,17 @@ public class OnePipingLevelUnitTest {
 	public void checkPresenceOfModelInWrapperFilterAfterApply() {
 		String pipelineName = "checkPresenceOfModelInWrapperFilterAfterApply";
 
-		PipeFilter printerPipeFilter = PipeFilter
-				.MakePrinterPipeFilter(pipelineName);
+		PipeFilter printerPipeFilter = PipeFilterFactory
+				.MakePrinterPipeFilter();
 
-		PipeFilter dfsPipeFilter = PipeFilter.MakeDfsPipeFilter(pipelineName);
+		PipeFilter dfsPipeFilter = PipeFilterFactory.MakeDfsPipeFilter();
 
 		dfsPipeFilter = dfsPipeFilter.pipeAfter(printerPipeFilter);
 
 		OurModel tarjanModel = OurModel.makeTarjanModel();
-		dfsPipeFilter.workOn(tarjanModel).apply();
+
+		OurModel outputModel = dfsPipeFilter.workOn(tarjanModel).apply(
+				pipelineName, tarjanModel);
 
 		Assert.assertTrue(printerPipeFilter.isYourWorkingOurModelNotNull());
 		Assert.assertTrue(printerPipeFilter
@@ -209,53 +202,37 @@ public class OnePipingLevelUnitTest {
 				.isYourWorkingOurModelEquals(tarjanModel));
 	}
 
-	@Test
-	public void checkAcceptListenerWithOnePipeLevel() {
-		String pipelineName = "pipelineName";
-
-		PipeFilter printerPipeFilter = PipeFilter
-				.MakePrinterPipeFilter(pipelineName);
-
-		PipeFilter dfsPipeFilter = PipeFilter.MakeDfsPipeFilter(pipelineName);
-
-		dfsPipeFilter = dfsPipeFilter.pipeAfter(printerPipeFilter);
-
-		Assert.assertTrue(printerPipeFilter.isYourListenerNotNull());
-		Assert.assertTrue(printerPipeFilter.isYourListenerEquals(dfsPipeFilter));
-		Assert.assertFalse(dfsPipeFilter.isYourListenerNotNull());
-	}
+	// @Test
+	// public void checkAcceptListenerWithOnePipeLevel() {
+	//
+	// PipeFilter printerPipeFilter = PipeFilterFactory
+	// .MakePrinterPipeFilter();
+	//
+	// PipeFilter dfsPipeFilter = PipeFilterFactory.MakeDfsPipeFilter();
+	//
+	// dfsPipeFilter = dfsPipeFilter.pipeAfter(printerPipeFilter);
+	//
+	// Assert.assertTrue(printerPipeFilter.isYourListenerNotNull());
+	// Assert.assertTrue(printerPipeFilter.isYourListenerEquals(dfsPipeFilter));
+	// Assert.assertFalse(dfsPipeFilter.isYourListenerNotNull());
+	// }
 
 	@Test
 	public void checkingDfsPipeFilterWorkWithOnePipeLevel() {
 		String pipelineName = "checkingDfsPipeFilterWorkWithOnePipeLevel";
 
-		PipeFilter printerPipeFilter = PipeFilter
-				.MakePrinterPipeFilter(pipelineName);
+		PipeFilter printerPipeFilter = PipeFilterFactory
+				.MakePrinterPipeFilter();
 
-		PipeFilter dfsPipeFilter = PipeFilter.MakeDfsPipeFilter(pipelineName);
+		PipeFilter dfsPipeFilter = PipeFilterFactory.MakeDfsPipeFilter();
 
 		final OurModel tarjanModel = OurModel.makeTarjanModel();
-		final StringBuilder listenerSignalRecorder = new StringBuilder();
-		final String listenerActuallySignaledFlag = "signaled";
-
-		dfsPipeFilter.acceptOutputListener(new PipeFilterOutputListener() {
-
-			@Override
-			public void onOutputProduced(OurModel ourModel) {
-				Assert.assertNotSame(ourModel, tarjanModel);
-				Assert.assertFalse(ourModel.equals(tarjanModel));
-
-				// adding some information on the string builder in order
-				// to notify that this listener is actually signaled
-				listenerSignalRecorder.append(listenerActuallySignaledFlag);
-			}
-		});
 
 		// run the computation
-		dfsPipeFilter.pipeAfter(printerPipeFilter).workOn(tarjanModel).apply();
+		OurModel outputModel = dfsPipeFilter.pipeAfter(printerPipeFilter)
+				.workOn(tarjanModel).apply(pipelineName, tarjanModel);
 
-		// check if the signal really happened on the listener
-		Assert.assertEquals(listenerActuallySignaledFlag,
-				listenerSignalRecorder.toString());
+		Assert.assertNotSame(outputModel, tarjanModel);
+		Assert.assertFalse(outputModel.equals(tarjanModel));
 	}
 }
