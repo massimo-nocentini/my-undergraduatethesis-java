@@ -181,4 +181,5 @@ public class VertexDfsMetadataUnitTest {
 		Assert.assertTrue(metadata.toggle().isExplored());
 		Assert.assertTrue(metadata.toggle().isExplored());
 	}
+
 }

@@ -3,7 +3,6 @@ package tarjan;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -92,61 +91,6 @@ public class DfsExplorerUnitTest {
 
 	/**
 	 * <ul>
-	 * <li>Given: a Papadimitriou model
-	 * <li>When: method call of runDepthFirstSearch finished
-	 * <li>Then: the search must have visited the nodes in a fixed,
-	 * deterministic order because we have the neighbors stored in a TreeSet, so
-	 * they are ordered by topological ordering.
-	 * </ul>
-	 */
-	@Test
-	public void checkingNewExploredNotificationOnPapadimitriouModel() {
-
-		LinkedHashSet<Vertex> expectedSearchEventNotifications = new LinkedHashSet<Vertex>();
-		OurModel papadimitriouModel = OurModel
-				.makePapadimitriouModel(expectedSearchEventNotifications);
-
-		final LinkedHashSet<Vertex> actualSearchEventNotifications = new LinkedHashSet<Vertex>();
-
-		DfsEventsListener dfsEventListener = new DfsEventsListener() {
-
-			@Override
-			public void postVisit(Vertex v) {
-			}
-
-			@Override
-			public void preVisit(Vertex v) {
-
-				actualSearchEventNotifications.add(v);
-			}
-
-			@Override
-			public void searchCompleted(Map<Vertex, VertexDfsMetadata> map) {
-			}
-
-			@Override
-			public void searchStarted(
-					Map<Vertex, VertexDfsMetadata> exploredVertexMetadatasMap) {
-			}
-
-			@Override
-			public void newVertexExplored(Vertex explorationCauseVertex,
-					Vertex vertex) {
-			}
-		};
-
-		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.make();
-
-		dfsExplorer.acceptDfsEventsListener(dfsEventListener);
-
-		papadimitriouModel.runDepthFirstSearch(dfsExplorer);
-
-		Assert.assertEquals(expectedSearchEventNotifications,
-				actualSearchEventNotifications);
-	}
-
-	/**
-	 * <ul>
 	 * <li>Given: a Tarjan model
 	 * <li>When: method call of runDepthFirstSearch is finished
 	 * <li>Then: all the vertices must be in explored state
@@ -200,6 +144,64 @@ public class DfsExplorerUnitTest {
 		Assert.assertTrue(callbackSignalRecorder.isSignaled());
 		Assert.assertTrue(callbackSignalRecorder.isCountOfSignals(vertices
 				.size()));
+
+	}
+
+	@Test
+	public void checkingPreVisitPostVisitModelWithOneVertexAndNoEdges() {
+
+		final Vertex v = Vertex.makeVertex();
+
+		final String preVisitFlag = "preVisit handle called";
+		final String postVisitFlag = "postVisit handle called";
+
+		OurModel tarjanModel = OurModel.makeOurModelFrom(new HashSet<Vertex>(
+				Arrays.<Vertex> asList(v)));
+
+		final Set<String> expectedListenedEvents = new HashSet<String>();
+		expectedListenedEvents.add(preVisitFlag);
+		expectedListenedEvents.add(postVisitFlag);
+
+		final Set<String> listenedEvents = new HashSet<String>();
+
+		DfsEventsListener dfsEventListener = new DfsEventsListener() {
+
+			@Override
+			public void postVisit(Vertex vertex) {
+				Assert.assertEquals(v, vertex);
+				listenedEvents.add(postVisitFlag);
+			}
+
+			@Override
+			public void preVisit(Vertex vertex) {
+				Assert.assertEquals(v, vertex);
+				listenedEvents.add(preVisitFlag);
+			}
+
+			@Override
+			public void searchCompleted(Map<Vertex, VertexDfsMetadata> map) {
+			}
+
+			@Override
+			public void searchStarted(
+					Map<Vertex, VertexDfsMetadata> exploredVertexMetadatasMap) {
+			}
+
+			@Override
+			public void newVertexExplored(Vertex explorationCauseVertex,
+					Vertex vertex) {
+			}
+		};
+
+		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.make();
+
+		dfsExplorer.acceptDfsEventsListener(dfsEventListener);
+
+		@SuppressWarnings("unused")
+		OurModel returnedTarjanModel = tarjanModel
+				.runDepthFirstSearch(dfsExplorer);
+
+		Assert.assertEquals(expectedListenedEvents, listenedEvents);
 
 	}
 

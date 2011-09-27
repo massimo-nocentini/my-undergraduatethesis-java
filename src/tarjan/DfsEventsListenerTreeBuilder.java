@@ -9,11 +9,39 @@ import model.Vertex;
 
 public class DfsEventsListenerTreeBuilder implements DfsEventsListener {
 
-	private Map<Vertex, DataContainer> verticesMap = new HashMap<Vertex, DfsEventsListenerTreeBuilder.DataContainer>();
+	private Map<Vertex, DataContainer> verticesMap;
 
-	private class DataContainer {
+	private int clock;
+
+	public DfsEventsListenerTreeBuilder() {
+		verticesMap = new HashMap<Vertex, DfsEventsListenerTreeBuilder.DataContainer>();
+		clock = 1;
+	}
+
+	static class DataContainer {
 
 		private final Vertex wrappedVertex;
+
+		private int preVisitClock;
+		private int postVisitClock;
+
+		public DataContainer previsitedAt(int instant) {
+			preVisitClock = instant;
+			return this;
+		}
+
+		public boolean isYourPreVisitClock(int otherClock) {
+			return preVisitClock == otherClock;
+		}
+
+		public DataContainer postvisitedAt(int other) {
+			postVisitClock = other;
+			return this;
+		}
+
+		public boolean isYourPostVisitClock(int otherClock) {
+			return postVisitClock == otherClock;
+		}
 
 		public DataContainer(Vertex explorationCauseVertex) {
 			this.wrappedVertex = Vertex
@@ -28,14 +56,14 @@ public class DfsEventsListenerTreeBuilder implements DfsEventsListener {
 
 	@Override
 	public void postVisit(Vertex v) {
-		// TODO Auto-generated method stub
-
+		verticesMap.get(v).postvisitedAt(clock);
+		clock = clock + 1;
 	}
 
 	@Override
 	public void preVisit(Vertex v) {
-		// TODO Auto-generated method stub
-
+		verticesMap.get(v).previsitedAt(clock);
+		clock = clock + 1;
 	}
 
 	@Override
