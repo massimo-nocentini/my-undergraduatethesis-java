@@ -1,17 +1,18 @@
 package model;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Set;
 import java.util.TreeSet;
 
 import org.sbml.jsbml.Species;
 
+import dotInterface.DotDecorationApplier;
 import dotInterface.DotExportable;
 import dotInterface.DotExporter;
 import dotInterface.Edge;
-import dotInterface.VertexDotInfoProvider;
 
-public class Vertex implements DotExportable, VertexDotInfoProvider,
-		Comparable<Vertex> {
+public class Vertex implements DotExportable, Comparable<Vertex> {
 
 	/**
 	 * Dummy value
@@ -34,6 +35,61 @@ public class Vertex implements DotExportable, VertexDotInfoProvider,
 		static int getCurrentEnumerationValue() {
 			return count;
 		}
+	}
+
+	public class Formatter {
+
+		private Formatter() {
+		}
+
+		public Formatter formatVertexDefinitionInto(Writer writer,
+				DotDecorationApplier useDecorationApplier) {
+
+			String vertexRepresentation = species_id.trim().concat(
+					compartment_id.trim());
+
+			if (isSink() || isSource()) {
+
+				vertexRepresentation = useDecorationApplier
+						.decoreWithSourceSinkAttributes(vertexRepresentation);
+			}
+
+			try {
+				writer.append(vertexRepresentation);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			return this;
+		}
+
+		public Formatter formatEdgeDefinitionInto(Writer writer,
+				Vertex neighbour, DotDecorationApplier dotDecorationApplier) {
+
+			String myComposedId = species_id.trim().concat(
+					compartment_id.trim());
+
+			String neighbourComposedId = neighbour.species_id.trim().concat(
+					neighbour.compartment_id.trim());
+
+			String composedString = dotDecorationApplier
+					.buildInfixNeighborhoodRelation(myComposedId,
+							neighbourComposedId);
+
+			try {
+				writer.append(composedString);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			return this;
+
+		}
+
+	}
+
+	public Formatter useFormatter() {
+		return new Formatter();
 	}
 
 	private Set<Vertex> neighbors;
@@ -164,11 +220,6 @@ public class Vertex implements DotExportable, VertexDotInfoProvider,
 		}
 	}
 
-	@Override
-	public String provideId() {
-		return species_id.trim().concat(compartment_id.trim());
-	}
-
 	public boolean isSink() {
 		// TODO: ask if this condition is sufficient for the truth of this
 		// predicate
@@ -177,11 +228,6 @@ public class Vertex implements DotExportable, VertexDotInfoProvider,
 
 	public boolean isSource() {
 		return directAncestors.size() == 0 && neighbors.size() > 0;
-	}
-
-	@Override
-	public Vertex getVertexInstance() {
-		return this;
 	}
 
 	public boolean isYourNeighbour(Vertex a) {

@@ -1,6 +1,9 @@
 package dotInterface;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -10,6 +13,10 @@ import model.Vertex;
 
 import org.junit.Test;
 import org.sbml.jsbml.Species;
+
+import tarjan.DfsEventsListenerTreeBuilder;
+import tarjan.DfsExplorer;
+import tarjan.DfsExplorerDefaultImplementor;
 
 public class DotExportableUnitTest {
 
@@ -30,8 +37,18 @@ public class DotExportableUnitTest {
 
 		Set<String> expectedVertexDefinitionPart = new HashSet<String>();
 
-		expectedVertexDefinitionPart.add(exporter.useDecorationApplier()
-				.decoreWithSourceSinkAttributes(v.provideId()));
+		Writer identifierWriter = new StringWriter();
+		v.useFormatter().formatVertexDefinitionInto(identifierWriter,
+				exporter.useDecorationApplier());
+		try {
+			identifierWriter.close();
+			expectedVertexDefinitionPart.add(identifierWriter.toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		// expectedVertexDefinitionPart.add(exporter.useDecorationApplier()
+		// .decoreWithSourceSinkAttributes(v.provideId()));
 
 		Assert.assertTrue(exporter
 				.isVertexDefinitionPartEquals(expectedVertexDefinitionPart));
@@ -77,27 +94,78 @@ public class DotExportableUnitTest {
 		DotExportable exportable = OurModel.makeOurModelFrom(vertices);
 
 		DotExporter exporter = new SimpleExporter();
+		DotDecorationApplier dotDecorationApplier = exporter
+				.useDecorationApplier();
+
 		exportable.acceptExporter(exporter);
 
 		Set<String> expectedVertexDefinitionPart = new HashSet<String>();
 
-		expectedVertexDefinitionPart.add(exporter.useDecorationApplier()
-				.decoreWithSourceSinkAttributes(v.provideId()));
+		Writer identifierWriter = null;
 
-		expectedVertexDefinitionPart.add(v2.provideId());
+		identifierWriter = new StringWriter();
+		v.useFormatter().formatVertexDefinitionInto(identifierWriter,
+				dotDecorationApplier);
+		try {
+			identifierWriter.close();
+			expectedVertexDefinitionPart.add(identifierWriter.toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-		expectedVertexDefinitionPart.add(exporter.useDecorationApplier()
-				.decoreWithSourceSinkAttributes(v3.provideId()));
+		// expectedVertexDefinitionPart.add(exporter.useDecorationApplier()
+		// .decoreWithSourceSinkAttributes(v.provideId()));
+
+		identifierWriter = new StringWriter();
+		v2.useFormatter().formatVertexDefinitionInto(identifierWriter,
+				dotDecorationApplier);
+		try {
+			identifierWriter.close();
+			expectedVertexDefinitionPart.add(identifierWriter.toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		// expectedVertexDefinitionPart.add(v2.provideId());
+
+		identifierWriter = new StringWriter();
+		v3.useFormatter().formatVertexDefinitionInto(identifierWriter,
+				dotDecorationApplier);
+		try {
+			identifierWriter.close();
+			expectedVertexDefinitionPart.add(identifierWriter.toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		// expectedVertexDefinitionPart.add(exporter.useDecorationApplier()
+		// .decoreWithSourceSinkAttributes(v3.provideId()));
 
 		Set<String> expectedEdgeDefinitionPart = new HashSet<String>();
 
-		expectedEdgeDefinitionPart.add(exporter.useDecorationApplier()
-				.buildInfixNeighborhoodRelation(v.provideId(), v2.provideId()));
+		identifierWriter = new StringWriter();
+		v.useFormatter().formatEdgeDefinitionInto(identifierWriter, v2,
+				dotDecorationApplier);
+		try {
+			identifierWriter.close();
+			expectedEdgeDefinitionPart.add(identifierWriter.toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		// expectedEdgeDefinitionPart.add(exporter.useDecorationApplier()
+		// .buildInfixNeighborhoodRelation(v.provideId(), v2.provideId()));
 
-		expectedEdgeDefinitionPart
-				.add(exporter.useDecorationApplier()
-						.buildInfixNeighborhoodRelation(v2.provideId(),
-								v3.provideId()));
+		identifierWriter = new StringWriter();
+		v2.useFormatter().formatEdgeDefinitionInto(identifierWriter, v3,
+				dotDecorationApplier);
+		try {
+			identifierWriter.close();
+			expectedEdgeDefinitionPart.add(identifierWriter.toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		// expectedEdgeDefinitionPart
+		// .add(exporter.useDecorationApplier()
+		// .buildInfixNeighborhoodRelation(v2.provideId(),
+		// v3.provideId()));
 
 		Assert.assertTrue(exporter
 				.isVertexDefinitionPartEquals(expectedVertexDefinitionPart));
@@ -136,6 +204,39 @@ public class DotExportableUnitTest {
 				.isEdgeDefinitionPartEquals(expectedEdgeDefinitionPart));
 
 		DotFileUtilHandler.MakeHandler("tarjanPaperTestNetwork")
+				.writeDotRepresentationInTestFolder(exporter)
+				.produceSvgOutput();
+	}
+
+	@Test
+	public void testVerticesLabelOutsideBox() {
+
+		Set<Vertex> vertices = new HashSet<Vertex>();
+
+		Set<String> expectedVertexLabelOutsideBoxPart = new HashSet<String>();
+		DotExporter exporter = new SimpleExporter();
+
+		OurModel.makeTarjanNetworkVertexSetWithRelation(vertices,
+				new HashSet<String>(), new HashSet<String>(),
+				expectedVertexLabelOutsideBoxPart, exporter);
+
+		DfsEventsListenerTreeBuilder dfsEventListener = new DfsEventsListenerTreeBuilder();
+
+		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.make();
+
+		dfsExplorer.acceptDfsEventsListener(dfsEventListener);
+
+		DotExportable exportable = OurModel.makeOurModelFrom(vertices)
+				.runDepthFirstSearch(dfsExplorer);
+
+		exportable.acceptExporter(exporter);
+
+		Assert.assertEquals(12, expectedVertexLabelOutsideBoxPart.size());
+
+		Assert.assertTrue(exporter
+				.isVertexLabelOutsideBoxPartEquals(expectedVertexLabelOutsideBoxPart));
+
+		DotFileUtilHandler.MakeHandler("testVerticesLabelOutsideBox")
 				.writeDotRepresentationInTestFolder(exporter)
 				.produceSvgOutput();
 	}

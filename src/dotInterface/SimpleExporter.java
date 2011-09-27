@@ -6,6 +6,8 @@ import java.io.Writer;
 import java.util.HashSet;
 import java.util.Set;
 
+import model.Vertex;
+
 public class SimpleExporter implements DotExporter {
 
 	private Set<String> verticesDefinitionDotRepresentation;
@@ -23,19 +25,20 @@ public class SimpleExporter implements DotExporter {
 	}
 
 	@Override
-	public DotExporter buildVertexDefinition(
-			VertexDotInfoProvider vertexDotInfoProvider) {
+	public DotExporter buildVertexDefinition(Vertex vertex) {
 
-		String vertexRepresentation = vertexDotInfoProvider.provideId();
+		Writer writer = new StringWriter();
 
-		if (vertexDotInfoProvider.getVertexInstance().isSink()
-				|| vertexDotInfoProvider.getVertexInstance().isSource()) {
+		vertex.useFormatter().formatVertexDefinitionInto(writer,
+				this.useDecorationApplier());
 
-			vertexRepresentation = this.useDecorationApplier()
-					.decoreWithSourceSinkAttributes(vertexRepresentation);
+		try {
+			writer.close();
+			verticesDefinitionDotRepresentation.add(writer.toString());
+
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-
-		verticesDefinitionDotRepresentation.add(vertexRepresentation);
 
 		return this;
 	}
@@ -141,5 +144,18 @@ public class SimpleExporter implements DotExporter {
 	@Override
 	public DotDecorationApplier useDecorationApplier() {
 		return this.dotDecorationApplier;
+	}
+
+	@Override
+	public boolean isVertexLabelOutsideBoxPartEquals(Set<String> Part) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public DotDocumentPartHandler collectVertexLabelOutsideBoxPart(
+			Writer outputPlugObject) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

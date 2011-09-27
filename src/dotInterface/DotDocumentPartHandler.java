@@ -9,9 +9,14 @@ public interface DotDocumentPartHandler {
 
 	boolean isEdgeDefinitionPartEquals(Set<String> part);
 
+	boolean isVertexLabelOutsideBoxPartEquals(Set<String> Part);
+
 	DotDocumentPartHandler collectGeneralSettingsPart(Writer outputPlugObject);
 
 	DotDocumentPartHandler collectEdgeDefinitionPart(Writer outputPlugObject);
 
 	DotDocumentPartHandler collectVertexDefinitionPart(Writer outputPlugObject);
+
+	DotDocumentPartHandler collectVertexLabelOutsideBoxPart(
+			Writer outputPlugObject);
 }
