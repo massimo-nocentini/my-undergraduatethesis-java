@@ -20,6 +20,14 @@ import org.sbml.jsbml.Compartment;
 import org.sbml.jsbml.Model;
 import org.sbml.jsbml.Species;
 
+/**
+ * @author massimo
+ *
+ */
+/**
+ * @author massimo
+ * 
+ */
 public class VertexUnitTest {
 	@Test
 	public void createVertex() {
@@ -151,6 +159,40 @@ public class VertexUnitTest {
 		vertex.addNeighbour(a1);
 		vertex.addNeighbour(a2);
 		vertex.addNeighbour(a3);
+
+		List<Vertex> desiredNeighborsSequence = new LinkedList<Vertex>(
+				Arrays.asList(a1, a2, a3));
+
+		final List<Vertex> actualNeighborsSequence = new LinkedList<Vertex>();
+
+		vertex.doOnNeighbors(new VertexLogicApplier() {
+
+			@Override
+			public void apply(Vertex neighbourVertex) {
+				actualNeighborsSequence.add(neighbourVertex);
+			}
+		});
+
+		Assert.assertEquals(desiredNeighborsSequence, actualNeighborsSequence);
+	}
+
+	/**
+	 * This test method assures that the neighbors of a vertex are always
+	 * processed second the topological ordering (see the override of equals()
+	 * to capture the criterion)
+	 */
+	@Test
+	public void neighborsRelationIsTopologicOrdered() {
+
+		String compartment_id = "compartment_id";
+		Vertex vertex = Vertex.makeVertex("A", compartment_id);
+		Vertex a1 = Vertex.makeVertex("B", compartment_id);
+		Vertex a2 = Vertex.makeVertex("C", compartment_id);
+		Vertex a3 = Vertex.makeVertex("D", compartment_id);
+
+		vertex.addNeighbour(a3);
+		vertex.addNeighbour(a2);
+		vertex.addNeighbour(a1);
 
 		List<Vertex> desiredNeighborsSequence = new LinkedList<Vertex>(
 				Arrays.asList(a1, a2, a3));
@@ -309,7 +351,8 @@ public class VertexUnitTest {
 		Vertex v1 = Vertex.makeVertex();
 
 		Assert.assertTrue(v1.isYourNeighborhoodEmpty());
-		Assert.assertEquals(0, v1.countNeighbors());
+
+		Assert.assertTrue(v1.isNeighborsCountEquals(0));
 	}
 
 	@Test
@@ -321,7 +364,6 @@ public class VertexUnitTest {
 		v1.addNeighbour(v2);
 
 		Assert.assertFalse(v1.isYourNeighborhoodEmpty());
-		Assert.assertTrue(v1.countNeighbors() > 0);
 	}
 
 	@Test
@@ -418,9 +460,9 @@ public class VertexUnitTest {
 		v1.addNeighbour(v4);
 
 		// doubling
-		v1.addNeighbour(v2);
-		v1.addNeighbour(v3);
 		v1.addNeighbour(v4);
+		v1.addNeighbour(v3);
+		v1.addNeighbour(v2);
 
 		// empty testing neighborhood
 		Set<Vertex> anotherNeighborhood = new HashSet<Vertex>();
@@ -428,7 +470,7 @@ public class VertexUnitTest {
 		anotherNeighborhood.add(v3);
 		anotherNeighborhood.add(v4);
 
-		Assert.assertEquals(3, v1.countNeighbors());
+		Assert.assertTrue(v1.isNeighborsCountEquals(3));
 		Assert.assertTrue(v1.isYourNeighborhoodEquals(anotherNeighborhood));
 	}
 

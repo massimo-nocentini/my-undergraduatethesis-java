@@ -188,8 +188,8 @@ public class Vertex implements DotExportable, VertexDotInfoProvider,
 		return neighbors.contains(a);
 	}
 
-	public int countNeighbors() {
-		return neighbors.size();
+	public boolean isNeighborsCountEquals(int guess) {
+		return neighbors.size() == guess;
 	}
 
 	public boolean matchCompartmentWith(Vertex otherVertex) {

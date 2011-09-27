@@ -3,6 +3,7 @@ package model;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -292,7 +293,10 @@ public class OurModel implements DotExportable {
 	 * @return return a Tarjan test model specified in its original paper.
 	 */
 	public static OurModel makeTarjanModel() {
-		HashSet<Vertex> vertices = new HashSet<Vertex>();
+		return makeTarjanModel(new TreeSet<Vertex>());
+	}
+
+	public static OurModel makeTarjanModel(Set<Vertex> vertices) {
 
 		OurModel.makeTarjanNetworkVertexSetWithRelation(vertices,
 				new HashSet<String>(), new HashSet<String>(),
@@ -302,19 +306,39 @@ public class OurModel implements DotExportable {
 	}
 
 	public static OurModel makePapadimitriouModel() {
+		return makePapadimitriouModel(new LinkedHashSet<Vertex>());
+	}
 
-		final Vertex vA = Vertex.makeVertex();
-		final Vertex vB = Vertex.makeVertex();
-		final Vertex vE = Vertex.makeVertex();
-		final Vertex vI = Vertex.makeVertex();
-		final Vertex vJ = Vertex.makeVertex();
-		final Vertex vC = Vertex.makeVertex();
-		final Vertex vD = Vertex.makeVertex();
-		final Vertex vG = Vertex.makeVertex();
-		final Vertex vH = Vertex.makeVertex();
-		final Vertex vK = Vertex.makeVertex();
-		final Vertex vL = Vertex.makeVertex();
-		final Vertex vF = Vertex.makeVertex();
+	/**
+	 * This method makes the Papadimitriou model (described on page 86 of his
+	 * book Algorithms). The unique parameter that this method accepts is an
+	 * object of a specialized type in the set's hierarchy: this catch the
+	 * concept that the addition of vertices to the set preserve the insertion
+	 * ordering (this is the only way to require such data structure in order to
+	 * maintain the order). This insertion order is the visit order that must be
+	 * match by a DFS search run.
+	 * 
+	 * @param vertices
+	 *            collecting parameter. The vertices added to this set preserve
+	 *            the addition order
+	 * @return a Papadimitriou model described at page 86 of his book
+	 */
+	public static OurModel makePapadimitriouModel(LinkedHashSet<Vertex> vertices) {
+
+		String compartment_id = "compartment_id";
+
+		final Vertex vA = Vertex.makeVertex("A", compartment_id);
+		final Vertex vB = Vertex.makeVertex("B", compartment_id);
+		final Vertex vE = Vertex.makeVertex("E", compartment_id);
+		final Vertex vI = Vertex.makeVertex("I", compartment_id);
+		final Vertex vJ = Vertex.makeVertex("J", compartment_id);
+		final Vertex vC = Vertex.makeVertex("C", compartment_id);
+		final Vertex vD = Vertex.makeVertex("D", compartment_id);
+		final Vertex vG = Vertex.makeVertex("G", compartment_id);
+		final Vertex vH = Vertex.makeVertex("H", compartment_id);
+		final Vertex vK = Vertex.makeVertex("K", compartment_id);
+		final Vertex vL = Vertex.makeVertex("L", compartment_id);
+		final Vertex vF = Vertex.makeVertex("F", compartment_id);
 
 		vA.addNeighbour(vB);
 		vA.addNeighbour(vE);
@@ -353,9 +377,12 @@ public class OurModel implements DotExportable {
 
 		vL.addNeighbour(vH);
 
-		return OurModel.makeOurModelFrom(new TreeSet<Vertex>(
-				Arrays.<Vertex> asList(vA, vB, vC, vD, vE, vF, vG, vH, vI, vJ,
-						vK, vL)));
+		// this addition sequence order is the order that the DFS
+		// must replay during the visit of the graph
+		vertices.addAll(Arrays.<Vertex> asList(vA, vB, vE, vI, vJ, vC, vD, vH,
+				vG, vK, vL, vF));
+
+		return OurModel.makeOurModelFrom(vertices);
 
 	}
 

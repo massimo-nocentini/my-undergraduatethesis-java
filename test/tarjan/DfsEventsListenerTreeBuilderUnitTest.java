@@ -1,39 +1,73 @@
 package tarjan;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import junit.framework.Assert;
+import model.OurModel;
+import model.Vertex;
 
 import org.junit.Test;
 
 public class DfsEventsListenerTreeBuilderUnitTest {
 
 	@Test
-	public void checkingExploredNewVertexAndAlreadyKnownWithThreeVertices() {
+	public void checkingPreVisitPostVisitModelWithOneVertexAndNoEdges() {
 
-		// OurModel papadimitriouModel = OurModel
-		// .makeOurModelFrom(new TreeSet<Vertex>(Arrays.<Vertex> asList(
-		// vA, vB, vC, vD, vE, vF, vG, vH, vI, vJ, vK, vL)));
+		final Vertex v = Vertex.makeVertex();
 
-		DfsEventsListener dfsEventListener = new DfsEventsListenerTreeBuilder();
+		final String preVisitFlag = "preVisit handle called";
+		final String postVisitFlag = "postVisit handle called";
+
+		OurModel tarjanModel = OurModel.makeOurModelFrom(new HashSet<Vertex>(
+				Arrays.<Vertex> asList(v)));
+
+		final Set<String> expectedListenedEvents = new HashSet<String>();
+		expectedListenedEvents.add(preVisitFlag);
+		expectedListenedEvents.add(postVisitFlag);
+
+		final Set<String> listenedEvents = new HashSet<String>();
+
+		DfsEventsListener dfsEventListener = new DfsEventsListener() {
+
+			@Override
+			public void postVisit(Vertex vertex) {
+				Assert.assertEquals(v, vertex);
+				listenedEvents.add(postVisitFlag);
+			}
+
+			@Override
+			public void preVisit(Vertex vertex) {
+				Assert.assertEquals(v, vertex);
+				listenedEvents.add(preVisitFlag);
+			}
+
+			@Override
+			public void searchCompleted(Map<Vertex, VertexDfsMetadata> map) {
+			}
+
+			@Override
+			public void searchStarted(
+					Map<Vertex, VertexDfsMetadata> exploredVertexMetadatasMap) {
+			}
+
+			@Override
+			public void newVertexExplored(Vertex explorationCauseVertex,
+					Vertex vertex) {
+			}
+		};
 
 		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.make();
 
 		dfsExplorer.acceptDfsEventsListener(dfsEventListener);
 
-		// bookmark fail.
-		Assert.fail();
+		@SuppressWarnings("unused")
+		OurModel returnedtarjanModel = tarjanModel
+				.runDepthFirstSearch(dfsExplorer);
 
-		// @SuppressWarnings("unused")
-		// OurModel returnedtarjanModel = tarjanModel
-		// .runDepthFirstSearch(dfsExplorer);
-		//
-		// Assert.assertEquals(3, expectedOrderedPrevisitInvocation.size());
-		// Assert.assertEquals(3, expectedOrderedPostvisitInvocation.size());
-		//
-		// Assert.assertEquals(expectedOrderedPrevisitInvocation,
-		// actualOrderedPrevisitInvocation);
-		//
-		// Assert.assertEquals(expectedOrderedPostvisitInvocation,
-		// actualOrderedPostvisitInvocation);
+		Assert.assertEquals(expectedListenedEvents, listenedEvents);
 
 	}
 }

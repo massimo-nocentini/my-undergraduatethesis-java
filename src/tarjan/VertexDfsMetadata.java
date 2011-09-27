@@ -19,6 +19,7 @@ public class VertexDfsMetadata {
 			Vertex explorationCauseVertex) {
 
 		if (isExplored() == false) {
+
 			toggle();
 			if (explorationCauseVertex != null) {
 				vertexExplorer
