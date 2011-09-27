@@ -10,6 +10,7 @@ import model.Vertex;
 import org.junit.Test;
 
 import tarjan.DfsEventsListenerTreeBuilder.DataContainer;
+import util.CallbackSignalRecorder;
 
 public class DfsEventsListenerTreeBuilderUnitTest {
 	/**
@@ -82,34 +83,7 @@ public class DfsEventsListenerTreeBuilderUnitTest {
 		OurModel papadimitriouModel = OurModel
 				.makePapadimitriouModel(expectedSearchEventNotifications);
 
-		final LinkedHashSet<Vertex> actualSearchEventNotifications = new LinkedHashSet<Vertex>();
-
-		DfsEventsListener dfsEventListener = new DfsEventsListener() {
-
-			@Override
-			public void postVisit(Vertex v) {
-			}
-
-			@Override
-			public void preVisit(Vertex v) {
-
-				actualSearchEventNotifications.add(v);
-			}
-
-			@Override
-			public void searchCompleted(Map<Vertex, VertexDfsMetadata> map) {
-			}
-
-			@Override
-			public void searchStarted(
-					Map<Vertex, VertexDfsMetadata> exploredVertexMetadatasMap) {
-			}
-
-			@Override
-			public void newVertexExplored(Vertex explorationCauseVertex,
-					Vertex vertex) {
-			}
-		};
+		DfsEventsListenerTreeBuilder dfsEventListener = new DfsEventsListenerTreeBuilder();
 
 		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.make();
 
@@ -117,8 +91,63 @@ public class DfsEventsListenerTreeBuilderUnitTest {
 
 		papadimitriouModel.runDepthFirstSearch(dfsExplorer);
 
-		Assert.assertEquals(expectedSearchEventNotifications,
-				actualSearchEventNotifications);
+		CallbackSignalRecorder signalRecorder = new CallbackSignalRecorder();
+
+		for (Vertex vertex : expectedSearchEventNotifications) {
+			if (vertex.isYourSpeciesId("A")) {
+				Assert.assertTrue(dfsEventListener.isVertexClockInterval(
+						vertex, 1, 10));
+				signalRecorder.signal();
+			} else if (vertex.isYourSpeciesId("B")) {
+				Assert.assertTrue(dfsEventListener.isVertexClockInterval(
+						vertex, 2, 3));
+				signalRecorder.signal();
+			} else if (vertex.isYourSpeciesId("E")) {
+				Assert.assertTrue(dfsEventListener.isVertexClockInterval(
+						vertex, 4, 9));
+				signalRecorder.signal();
+			} else if (vertex.isYourSpeciesId("I")) {
+				Assert.assertTrue(dfsEventListener.isVertexClockInterval(
+						vertex, 5, 8));
+				signalRecorder.signal();
+			} else if (vertex.isYourSpeciesId("J")) {
+				Assert.assertTrue(dfsEventListener.isVertexClockInterval(
+						vertex, 6, 7));
+				signalRecorder.signal();
+			} else if (vertex.isYourSpeciesId("C")) {
+				Assert.assertTrue(dfsEventListener.isVertexClockInterval(
+						vertex, 11, 22));
+				signalRecorder.signal();
+			} else if (vertex.isYourSpeciesId("D")) {
+				Assert.assertTrue(dfsEventListener.isVertexClockInterval(
+						vertex, 12, 21));
+				signalRecorder.signal();
+			} else if (vertex.isYourSpeciesId("H")) {
+				Assert.assertTrue(dfsEventListener.isVertexClockInterval(
+						vertex, 13, 20));
+				signalRecorder.signal();
+			} else if (vertex.isYourSpeciesId("G")) {
+				Assert.assertTrue(dfsEventListener.isVertexClockInterval(
+						vertex, 14, 17));
+				signalRecorder.signal();
+			} else if (vertex.isYourSpeciesId("K")) {
+				Assert.assertTrue(dfsEventListener.isVertexClockInterval(
+						vertex, 15, 16));
+				signalRecorder.signal();
+			} else if (vertex.isYourSpeciesId("L")) {
+				Assert.assertTrue(dfsEventListener.isVertexClockInterval(
+						vertex, 18, 19));
+				signalRecorder.signal();
+			} else if (vertex.isYourSpeciesId("F")) {
+				Assert.assertTrue(dfsEventListener.isVertexClockInterval(
+						vertex, 23, 24));
+				signalRecorder.signal();
+			}
+		}
+
+		Assert.assertTrue(signalRecorder
+				.isCountOfSignals(expectedSearchEventNotifications.size()));
+
 	}
 
 	@Test

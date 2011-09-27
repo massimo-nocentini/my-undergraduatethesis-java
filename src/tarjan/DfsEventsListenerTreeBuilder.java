@@ -18,6 +18,12 @@ public class DfsEventsListenerTreeBuilder implements DfsEventsListener {
 		clock = 1;
 	}
 
+	boolean isVertexClockInterval(Vertex vertex, int previsitClock, int postVisitClock) {
+		DataContainer dataContainer = verticesMap.get(vertex);
+		return dataContainer.isYourPreVisitClock(previsitClock)
+				&& dataContainer.isYourPostVisitClock(postVisitClock);
+	}
+
 	static class DataContainer {
 
 		private final Vertex wrappedVertex;
