@@ -5,6 +5,7 @@ import java.util.Map;
 
 import junit.framework.Assert;
 import model.OurModel;
+import model.SimpleVertex;
 import model.Vertex;
 
 import org.junit.Test;
@@ -153,7 +154,7 @@ public class DfsEventsListenerTreeBuilderUnitTest {
 	@Test
 	public void settingPreVisitClockInfo() {
 
-		final Vertex v = Vertex.makeVertex();
+		final Vertex v = SimpleVertex.makeVertex();
 		DfsEventsListenerTreeBuilder.DataContainer metadata = new DfsEventsListenerTreeBuilder.DataContainer(
 				v);
 
@@ -167,7 +168,7 @@ public class DfsEventsListenerTreeBuilderUnitTest {
 	@Test
 	public void settingPostVisitClockInfo() {
 
-		final Vertex v = Vertex.makeVertex();
+		final Vertex v = SimpleVertex.makeVertex();
 		DfsEventsListenerTreeBuilder.DataContainer metadata = new DfsEventsListenerTreeBuilder.DataContainer(
 				v);
 

@@ -10,6 +10,7 @@ import java.util.Set;
 
 import junit.framework.Assert;
 import model.OurModel;
+import model.SimpleVertex;
 import model.Vertex;
 
 import org.junit.Test;
@@ -42,7 +43,7 @@ public class ConnectorUnitTest {
 
 		final Set<Vertex> collectedVertices = new HashSet<Vertex>();
 
-		Vertex outSide = Vertex.makeVertex();
+		Vertex outSide = SimpleVertex.makeVertex();
 
 		Set<Vertex> vertices = connector.convertToVertexSet(
 				reaction.getListOfReactants(), new HashMap<Vertex, Vertex>(),

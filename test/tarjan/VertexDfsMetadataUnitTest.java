@@ -9,6 +9,7 @@ import java.util.TreeSet;
 
 import junit.framework.Assert;
 import model.OurModel;
+import model.SimpleVertex;
 import model.Vertex;
 
 import org.junit.Test;
@@ -19,7 +20,7 @@ public class VertexDfsMetadataUnitTest {
 
 	@Test
 	public void creation() {
-		Vertex v = Vertex.makeVertex();
+		Vertex v = SimpleVertex.makeVertex();
 		VertexDfsMetadata metadata = new VertexDfsMetadata(v);
 
 		Assert.assertFalse(metadata.isExplored());
@@ -27,7 +28,7 @@ public class VertexDfsMetadataUnitTest {
 
 	@Test
 	public void isExploredSideEffect() {
-		final Vertex v = Vertex.makeVertex();
+		final Vertex v = SimpleVertex.makeVertex();
 		VertexDfsMetadata metadata = new VertexDfsMetadata(v);
 
 		DfsEventsListener eventListener = new DfsEventsListener() {
@@ -97,9 +98,9 @@ public class VertexDfsMetadataUnitTest {
 	@Test
 	public void checkingExploredNewVertexAndAlreadyKnownWithThreeVertices() {
 
-		final Vertex v = Vertex.makeVertex();
-		final Vertex v2 = Vertex.makeVertex();
-		final Vertex v3 = Vertex.makeVertex();
+		final Vertex v = SimpleVertex.makeVertex();
+		final Vertex v2 = SimpleVertex.makeVertex();
+		final Vertex v3 = SimpleVertex.makeVertex();
 
 		final CallbackSignalRecorder callbackSignalRecorder = new CallbackSignalRecorder();
 
@@ -174,7 +175,7 @@ public class VertexDfsMetadataUnitTest {
 	@Test
 	public void checkToggleMethod() {
 
-		final Vertex v = Vertex.makeVertex();
+		final Vertex v = SimpleVertex.makeVertex();
 		VertexDfsMetadata metadata = new VertexDfsMetadata(v);
 
 		Assert.assertFalse(metadata.isExplored());

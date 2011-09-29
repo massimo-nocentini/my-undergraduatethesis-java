@@ -7,6 +7,7 @@ import java.util.TreeSet;
 
 import junit.framework.Assert;
 import model.OurModel;
+import model.SimpleVertex;
 import model.Vertex;
 
 import org.junit.Test;
@@ -119,9 +120,9 @@ public class OnePipingLevelUnitTest {
 	public void OnePipingLevelUnitTest_Printer_DFS_PrinterPipe_Simple() {
 		String pipelineName = "OnePipingLevelUnitTest_Printer_DFS_PrinterPipe_Simple";
 
-		final Vertex v = Vertex.makeVertex();
-		final Vertex v2 = Vertex.makeVertex();
-		final Vertex v3 = Vertex.makeVertex();
+		final Vertex v = SimpleVertex.makeVertex();
+		final Vertex v2 = SimpleVertex.makeVertex();
+		final Vertex v3 = SimpleVertex.makeVertex();
 
 		v.addNeighbour(v2);
 		v.addNeighbour(v3);

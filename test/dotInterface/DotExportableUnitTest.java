@@ -9,6 +9,7 @@ import java.util.Set;
 
 import junit.framework.Assert;
 import model.OurModel;
+import model.SimpleVertex;
 import model.Vertex;
 
 import org.junit.Test;
@@ -29,7 +30,7 @@ public class DotExportableUnitTest {
 		Species species = new Species(speciesId);
 		species.setCompartment(compartmentId);
 
-		Vertex v = Vertex.makeVertex(species);
+		Vertex v = SimpleVertex.makeVertex(species);
 		DotExportable exportable = v;
 
 		DotExporter exporter = new SimpleExporter();
@@ -38,7 +39,7 @@ public class DotExportableUnitTest {
 		Set<String> expectedVertexDefinitionPart = new HashSet<String>();
 
 		Writer identifierWriter = new StringWriter();
-		v.useFormatter().formatVertexDefinitionInto(identifierWriter,
+		v.useFormatter().formatVertexDefinitionInto(identifierWriter, v,
 				exporter.useDecorationApplier());
 		try {
 			identifierWriter.close();
@@ -79,9 +80,9 @@ public class DotExportableUnitTest {
 		secondSpecies.setCompartment(compartmentId);
 		thirdSpecies.setCompartment(compartmentId);
 
-		Vertex v = Vertex.makeVertex(firstSpecies);
-		Vertex v2 = Vertex.makeVertex(secondSpecies);
-		Vertex v3 = Vertex.makeVertex(thirdSpecies);
+		Vertex v = SimpleVertex.makeVertex(firstSpecies);
+		Vertex v2 = SimpleVertex.makeVertex(secondSpecies);
+		Vertex v3 = SimpleVertex.makeVertex(thirdSpecies);
 
 		v.addNeighbour(v2);
 		v2.addNeighbour(v3);
@@ -104,7 +105,7 @@ public class DotExportableUnitTest {
 		Writer identifierWriter = null;
 
 		identifierWriter = new StringWriter();
-		v.useFormatter().formatVertexDefinitionInto(identifierWriter,
+		v.useFormatter().formatVertexDefinitionInto(identifierWriter, v,
 				dotDecorationApplier);
 		try {
 			identifierWriter.close();
@@ -117,7 +118,7 @@ public class DotExportableUnitTest {
 		// .decoreWithSourceSinkAttributes(v.provideId()));
 
 		identifierWriter = new StringWriter();
-		v2.useFormatter().formatVertexDefinitionInto(identifierWriter,
+		v2.useFormatter().formatVertexDefinitionInto(identifierWriter, v2,
 				dotDecorationApplier);
 		try {
 			identifierWriter.close();
@@ -128,7 +129,7 @@ public class DotExportableUnitTest {
 		// expectedVertexDefinitionPart.add(v2.provideId());
 
 		identifierWriter = new StringWriter();
-		v3.useFormatter().formatVertexDefinitionInto(identifierWriter,
+		v3.useFormatter().formatVertexDefinitionInto(identifierWriter, v3,
 				dotDecorationApplier);
 		try {
 			identifierWriter.close();
@@ -142,7 +143,7 @@ public class DotExportableUnitTest {
 		Set<String> expectedEdgeDefinitionPart = new HashSet<String>();
 
 		identifierWriter = new StringWriter();
-		v.useFormatter().formatEdgeDefinitionInto(identifierWriter, v2,
+		v.useFormatter().formatEdgeDefinitionInto(identifierWriter, v, v2,
 				dotDecorationApplier);
 		try {
 			identifierWriter.close();
@@ -154,7 +155,7 @@ public class DotExportableUnitTest {
 		// .buildInfixNeighborhoodRelation(v.provideId(), v2.provideId()));
 
 		identifierWriter = new StringWriter();
-		v2.useFormatter().formatEdgeDefinitionInto(identifierWriter, v3,
+		v2.useFormatter().formatEdgeDefinitionInto(identifierWriter, v2, v3,
 				dotDecorationApplier);
 		try {
 			identifierWriter.close();

@@ -260,7 +260,7 @@ public class SimpleVertex implements Vertex {
 			comparison = o.compareYourSpeciesIdWith(species_id);
 		}
 
-		return comparison;
+		return -1 * comparison;
 	}
 
 	public static Vertex makeVertex(Vertex vertex) {
@@ -271,32 +271,32 @@ public class SimpleVertex implements Vertex {
 
 	@Override
 	public int compareYourCompartmentIdWith(String compartment_id) {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.compartment_id.compareTo(compartment_id);
 	}
 
 	@Override
 	public int compareYourSpeciesIdWith(String species_id) {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.species_id.compareTo(species_id);
 	}
 
 	@Override
 	public void addDirectAncestors(Vertex vertex) {
-		// TODO Auto-generated method stub
 
+		// TODO: controllare se per completezza si dovrebbe anche invocare
+		// vertex.addNeighbour(this)
+		// ma potrebbe provocare una sequenza ricorsiva infinita di chiamate.
+		this.directAncestors.add(vertex);
 	}
 
 	@Override
 	public void collectYourIdentifierInto(StringBuilder collectingBuilder) {
-		// TODO Auto-generated method stub
-
+		collectingBuilder.append(species_id.trim()
+				.concat(compartment_id.trim()));
 	}
 
 	@Override
 	public SimpleVertex asSimpleVertex() {
-		// TODO Auto-generated method stub
-		return null;
+		return this;
 	}
 
 }

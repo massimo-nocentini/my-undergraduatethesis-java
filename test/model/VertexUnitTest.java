@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 import junit.framework.Assert;
-import model.Vertex.VertexIntegerEnumerator;
+import model.SimpleVertex.VertexIntegerEnumerator;
 
 import org.junit.Test;
 import org.sbml.jsbml.Compartment;
@@ -31,15 +31,15 @@ import org.sbml.jsbml.Species;
 public class VertexUnitTest {
 	@Test
 	public void createVertex() {
-		Vertex vertex = Vertex.makeVertex();
+		Vertex vertex = SimpleVertex.makeVertex();
 		assertNotNull(vertex);
 	}
 
 	@Test
 	public void checkingIsSinkFalse() {
-		Vertex vertex = Vertex.makeVertex();
-		Vertex a = Vertex.makeVertex();
-		Vertex b = Vertex.makeVertex();
+		Vertex vertex = SimpleVertex.makeVertex();
+		Vertex a = SimpleVertex.makeVertex();
+		Vertex b = SimpleVertex.makeVertex();
 
 		vertex.addNeighbour(a).addNeighbour(b);
 
@@ -48,9 +48,9 @@ public class VertexUnitTest {
 
 	@Test
 	public void checkingIsSinkTrue() {
-		Vertex vertex = Vertex.makeVertex();
-		Vertex a = Vertex.makeVertex();
-		Vertex b = Vertex.makeVertex();
+		Vertex vertex = SimpleVertex.makeVertex();
+		Vertex a = SimpleVertex.makeVertex();
+		Vertex b = SimpleVertex.makeVertex();
 
 		vertex.addNeighbour(a).addNeighbour(b);
 
@@ -60,9 +60,9 @@ public class VertexUnitTest {
 
 	@Test
 	public void checkingIsSourceFalse() {
-		Vertex vertex = Vertex.makeVertex();
-		Vertex a = Vertex.makeVertex();
-		Vertex b = Vertex.makeVertex();
+		Vertex vertex = SimpleVertex.makeVertex();
+		Vertex a = SimpleVertex.makeVertex();
+		Vertex b = SimpleVertex.makeVertex();
 
 		vertex.addNeighbour(a).addNeighbour(b);
 
@@ -72,9 +72,9 @@ public class VertexUnitTest {
 
 	@Test
 	public void checkingIsSourceTrue() {
-		Vertex vertex = Vertex.makeVertex();
-		Vertex a = Vertex.makeVertex();
-		Vertex b = Vertex.makeVertex();
+		Vertex vertex = SimpleVertex.makeVertex();
+		Vertex a = SimpleVertex.makeVertex();
+		Vertex b = SimpleVertex.makeVertex();
 
 		vertex.addNeighbour(a).addNeighbour(b);
 
@@ -83,7 +83,7 @@ public class VertexUnitTest {
 
 	@Test
 	public void checkingIsolatedConsequence() {
-		Vertex vertex = Vertex.makeVertex();
+		Vertex vertex = SimpleVertex.makeVertex();
 
 		assertFalse(vertex.isSource());
 		assertTrue(vertex.isSink());
@@ -92,7 +92,7 @@ public class VertexUnitTest {
 
 	@Test
 	public void checkingSelfLoopSourceSinkConsequence() {
-		Vertex vertex = Vertex.makeVertex();
+		Vertex vertex = SimpleVertex.makeVertex();
 
 		vertex.addNeighbour(vertex);
 
@@ -105,9 +105,9 @@ public class VertexUnitTest {
 
 	@Test
 	public void checkingIsNotSourceNorSink() {
-		Vertex vertex = Vertex.makeVertex();
-		Vertex a = Vertex.makeVertex();
-		Vertex b = Vertex.makeVertex();
+		Vertex vertex = SimpleVertex.makeVertex();
+		Vertex a = SimpleVertex.makeVertex();
+		Vertex b = SimpleVertex.makeVertex();
 
 		vertex.addNeighbour(a);
 		a.addNeighbour(b);
@@ -124,13 +124,13 @@ public class VertexUnitTest {
 
 	@Test
 	public void containsNeighbours() {
-		Vertex vertex = Vertex.makeVertex();
-		Vertex a = Vertex.makeVertex();
-		Vertex b = Vertex.makeVertex();
+		Vertex vertex = SimpleVertex.makeVertex();
+		Vertex a = SimpleVertex.makeVertex();
+		Vertex b = SimpleVertex.makeVertex();
 
 		vertex.addNeighbour(a).addNeighbour(b);
 
-		Vertex c = Vertex.makeVertex();
+		Vertex c = SimpleVertex.makeVertex();
 
 		assertFalse(vertex.isYourNeighborhoodEmpty());
 		assertTrue(vertex.isYourNeighbour(a));
@@ -140,8 +140,8 @@ public class VertexUnitTest {
 
 	@Test
 	public void containsReverseNeighbours() {
-		Vertex vertex = Vertex.makeVertex();
-		Vertex a = Vertex.makeVertex();
+		Vertex vertex = SimpleVertex.makeVertex();
+		Vertex a = SimpleVertex.makeVertex();
 
 		vertex.addNeighbour(a);
 
@@ -151,10 +151,10 @@ public class VertexUnitTest {
 
 	@Test
 	public void addingNeighborsOrderIsPreservedByVertex() {
-		Vertex vertex = Vertex.makeVertex();
-		Vertex a1 = Vertex.makeVertex();
-		Vertex a2 = Vertex.makeVertex();
-		Vertex a3 = Vertex.makeVertex();
+		Vertex vertex = SimpleVertex.makeVertex();
+		Vertex a1 = SimpleVertex.makeVertex();
+		Vertex a2 = SimpleVertex.makeVertex();
+		Vertex a3 = SimpleVertex.makeVertex();
 
 		vertex.addNeighbour(a1);
 		vertex.addNeighbour(a2);
@@ -185,10 +185,10 @@ public class VertexUnitTest {
 	public void neighborsRelationIsTopologicOrdered() {
 
 		String compartment_id = "compartment_id";
-		Vertex vertex = Vertex.makeVertex("A", compartment_id);
-		Vertex a1 = Vertex.makeVertex("B", compartment_id);
-		Vertex a2 = Vertex.makeVertex("C", compartment_id);
-		Vertex a3 = Vertex.makeVertex("D", compartment_id);
+		Vertex vertex = SimpleVertex.makeVertex("A", compartment_id);
+		Vertex a1 = SimpleVertex.makeVertex("B", compartment_id);
+		Vertex a2 = SimpleVertex.makeVertex("C", compartment_id);
+		Vertex a3 = SimpleVertex.makeVertex("D", compartment_id);
 
 		vertex.addNeighbour(a3);
 		vertex.addNeighbour(a2);
@@ -212,23 +212,23 @@ public class VertexUnitTest {
 
 	@Test
 	public void fluentAddNeighbourReturnTheSameVertex() {
-		Vertex vertex = Vertex.makeVertex();
-		Vertex a = Vertex.makeVertex();
+		Vertex vertex = SimpleVertex.makeVertex();
+		Vertex a = SimpleVertex.makeVertex();
 
 		Vertex vertex2 = vertex.addNeighbour(a);
-		assertSame("The vertex returned by Vertex.addNeighbour(...) "
+		assertSame("The vertex returned bySimpleVertex.addNeighbour(...) "
 				+ "is a completely new object.", vertex, vertex2);
 	}
 
 	@Test
 	public void encapsulatedNeighboursDoApply() {
-		Vertex vertex = Vertex.makeVertex();
-		Vertex a = Vertex.makeVertex();
-		Vertex b = Vertex.makeVertex();
+		Vertex vertex = SimpleVertex.makeVertex();
+		Vertex a = SimpleVertex.makeVertex();
+		Vertex b = SimpleVertex.makeVertex();
 
 		vertex.addNeighbour(a).addNeighbour(b);
 
-		Vertex c = Vertex.makeVertex();
+		Vertex c = SimpleVertex.makeVertex();
 
 		final Set<Vertex> collectedNeighbours = new HashSet<Vertex>();
 
@@ -252,13 +252,13 @@ public class VertexUnitTest {
 	@Test
 	public void encapsulatedNeighboursDoApplyWithNeighborhoodRelation() {
 
-		final Vertex vertex = Vertex.makeVertex();
-		Vertex a = Vertex.makeVertex();
-		Vertex b = Vertex.makeVertex();
+		final Vertex vertex = SimpleVertex.makeVertex();
+		Vertex a = SimpleVertex.makeVertex();
+		Vertex b = SimpleVertex.makeVertex();
 
 		vertex.addNeighbour(a).addNeighbour(b);
 
-		Vertex c = Vertex.makeVertex();
+		Vertex c = SimpleVertex.makeVertex();
 
 		final Set<Vertex> collectedNeighbours = new HashSet<Vertex>();
 
@@ -291,7 +291,7 @@ public class VertexUnitTest {
 		Species prototypeSpecies = new Species(species_id);
 		prototypeSpecies.setCompartment(compartment_id);
 
-		Vertex v = Vertex.makeVertex(species_id, compartment_id);
+		Vertex v = SimpleVertex.makeVertex(species_id, compartment_id);
 
 		Assert.assertNotNull(v);
 		assertTrue(v.isYourOrigin(prototypeSpecies));
@@ -301,7 +301,7 @@ public class VertexUnitTest {
 
 	@Test
 	public void makeVertexWithoutSpecifingId() {
-		Vertex v = Vertex.makeVertex();
+		Vertex v = SimpleVertex.makeVertex();
 
 		Assert.assertNotNull(v);
 		Assert.assertFalse(v.isYourSpeciesId(""));
@@ -312,8 +312,8 @@ public class VertexUnitTest {
 	@Test
 	public void matchSpeciesCompartement() {
 
-		Vertex v1 = Vertex.makeVertex();
-		Vertex v2 = Vertex.makeVertex();
+		Vertex v1 = SimpleVertex.makeVertex();
+		Vertex v2 = SimpleVertex.makeVertex();
 
 		Assert.assertNotSame(v1, v2);
 		Assert.assertTrue(v1.matchCompartmentWith(v2));
@@ -331,13 +331,13 @@ public class VertexUnitTest {
 		int count = VertexIntegerEnumerator.getCurrentEnumerationValue();
 
 		// increment the counter
-		Vertex v1 = Vertex.makeVertex();
+		Vertex v1 = SimpleVertex.makeVertex();
 
 		// catch the new value of the counter
 		int secondCount = VertexIntegerEnumerator.getCurrentEnumerationValue();
 
 		// increment the counter another time
-		Vertex v2 = Vertex.makeVertex();
+		Vertex v2 = SimpleVertex.makeVertex();
 
 		Assert.assertFalse(v1.equals(v2));
 
@@ -348,7 +348,7 @@ public class VertexUnitTest {
 	@Test
 	public void emptyNeighborhood() {
 
-		Vertex v1 = Vertex.makeVertex();
+		Vertex v1 = SimpleVertex.makeVertex();
 
 		Assert.assertTrue(v1.isYourNeighborhoodEmpty());
 
@@ -358,8 +358,8 @@ public class VertexUnitTest {
 	@Test
 	public void nonEmptyNeighborhood() {
 
-		Vertex v1 = Vertex.makeVertex();
-		Vertex v2 = Vertex.makeVertex();
+		Vertex v1 = SimpleVertex.makeVertex();
+		Vertex v2 = SimpleVertex.makeVertex();
 
 		v1.addNeighbour(v2);
 
@@ -369,10 +369,10 @@ public class VertexUnitTest {
 	@Test
 	public void neighborhoodEquals() {
 
-		Vertex v1 = Vertex.makeVertex();
-		Vertex v2 = Vertex.makeVertex();
-		Vertex v3 = Vertex.makeVertex();
-		Vertex v4 = Vertex.makeVertex();
+		Vertex v1 = SimpleVertex.makeVertex();
+		Vertex v2 = SimpleVertex.makeVertex();
+		Vertex v3 = SimpleVertex.makeVertex();
+		Vertex v4 = SimpleVertex.makeVertex();
 
 		v1.addNeighbour(v2);
 		v1.addNeighbour(v3);
@@ -391,17 +391,17 @@ public class VertexUnitTest {
 	@Test
 	public void neighborhoodNotEquals() {
 
-		Vertex v1 = Vertex.makeVertex();
-		Vertex v2 = Vertex.makeVertex();
-		Vertex v3 = Vertex.makeVertex();
-		Vertex v4 = Vertex.makeVertex();
+		Vertex v1 = SimpleVertex.makeVertex();
+		Vertex v2 = SimpleVertex.makeVertex();
+		Vertex v3 = SimpleVertex.makeVertex();
+		Vertex v4 = SimpleVertex.makeVertex();
 
 		v1.addNeighbour(v2);
 		v1.addNeighbour(v3);
 		v1.addNeighbour(v4);
 
 		Set<Vertex> anotherNeighbourhood = new HashSet<Vertex>();
-		Vertex v5 = Vertex.makeVertex();
+		Vertex v5 = SimpleVertex.makeVertex();
 
 		anotherNeighbourhood.add(v3);
 		anotherNeighbourhood.add(v5);
@@ -413,14 +413,14 @@ public class VertexUnitTest {
 	@Test
 	public void neighbourhoodEqualsVacouslyTrue() {
 
-		Vertex v1 = Vertex.makeVertex();
+		Vertex v1 = SimpleVertex.makeVertex();
 
 		// v1 has empty neighborhood
 
 		Set<Vertex> anotherNeighborhood = new HashSet<Vertex>();
-		Vertex v3 = Vertex.makeVertex();
-		Vertex v4 = Vertex.makeVertex();
-		Vertex v5 = Vertex.makeVertex();
+		Vertex v3 = SimpleVertex.makeVertex();
+		Vertex v4 = SimpleVertex.makeVertex();
+		Vertex v5 = SimpleVertex.makeVertex();
 
 		anotherNeighborhood.add(v3);
 		anotherNeighborhood.add(v4);
@@ -432,10 +432,10 @@ public class VertexUnitTest {
 	@Test
 	public void neighborhoodEqualsVacouslyTrueReversed() {
 
-		Vertex v1 = Vertex.makeVertex();
-		Vertex v2 = Vertex.makeVertex();
-		Vertex v3 = Vertex.makeVertex();
-		Vertex v4 = Vertex.makeVertex();
+		Vertex v1 = SimpleVertex.makeVertex();
+		Vertex v2 = SimpleVertex.makeVertex();
+		Vertex v3 = SimpleVertex.makeVertex();
+		Vertex v4 = SimpleVertex.makeVertex();
 
 		v1.addNeighbour(v2);
 		v1.addNeighbour(v3);
@@ -450,10 +450,10 @@ public class VertexUnitTest {
 	@Test
 	public void neighborhoodDoesntContainsDoubles() {
 
-		Vertex v1 = Vertex.makeVertex();
-		Vertex v2 = Vertex.makeVertex();
-		Vertex v3 = Vertex.makeVertex();
-		Vertex v4 = Vertex.makeVertex();
+		Vertex v1 = SimpleVertex.makeVertex();
+		Vertex v2 = SimpleVertex.makeVertex();
+		Vertex v3 = SimpleVertex.makeVertex();
+		Vertex v4 = SimpleVertex.makeVertex();
 
 		v1.addNeighbour(v2);
 		v1.addNeighbour(v3);
@@ -484,7 +484,7 @@ public class VertexUnitTest {
 		String speciesId = "species_id";
 		Species firstAdded = sbmlModel.createSpecies(speciesId, compartment);
 
-		Vertex vertex = Vertex.makeVertex(firstAdded);
+		Vertex vertex = SimpleVertex.makeVertex(firstAdded);
 
 		Assert.assertNotNull(vertex);
 		Assert.assertTrue(vertex.isYourSpeciesId(speciesId));
@@ -509,8 +509,8 @@ public class VertexUnitTest {
 		Species secondAdded = new Species(speciesId);
 		secondAdded.setCompartment(anotherCompartment);
 
-		Vertex vertex = Vertex.makeVertex(firstAdded);
-		Vertex anotherVertex = Vertex.makeVertex(secondAdded);
+		Vertex vertex = SimpleVertex.makeVertex(firstAdded);
+		Vertex anotherVertex = SimpleVertex.makeVertex(secondAdded);
 
 		Assert.assertNotSame(vertex, anotherVertex);
 		Assert.assertFalse(vertex.equals(anotherVertex));
@@ -528,8 +528,8 @@ public class VertexUnitTest {
 		Species secondAdded = new Species("another_species_id");
 		secondAdded.setCompartment(compartment);
 
-		Vertex vertex = Vertex.makeVertex(firstAdded);
-		Vertex anotherVertex = Vertex.makeVertex(secondAdded);
+		Vertex vertex = SimpleVertex.makeVertex(firstAdded);
+		Vertex anotherVertex = SimpleVertex.makeVertex(secondAdded);
 
 		Assert.assertNotSame(vertex, anotherVertex);
 		Assert.assertFalse(vertex.equals(anotherVertex));
@@ -547,7 +547,7 @@ public class VertexUnitTest {
 		Species secondAdded = new Species("another_species_id");
 		secondAdded.setCompartment(compartment);
 
-		Vertex vertex = Vertex.makeVertex(firstAdded);
+		Vertex vertex = SimpleVertex.makeVertex(firstAdded);
 
 		Assert.assertTrue(vertex.isYourOrigin(firstAdded));
 		Assert.assertFalse(vertex.isYourOrigin(secondAdded));
@@ -568,9 +568,9 @@ public class VertexUnitTest {
 		Species thirdAdded = new Species("another_another_species_id");
 		thirdAdded.setCompartment(compartment);
 
-		Vertex vertex = Vertex.makeVertex(firstAdded);
-		Vertex otherVertex = Vertex.makeVertex(secondAdded);
-		Vertex anotherVertex = Vertex.makeVertex(thirdAdded);
+		Vertex vertex = SimpleVertex.makeVertex(firstAdded);
+		Vertex otherVertex = SimpleVertex.makeVertex(secondAdded);
+		Vertex anotherVertex = SimpleVertex.makeVertex(thirdAdded);
 
 		Assert.assertEquals(vertex.compareTo(otherVertex),
 				-otherVertex.compareTo(vertex));
@@ -593,9 +593,9 @@ public class VertexUnitTest {
 		Species secondAdded = new Species("another_species_id");
 		secondAdded.setCompartment(compartment);
 
-		Vertex vertex = Vertex.makeVertex(firstAdded);
-		Vertex otherVertex = Vertex.makeVertex(firstAdded);
-		Vertex anotherVertex = Vertex.makeVertex(secondAdded);
+		Vertex vertex = SimpleVertex.makeVertex(firstAdded);
+		Vertex otherVertex = SimpleVertex.makeVertex(firstAdded);
+		Vertex anotherVertex = SimpleVertex.makeVertex(secondAdded);
 
 		Assert.assertEquals(vertex.compareTo(otherVertex) == 0, vertex
 				.compareTo(anotherVertex) == otherVertex
@@ -611,9 +611,9 @@ public class VertexUnitTest {
 		Species firstAdded = new Species("species_id");
 		firstAdded.setCompartment(compartment);
 
-		Vertex vertex = Vertex.makeVertex(firstAdded);
+		Vertex vertex = SimpleVertex.makeVertex(firstAdded);
 
-		Vertex clonedVertex = Vertex.cloneOnlyCharacteristicsFields(vertex);
+		Vertex clonedVertex = SimpleVertex.makeVertex(vertex);
 
 		Assert.assertEquals(vertex, clonedVertex);
 		Assert.assertNotSame(vertex, clonedVertex);

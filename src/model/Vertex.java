@@ -58,7 +58,7 @@ public interface Vertex extends DotExportable, Comparable<Vertex> {
 	// TODO: delete this method from this interface because it allow
 	// to retrieve some encapsulated information. Make a private method
 	// in Vertex class that provide the collection of the composite identifier
-	// in order to be called directly from another object of type Vertex.
+	// in order to be called directly from another object of typeSimpleVertex.
 	public abstract void collectYourIdentifierInto(
 			StringBuilder collectingBuilder);
 

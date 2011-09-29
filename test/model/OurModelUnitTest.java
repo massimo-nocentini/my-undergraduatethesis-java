@@ -36,10 +36,10 @@ public class OurModelUnitTest {
 
 	@Test
 	public void addingNeighborsOrderIsPreservedByVertex() {
-		Vertex vertex = Vertex.makeVertex();
-		Vertex a1 = Vertex.makeVertex();
-		Vertex a2 = Vertex.makeVertex();
-		Vertex a3 = Vertex.makeVertex();
+		Vertex vertex =SimpleVertex.makeVertex();
+		Vertex a1 =SimpleVertex.makeVertex();
+		Vertex a2 =SimpleVertex.makeVertex();
+		Vertex a3 =SimpleVertex.makeVertex();
 
 		Set<Vertex> vertices = new TreeSet<Vertex>();
 		vertices.add(vertex);
@@ -133,9 +133,9 @@ public class OurModelUnitTest {
 	public void retrieveVertexAndApplyLogic() {
 		String compartment_id = "compartment_id";
 		String species_id = "species_id";
-		final Vertex v = Vertex.makeVertex(species_id, compartment_id);
-		Vertex v2 = Vertex.makeVertex();
-		Vertex v3 = Vertex.makeVertex();
+		final Vertex v =SimpleVertex.makeVertex(species_id, compartment_id);
+		Vertex v2 =SimpleVertex.makeVertex();
+		Vertex v3 =SimpleVertex.makeVertex();
 
 		v.addNeighbour(v2);
 
@@ -144,7 +144,7 @@ public class OurModelUnitTest {
 		vertices.add(v2);
 		vertices.add(v3);
 
-		final Vertex exampleVertex = Vertex.makeVertex(species_id,
+		final Vertex exampleVertex =SimpleVertex.makeVertex(species_id,
 				compartment_id);
 
 		final CallbackSignalRecorder recorder = new CallbackSignalRecorder();
@@ -175,9 +175,9 @@ public class OurModelUnitTest {
 	public void retrieveVertexAndApplyLogic_VacouslySearch() {
 		String compartment_id = "compartment_id";
 		String species_id = "species_id";
-		final Vertex v = Vertex.makeVertex(species_id, compartment_id);
-		Vertex v2 = Vertex.makeVertex();
-		Vertex v3 = Vertex.makeVertex();
+		final Vertex v =SimpleVertex.makeVertex(species_id, compartment_id);
+		Vertex v2 =SimpleVertex.makeVertex();
+		Vertex v3 =SimpleVertex.makeVertex();
 
 		v.addNeighbour(v2);
 
@@ -186,7 +186,7 @@ public class OurModelUnitTest {
 		vertices.add(v2);
 		vertices.add(v3);
 
-		final Vertex exampleVertex = Vertex.makeVertex(
+		final Vertex exampleVertex =SimpleVertex.makeVertex(
 				"some_different_species_id", compartment_id);
 
 		final CallbackSignalRecorder recorder = new CallbackSignalRecorder();

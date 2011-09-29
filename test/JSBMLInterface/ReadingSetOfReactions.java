@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import model.SimpleVertex;
 import model.Vertex;
 
 import org.junit.Test;
@@ -38,12 +39,12 @@ public class ReadingSetOfReactions {
 		Species product2 = sbmlModel.createSpecies("idP2", compartment);
 		Species product3 = sbmlModel.createSpecies("idP3", compartment);
 
-		Vertex vR1 = Vertex.makeVertex(reactant1);
-		Vertex vR2 = Vertex.makeVertex(reactant2);
-		Vertex vR3 = Vertex.makeVertex(reactant3);
-		Vertex vP1 = Vertex.makeVertex(product1);
-		Vertex vP2 = Vertex.makeVertex(product2);
-		Vertex vP3 = Vertex.makeVertex(product3);
+		Vertex vR1 = SimpleVertex.makeVertex(reactant1);
+		Vertex vR2 = SimpleVertex.makeVertex(reactant2);
+		Vertex vR3 = SimpleVertex.makeVertex(reactant3);
+		Vertex vP1 = SimpleVertex.makeVertex(product1);
+		Vertex vP2 = SimpleVertex.makeVertex(product2);
+		Vertex vP3 = SimpleVertex.makeVertex(product3);
 
 		setOfProductsOfFirstReaction.add(vP1);
 		setOfProductsOfSecondReaction.add(vP2);
@@ -128,12 +129,12 @@ public class ReadingSetOfReactions {
 		Species product2 = sbmlModel.createSpecies("idP2", compartment);
 		Species product3 = sbmlModel.createSpecies("idP3", compartment);
 
-		Vertex vR1 = Vertex.makeVertex(reactant1);
-		Vertex vR2 = Vertex.makeVertex(reactant2);
-		Vertex vR3 = Vertex.makeVertex(reactant3);
-		Vertex vP1 = Vertex.makeVertex(product1);
-		Vertex vP2 = Vertex.makeVertex(product2);
-		Vertex vP3 = Vertex.makeVertex(product3);
+		Vertex vR1 = SimpleVertex.makeVertex(reactant1);
+		Vertex vR2 = SimpleVertex.makeVertex(reactant2);
+		Vertex vR3 = SimpleVertex.makeVertex(reactant3);
+		Vertex vP1 = SimpleVertex.makeVertex(product1);
+		Vertex vP2 = SimpleVertex.makeVertex(product2);
+		Vertex vP3 = SimpleVertex.makeVertex(product3);
 
 		setOfProductsOfFirstReaction.add(vP1);
 		setOfProductsOfSecondReaction.add(vP2);
@@ -229,13 +230,13 @@ public class ReadingSetOfReactions {
 		Species product2 = sbmlModel.createSpecies("idP2", compartment);
 		Species product3 = sbmlModel.createSpecies("idP3", compartment);
 
-		Vertex vR1 = Vertex.makeVertex(reactant1);
-		Vertex vR2 = Vertex.makeVertex(reactant2);
-		Vertex vR3 = Vertex.makeVertex(reactant3);
-		Vertex vR4 = Vertex.makeVertex(reactant4);
-		Vertex vP1 = Vertex.makeVertex(product1);
-		Vertex vP2 = Vertex.makeVertex(product2);
-		Vertex vP3 = Vertex.makeVertex(product3);
+		Vertex vR1 = SimpleVertex.makeVertex(reactant1);
+		Vertex vR2 = SimpleVertex.makeVertex(reactant2);
+		Vertex vR3 = SimpleVertex.makeVertex(reactant3);
+		Vertex vR4 = SimpleVertex.makeVertex(reactant4);
+		Vertex vP1 = SimpleVertex.makeVertex(product1);
+		Vertex vP2 = SimpleVertex.makeVertex(product2);
+		Vertex vP3 = SimpleVertex.makeVertex(product3);
 
 		setOfProductsOfFirstReaction.add(vP1);
 		setOfProductsOfSecondReaction.add(vP2);
@@ -331,13 +332,13 @@ public class ReadingSetOfReactions {
 		Species product2 = sbmlModel.createSpecies("idP2", compartment);
 		Species product3 = sbmlModel.createSpecies("idP3", compartment);
 
-		Vertex vR1 = Vertex.makeVertex(reactant1);
-		Vertex vR2 = Vertex.makeVertex(reactant2);
-		Vertex vR3 = Vertex.makeVertex(reactant3);
-		Vertex vR4 = Vertex.makeVertex(reactant4);
-		Vertex vP1 = Vertex.makeVertex(product1);
-		Vertex vP2 = Vertex.makeVertex(product2);
-		Vertex vP3 = Vertex.makeVertex(product3);
+		Vertex vR1 = SimpleVertex.makeVertex(reactant1);
+		Vertex vR2 = SimpleVertex.makeVertex(reactant2);
+		Vertex vR3 = SimpleVertex.makeVertex(reactant3);
+		Vertex vR4 = SimpleVertex.makeVertex(reactant4);
+		Vertex vP1 = SimpleVertex.makeVertex(product1);
+		Vertex vP2 = SimpleVertex.makeVertex(product2);
+		Vertex vP3 = SimpleVertex.makeVertex(product3);
 
 		setOfProductsOfFirstReaction.add(vP1);
 		setOfProductsOfSecondReaction.add(vP2);
