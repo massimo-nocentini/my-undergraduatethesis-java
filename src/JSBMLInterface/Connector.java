@@ -9,6 +9,7 @@ import java.util.Set;
 
 import javax.xml.stream.XMLStreamException;
 
+import model.SimpleVertex;
 import model.Vertex;
 
 import org.sbml.jsbml.ListOf;
@@ -80,7 +81,8 @@ public class Connector {
 
 		for (SpeciesReference sRef : listOfSpeciesReference) {
 
-			Vertex newVertex = Vertex.makeVertex(sRef.getSpeciesInstance());
+			Vertex newVertex = SimpleVertex.makeVertex(sRef
+					.getSpeciesInstance());
 
 			if (knownVertices.containsKey(newVertex) == true) {
 				newVertex = knownVertices.get(newVertex);

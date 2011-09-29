@@ -199,18 +199,18 @@ public class OurModel implements DotExportable {
 
 		String compartment_id = "compartment_id";
 
-		final Vertex vA = Vertex.makeVertex("A", compartment_id);
-		final Vertex vB = Vertex.makeVertex("B", compartment_id);
-		final Vertex vE = Vertex.makeVertex("E", compartment_id);
-		final Vertex vI = Vertex.makeVertex("I", compartment_id);
-		final Vertex vJ = Vertex.makeVertex("J", compartment_id);
-		final Vertex vC = Vertex.makeVertex("C", compartment_id);
-		final Vertex vD = Vertex.makeVertex("D", compartment_id);
-		final Vertex vG = Vertex.makeVertex("G", compartment_id);
-		final Vertex vH = Vertex.makeVertex("H", compartment_id);
-		final Vertex vK = Vertex.makeVertex("K", compartment_id);
-		final Vertex vL = Vertex.makeVertex("L", compartment_id);
-		final Vertex vF = Vertex.makeVertex("F", compartment_id);
+		final Vertex vA = SimpleVertex.makeVertex("A", compartment_id);
+		final Vertex vB = SimpleVertex.makeVertex("B", compartment_id);
+		final Vertex vE = SimpleVertex.makeVertex("E", compartment_id);
+		final Vertex vI = SimpleVertex.makeVertex("I", compartment_id);
+		final Vertex vJ = SimpleVertex.makeVertex("J", compartment_id);
+		final Vertex vC = SimpleVertex.makeVertex("C", compartment_id);
+		final Vertex vD = SimpleVertex.makeVertex("D", compartment_id);
+		final Vertex vG = SimpleVertex.makeVertex("G", compartment_id);
+		final Vertex vH = SimpleVertex.makeVertex("H", compartment_id);
+		final Vertex vK = SimpleVertex.makeVertex("K", compartment_id);
+		final Vertex vL = SimpleVertex.makeVertex("L", compartment_id);
+		final Vertex vF = SimpleVertex.makeVertex("F", compartment_id);
 
 		vA.addNeighbour(vB);
 		vA.addNeighbour(vE);
@@ -314,14 +314,14 @@ public class OurModel implements DotExportable {
 		species_7.setCompartment(compartmentId);
 		species_8.setCompartment(compartmentId);
 
-		Vertex v = Vertex.makeVertex(species_1);
-		Vertex v2 = Vertex.makeVertex(species_2);
-		Vertex v3 = Vertex.makeVertex(species_3);
-		Vertex v4 = Vertex.makeVertex(species_4);
-		Vertex v5 = Vertex.makeVertex(species_5);
-		Vertex v6 = Vertex.makeVertex(species_6);
-		Vertex v7 = Vertex.makeVertex(species_7);
-		Vertex v8 = Vertex.makeVertex(species_8);
+		Vertex v = SimpleVertex.makeVertex(species_1);
+		Vertex v2 = SimpleVertex.makeVertex(species_2);
+		Vertex v3 = SimpleVertex.makeVertex(species_3);
+		Vertex v4 = SimpleVertex.makeVertex(species_4);
+		Vertex v5 = SimpleVertex.makeVertex(species_5);
+		Vertex v6 = SimpleVertex.makeVertex(species_6);
+		Vertex v7 = SimpleVertex.makeVertex(species_7);
+		Vertex v8 = SimpleVertex.makeVertex(species_8);
 
 		v.addNeighbour(v2);
 
@@ -351,217 +351,106 @@ public class OurModel implements DotExportable {
 		vertices.add(v7);
 		vertices.add(v8);
 
-		Writer identifierWriter = null;
+		collectVertexDefinitionInto(expectedVertexDefinitionPart,
+				dotDecorationApplier, v);
 
-		identifierWriter = new StringWriter();
-		v.useFormatter().formatVertexDefinitionInto(identifierWriter,
-				dotDecorationApplier);
-		try {
-			identifierWriter.close();
-			expectedVertexDefinitionPart.add(identifierWriter.toString());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		collectVertexDefinitionInto(expectedVertexDefinitionPart,
+				dotDecorationApplier, v2);
 
-		identifierWriter = new StringWriter();
-		v2.useFormatter().formatVertexDefinitionInto(identifierWriter,
-				dotDecorationApplier);
-		try {
-			identifierWriter.close();
-			expectedVertexDefinitionPart.add(identifierWriter.toString());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		collectVertexDefinitionInto(expectedVertexDefinitionPart,
+				dotDecorationApplier, v3);
 
-		identifierWriter = new StringWriter();
-		v3.useFormatter().formatVertexDefinitionInto(identifierWriter,
-				dotDecorationApplier);
-		try {
-			identifierWriter.close();
-			expectedVertexDefinitionPart.add(identifierWriter.toString());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		collectVertexDefinitionInto(expectedVertexDefinitionPart,
+				dotDecorationApplier, v4);
 
-		identifierWriter = new StringWriter();
-		v4.useFormatter().formatVertexDefinitionInto(identifierWriter,
-				dotDecorationApplier);
-		try {
-			identifierWriter.close();
-			expectedVertexDefinitionPart.add(identifierWriter.toString());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		collectVertexDefinitionInto(expectedVertexDefinitionPart,
+				dotDecorationApplier, v5);
 
-		identifierWriter = new StringWriter();
-		v5.useFormatter().formatVertexDefinitionInto(identifierWriter,
-				dotDecorationApplier);
-		try {
-			identifierWriter.close();
-			expectedVertexDefinitionPart.add(identifierWriter.toString());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		collectVertexDefinitionInto(expectedVertexDefinitionPart,
+				dotDecorationApplier, v6);
 
-		identifierWriter = new StringWriter();
-		v6.useFormatter().formatVertexDefinitionInto(identifierWriter,
-				dotDecorationApplier);
-		try {
-			identifierWriter.close();
-			expectedVertexDefinitionPart.add(identifierWriter.toString());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		collectVertexDefinitionInto(expectedVertexDefinitionPart,
+				dotDecorationApplier, v7);
 
-		identifierWriter = new StringWriter();
-		v7.useFormatter().formatVertexDefinitionInto(identifierWriter,
-				dotDecorationApplier);
-		try {
-			identifierWriter.close();
-			expectedVertexDefinitionPart.add(identifierWriter.toString());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		identifierWriter = new StringWriter();
-		v8.useFormatter().formatVertexDefinitionInto(identifierWriter,
-				dotDecorationApplier);
-		try {
-			identifierWriter.close();
-			expectedVertexDefinitionPart.add(identifierWriter.toString());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		collectVertexDefinitionInto(expectedVertexDefinitionPart,
+				dotDecorationApplier, v8);
 
 		// v neighbors
-		identifierWriter = new StringWriter();
-		v.useFormatter().formatEdgeDefinitionInto(identifierWriter, v2,
-				dotDecorationApplier);
-		try {
-			identifierWriter.close();
-			expectedEdgeDefinitionPart.add(identifierWriter.toString());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		collectEdgeDefinitionInto(expectedEdgeDefinitionPart,
+				dotDecorationApplier, v, v2);
 
 		// v2 neighbors
-		identifierWriter = new StringWriter();
-		v2.useFormatter().formatEdgeDefinitionInto(identifierWriter, v8,
-				dotDecorationApplier);
-		try {
-			identifierWriter.close();
-			expectedEdgeDefinitionPart.add(identifierWriter.toString());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		collectEdgeDefinitionInto(expectedEdgeDefinitionPart,
+				dotDecorationApplier, v2, v8);
 
-		identifierWriter = new StringWriter();
-		v2.useFormatter().formatEdgeDefinitionInto(identifierWriter, v3,
-				dotDecorationApplier);
-		try {
-			identifierWriter.close();
-			expectedEdgeDefinitionPart.add(identifierWriter.toString());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		collectEdgeDefinitionInto(expectedEdgeDefinitionPart,
+				dotDecorationApplier, v2, v3);
 
 		// v3 neighbors
-		identifierWriter = new StringWriter();
-		v3.useFormatter().formatEdgeDefinitionInto(identifierWriter, v4,
-				dotDecorationApplier);
-		try {
-			identifierWriter.close();
-			expectedEdgeDefinitionPart.add(identifierWriter.toString());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		collectEdgeDefinitionInto(expectedEdgeDefinitionPart,
+				dotDecorationApplier, v3, v4);
 
-		identifierWriter = new StringWriter();
-		v3.useFormatter().formatEdgeDefinitionInto(identifierWriter, v7,
-				dotDecorationApplier);
-		try {
-			identifierWriter.close();
-			expectedEdgeDefinitionPart.add(identifierWriter.toString());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		collectEdgeDefinitionInto(expectedEdgeDefinitionPart,
+				dotDecorationApplier, v3, v7);
 
 		// v4 neighbors
-		identifierWriter = new StringWriter();
-		v4.useFormatter().formatEdgeDefinitionInto(identifierWriter, v5,
-				dotDecorationApplier);
-		try {
-			identifierWriter.close();
-			expectedEdgeDefinitionPart.add(identifierWriter.toString());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		collectEdgeDefinitionInto(expectedEdgeDefinitionPart,
+				dotDecorationApplier, v4, v5);
 
 		// v5 neighbors
-		identifierWriter = new StringWriter();
-		v5.useFormatter().formatEdgeDefinitionInto(identifierWriter, v3,
-				dotDecorationApplier);
-		try {
-			identifierWriter.close();
-			expectedEdgeDefinitionPart.add(identifierWriter.toString());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		collectEdgeDefinitionInto(expectedEdgeDefinitionPart,
+				dotDecorationApplier, v5, v3);
 
-		identifierWriter = new StringWriter();
-		v5.useFormatter().formatEdgeDefinitionInto(identifierWriter, v6,
-				dotDecorationApplier);
-		try {
-			identifierWriter.close();
-			expectedEdgeDefinitionPart.add(identifierWriter.toString());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		collectEdgeDefinitionInto(expectedEdgeDefinitionPart,
+				dotDecorationApplier, v5, v6);
 
 		// v6 hasn't any neighbors
 
 		// v7 neighbors
-		identifierWriter = new StringWriter();
-		v7.useFormatter().formatEdgeDefinitionInto(identifierWriter, v4,
-				dotDecorationApplier);
-		try {
-			identifierWriter.close();
-			expectedEdgeDefinitionPart.add(identifierWriter.toString());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		collectEdgeDefinitionInto(expectedEdgeDefinitionPart,
+				dotDecorationApplier, v7, v4);
 
-		identifierWriter = new StringWriter();
-		v7.useFormatter().formatEdgeDefinitionInto(identifierWriter, v6,
-				dotDecorationApplier);
-		try {
-			identifierWriter.close();
-			expectedEdgeDefinitionPart.add(identifierWriter.toString());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		collectEdgeDefinitionInto(expectedEdgeDefinitionPart,
+				dotDecorationApplier, v7, v6);
 
 		// v8 neighbors
-		identifierWriter = new StringWriter();
-		v8.useFormatter().formatEdgeDefinitionInto(identifierWriter, v,
-				dotDecorationApplier);
+		collectEdgeDefinitionInto(expectedEdgeDefinitionPart,
+				dotDecorationApplier, v8, v);
+
+		collectEdgeDefinitionInto(expectedEdgeDefinitionPart,
+				dotDecorationApplier, v8, v7);
+
+	}
+
+	private static void collectEdgeDefinitionInto(
+			Set<String> expectedEdgeDefinitionPart,
+			DotDecorationApplier dotDecorationApplier, Vertex source,
+			Vertex neighbour) {
+
+		StringWriter identifierWriter = new StringWriter();
+		source.useFormatter().formatEdgeDefinitionInto(identifierWriter,
+				source, neighbour, dotDecorationApplier);
 		try {
 			identifierWriter.close();
 			expectedEdgeDefinitionPart.add(identifierWriter.toString());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
 
-		identifierWriter = new StringWriter();
-		v8.useFormatter().formatEdgeDefinitionInto(identifierWriter, v7,
-				dotDecorationApplier);
+	private static void collectVertexDefinitionInto(
+			Set<String> expectedVertexDefinitionPart,
+			DotDecorationApplier dotDecorationApplier, Vertex vertex) {
+
+		Writer identifierWriter = new StringWriter();
+		vertex.useFormatter().formatVertexDefinitionInto(identifierWriter,
+				vertex, dotDecorationApplier);
 		try {
 			identifierWriter.close();
-			expectedEdgeDefinitionPart.add(identifierWriter.toString());
+			expectedVertexDefinitionPart.add(identifierWriter.toString());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 }

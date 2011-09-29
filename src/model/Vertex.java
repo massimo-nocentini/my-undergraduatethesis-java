@@ -1,264 +1,67 @@
 package model;
 
-import java.io.IOException;
-import java.io.Writer;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.sbml.jsbml.Species;
 
-import dotInterface.DotDecorationApplier;
 import dotInterface.DotExportable;
 import dotInterface.DotExporter;
-import dotInterface.Edge;
 
-public class Vertex implements DotExportable, Comparable<Vertex> {
+public interface Vertex extends DotExportable, Comparable<Vertex> {
 
-	/**
-	 * Dummy value
-	 */
-	private static String DummySpeciesId = "dummy_species_id";
-	private static String DummyCompartmentId = "dummy_compartment_id";
+	public abstract VertexFormatter useFormatter();
 
-	static class VertexIntegerEnumerator {
-		private static int count;
+	public abstract Vertex addNeighbour(Vertex neighbour);
 
-		static {
-			count = 0;
-		}
+	public abstract void doOnNeighbors(VertexLogicApplier applier);
 
-		synchronized static int enumerateNewVertex() {
-			count = count + 1;
-			return count;
-		}
+	public abstract void doOnNeighbors(
+			VertexLogicApplierWithNeighborhoodRelation applier);
 
-		static int getCurrentEnumerationValue() {
-			return count;
-		}
-	}
+	public abstract boolean isYourNeighborhoodEquals(Set<Vertex> products);
 
-	public class Formatter {
+	public abstract boolean isYourNeighborhoodEmpty();
 
-		private Formatter() {
-		}
+	public abstract boolean isYourSpeciesId(String speciesId);
 
-		public Formatter formatVertexDefinitionInto(Writer writer,
-				DotDecorationApplier useDecorationApplier) {
+	public abstract boolean isYourCompartmentId(String compartmentId);
 
-			String vertexRepresentation = species_id.trim().concat(
-					compartment_id.trim());
+	public abstract int hashCode();
 
-			if (isSink() || isSource()) {
+	public abstract boolean equals(Object obj);
 
-				vertexRepresentation = useDecorationApplier
-						.decoreWithSourceSinkAttributes(vertexRepresentation);
-			}
+	public abstract boolean haveYouSelfLoop();
 
-			try {
-				writer.append(vertexRepresentation);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+	public abstract boolean isYourOrigin(Species aSpecies);
 
-			return this;
-		}
+	public abstract void acceptExporter(DotExporter exporter);
 
-		public Formatter formatEdgeDefinitionInto(Writer writer,
-				Vertex neighbour, DotDecorationApplier dotDecorationApplier) {
+	public abstract boolean isSink();
 
-			String myComposedId = species_id.trim().concat(
-					compartment_id.trim());
+	public abstract boolean isSource();
 
-			String neighbourComposedId = neighbour.species_id.trim().concat(
-					neighbour.compartment_id.trim());
+	public abstract boolean isYourNeighbour(Vertex a);
 
-			String composedString = dotDecorationApplier
-					.buildInfixNeighborhoodRelation(myComposedId,
-							neighbourComposedId);
+	public abstract boolean isNeighborsCountEquals(int guess);
 
-			try {
-				writer.append(composedString);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+	public abstract boolean matchCompartmentWith(Vertex otherVertex);
 
-			return this;
+	public abstract boolean matchSpeciesWith(Vertex otherVertex);
 
-		}
+	// TODO: these methods need to be unit tested each one
+	public abstract int compareYourCompartmentIdWith(String compartment_id);
 
-	}
+	public abstract int compareYourSpeciesIdWith(String species_id);
 
-	public Formatter useFormatter() {
-		return new Formatter();
-	}
+	public abstract void addDirectAncestors(Vertex vertex);
 
-	private Set<Vertex> neighbors;
+	// TODO: delete this method from this interface because it allow
+	// to retrieve some encapsulated information. Make a private method
+	// in Vertex class that provide the collection of the composite identifier
+	// in order to be called directly from another object of type Vertex.
+	public abstract void collectYourIdentifierInto(
+			StringBuilder collectingBuilder);
 
-	private String species_id;
+	public abstract SimpleVertex asSimpleVertex();
 
-	private String compartment_id;
-
-	private Set<Vertex> directAncestors;
-
-	private Vertex(String species_id, String compartment_id) {
-		this.species_id = species_id;
-		this.compartment_id = compartment_id;
-
-		neighbors = new TreeSet<Vertex>();
-		directAncestors = new TreeSet<Vertex>();
-	}
-
-	public static Vertex makeVertex() {
-		int id = VertexIntegerEnumerator.enumerateNewVertex();
-
-		Vertex createdVertex = Vertex.makeVertex(
-				Vertex.DummySpeciesId.concat(String.valueOf(id)),
-				Vertex.DummyCompartmentId);
-
-		return createdVertex;
-	}
-
-	public Vertex addNeighbour(Vertex neighbour) {
-		this.neighbors.add(neighbour);
-		neighbour.directAncestors.add(this);
-		return this;
-	}
-
-	public void doOnNeighbors(VertexLogicApplier applier) {
-		for (Vertex vertex : neighbors) {
-			applier.apply(vertex);
-		}
-
-	}
-
-	public void doOnNeighbors(VertexLogicApplierWithNeighborhoodRelation applier) {
-		for (Vertex neighbour : neighbors) {
-			applier.apply(this, neighbour);
-		}
-
-	}
-
-	public static Vertex makeVertex(String species_id, String compartment_id) {
-		return new Vertex(species_id, compartment_id);
-	}
-
-	public boolean isYourNeighborhoodEquals(Set<Vertex> products) {
-		return this.neighbors.equals(products);
-	}
-
-	public boolean isYourNeighborhoodEmpty() {
-		return this.neighbors.size() == 0;
-	}
-
-	public static Vertex makeVertex(Species species) {
-		return Vertex.makeVertex(species.getId(), species.getCompartment());
-	}
-
-	public boolean isYourSpeciesId(String speciesId) {
-		return this.species_id.equals(speciesId);
-	}
-
-	public boolean isYourCompartmentId(String compartmentId) {
-		return this.compartment_id.equals(compartmentId);
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((compartment_id == null) ? 0 : compartment_id.hashCode());
-		result = prime * result
-				+ ((species_id == null) ? 0 : species_id.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (!(obj instanceof Vertex)) {
-			return false;
-		}
-		Vertex other = (Vertex) obj;
-		if (compartment_id == null) {
-			if (other.compartment_id != null) {
-				return false;
-			}
-		} else if (compartment_id.equals(other.compartment_id) == false) {
-			return false;
-		}
-		if (species_id == null) {
-			if (other.species_id != null) {
-				return false;
-			}
-		} else if (species_id.equals(other.species_id) == false) {
-			return false;
-		}
-		return true;
-	}
-
-	public boolean haveYouSelfLoop() {
-		return this.neighbors.contains(this);
-	}
-
-	public boolean isYourOrigin(Species aSpecies) {
-		return this.isYourSpeciesId(aSpecies.getId())
-				&& this.isYourCompartmentId(aSpecies.getCompartment());
-	}
-
-	@Override
-	public void acceptExporter(DotExporter exporter) {
-		exporter.buildVertexDefinition(this);
-
-		for (Vertex neighbour : neighbors) {
-			exporter.buildEdgeDefinition(Edge.makeEdge(this, neighbour));
-		}
-	}
-
-	public boolean isSink() {
-		// TODO: ask if this condition is sufficient for the truth of this
-		// predicate
-		return neighbors.size() == 0;// && directAncestors.size() > 0;
-	}
-
-	public boolean isSource() {
-		return directAncestors.size() == 0 && neighbors.size() > 0;
-	}
-
-	public boolean isYourNeighbour(Vertex a) {
-		return neighbors.contains(a);
-	}
-
-	public boolean isNeighborsCountEquals(int guess) {
-		return neighbors.size() == guess;
-	}
-
-	public boolean matchCompartmentWith(Vertex otherVertex) {
-		return compartment_id.equals(otherVertex.compartment_id);
-	}
-
-	public boolean matchSpeciesWith(Vertex otherVertex) {
-		return species_id.equals(otherVertex.species_id);
-	}
-
-	@Override
-	public int compareTo(Vertex o) {
-		int comparison = this.compartment_id.compareTo(o.compartment_id);
-
-		if (comparison == 0) {
-			comparison = this.species_id.compareTo(o.species_id);
-		}
-
-		return comparison;
-	}
-
-	public static Vertex cloneOnlyCharacteristicsFields(Vertex vertex) {
-
-		return Vertex.makeVertex(vertex.species_id, vertex.compartment_id);
-	}
 }

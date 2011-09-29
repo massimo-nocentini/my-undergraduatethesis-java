@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import model.SimpleVertex;
 import model.Vertex;
 
 public class DfsEventsListenerTreeBuilder implements DfsEventsListener {
@@ -51,8 +52,8 @@ public class DfsEventsListenerTreeBuilder implements DfsEventsListener {
 		}
 
 		public DataContainer(Vertex explorationCauseVertex) {
-			this.wrappedVertex = Vertex
-					.cloneOnlyCharacteristicsFields(explorationCauseVertex);
+			this.wrappedVertex = SimpleVertex
+					.makeVertex(explorationCauseVertex);
 		}
 
 		public void addNeighbour(Vertex vertex) {

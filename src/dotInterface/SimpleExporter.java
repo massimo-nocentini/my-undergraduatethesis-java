@@ -29,7 +29,7 @@ public class SimpleExporter implements DotExporter {
 
 		Writer writer = new StringWriter();
 
-		vertex.useFormatter().formatVertexDefinitionInto(writer,
+		vertex.useFormatter().formatVertexDefinitionInto(writer, vertex,
 				this.useDecorationApplier());
 
 		try {

@@ -26,8 +26,8 @@ public class Edge {
 
 		Writer writer = new StringWriter();
 
-		vertex.useFormatter().formatEdgeDefinitionInto(writer, neighbour,
-				dotDecorationApplier);
+		vertex.useFormatter().formatEdgeDefinitionInto(writer, vertex,
+				neighbour, dotDecorationApplier);
 
 		try {
 			writer.close();
