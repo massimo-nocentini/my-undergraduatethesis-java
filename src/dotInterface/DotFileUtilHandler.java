@@ -63,6 +63,18 @@ public class DotFileUtilHandler {
 		return "\t";
 	}
 
+	public static String getBlankString() {
+		return " ";
+	}
+
+	public static String getOpeningDotDecorationString() {
+		return "[";
+	}
+
+	public static String getClosingDotDecorationString() {
+		return "]";
+	}
+
 	private DotFileUtilHandler(String filename) {
 		this.filename = filename;
 	}
@@ -153,6 +165,10 @@ public class DotFileUtilHandler {
 		return DotFileUtilHandler.MakeHandler(sbmlExampleSelector)
 				.writeDotRepresentationInTestFolder(exporter);
 
+	}
+
+	public static String getNeighbourRelationInfixToken() {
+		return " -> ";
 	}
 
 }

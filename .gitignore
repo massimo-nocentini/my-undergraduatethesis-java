@@ -1,3 +1,4 @@
 bin/
 test.sbml.xml
 dot-test-files/tests-output/
+*.log*

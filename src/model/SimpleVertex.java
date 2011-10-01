@@ -7,9 +7,11 @@ import java.util.TreeSet;
 
 import org.sbml.jsbml.Species;
 
-import dotInterface.DotDecorationApplier;
 import dotInterface.DotExporter;
-import dotInterface.Edge;
+import dotInterface.DotFileUtilHandler;
+import dotInterface.LineDecorator;
+import dotInterface.NullObjectLineDecorator;
+import dotInterface.SimpleFormatter;
 
 public class SimpleVertex implements Vertex {
 
@@ -36,64 +38,64 @@ public class SimpleVertex implements Vertex {
 		}
 	}
 
-	public class SimpleFormatter implements VertexFormatter {
-
-		private SimpleFormatter() {
-		}
-
-		@Override
-		public VertexFormatter formatVertexDefinitionInto(Writer writer,
-				Vertex vertex, DotDecorationApplier useDecorationApplier) {
-
-			StringBuilder sourceIdentifierStringBuilder = new StringBuilder();
-
-			vertex.collectYourIdentifierInto(sourceIdentifierStringBuilder);
-
-			String vertexRepresentation = sourceIdentifierStringBuilder
-					.toString();
-
-			if (isSink() || isSource()) {
-
-				vertexRepresentation = useDecorationApplier
-						.decoreWithSourceSinkAttributes(vertexRepresentation);
-			}
-
-			try {
-				writer.append(vertexRepresentation);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			return this;
-		}
-
-		@Override
-		public VertexFormatter formatEdgeDefinitionInto(Writer writer,
-				Vertex source, Vertex neighbour,
-				DotDecorationApplier dotDecorationApplier) {
-
-			StringBuilder sourceIdentifierStringBuilder = new StringBuilder();
-			StringBuilder neighbourIdentifierStringBuilder = new StringBuilder();
-
-			source.collectYourIdentifierInto(sourceIdentifierStringBuilder);
-
-			neighbour
-					.collectYourIdentifierInto(neighbourIdentifierStringBuilder);
-
-			String composedString = dotDecorationApplier
-					.buildInfixNeighborhoodRelation(
-							sourceIdentifierStringBuilder.toString(),
-							neighbourIdentifierStringBuilder.toString());
-
-			try {
-				writer.append(composedString);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			return this;
-		}
-	}
+	// public class SimpleFormatter implements VertexFormatter {
+	//
+	// private SimpleFormatter() {
+	// }
+	//
+	// @Override
+	// public VertexFormatter formatVertexDefinitionInto(Writer writer,
+	// Vertex vertex, DotDecorationApplier useDecorationApplier) {
+	//
+	// StringBuilder sourceIdentifierStringBuilder = new StringBuilder();
+	//
+	// vertex.collectYourIdentifierInto(sourceIdentifierStringBuilder);
+	//
+	// String vertexRepresentation = sourceIdentifierStringBuilder
+	// .toString();
+	//
+	// if (isSink() || isSource()) {
+	//
+	// vertexRepresentation = useDecorationApplier
+	// .decoreWithSourceSinkAttributes(vertexRepresentation);
+	// }
+	//
+	// try {
+	// writer.append(vertexRepresentation);
+	// } catch (IOException e) {
+	// e.printStackTrace();
+	// }
+	//
+	// return this;
+	// }
+	//
+	// @Override
+	// public VertexFormatter formatEdgeDefinitionInto(Writer writer,
+	// Vertex source, Vertex neighbour,
+	// DotDecorationApplier dotDecorationApplier) {
+	//
+	// StringBuilder sourceIdentifierStringBuilder = new StringBuilder();
+	// StringBuilder neighbourIdentifierStringBuilder = new StringBuilder();
+	//
+	// source.collectYourIdentifierInto(sourceIdentifierStringBuilder);
+	//
+	// neighbour
+	// .collectYourIdentifierInto(neighbourIdentifierStringBuilder);
+	//
+	// String composedString = dotDecorationApplier
+	// .buildInfixNeighborhoodRelation(
+	// sourceIdentifierStringBuilder.toString(),
+	// neighbourIdentifierStringBuilder.toString());
+	//
+	// try {
+	// writer.append(composedString);
+	// } catch (IOException e) {
+	// e.printStackTrace();
+	// }
+	//
+	// return this;
+	// }
+	// }
 
 	public VertexFormatter useFormatter() {
 		return new SimpleFormatter();
@@ -116,6 +118,7 @@ public class SimpleVertex implements Vertex {
 	}
 
 	public static Vertex makeVertex() {
+
 		int id = VertexIntegerEnumerator.enumerateNewVertex();
 
 		Vertex createdVertex = makeVertex(
@@ -222,7 +225,9 @@ public class SimpleVertex implements Vertex {
 		exporter.buildVertexDefinition(this);
 
 		for (Vertex neighbour : neighbors) {
-			exporter.buildEdgeDefinition(Edge.makeEdge(this, neighbour));
+			// exporter.buildEdgeDefinition(Edge.makeEdge(this, neighbour));
+
+			exporter.buildEdgeDefinition(this, neighbour);
 		}
 	}
 
@@ -285,18 +290,146 @@ public class SimpleVertex implements Vertex {
 		// TODO: controllare se per completezza si dovrebbe anche invocare
 		// vertex.addNeighbour(this)
 		// ma potrebbe provocare una sequenza ricorsiva infinita di chiamate.
+		// Inoltre questa correttezza potrebbe essere catturata da un test
+		// che assicura che la ricorsione termina (quindi e' corretto anche in
+		// questo
+		// caso aggiungere ai neighbour di vertex l'istanza this, pero va
+		// controllato
+		// se nell'insieme non e' presente l'elemento e solo in quel caso e'
+		// corretto
+		// invocare ricorsivamente.
 		this.directAncestors.add(vertex);
 	}
 
 	@Override
-	public void collectYourIdentifierInto(StringBuilder collectingBuilder) {
-		collectingBuilder.append(species_id.trim()
-				.concat(compartment_id.trim()));
+	public void collectYourIdentifierInto(Writer writer) {
+		try {
+			writer.append(composeIdentifier(species_id, compartment_id));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+
+		}
 	}
 
 	@Override
 	public SimpleVertex asSimpleVertex() {
 		return this;
+	}
+
+	@Override
+	public void collectYourDefinitionInto(Writer writer) {
+
+		String result = "";
+
+		result = getSourceDecorator().decore(result);
+
+		result = getSquareBracketsDecorator().decore(result);
+
+		result = DotFileUtilHandler.getBlankString().concat(result);
+
+		result = getIdentifierDecorator().decore(result);
+
+		try {
+			writer.append(result);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	public static String composeIdentifier(String species_id,
+			String compartment_id) {
+
+		return species_id.trim().concat(compartment_id.trim());
+	}
+
+	public static String composeSquareBracketsWrapping(String wrappingContent) {
+
+		return DotFileUtilHandler.getOpeningDotDecorationString()
+				.concat(wrappingContent)
+				.concat(DotFileUtilHandler.getClosingDotDecorationString());
+	}
+
+	public static String getSourceSinkToken() {
+		return "color=\"black\", style=filled";
+	}
+
+	@Override
+	public LineDecorator getSourceDecorator() {
+
+		LineDecorator lineDecorator = new NullObjectLineDecorator();
+
+		if (isSink() || isSource()) {
+			lineDecorator = new SourceSinkLineDecorator();
+		}
+
+		return lineDecorator;
+	}
+
+	public class SourceSinkLineDecorator implements LineDecorator {
+
+		@Override
+		public String decore(String line) {
+			return line.concat(getSourceSinkToken());
+		}
+
+	}
+
+	public class IdentifierLineDecorator implements LineDecorator {
+
+		@Override
+		public String decore(String line) {
+			return composeIdentifier(species_id, compartment_id).concat(line);
+		}
+
+	}
+
+	public class SquareBracketsLineDecorator implements LineDecorator {
+
+		@Override
+		public String decore(String line) {
+			if (line == null || "".equals(line)) {
+				return line;
+			}
+			return composeSquareBracketsWrapping(line);
+		}
+	}
+
+	@Override
+	public LineDecorator getIdentifierDecorator() {
+		return new IdentifierLineDecorator();
+	}
+
+	@Override
+	public LineDecorator getSquareBracketsDecorator() {
+		return new SquareBracketsLineDecorator();
+	}
+
+	@Override
+	public void collectEdgeDefinitionInto(Writer writer, Vertex neighbour) {
+
+		String myIdentifier = getIdentifierDecorator().decore("");
+
+		String neighbourIdentifier = neighbour.getIdentifierDecorator().decore(
+				"");
+
+		try {
+			writer.append(SimpleVertex.composeNeighbourRelationInfixRelation(
+					myIdentifier, neighbourIdentifier));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public static String composeNeighbourRelationInfixRelation(
+			String sourceIdentifier, String neighbourIdentifier) {
+
+		return sourceIdentifier.concat(
+				DotFileUtilHandler.getNeighbourRelationInfixToken()).concat(
+				neighbourIdentifier);
 	}
 
 }

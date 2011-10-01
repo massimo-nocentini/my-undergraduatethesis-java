@@ -7,19 +7,26 @@ import java.util.HashSet;
 import java.util.Set;
 
 import model.Vertex;
+import model.VertexFormatter;
 
 public class SimpleExporter implements DotExporter {
 
 	private Set<String> verticesDefinitionDotRepresentation;
 	private Set<String> generalSettingsDotRepresentation;
 	private Set<String> edgeDefinitionDotRepresentation;
+
+	// TODO: delete the two following components
 	private DotDecorationApplier dotDecorationApplier;
+	private VertexFormatter vertexFormatter;
 
 	public SimpleExporter() {
 		verticesDefinitionDotRepresentation = new HashSet<String>();
 		generalSettingsDotRepresentation = new HashSet<String>();
 		edgeDefinitionDotRepresentation = new HashSet<String>();
+
+		// TODO: get rid of this components
 		dotDecorationApplier = new SimpleDotDecorationApplier();
+		vertexFormatter = new SimpleFormatter();
 
 		initGeneralSettings();
 	}
@@ -27,12 +34,9 @@ public class SimpleExporter implements DotExporter {
 	@Override
 	public DotExporter buildVertexDefinition(Vertex vertex) {
 
-		Writer writer = new StringWriter();
-
-		vertex.useFormatter().formatVertexDefinitionInto(writer, vertex,
-				this.useDecorationApplier());
-
 		try {
+			Writer writer = new StringWriter();
+			vertex.collectYourDefinitionInto(writer);
 			writer.close();
 			verticesDefinitionDotRepresentation.add(writer.toString());
 
@@ -45,6 +49,7 @@ public class SimpleExporter implements DotExporter {
 
 	private DotExporter collectSetOfElementsInto(Writer outputPlugObject,
 			Set<String> elements) {
+
 		for (String dotElement : elements) {
 			try {
 				outputPlugObject.append(dotElement);
@@ -143,7 +148,7 @@ public class SimpleExporter implements DotExporter {
 
 	@Override
 	public DotDecorationApplier useDecorationApplier() {
-		return this.dotDecorationApplier;
+		return dotDecorationApplier;
 	}
 
 	@Override
@@ -157,5 +162,26 @@ public class SimpleExporter implements DotExporter {
 			Writer outputPlugObject) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public VertexFormatter getVertexFormatter() {
+		return vertexFormatter;
+	}
+
+	@Override
+	public DotExporter buildEdgeDefinition(Vertex source, Vertex neighbour) {
+
+		try {
+			Writer writer = new StringWriter();
+			source.collectEdgeDefinitionInto(writer, neighbour);
+			writer.close();
+			edgeDefinitionDotRepresentation.add(writer.toString());
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return this;
 	}
 }

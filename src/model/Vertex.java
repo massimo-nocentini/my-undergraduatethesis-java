@@ -1,11 +1,13 @@
 package model;
 
+import java.io.Writer;
 import java.util.Set;
 
 import org.sbml.jsbml.Species;
 
 import dotInterface.DotExportable;
 import dotInterface.DotExporter;
+import dotInterface.LineDecorator;
 
 public interface Vertex extends DotExportable, Comparable<Vertex> {
 
@@ -55,13 +57,26 @@ public interface Vertex extends DotExportable, Comparable<Vertex> {
 
 	public abstract void addDirectAncestors(Vertex vertex);
 
-	// TODO: delete this method from this interface because it allow
-	// to retrieve some encapsulated information. Make a private method
-	// in Vertex class that provide the collection of the composite identifier
-	// in order to be called directly from another object of typeSimpleVertex.
-	public abstract void collectYourIdentifierInto(
-			StringBuilder collectingBuilder);
+	//
+	// // TODO: delete this method from this interface because it allow
+	// // to retrieve some encapsulated information. Make a private method
+	// // in Vertex class that provide the collection of the composite
+	// identifier
+	// // in order to be called directly from another object of
+	// typeSimpleVertex.
+	public abstract void collectYourIdentifierInto(Writer writer);
 
 	public abstract SimpleVertex asSimpleVertex();
+
+	public abstract void collectYourDefinitionInto(Writer writer);
+
+	public abstract LineDecorator getSourceDecorator();
+
+	public abstract LineDecorator getIdentifierDecorator();
+
+	public abstract LineDecorator getSquareBracketsDecorator();
+
+	public abstract void collectEdgeDefinitionInto(Writer writer,
+			Vertex neighbour);
 
 }

@@ -18,7 +18,6 @@ import org.sbml.jsbml.Species;
 import tarjan.DfsExplorer;
 import tarjan.VertexDfsMetadata;
 import JSBMLInterface.Connector;
-import dotInterface.DotDecorationApplier;
 import dotInterface.DotExportable;
 import dotInterface.DotExporter;
 import dotInterface.SimpleExporter;
@@ -197,7 +196,7 @@ public class OurModel implements DotExportable {
 	 */
 	public static OurModel makePapadimitriouModel(LinkedHashSet<Vertex> vertices) {
 
-		String compartment_id = "compartment_id";
+		String compartment_id = getDefaultCompartmentId();
 
 		final Vertex vA = SimpleVertex.makeVertex("A", compartment_id);
 		final Vertex vB = SimpleVertex.makeVertex("B", compartment_id);
@@ -258,6 +257,11 @@ public class OurModel implements DotExportable {
 
 	}
 
+	public static String getDefaultCompartmentId() {
+		String compartment_id = "compartment_id";
+		return compartment_id;
+	}
+
 	public OurModel findVertexByExampleAndApplyLogicOnIt(
 			final Vertex exampleVertex, final VertexLogicApplier logicApplier) {
 
@@ -282,9 +286,6 @@ public class OurModel implements DotExportable {
 			Set<String> expectedEdgeDefinitionPart,
 			Set<String> expectedVertexLabelOutsideBoxPart, DotExporter exporter) {
 
-		DotDecorationApplier dotDecorationApplier = exporter
-				.useDecorationApplier();
-
 		String speciesId_1 = "species_id_1";
 		String speciesId_2 = "species_id_2";
 		String speciesId_3 = "species_id_3";
@@ -294,7 +295,7 @@ public class OurModel implements DotExportable {
 		String speciesId_7 = "species_id_7";
 		String speciesId_8 = "species_id_8";
 
-		String compartmentId = "compartment_id";
+		String compartmentId = getDefaultCompartmentId();
 
 		Species species_1 = new Species(speciesId_1);
 		Species species_2 = new Species(speciesId_2);
@@ -351,85 +352,65 @@ public class OurModel implements DotExportable {
 		vertices.add(v7);
 		vertices.add(v8);
 
-		collectVertexDefinitionInto(expectedVertexDefinitionPart,
-				dotDecorationApplier, v);
+		collectVertexDefinitionInto(expectedVertexDefinitionPart, v);
 
-		collectVertexDefinitionInto(expectedVertexDefinitionPart,
-				dotDecorationApplier, v2);
+		collectVertexDefinitionInto(expectedVertexDefinitionPart, v2);
 
-		collectVertexDefinitionInto(expectedVertexDefinitionPart,
-				dotDecorationApplier, v3);
+		collectVertexDefinitionInto(expectedVertexDefinitionPart, v3);
 
-		collectVertexDefinitionInto(expectedVertexDefinitionPart,
-				dotDecorationApplier, v4);
+		collectVertexDefinitionInto(expectedVertexDefinitionPart, v4);
 
-		collectVertexDefinitionInto(expectedVertexDefinitionPart,
-				dotDecorationApplier, v5);
+		collectVertexDefinitionInto(expectedVertexDefinitionPart, v5);
 
-		collectVertexDefinitionInto(expectedVertexDefinitionPart,
-				dotDecorationApplier, v6);
+		collectVertexDefinitionInto(expectedVertexDefinitionPart, v6);
 
-		collectVertexDefinitionInto(expectedVertexDefinitionPart,
-				dotDecorationApplier, v7);
+		collectVertexDefinitionInto(expectedVertexDefinitionPart, v7);
 
-		collectVertexDefinitionInto(expectedVertexDefinitionPart,
-				dotDecorationApplier, v8);
+		collectVertexDefinitionInto(expectedVertexDefinitionPart, v8);
 
 		// v neighbors
-		collectEdgeDefinitionInto(expectedEdgeDefinitionPart,
-				dotDecorationApplier, v, v2);
+		collectEdgeDefinitionInto(expectedEdgeDefinitionPart, v, v2);
 
 		// v2 neighbors
-		collectEdgeDefinitionInto(expectedEdgeDefinitionPart,
-				dotDecorationApplier, v2, v8);
+		collectEdgeDefinitionInto(expectedEdgeDefinitionPart, v2, v8);
 
-		collectEdgeDefinitionInto(expectedEdgeDefinitionPart,
-				dotDecorationApplier, v2, v3);
+		collectEdgeDefinitionInto(expectedEdgeDefinitionPart, v2, v3);
 
 		// v3 neighbors
-		collectEdgeDefinitionInto(expectedEdgeDefinitionPart,
-				dotDecorationApplier, v3, v4);
+		collectEdgeDefinitionInto(expectedEdgeDefinitionPart, v3, v4);
 
-		collectEdgeDefinitionInto(expectedEdgeDefinitionPart,
-				dotDecorationApplier, v3, v7);
+		collectEdgeDefinitionInto(expectedEdgeDefinitionPart, v3, v7);
 
 		// v4 neighbors
-		collectEdgeDefinitionInto(expectedEdgeDefinitionPart,
-				dotDecorationApplier, v4, v5);
+		collectEdgeDefinitionInto(expectedEdgeDefinitionPart, v4, v5);
 
 		// v5 neighbors
-		collectEdgeDefinitionInto(expectedEdgeDefinitionPart,
-				dotDecorationApplier, v5, v3);
+		collectEdgeDefinitionInto(expectedEdgeDefinitionPart, v5, v3);
 
-		collectEdgeDefinitionInto(expectedEdgeDefinitionPart,
-				dotDecorationApplier, v5, v6);
+		collectEdgeDefinitionInto(expectedEdgeDefinitionPart, v5, v6);
 
 		// v6 hasn't any neighbors
 
 		// v7 neighbors
-		collectEdgeDefinitionInto(expectedEdgeDefinitionPart,
-				dotDecorationApplier, v7, v4);
+		collectEdgeDefinitionInto(expectedEdgeDefinitionPart, v7, v4);
 
-		collectEdgeDefinitionInto(expectedEdgeDefinitionPart,
-				dotDecorationApplier, v7, v6);
+		collectEdgeDefinitionInto(expectedEdgeDefinitionPart, v7, v6);
 
 		// v8 neighbors
-		collectEdgeDefinitionInto(expectedEdgeDefinitionPart,
-				dotDecorationApplier, v8, v);
+		collectEdgeDefinitionInto(expectedEdgeDefinitionPart, v8, v);
 
-		collectEdgeDefinitionInto(expectedEdgeDefinitionPart,
-				dotDecorationApplier, v8, v7);
+		collectEdgeDefinitionInto(expectedEdgeDefinitionPart, v8, v7);
 
 	}
 
-	private static void collectEdgeDefinitionInto(
-			Set<String> expectedEdgeDefinitionPart,
-			DotDecorationApplier dotDecorationApplier, Vertex source,
+	public static void collectEdgeDefinitionInto(
+			Set<String> expectedEdgeDefinitionPart, Vertex source,
 			Vertex neighbour) {
 
 		StringWriter identifierWriter = new StringWriter();
-		source.useFormatter().formatEdgeDefinitionInto(identifierWriter,
-				source, neighbour, dotDecorationApplier);
+
+		source.collectEdgeDefinitionInto(identifierWriter, neighbour);
+
 		try {
 			identifierWriter.close();
 			expectedEdgeDefinitionPart.add(identifierWriter.toString());
@@ -438,13 +419,13 @@ public class OurModel implements DotExportable {
 		}
 	}
 
-	private static void collectVertexDefinitionInto(
-			Set<String> expectedVertexDefinitionPart,
-			DotDecorationApplier dotDecorationApplier, Vertex vertex) {
+	public static void collectVertexDefinitionInto(
+			Set<String> expectedVertexDefinitionPart, Vertex vertex) {
 
 		Writer identifierWriter = new StringWriter();
-		vertex.useFormatter().formatVertexDefinitionInto(identifierWriter,
-				vertex, dotDecorationApplier);
+
+		vertex.collectYourDefinitionInto(identifierWriter);
+
 		try {
 			identifierWriter.close();
 			expectedVertexDefinitionPart.add(identifierWriter.toString());
