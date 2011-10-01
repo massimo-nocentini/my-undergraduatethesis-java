@@ -1,9 +1,6 @@
-package tarjan;
+package model;
 
-import model.Vertex;
-import model.WrapperVertex;
-
-class DfsWrapperVertex extends WrapperVertex {
+public class DfsWrapperVertex extends WrapperVertex {
 
 	private int preVisitClock;
 	private int postVisitClock;
@@ -26,7 +23,7 @@ class DfsWrapperVertex extends WrapperVertex {
 		return postVisitClock == otherClock;
 	}
 
-	public DfsWrapperVertex(Vertex wrappingVertex) {
+	DfsWrapperVertex(Vertex wrappingVertex) {
 		super(wrappingVertex);
 	}
 

@@ -17,8 +17,8 @@ public class SimpleVertex implements Vertex {
 	/**
 	 * Dummy value
 	 */
-	private static String DummySpeciesId = "dummy_species_id";
-	private static String DummyCompartmentId = "dummy_compartment_id";
+	static String DummySpeciesId = "dummy_species_id";
+	static String DummyCompartmentId = "dummy_compartment_id";
 
 	static class VertexIntegerEnumerator {
 		private static int count;
@@ -37,13 +37,13 @@ public class SimpleVertex implements Vertex {
 		}
 	}
 
-	private Set<Vertex> neighbors;
+	private final Set<Vertex> neighbors;
 
-	private String species_id;
+	String species_id;
 
-	private String compartment_id;
+	String compartment_id;
 
-	private Set<Vertex> directAncestors;
+	private final Set<Vertex> directAncestors;
 
 	private SimpleVertex(String species_id, String compartment_id) {
 		this.species_id = species_id;
@@ -53,22 +53,14 @@ public class SimpleVertex implements Vertex {
 		directAncestors = new TreeSet<Vertex>();
 	}
 
-	public static Vertex makeVertex() {
-
-		int id = VertexIntegerEnumerator.enumerateNewVertex();
-
-		Vertex createdVertex = makeVertex(
-				DummySpeciesId.concat(String.valueOf(id)), DummyCompartmentId);
-
-		return createdVertex;
-	}
-
+	@Override
 	public Vertex addNeighbour(Vertex neighbour) {
 		this.neighbors.add(neighbour);
 		neighbour.addDirectAncestors(this);
 		return this;
 	}
 
+	@Override
 	public void doOnNeighbors(VertexLogicApplier applier) {
 		for (Vertex vertex : neighbors) {
 			applier.apply(vertex);
@@ -76,6 +68,7 @@ public class SimpleVertex implements Vertex {
 
 	}
 
+	@Override
 	public void doOnNeighbors(VertexLogicApplierWithNeighborhoodRelation applier) {
 		for (Vertex neighbour : neighbors) {
 			applier.apply(this, neighbour);
@@ -83,26 +76,22 @@ public class SimpleVertex implements Vertex {
 
 	}
 
-	public static Vertex makeVertex(String species_id, String compartment_id) {
-		return new SimpleVertex(species_id, compartment_id);
-	}
-
+	@Override
 	public boolean isYourNeighborhoodEquals(Set<Vertex> products) {
 		return this.neighbors.equals(products);
 	}
 
+	@Override
 	public boolean isYourNeighborhoodEmpty() {
 		return this.neighbors.size() == 0;
 	}
 
-	public static Vertex makeVertex(Species species) {
-		return makeVertex(species.getId(), species.getCompartment());
-	}
-
+	@Override
 	public boolean isYourSpeciesId(String speciesId) {
 		return this.species_id.equals(speciesId);
 	}
 
+	@Override
 	public boolean isYourCompartmentId(String compartmentId) {
 		return this.compartment_id.equals(compartmentId);
 	}
@@ -147,10 +136,12 @@ public class SimpleVertex implements Vertex {
 		return true;
 	}
 
+	@Override
 	public boolean haveYouSelfLoop() {
 		return this.neighbors.contains(this);
 	}
 
+	@Override
 	public boolean isYourOrigin(Species aSpecies) {
 		return this.isYourSpeciesId(aSpecies.getId())
 				&& this.isYourCompartmentId(aSpecies.getCompartment());
@@ -165,28 +156,34 @@ public class SimpleVertex implements Vertex {
 		}
 	}
 
+	@Override
 	public boolean isSink() {
 		// TODO: ask if this condition is sufficient for the truth of this
 		// predicate
 		return neighbors.size() == 0;// && directAncestors.size() > 0;
 	}
 
+	@Override
 	public boolean isSource() {
 		return directAncestors.size() == 0 && neighbors.size() > 0;
 	}
 
+	@Override
 	public boolean isYourNeighbour(Vertex a) {
 		return neighbors.contains(a);
 	}
 
+	@Override
 	public boolean isNeighborsCountEquals(int guess) {
 		return neighbors.size() == guess;
 	}
 
+	@Override
 	public boolean matchCompartmentWith(Vertex otherVertex) {
 		return otherVertex.isYourCompartmentId(compartment_id);
 	}
 
+	@Override
 	public boolean matchSpeciesWith(Vertex otherVertex) {
 		return otherVertex.isYourSpeciesId(species_id);
 	}
@@ -202,10 +199,8 @@ public class SimpleVertex implements Vertex {
 		return -1 * comparison;
 	}
 
-	public static Vertex makeVertex(Vertex vertex) {
-
-		return makeVertex(vertex.asSimpleVertex().species_id,
-				vertex.asSimpleVertex().compartment_id);
+	static SimpleVertex makeVertex(String species_id, String compartment_id) {
+		return new SimpleVertex(species_id, compartment_id);
 	}
 
 	@Override

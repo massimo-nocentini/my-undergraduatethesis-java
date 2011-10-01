@@ -198,18 +198,18 @@ public class OurModel implements DotExportable {
 
 		String compartment_id = getDefaultCompartmentId();
 
-		final Vertex vA = SimpleVertex.makeVertex("A", compartment_id);
-		final Vertex vB = SimpleVertex.makeVertex("B", compartment_id);
-		final Vertex vE = SimpleVertex.makeVertex("E", compartment_id);
-		final Vertex vI = SimpleVertex.makeVertex("I", compartment_id);
-		final Vertex vJ = SimpleVertex.makeVertex("J", compartment_id);
-		final Vertex vC = SimpleVertex.makeVertex("C", compartment_id);
-		final Vertex vD = SimpleVertex.makeVertex("D", compartment_id);
-		final Vertex vG = SimpleVertex.makeVertex("G", compartment_id);
-		final Vertex vH = SimpleVertex.makeVertex("H", compartment_id);
-		final Vertex vK = SimpleVertex.makeVertex("K", compartment_id);
-		final Vertex vL = SimpleVertex.makeVertex("L", compartment_id);
-		final Vertex vF = SimpleVertex.makeVertex("F", compartment_id);
+		final Vertex vA = VertexFactory.makeSimpleVertex("A", compartment_id);
+		final Vertex vB = VertexFactory.makeSimpleVertex("B", compartment_id);
+		final Vertex vE = VertexFactory.makeSimpleVertex("E", compartment_id);
+		final Vertex vI = VertexFactory.makeSimpleVertex("I", compartment_id);
+		final Vertex vJ = VertexFactory.makeSimpleVertex("J", compartment_id);
+		final Vertex vC = VertexFactory.makeSimpleVertex("C", compartment_id);
+		final Vertex vD = VertexFactory.makeSimpleVertex("D", compartment_id);
+		final Vertex vG = VertexFactory.makeSimpleVertex("G", compartment_id);
+		final Vertex vH = VertexFactory.makeSimpleVertex("H", compartment_id);
+		final Vertex vK = VertexFactory.makeSimpleVertex("K", compartment_id);
+		final Vertex vL = VertexFactory.makeSimpleVertex("L", compartment_id);
+		final Vertex vF = VertexFactory.makeSimpleVertex("F", compartment_id);
 
 		vA.addNeighbour(vB);
 		vA.addNeighbour(vE);
@@ -315,14 +315,14 @@ public class OurModel implements DotExportable {
 		species_7.setCompartment(compartmentId);
 		species_8.setCompartment(compartmentId);
 
-		Vertex v = SimpleVertex.makeVertex(species_1);
-		Vertex v2 = SimpleVertex.makeVertex(species_2);
-		Vertex v3 = SimpleVertex.makeVertex(species_3);
-		Vertex v4 = SimpleVertex.makeVertex(species_4);
-		Vertex v5 = SimpleVertex.makeVertex(species_5);
-		Vertex v6 = SimpleVertex.makeVertex(species_6);
-		Vertex v7 = SimpleVertex.makeVertex(species_7);
-		Vertex v8 = SimpleVertex.makeVertex(species_8);
+		Vertex v = VertexFactory.makeSimpleVertex(species_1);
+		Vertex v2 = VertexFactory.makeSimpleVertex(species_2);
+		Vertex v3 = VertexFactory.makeSimpleVertex(species_3);
+		Vertex v4 = VertexFactory.makeSimpleVertex(species_4);
+		Vertex v5 = VertexFactory.makeSimpleVertex(species_5);
+		Vertex v6 = VertexFactory.makeSimpleVertex(species_6);
+		Vertex v7 = VertexFactory.makeSimpleVertex(species_7);
+		Vertex v8 = VertexFactory.makeSimpleVertex(species_8);
 
 		v.addNeighbour(v2);
 

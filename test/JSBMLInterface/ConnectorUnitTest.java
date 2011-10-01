@@ -10,8 +10,8 @@ import java.util.Set;
 
 import junit.framework.Assert;
 import model.OurModel;
-import model.SimpleVertex;
 import model.Vertex;
+import model.VertexFactory;
 
 import org.junit.Test;
 import org.sbml.jsbml.Model;
@@ -43,7 +43,7 @@ public class ConnectorUnitTest {
 
 		final Set<Vertex> collectedVertices = new HashSet<Vertex>();
 
-		Vertex outSide = SimpleVertex.makeVertex();
+		Vertex outSide = VertexFactory.makeSimpleVertex();
 
 		Set<Vertex> vertices = connector.convertToVertexSet(
 				reaction.getListOfReactants(), new HashMap<Vertex, Vertex>(),

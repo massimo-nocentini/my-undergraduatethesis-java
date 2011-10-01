@@ -12,8 +12,8 @@ import java.util.TreeSet;
 
 import junit.framework.Assert;
 import model.OurModel;
-import model.SimpleVertex;
 import model.Vertex;
+import model.VertexFactory;
 
 import org.junit.Test;
 
@@ -151,7 +151,7 @@ public class DfsExplorerUnitTest {
 	@Test
 	public void checkingPreVisitPostVisitModelWithOneVertexAndNoEdges() {
 
-		final Vertex v = SimpleVertex.makeVertex();
+		final Vertex v = VertexFactory.makeSimpleVertex();
 
 		final String preVisitFlag = "preVisit handle called";
 		final String postVisitFlag = "postVisit handle called";
@@ -209,7 +209,7 @@ public class DfsExplorerUnitTest {
 	@Test(expected = UnsupportedOperationException.class)
 	public void expectingExceptionWhenTryingUpdateSearchMapsOnSearchStarted() {
 
-		final Vertex v = SimpleVertex.makeVertex();
+		final Vertex v = VertexFactory.makeSimpleVertex();
 
 		OurModel tarjanModel = OurModel.makeOurModelFrom(new HashSet<Vertex>(
 				Arrays.<Vertex> asList(v)));
@@ -226,7 +226,7 @@ public class DfsExplorerUnitTest {
 
 			@Override
 			public void searchCompleted(Map<Vertex, VertexDfsMetadata> map) {
-				Vertex erroneousVerte = SimpleVertex.makeVertex();
+				Vertex erroneousVerte = VertexFactory.makeSimpleVertex();
 				map.put(erroneousVerte, new VertexDfsMetadata(erroneousVerte));
 			}
 
@@ -254,7 +254,7 @@ public class DfsExplorerUnitTest {
 	@Test(expected = UnsupportedOperationException.class)
 	public void expectingExceptionWhenTryingUpdateSearchMapsOnSearchCompleted() {
 
-		final Vertex v = SimpleVertex.makeVertex();
+		final Vertex v = VertexFactory.makeSimpleVertex();
 
 		OurModel tarjanModel = OurModel.makeOurModelFrom(new HashSet<Vertex>(
 				Arrays.<Vertex> asList(v)));
@@ -275,7 +275,7 @@ public class DfsExplorerUnitTest {
 
 			@Override
 			public void searchStarted(Map<Vertex, VertexDfsMetadata> map) {
-				Vertex erroneousVerte = SimpleVertex.makeVertex();
+				Vertex erroneousVerte = VertexFactory.makeSimpleVertex();
 				map.put(erroneousVerte, new VertexDfsMetadata(erroneousVerte));
 			}
 
@@ -299,9 +299,9 @@ public class DfsExplorerUnitTest {
 	@Test
 	public void checkingPreVisitPostVisitModelWithThreeVertices() {
 
-		final Vertex v = SimpleVertex.makeVertex();
-		final Vertex v2 = SimpleVertex.makeVertex();
-		final Vertex v3 = SimpleVertex.makeVertex();
+		final Vertex v = VertexFactory.makeSimpleVertex();
+		final Vertex v2 = VertexFactory.makeSimpleVertex();
+		final Vertex v3 = VertexFactory.makeSimpleVertex();
 
 		v.addNeighbour(v2);
 		v.addNeighbour(v3);

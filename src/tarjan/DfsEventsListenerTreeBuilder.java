@@ -5,7 +5,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import model.DfsWrapperVertex;
 import model.Vertex;
+import model.VertexFactory;
 
 public class DfsEventsListenerTreeBuilder implements DfsEventsListener {
 
@@ -49,7 +51,7 @@ public class DfsEventsListenerTreeBuilder implements DfsEventsListener {
 
 		for (Vertex vertex : exploredVertexMetadatasMap.keySet()) {
 
-			verticesMap.put(vertex, new DfsWrapperVertex(vertex));
+			verticesMap.put(vertex, VertexFactory.makeDfsWrapperVertex(vertex));
 		}
 	}
 

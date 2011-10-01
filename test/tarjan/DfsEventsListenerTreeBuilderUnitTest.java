@@ -4,9 +4,10 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 
 import junit.framework.Assert;
+import model.DfsWrapperVertex;
 import model.OurModel;
-import model.SimpleVertex;
 import model.Vertex;
+import model.VertexFactory;
 
 import org.junit.Test;
 
@@ -153,9 +154,8 @@ public class DfsEventsListenerTreeBuilderUnitTest {
 	@Test
 	public void settingPreVisitClockInfo() {
 
-		final Vertex v = SimpleVertex.makeVertex();
-		DfsWrapperVertex metadata = new DfsWrapperVertex(
-				v);
+		final Vertex v = VertexFactory.makeSimpleVertex();
+		DfsWrapperVertex metadata = VertexFactory.makeDfsWrapperVertex(v);
 
 		DfsWrapperVertex outputMetadata = metadata.previsitedAt(3);
 
@@ -167,9 +167,8 @@ public class DfsEventsListenerTreeBuilderUnitTest {
 	@Test
 	public void settingPostVisitClockInfo() {
 
-		final Vertex v = SimpleVertex.makeVertex();
-		DfsWrapperVertex metadata = new DfsWrapperVertex(
-				v);
+		final Vertex v = VertexFactory.makeSimpleVertex();
+		DfsWrapperVertex metadata = VertexFactory.makeDfsWrapperVertex(v);
 
 		DfsWrapperVertex outputMetadata = metadata.postvisitedAt(3);
 

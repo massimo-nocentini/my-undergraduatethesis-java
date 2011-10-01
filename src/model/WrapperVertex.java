@@ -13,7 +13,7 @@ public abstract class WrapperVertex implements Vertex {
 	private final Vertex wrappedVertex;
 
 	protected WrapperVertex(Vertex wrappingVertex) {
-		wrappedVertex = SimpleVertex.makeVertex(wrappingVertex);
+		wrappedVertex = VertexFactory.makeSimpleVertex(wrappingVertex);
 	}
 
 	Vertex getWrappedVertex() {

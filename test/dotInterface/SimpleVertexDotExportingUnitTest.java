@@ -6,6 +6,7 @@ import java.io.Writer;
 import junit.framework.Assert;
 import model.SimpleVertex;
 import model.Vertex;
+import model.VertexFactory;
 
 import org.junit.Test;
 
@@ -16,7 +17,7 @@ public class SimpleVertexDotExportingUnitTest {
 
 		String species_id = "species_id";
 		String compartment_id = "compartment_id";
-		Vertex vertex = SimpleVertex.makeVertex(species_id, compartment_id);
+		Vertex vertex = VertexFactory.makeSimpleVertex(species_id, compartment_id);
 
 		Writer writer = new StringWriter();
 		vertex.collectYourDefinitionInto(writer);
@@ -36,10 +37,10 @@ public class SimpleVertexDotExportingUnitTest {
 
 		String species_id = "species_id";
 		String compartment_id = "compartment_id";
-		Vertex vertex = SimpleVertex.makeVertex(species_id, compartment_id);
+		Vertex vertex = VertexFactory.makeSimpleVertex(species_id, compartment_id);
 
 		String neighbourSpeciesId = "neighbour_species_id";
-		Vertex neighbour = SimpleVertex.makeVertex(neighbourSpeciesId,
+		Vertex neighbour = VertexFactory.makeSimpleVertex(neighbourSpeciesId,
 				compartment_id);
 
 		vertex.addNeighbour(neighbour);

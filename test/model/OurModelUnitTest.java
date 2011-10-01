@@ -36,10 +36,10 @@ public class OurModelUnitTest {
 
 	@Test
 	public void addingNeighborsOrderIsPreservedByVertex() {
-		Vertex vertex =SimpleVertex.makeVertex();
-		Vertex a1 =SimpleVertex.makeVertex();
-		Vertex a2 =SimpleVertex.makeVertex();
-		Vertex a3 =SimpleVertex.makeVertex();
+		Vertex vertex =VertexFactory.makeSimpleVertex();
+		Vertex a1 =VertexFactory.makeSimpleVertex();
+		Vertex a2 =VertexFactory.makeSimpleVertex();
+		Vertex a3 =VertexFactory.makeSimpleVertex();
 
 		Set<Vertex> vertices = new TreeSet<Vertex>();
 		vertices.add(vertex);
@@ -133,9 +133,9 @@ public class OurModelUnitTest {
 	public void retrieveVertexAndApplyLogic() {
 		String compartment_id = "compartment_id";
 		String species_id = "species_id";
-		final Vertex v =SimpleVertex.makeVertex(species_id, compartment_id);
-		Vertex v2 =SimpleVertex.makeVertex();
-		Vertex v3 =SimpleVertex.makeVertex();
+		final Vertex v =VertexFactory.makeSimpleVertex(species_id, compartment_id);
+		Vertex v2 =VertexFactory.makeSimpleVertex();
+		Vertex v3 =VertexFactory.makeSimpleVertex();
 
 		v.addNeighbour(v2);
 
@@ -144,7 +144,7 @@ public class OurModelUnitTest {
 		vertices.add(v2);
 		vertices.add(v3);
 
-		final Vertex exampleVertex =SimpleVertex.makeVertex(species_id,
+		final Vertex exampleVertex =VertexFactory.makeSimpleVertex(species_id,
 				compartment_id);
 
 		final CallbackSignalRecorder recorder = new CallbackSignalRecorder();
@@ -175,9 +175,9 @@ public class OurModelUnitTest {
 	public void retrieveVertexAndApplyLogic_VacouslySearch() {
 		String compartment_id = "compartment_id";
 		String species_id = "species_id";
-		final Vertex v =SimpleVertex.makeVertex(species_id, compartment_id);
-		Vertex v2 =SimpleVertex.makeVertex();
-		Vertex v3 =SimpleVertex.makeVertex();
+		final Vertex v =VertexFactory.makeSimpleVertex(species_id, compartment_id);
+		Vertex v2 =VertexFactory.makeSimpleVertex();
+		Vertex v3 =VertexFactory.makeSimpleVertex();
 
 		v.addNeighbour(v2);
 
@@ -186,7 +186,7 @@ public class OurModelUnitTest {
 		vertices.add(v2);
 		vertices.add(v3);
 
-		final Vertex exampleVertex =SimpleVertex.makeVertex(
+		final Vertex exampleVertex =VertexFactory.makeSimpleVertex(
 				"some_different_species_id", compartment_id);
 
 		final CallbackSignalRecorder recorder = new CallbackSignalRecorder();

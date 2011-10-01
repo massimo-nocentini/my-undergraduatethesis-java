@@ -7,8 +7,8 @@ import java.util.Set;
 
 import junit.framework.Assert;
 import model.OurModel;
-import model.SimpleVertex;
 import model.Vertex;
+import model.VertexFactory;
 
 import org.junit.Test;
 import org.sbml.jsbml.Species;
@@ -28,7 +28,7 @@ public class DotExportableUnitTest {
 		Species species = new Species(speciesId);
 		species.setCompartment(compartmentId);
 
-		Vertex v = SimpleVertex.makeVertex(species);
+		Vertex v = VertexFactory.makeSimpleVertex(species);
 		DotExportable exportable = v;
 
 		DotExporter exporter = new SimpleExporter();
@@ -67,9 +67,9 @@ public class DotExportableUnitTest {
 		secondSpecies.setCompartment(compartmentId);
 		thirdSpecies.setCompartment(compartmentId);
 
-		Vertex v = SimpleVertex.makeVertex(firstSpecies);
-		Vertex v2 = SimpleVertex.makeVertex(secondSpecies);
-		Vertex v3 = SimpleVertex.makeVertex(thirdSpecies);
+		Vertex v = VertexFactory.makeSimpleVertex(firstSpecies);
+		Vertex v2 = VertexFactory.makeSimpleVertex(secondSpecies);
+		Vertex v3 = VertexFactory.makeSimpleVertex(thirdSpecies);
 
 		v.addNeighbour(v2);
 		v2.addNeighbour(v3);

@@ -5,6 +5,7 @@ import model.SimpleVertex;
 import model.SimpleVertex.SourceSinkLineDecorator;
 import model.SimpleVertex.SquareBracketsLineDecorator;
 import model.Vertex;
+import model.VertexFactory;
 
 import org.junit.Test;
 
@@ -15,7 +16,7 @@ public class LineDecoratorUnitTest {
 
 		String species_id = "species_id";
 		String compartment_id = "compartment_id";
-		Vertex vertex = SimpleVertex.makeVertex(species_id, compartment_id);
+		Vertex vertex = VertexFactory.makeSimpleVertex(species_id, compartment_id);
 
 		Assert.assertEquals(SimpleVertex.IdentifierLineDecorator.class, vertex
 				.getIdentifierDecorator().getClass());
@@ -30,9 +31,9 @@ public class LineDecoratorUnitTest {
 
 		String species_id = "species_id";
 		String compartment_id = "compartment_id";
-		Vertex vertex = SimpleVertex.makeVertex(species_id, compartment_id);
+		Vertex vertex = VertexFactory.makeSimpleVertex(species_id, compartment_id);
 
-		Vertex neighbour = SimpleVertex.makeVertex();
+		Vertex neighbour = VertexFactory.makeSimpleVertex();
 		vertex.addNeighbour(neighbour);
 
 		LineDecorator sourceDecorator = vertex.getSourceDecorator();
@@ -54,7 +55,7 @@ public class LineDecoratorUnitTest {
 		String species_id = "species_id";
 		String compartment_id = "compartment_id";
 
-		Vertex vertex = SimpleVertex.makeVertex(species_id, compartment_id);
+		Vertex vertex = VertexFactory.makeSimpleVertex(species_id, compartment_id);
 
 		vertex.addNeighbour(vertex);
 
@@ -77,7 +78,7 @@ public class LineDecoratorUnitTest {
 		String species_id = "species_id";
 		String compartment_id = "compartment_id";
 
-		Vertex vertex = SimpleVertex.makeVertex(species_id, compartment_id);
+		Vertex vertex = VertexFactory.makeSimpleVertex(species_id, compartment_id);
 
 		vertex.addNeighbour(vertex);
 
@@ -99,7 +100,7 @@ public class LineDecoratorUnitTest {
 		String species_id = "species_id";
 		String compartment_id = "compartment_id";
 
-		Vertex vertex = SimpleVertex.makeVertex(species_id, compartment_id);
+		Vertex vertex = VertexFactory.makeSimpleVertex(species_id, compartment_id);
 
 		vertex.addNeighbour(vertex);
 
