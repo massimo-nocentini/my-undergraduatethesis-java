@@ -10,7 +10,6 @@ import model.Vertex;
 
 import org.junit.Test;
 
-import tarjan.DfsEventsListenerTreeBuilder.DataContainer;
 import util.CallbackSignalRecorder;
 
 public class DfsEventsListenerTreeBuilderUnitTest {
@@ -155,10 +154,10 @@ public class DfsEventsListenerTreeBuilderUnitTest {
 	public void settingPreVisitClockInfo() {
 
 		final Vertex v = SimpleVertex.makeVertex();
-		DfsEventsListenerTreeBuilder.DataContainer metadata = new DfsEventsListenerTreeBuilder.DataContainer(
+		DfsWrapperVertex metadata = new DfsWrapperVertex(
 				v);
 
-		DataContainer outputMetadata = metadata.previsitedAt(3);
+		DfsWrapperVertex outputMetadata = metadata.previsitedAt(3);
 
 		Assert.assertSame(outputMetadata, metadata);
 		Assert.assertTrue(metadata.isYourPreVisitClock(3));
@@ -169,10 +168,10 @@ public class DfsEventsListenerTreeBuilderUnitTest {
 	public void settingPostVisitClockInfo() {
 
 		final Vertex v = SimpleVertex.makeVertex();
-		DfsEventsListenerTreeBuilder.DataContainer metadata = new DfsEventsListenerTreeBuilder.DataContainer(
+		DfsWrapperVertex metadata = new DfsWrapperVertex(
 				v);
 
-		DataContainer outputMetadata = metadata.postvisitedAt(3);
+		DfsWrapperVertex outputMetadata = metadata.postvisitedAt(3);
 
 		Assert.assertSame(outputMetadata, metadata);
 		Assert.assertTrue(metadata.isYourPostVisitClock(3));

@@ -9,7 +9,7 @@ import model.Vertex;
 
 import org.junit.Test;
 
-public class SimpleVertexDotExporting {
+public class SimpleVertexDotExportingUnitTest {
 
 	@Test
 	public void VertexDefinitionWithoutLabel() {
