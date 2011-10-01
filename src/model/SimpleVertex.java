@@ -11,7 +11,6 @@ import dotInterface.DotExporter;
 import dotInterface.DotFileUtilHandler;
 import dotInterface.LineDecorator;
 import dotInterface.NullObjectLineDecorator;
-import dotInterface.SimpleFormatter;
 
 public class SimpleVertex implements Vertex {
 
@@ -36,69 +35,6 @@ public class SimpleVertex implements Vertex {
 		static int getCurrentEnumerationValue() {
 			return count;
 		}
-	}
-
-	// public class SimpleFormatter implements VertexFormatter {
-	//
-	// private SimpleFormatter() {
-	// }
-	//
-	// @Override
-	// public VertexFormatter formatVertexDefinitionInto(Writer writer,
-	// Vertex vertex, DotDecorationApplier useDecorationApplier) {
-	//
-	// StringBuilder sourceIdentifierStringBuilder = new StringBuilder();
-	//
-	// vertex.collectYourIdentifierInto(sourceIdentifierStringBuilder);
-	//
-	// String vertexRepresentation = sourceIdentifierStringBuilder
-	// .toString();
-	//
-	// if (isSink() || isSource()) {
-	//
-	// vertexRepresentation = useDecorationApplier
-	// .decoreWithSourceSinkAttributes(vertexRepresentation);
-	// }
-	//
-	// try {
-	// writer.append(vertexRepresentation);
-	// } catch (IOException e) {
-	// e.printStackTrace();
-	// }
-	//
-	// return this;
-	// }
-	//
-	// @Override
-	// public VertexFormatter formatEdgeDefinitionInto(Writer writer,
-	// Vertex source, Vertex neighbour,
-	// DotDecorationApplier dotDecorationApplier) {
-	//
-	// StringBuilder sourceIdentifierStringBuilder = new StringBuilder();
-	// StringBuilder neighbourIdentifierStringBuilder = new StringBuilder();
-	//
-	// source.collectYourIdentifierInto(sourceIdentifierStringBuilder);
-	//
-	// neighbour
-	// .collectYourIdentifierInto(neighbourIdentifierStringBuilder);
-	//
-	// String composedString = dotDecorationApplier
-	// .buildInfixNeighborhoodRelation(
-	// sourceIdentifierStringBuilder.toString(),
-	// neighbourIdentifierStringBuilder.toString());
-	//
-	// try {
-	// writer.append(composedString);
-	// } catch (IOException e) {
-	// e.printStackTrace();
-	// }
-	//
-	// return this;
-	// }
-	// }
-
-	public VertexFormatter useFormatter() {
-		return new SimpleFormatter();
 	}
 
 	private Set<Vertex> neighbors;
@@ -225,8 +161,6 @@ public class SimpleVertex implements Vertex {
 		exporter.buildVertexDefinition(this);
 
 		for (Vertex neighbour : neighbors) {
-			// exporter.buildEdgeDefinition(Edge.makeEdge(this, neighbour));
-
 			exporter.buildEdgeDefinition(this, neighbour);
 		}
 	}
@@ -299,17 +233,6 @@ public class SimpleVertex implements Vertex {
 		// corretto
 		// invocare ricorsivamente.
 		this.directAncestors.add(vertex);
-	}
-
-	@Override
-	public void collectYourIdentifierInto(Writer writer) {
-		try {
-			writer.append(composeIdentifier(species_id, compartment_id));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-
-		}
 	}
 
 	@Override

@@ -11,8 +11,6 @@ import dotInterface.LineDecorator;
 
 public interface Vertex extends DotExportable, Comparable<Vertex> {
 
-	public abstract VertexFormatter useFormatter();
-
 	public abstract Vertex addNeighbour(Vertex neighbour);
 
 	public abstract void doOnNeighbors(VertexLogicApplier applier);
@@ -50,24 +48,6 @@ public interface Vertex extends DotExportable, Comparable<Vertex> {
 
 	public abstract boolean matchSpeciesWith(Vertex otherVertex);
 
-	// TODO: these methods need to be unit tested each one
-	public abstract int compareYourCompartmentIdWith(String compartment_id);
-
-	public abstract int compareYourSpeciesIdWith(String species_id);
-
-	public abstract void addDirectAncestors(Vertex vertex);
-
-	//
-	// // TODO: delete this method from this interface because it allow
-	// // to retrieve some encapsulated information. Make a private method
-	// // in Vertex class that provide the collection of the composite
-	// identifier
-	// // in order to be called directly from another object of
-	// typeSimpleVertex.
-	public abstract void collectYourIdentifierInto(Writer writer);
-
-	public abstract SimpleVertex asSimpleVertex();
-
 	public abstract void collectYourDefinitionInto(Writer writer);
 
 	public abstract LineDecorator getSourceDecorator();
@@ -78,5 +58,14 @@ public interface Vertex extends DotExportable, Comparable<Vertex> {
 
 	public abstract void collectEdgeDefinitionInto(Writer writer,
 			Vertex neighbour);
+
+	// TODO: the following methods need to be unit tested each one
+	public abstract int compareYourCompartmentIdWith(String compartment_id);
+
+	public abstract int compareYourSpeciesIdWith(String species_id);
+
+	public abstract void addDirectAncestors(Vertex vertex);
+
+	public abstract SimpleVertex asSimpleVertex();
 
 }

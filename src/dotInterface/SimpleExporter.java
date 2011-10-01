@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import model.Vertex;
-import model.VertexFormatter;
 
 public class SimpleExporter implements DotExporter {
 
@@ -15,18 +14,10 @@ public class SimpleExporter implements DotExporter {
 	private Set<String> generalSettingsDotRepresentation;
 	private Set<String> edgeDefinitionDotRepresentation;
 
-	// TODO: delete the two following components
-	private DotDecorationApplier dotDecorationApplier;
-	private VertexFormatter vertexFormatter;
-
 	public SimpleExporter() {
 		verticesDefinitionDotRepresentation = new HashSet<String>();
 		generalSettingsDotRepresentation = new HashSet<String>();
 		edgeDefinitionDotRepresentation = new HashSet<String>();
-
-		// TODO: get rid of this components
-		dotDecorationApplier = new SimpleDotDecorationApplier();
-		vertexFormatter = new SimpleFormatter();
 
 		initGeneralSettings();
 	}
@@ -136,22 +127,6 @@ public class SimpleExporter implements DotExporter {
 	}
 
 	@Override
-	public DotExporter buildEdgeDefinition(Edge edge) {
-		StringBuilder edgeDefinition = new StringBuilder();
-
-		edge.collectEdgeInto(edgeDefinition, this.useDecorationApplier());
-
-		edgeDefinitionDotRepresentation.add(edgeDefinition.toString());
-
-		return this;
-	}
-
-	@Override
-	public DotDecorationApplier useDecorationApplier() {
-		return dotDecorationApplier;
-	}
-
-	@Override
 	public boolean isVertexLabelOutsideBoxPartEquals(Set<String> Part) {
 		// TODO Auto-generated method stub
 		return false;
@@ -162,11 +137,6 @@ public class SimpleExporter implements DotExporter {
 			Writer outputPlugObject) {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public VertexFormatter getVertexFormatter() {
-		return vertexFormatter;
 	}
 
 	@Override
