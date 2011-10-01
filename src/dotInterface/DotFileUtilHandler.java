@@ -9,7 +9,7 @@ import model.OurModel;
 
 public class DotFileUtilHandler {
 
-	private String filename;
+	private final String filename;
 	private File file;
 
 	/**
@@ -147,6 +147,17 @@ public class DotFileUtilHandler {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static String composeSquareBracketsWrapping(String wrappingContent) {
+
+		return getOpeningDotDecorationString().concat(wrappingContent).concat(
+				getClosingDotDecorationString());
+	}
+
+	public static String composeVertexLabelOutsideBox(String label) {
+		return "taillabel=\"".concat(label).concat(
+				"\", labelangle=45, labeldistance=1, color=transparent");
 	}
 
 	protected static DotFileUtilHandler MakeHandlerForExampleSbmlModel(

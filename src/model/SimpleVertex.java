@@ -158,8 +158,6 @@ public class SimpleVertex implements Vertex {
 
 	@Override
 	public boolean isSink() {
-		// TODO: ask if this condition is sufficient for the truth of this
-		// predicate
 		return neighbors.size() == 0;// && directAncestors.size() > 0;
 	}
 
@@ -251,7 +249,6 @@ public class SimpleVertex implements Vertex {
 		try {
 			writer.append(result);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -261,13 +258,6 @@ public class SimpleVertex implements Vertex {
 			String compartment_id) {
 
 		return species_id.trim().concat(compartment_id.trim());
-	}
-
-	public static String composeSquareBracketsWrapping(String wrappingContent) {
-
-		return DotFileUtilHandler.getOpeningDotDecorationString()
-				.concat(wrappingContent)
-				.concat(DotFileUtilHandler.getClosingDotDecorationString());
 	}
 
 	public static String getSourceSinkToken() {
@@ -311,7 +301,7 @@ public class SimpleVertex implements Vertex {
 			if (line == null || "".equals(line)) {
 				return line;
 			}
-			return composeSquareBracketsWrapping(line);
+			return DotFileUtilHandler.composeSquareBracketsWrapping(line);
 		}
 	}
 
@@ -348,6 +338,12 @@ public class SimpleVertex implements Vertex {
 		return sourceIdentifier.concat(
 				DotFileUtilHandler.getNeighbourRelationInfixToken()).concat(
 				neighbourIdentifier);
+	}
+
+	@Override
+	public void collectVertexLabelOutsideBoxInto(Writer writer) {
+		// this implementation doesn't have any additional information
+		// to draw near the vertex box.
 	}
 
 }

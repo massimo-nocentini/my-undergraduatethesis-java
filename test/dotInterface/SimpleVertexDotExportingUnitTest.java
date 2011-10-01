@@ -26,7 +26,7 @@ public class SimpleVertexDotExportingUnitTest {
 				SimpleVertex
 						.composeIdentifier(species_id, compartment_id)
 						.concat(DotFileUtilHandler.getBlankString())
-						.concat(SimpleVertex
+						.concat(DotFileUtilHandler
 								.composeSquareBracketsWrapping(SimpleVertex
 										.getSourceSinkToken())), writer
 						.toString());

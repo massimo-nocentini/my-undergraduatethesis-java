@@ -1,11 +1,16 @@
 package dotInterface;
 
 import java.io.File;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import junit.framework.Assert;
+import model.DfsWrapperVertex;
 import model.OurModel;
 import model.Vertex;
 import model.VertexFactory;
@@ -139,42 +144,22 @@ public class DotExportableUnitTest {
 				.produceSvgOutput();
 	}
 
-	// @Test
+	@Test
 	public void testVerticesLabelOutsideBox() {
 
-		// Set<Vertex> vertices = new HashSet<Vertex>();
-		//
-		// Set<String> expectedVertexLabelOutsideBoxPart = new
-		// HashSet<String>();
-		// DotExporter exporter = new SimpleExporter();
-		//
-		// OurModel.makeTarjanNetworkVertexSetWithRelation(vertices,
-		// new HashSet<String>(), new HashSet<String>(),
-		// expectedVertexLabelOutsideBoxPart, exporter);
-		//
-		// DfsEventsListenerTreeBuilder dfsEventListener = new
-		// DfsEventsListenerTreeBuilder();
-		//
-		// DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.make();
-		//
-		// dfsExplorer.acceptDfsEventsListener(dfsEventListener);
-		//
-		// DotExportable exportable = OurModel.makeOurModelFrom(vertices)
-		// .runDepthFirstSearch(dfsExplorer);
-		//
-		// exportable.acceptExporter(exporter);
-		//
-		// Assert.assertEquals(12, expectedVertexLabelOutsideBoxPart.size());
-		//
-		// Assert.assertTrue(exporter
-		// .isVertexLabelOutsideBoxPartEquals(expectedVertexLabelOutsideBoxPart));
-		//
-		// DotFileUtilHandler.MakeHandler("testVerticesLabelOutsideBox")
-		// .writeDotRepresentationInTestFolder(exporter)
-		// .produceSvgOutput();
+		Set<String> expectedVertexLabelOutsideBoxPart = new HashSet<String>();
 
-		// bookmark fail.
-		Assert.fail();
+		final Vertex v = VertexFactory.makeSimpleVertex();
+		final Vertex v2 = VertexFactory.makeSimpleVertex();
+		final Vertex v3 = VertexFactory.makeSimpleVertex();
+
+		v.addNeighbour(v2);
+		v.addNeighbour(v3);
+
+		v3.addNeighbour(v2);
+
+		OurModel simpleModel = OurModel.makeOurModelFrom(new TreeSet<Vertex>(
+				Arrays.<Vertex> asList(v, v2, v3)));
 
 		DfsEventsListenerTreeBuilder dfsEventListener = new DfsEventsListenerTreeBuilder();
 
@@ -182,26 +167,35 @@ public class DotExportableUnitTest {
 
 		dfsExplorer.acceptDfsEventsListener(dfsEventListener);
 
-		OurModel papadimitriouModel = OurModel.makePapadimitriouModel();
-		papadimitriouModel.runDepthFirstSearch(dfsExplorer);
+		simpleModel.runDepthFirstSearch(dfsExplorer);
 
-		Set<Vertex> vertices = new LinkedHashSet<Vertex>();
-		dfsEventListener.fillCollectedVertices(vertices);
+		Set<Vertex> exploredVertices = new LinkedHashSet<Vertex>();
+		dfsEventListener.fillCollectedVertices(exploredVertices);
 
-		String compartment_id = OurModel.getDefaultCompartmentId();
+		for (Vertex exploredVertex : exploredVertices) {
 
-		// papadimitriouModel.findVertexByExampleAndApplyLogicOnIt(
-		// SimpleVertex.makeVertex("A", compartment_id),
-		// new VertexLogicApplier() {
-		//
-		// @Override
-		// public void apply(Vertex vertex) {
-		// Writer writer = new StringWriter();
-		//
-		// vertex.useFormatter().formatVertexLabelOutsideBoxInto(
-		// writer, vertex, useDecorationApplier);
-		// }
-		// });
+			DfsWrapperVertex dfsWrapper = (DfsWrapperVertex) exploredVertex;
+
+			Writer actualWriterForVertex = new StringWriter();
+			dfsWrapper.collectVertexLabelOutsideBoxInto(actualWriterForVertex);
+
+			expectedVertexLabelOutsideBoxPart.add(actualWriterForVertex
+					.toString());
+
+		}
+
+		Assert.assertEquals(3, expectedVertexLabelOutsideBoxPart.size());
+
+		DotExportable exportable = OurModel.makeOurModelFrom(exploredVertices);
+		DotExporter exporter = new SimpleExporter();
+		exportable.acceptExporter(exporter);
+
+		// Assert.assertTrue(exporter
+		// .isVertexLabelOutsideBoxPartEquals(expectedVertexLabelOutsideBoxPart));
+
+		DotFileUtilHandler.MakeHandler("testVerticesLabelOutsideBox")
+				.writeDotRepresentationInTestFolder(exporter)
+				.produceSvgOutput();
 
 	}
 

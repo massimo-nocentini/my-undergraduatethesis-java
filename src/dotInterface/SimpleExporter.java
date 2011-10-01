@@ -10,14 +10,16 @@ import model.Vertex;
 
 public class SimpleExporter implements DotExporter {
 
-	private Set<String> verticesDefinitionDotRepresentation;
-	private Set<String> generalSettingsDotRepresentation;
-	private Set<String> edgeDefinitionDotRepresentation;
+	private final Set<String> verticesDefinitionDotRepresentation;
+	private final Set<String> verticesLabelsDefinitionDotRepresentation;
+	private final Set<String> generalSettingsDotRepresentation;
+	private final Set<String> edgeDefinitionDotRepresentation;
 
 	public SimpleExporter() {
 		verticesDefinitionDotRepresentation = new HashSet<String>();
 		generalSettingsDotRepresentation = new HashSet<String>();
 		edgeDefinitionDotRepresentation = new HashSet<String>();
+		verticesLabelsDefinitionDotRepresentation = new HashSet<String>();
 
 		initGeneralSettings();
 	}
@@ -84,11 +86,13 @@ public class SimpleExporter implements DotExporter {
 
 		// for clarity I cast the object itself to be focus on the task to
 		// collect part informations.
-		DotDocumentPartHandler dotDocumentPartHandler = (DotDocumentPartHandler) this;
+		DotDocumentPartHandler dotDocumentPartHandler = this;
 
 		dotDocumentPartHandler.collectGeneralSettingsPart(outputPlugObject);
 		dotDocumentPartHandler.collectEdgeDefinitionPart(outputPlugObject);
 		dotDocumentPartHandler.collectVertexDefinitionPart(outputPlugObject);
+		dotDocumentPartHandler
+				.collectVertexLabelOutsideBoxPart(outputPlugObject);
 
 		return this;
 	}
@@ -106,7 +110,7 @@ public class SimpleExporter implements DotExporter {
 		generalSettingsDotRepresentation.add("ratio=1");
 		generalSettingsDotRepresentation.add("center = true");
 		generalSettingsDotRepresentation
-				.add("edge [arrowsize=.5, weight=.1, color=\"gray\"]");
+				.add("edge [arrowsize=.5, weight=.1, color=\"gray\", fontsize=8]");
 		generalSettingsDotRepresentation
 				.add("node [label=\"\",shape=circle,height=0.12,width=0.12,fontsize=1]");
 		// .add("node [shape=circle]");
@@ -127,16 +131,18 @@ public class SimpleExporter implements DotExporter {
 	}
 
 	@Override
-	public boolean isVertexLabelOutsideBoxPartEquals(Set<String> Part) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isVertexLabelOutsideBoxPartEquals(Set<String> part) {
+		return verticesLabelsDefinitionDotRepresentation.equals(part);
 	}
 
 	@Override
 	public DotDocumentPartHandler collectVertexLabelOutsideBoxPart(
 			Writer outputPlugObject) {
-		// TODO Auto-generated method stub
-		return null;
+
+		collectSetOfElementsInto(outputPlugObject,
+				verticesLabelsDefinitionDotRepresentation);
+
+		return this;
 	}
 
 	@Override
@@ -147,6 +153,21 @@ public class SimpleExporter implements DotExporter {
 			source.collectEdgeDefinitionInto(writer, neighbour);
 			writer.close();
 			edgeDefinitionDotRepresentation.add(writer.toString());
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return this;
+	}
+
+	@Override
+	public DotExporter buildVertexLabelOutsideBoxDefinition(Vertex vertex) {
+		try {
+			Writer writer = new StringWriter();
+			vertex.collectVertexLabelOutsideBoxInto(writer);
+			writer.close();
+			verticesLabelsDefinitionDotRepresentation.add(writer.toString());
 
 		} catch (IOException e) {
 			e.printStackTrace();

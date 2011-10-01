@@ -11,4 +11,6 @@ public interface DotExporter extends DotDocumentPartHandler {
 	DotExporter collectCompleteContent(Writer outputPlugObject);
 
 	DotExporter buildEdgeDefinition(Vertex source, Vertex neighbour);
+
+	DotExporter buildVertexLabelOutsideBoxDefinition(Vertex vertex);
 }

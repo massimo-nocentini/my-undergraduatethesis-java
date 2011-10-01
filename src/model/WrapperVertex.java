@@ -12,6 +12,11 @@ public abstract class WrapperVertex implements Vertex {
 
 	private final Vertex wrappedVertex;
 
+	@Override
+	public void collectVertexLabelOutsideBoxInto(Writer writer) {
+		wrappedVertex.collectVertexLabelOutsideBoxInto(writer);
+	}
+
 	protected WrapperVertex(Vertex wrappingVertex) {
 		wrappedVertex = VertexFactory.makeSimpleVertex(wrappingVertex);
 	}
