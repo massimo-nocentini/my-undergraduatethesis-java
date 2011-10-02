@@ -71,6 +71,14 @@ public class DfsExplorerUnitTest {
 					Vertex vertex) {
 
 			}
+
+			@Override
+			public void fillCollectedVertices(Set<Vertex> vertices) {
+			}
+
+			@Override
+			public void alreadyKnownVertex(Vertex vertex) {
+			}
 		};
 
 		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.make();
@@ -134,6 +142,14 @@ public class DfsExplorerUnitTest {
 			public void newVertexExplored(Vertex explorationCauseVertex,
 					Vertex vertex) {
 			}
+
+			@Override
+			public void fillCollectedVertices(Set<Vertex> vertices) {
+			}
+
+			@Override
+			public void alreadyKnownVertex(Vertex vertex) {
+			}
 		};
 
 		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.make();
@@ -192,6 +208,14 @@ public class DfsExplorerUnitTest {
 			public void newVertexExplored(Vertex explorationCauseVertex,
 					Vertex vertex) {
 			}
+
+			@Override
+			public void fillCollectedVertices(Set<Vertex> vertices) {
+			}
+
+			@Override
+			public void alreadyKnownVertex(Vertex vertex) {
+			}
 		};
 
 		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.make();
@@ -239,6 +263,14 @@ public class DfsExplorerUnitTest {
 			public void newVertexExplored(Vertex explorationCauseVertex,
 					Vertex vertex) {
 			}
+
+			@Override
+			public void fillCollectedVertices(Set<Vertex> vertices) {
+			}
+
+			@Override
+			public void alreadyKnownVertex(Vertex vertex) {
+			}
 		};
 
 		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.make();
@@ -283,6 +315,14 @@ public class DfsExplorerUnitTest {
 			public void newVertexExplored(Vertex explorationCauseVertex,
 					Vertex vertex) {
 
+			}
+
+			@Override
+			public void fillCollectedVertices(Set<Vertex> vertices) {
+			}
+
+			@Override
+			public void alreadyKnownVertex(Vertex vertex) {
 			}
 		};
 
@@ -349,6 +389,14 @@ public class DfsExplorerUnitTest {
 			@Override
 			public void newVertexExplored(Vertex explorationCauseVertex,
 					Vertex vertex) {
+			}
+
+			@Override
+			public void fillCollectedVertices(Set<Vertex> vertices) {
+			}
+
+			@Override
+			public void alreadyKnownVertex(Vertex vertex) {
 			}
 		};
 

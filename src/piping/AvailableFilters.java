@@ -1,6 +1,6 @@
 package piping;
 
 public enum AvailableFilters {
-	Printer, DFS, ByPass
+	Printer, DFS, ByPass, Tarjan
 
 }

@@ -6,15 +6,15 @@ import java.util.TreeSet;
 import model.OurModel;
 import model.Vertex;
 import tarjan.DfsEventsListener;
-import tarjan.DfsEventsListenerTreeBuilder;
 import tarjan.DfsExplorer;
 import tarjan.DfsExplorerDefaultImplementor;
+import tarjan.TarjanEventsListenerTreeBuilder;
 
-public class DfsPipeFilter extends PipeFilter {
+public class TarjanPipeFilter extends PipeFilter {
 
 	@Override
 	public boolean isYourTagEquals(AvailableFilters other) {
-		return AvailableFilters.DFS.equals(other);
+		return AvailableFilters.Tarjan.equals(other);
 	}
 
 	@Override
@@ -22,17 +22,18 @@ public class DfsPipeFilter extends PipeFilter {
 			OurModel inputModel,
 			PipeFilterComputationListener computationListener) {
 
-		DfsEventsListener dfsEventListener = new DfsEventsListenerTreeBuilder();
+		DfsEventsListener tarjanEventListener = new TarjanEventsListenerTreeBuilder();
 
 		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.make();
 
-		dfsExplorer.acceptDfsEventsListener(dfsEventListener);
+		dfsExplorer.acceptDfsEventsListener(tarjanEventListener);
 
 		inputModel.runDepthFirstSearch(dfsExplorer);
 
 		Set<Vertex> vertices = new TreeSet<Vertex>();
-		dfsEventListener.fillCollectedVertices(vertices);
+		tarjanEventListener.fillCollectedVertices(vertices);
 
 		return OurModel.makeOurModelFrom(vertices);
 	}
+
 }

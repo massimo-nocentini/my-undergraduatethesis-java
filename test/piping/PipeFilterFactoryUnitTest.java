@@ -45,4 +45,17 @@ public class PipeFilterFactoryUnitTest {
 				.isYourTagEquals(AvailableFilters.ByPass));
 	}
 
+	/**
+	 * This test assures that the factory PipeFilterFactory builds a Tarjan
+	 * filter correctly
+	 */
+	@Test
+	public void creationOfTarjanPipeFilter() {
+		PipeFilter byPassPipeFilter = PipeFilterFactory.MakeTarjanPipeFilter();
+
+		Assert.assertNotNull(byPassPipeFilter);
+		Assert.assertTrue(byPassPipeFilter
+				.isYourTagEquals(AvailableFilters.Tarjan));
+	}
+
 }

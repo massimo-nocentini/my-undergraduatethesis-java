@@ -41,8 +41,6 @@ public class DfsEventsListenerTreeBuilder implements DfsEventsListener {
 
 	@Override
 	public void searchCompleted(Map<Vertex, VertexDfsMetadata> map) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -62,11 +60,16 @@ public class DfsEventsListenerTreeBuilder implements DfsEventsListener {
 				verticesMap.get(vertex));
 	}
 
+	@Override
 	public void fillCollectedVertices(Set<Vertex> vertices) {
 
 		for (Entry<Vertex, DfsWrapperVertex> entry : verticesMap.entrySet()) {
 
 			vertices.add(entry.getValue());
 		}
+	}
+
+	@Override
+	public void alreadyKnownVertex(Vertex vertex) {
 	}
 }

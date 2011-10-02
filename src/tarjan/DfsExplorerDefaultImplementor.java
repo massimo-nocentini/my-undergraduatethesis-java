@@ -63,4 +63,10 @@ public class DfsExplorerDefaultImplementor implements DfsExplorer {
 
 	}
 
+	@Override
+	public void alreadyKnownVertex(Vertex vertex) {
+		dfsEventsListener.alreadyKnownVertex(vertex);
+
+	}
+
 }

@@ -2,6 +2,7 @@ package tarjan;
 
 import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 
 import junit.framework.Assert;
 import model.DfsWrapperVertex;
@@ -56,6 +57,14 @@ public class DfsEventsListenerTreeBuilderUnitTest {
 			@Override
 			public void newVertexExplored(Vertex explorationCauseVertex,
 					Vertex vertex) {
+			}
+
+			@Override
+			public void fillCollectedVertices(Set<Vertex> vertices) {
+			}
+
+			@Override
+			public void alreadyKnownVertex(Vertex vertex) {
 			}
 		};
 

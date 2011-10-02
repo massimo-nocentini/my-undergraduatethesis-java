@@ -2,6 +2,7 @@ package model;
 
 import org.sbml.jsbml.Species;
 
+// TODO: check if exists some unit tests for the dfs and Tarjan factory methods.
 public class VertexFactory {
 
 	public static SimpleVertex makeSimpleVertex() {
@@ -35,4 +36,7 @@ public class VertexFactory {
 		return new DfsWrapperVertex(vertex);
 	}
 
+	public static TarjanWrapperVertex makeTarjanWrapperVertex(Vertex vertex) {
+		return new TarjanWrapperVertex(vertex);
+	}
 }

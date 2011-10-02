@@ -59,6 +59,14 @@ public class VertexDfsMetadataUnitTest {
 			public void newVertexExplored(Vertex explorationCauseVertex,
 					Vertex vertex) {
 			}
+
+			@Override
+			public void fillCollectedVertices(Set<Vertex> vertices) {
+			}
+
+			@Override
+			public void alreadyKnownVertex(Vertex vertex) {
+			}
 		};
 
 		DfsExplorer vertexExplorer = new DfsExplorer() {
@@ -87,6 +95,10 @@ public class VertexDfsMetadataUnitTest {
 			@Override
 			public void acceptDfsEventsListener(DfsEventsListener listener) {
 
+			}
+
+			@Override
+			public void alreadyKnownVertex(Vertex vertex) {
 			}
 		};
 		vertexExplorer.acceptDfsEventsListener(eventListener);
@@ -152,6 +164,14 @@ public class VertexDfsMetadataUnitTest {
 					actualExplorationMap.put(explorationCauseVertex, actualSet);
 				}
 				actualExplorationMap.get(explorationCauseVertex).add(vertex);
+			}
+
+			@Override
+			public void fillCollectedVertices(Set<Vertex> vertices) {
+			}
+
+			@Override
+			public void alreadyKnownVertex(Vertex vertex) {
 			}
 		};
 

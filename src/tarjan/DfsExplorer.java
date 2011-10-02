@@ -15,4 +15,6 @@ public interface DfsExplorer {
 	void searchCompleted(Map<Vertex, VertexDfsMetadata> map);
 
 	void newVertexExplored(Vertex explorationCauseVertex, Vertex vertex);
+
+	void alreadyKnownVertex(Vertex vertex);
 }

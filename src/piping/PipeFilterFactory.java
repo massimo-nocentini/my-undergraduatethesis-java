@@ -14,4 +14,8 @@ public class PipeFilterFactory {
 		return new ByPassPipeFilter();
 	}
 
+	public static PipeFilter MakeTarjanPipeFilter() {
+		return new TarjanPipeFilter();
+	}
+
 }

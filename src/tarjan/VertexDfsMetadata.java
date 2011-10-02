@@ -21,12 +21,15 @@ public class VertexDfsMetadata {
 		if (isExplored() == false) {
 
 			toggle();
+
 			if (explorationCauseVertex != null) {
 				vertexExplorer
 						.newVertexExplored(explorationCauseVertex, vertex);
 			}
 
 			vertexExplorer.exploreVertex(vertex);
+		} else {
+			vertexExplorer.alreadyKnownVertex(vertex);
 		}
 
 		return this;
