@@ -195,6 +195,37 @@ public class OnePipingLevelUnitTest {
 	}
 
 	@Test
+	public void OnePipingLevelUnitTest_DFS_CrescenziModel() {
+		String pipelineName = "OnePipingLevelUnitTest_DFS_CrescenziModel";
+
+		OurModel crescenziModel = OurModel.makeCrescenziModel();
+
+		PipeFilter dfsPipeFilter = PipeFilterFactory.MakeDfsPipeFilter();
+
+		PipeFilter secondPrinterPipeFilter = PipeFilterFactory
+				.MakePrinterPipeFilter();
+
+		secondPrinterPipeFilter.pipeAfter(dfsPipeFilter);
+
+		secondPrinterPipeFilter.apply(pipelineName, crescenziModel);
+
+		// Assert.assertSame(firstPrinterPipeFilter, dfsPipeFilter);
+		// Assert.assertTrue(dfsPipeFilter
+		// .isYourWrappedPipeFilterEquals(printerPipeFilter));
+		//
+		// Assert.assertFalse(printerPipeFilter
+		// .isYourWrappedPipeFilterEquals(dfsPipeFilter));
+		// Assert.assertFalse(printerPipeFilter.isYourWrappedPipeFilterNotNull());
+		//
+		// Assert.assertTrue(dfsPipeFilter.isYourWrappedPipeFilterNotNull());
+		// Assert.assertFalse(printerPipeFilter.isYourWrappedPipeFilterNotNull());
+		//
+		// Assert.assertTrue(dfsPipeFilter.isYourLevelOfWrapping(1));
+		// Assert.assertTrue(printerPipeFilter.isYourLevelOfWrapping(0));
+
+	}
+
+	@Test
 	public void checkManufacturedModelInOneLevelPipe() {
 
 		PipeFilter printerPipeFilter = PipeFilterFactory

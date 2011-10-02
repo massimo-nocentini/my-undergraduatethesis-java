@@ -1,0 +1,112 @@
+
+digraph C {
+  bgcolor=white
+  //rankdir=LR
+  //ordering=out
+
+  node [width=0.25, shape=circle, style=filled]//, label=""]
+	
+	a -> b;
+	b -> c;
+	b -> a;
+	c -> b;
+
+	// end of the first scc
+
+	g -> d;
+	d -> e;
+	e -> g;
+	d -> f;
+	f -> g;
+	f -> e;
+
+	// end of the second scc
+
+	h -> i;
+	h -> m;
+	m -> l;
+	i -> l;
+	l -> h;
+
+	// end of the third scc
+
+	// end of the fourth scc
+
+	o -> p;
+	o -> q;
+	p -> r;
+	r -> o;
+	q -> p;
+
+	// end of the fifth scc
+
+	s -> t;
+	t -> s;
+
+	// end of the sixth scc
+
+	a -> d;
+	c -> g;
+
+	h -> n;
+	l -> n;
+
+	r -> n;
+	
+	r -> s;
+
+	n -> f;
+
+	// end of cross scc edges
+
+ subgraph cluster0 {
+    //node [style=filled, color=white];
+    //style=filled;
+    color=transparent;
+//    rank=same;
+	a; b; c;
+  }
+
+ subgraph cluster1 {
+    //node [style=filled, color=white];
+    //style=filled;
+    color=transparent;
+//    rank=same;
+	g; d; e; f;
+  }
+
+ subgraph cluster2 {
+    //node [style=filled, color=white];
+    //style=filled;
+    color=transparent;
+//    rank=same;
+	h; i; l; m; 
+  }
+
+subgraph cluster3 {
+    //node [style=filled, color=white];
+    //style=filled;
+    color=transparent;
+//    rank=same;
+	n;
+  }
+
+subgraph cluster4 {
+    //node [style=filled, color=white];
+    //style=filled;
+    color=transparent;
+//    rank=same;
+	o; p; q; r;
+  }
+
+subgraph cluster5 {
+    //node [style=filled, color=white];
+    //style=filled;
+    color=transparent;
+//    rank=same;
+	s; t;
+  }
+
+
+	  
+}

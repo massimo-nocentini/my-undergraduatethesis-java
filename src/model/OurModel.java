@@ -24,7 +24,7 @@ import dotInterface.SimpleExporter;
 
 public class OurModel implements DotExportable {
 
-	private Set<Vertex> vertices;
+	private final Set<Vertex> vertices;
 
 	private OurModel(Set<Vertex> vertices) {
 
@@ -252,6 +252,93 @@ public class OurModel implements DotExportable {
 		// must replay during the visit of the graph
 		vertices.addAll(Arrays.<Vertex> asList(vA, vB, vE, vI, vJ, vC, vD, vH,
 				vG, vK, vL, vF));
+
+		return OurModel.makeOurModelFrom(vertices);
+
+	}
+
+	public static OurModel makeCrescenziModel() {
+		return makeCrescenziModel(new LinkedHashSet<Vertex>());
+	}
+
+	/**
+	 * Network model described at page 274 of Crescenzi book.
+	 * 
+	 * @param vertices
+	 * @return
+	 */
+	public static OurModel makeCrescenziModel(LinkedHashSet<Vertex> vertices) {
+
+		String compartment_id = getDefaultCompartmentId();
+
+		final Vertex vA = VertexFactory.makeSimpleVertex("A", compartment_id);
+		final Vertex vB = VertexFactory.makeSimpleVertex("B", compartment_id);
+		final Vertex vC = VertexFactory.makeSimpleVertex("C", compartment_id);
+		final Vertex vD = VertexFactory.makeSimpleVertex("D", compartment_id);
+		final Vertex vE = VertexFactory.makeSimpleVertex("E", compartment_id);
+		final Vertex vF = VertexFactory.makeSimpleVertex("F", compartment_id);
+		final Vertex vG = VertexFactory.makeSimpleVertex("G", compartment_id);
+		final Vertex vH = VertexFactory.makeSimpleVertex("H", compartment_id);
+		final Vertex vI = VertexFactory.makeSimpleVertex("I", compartment_id);
+		final Vertex vL = VertexFactory.makeSimpleVertex("L", compartment_id);
+		final Vertex vM = VertexFactory.makeSimpleVertex("M", compartment_id);
+		final Vertex vN = VertexFactory.makeSimpleVertex("N", compartment_id);
+		final Vertex vO = VertexFactory.makeSimpleVertex("O", compartment_id);
+		final Vertex vP = VertexFactory.makeSimpleVertex("P", compartment_id);
+		final Vertex vQ = VertexFactory.makeSimpleVertex("Q", compartment_id);
+		final Vertex vR = VertexFactory.makeSimpleVertex("R", compartment_id);
+		final Vertex vS = VertexFactory.makeSimpleVertex("S", compartment_id);
+		final Vertex vT = VertexFactory.makeSimpleVertex("T", compartment_id);
+
+		vA.addNeighbour(vB);
+		vA.addNeighbour(vD);
+
+		vB.addNeighbour(vA);
+		vB.addNeighbour(vC);
+
+		vC.addNeighbour(vB);
+		vC.addNeighbour(vG);
+
+		vD.addNeighbour(vF);
+		vD.addNeighbour(vE);
+
+		vE.addNeighbour(vG);
+
+		vF.addNeighbour(vE);
+		vF.addNeighbour(vG);
+
+		vG.addNeighbour(vD);
+
+		vH.addNeighbour(vI);
+		vH.addNeighbour(vM);
+		vH.addNeighbour(vN);
+
+		vI.addNeighbour(vL);
+
+		vL.addNeighbour(vH);
+		vL.addNeighbour(vN);
+
+		vM.addNeighbour(vL);
+
+		vN.addNeighbour(vF);
+
+		vO.addNeighbour(vP);
+		vO.addNeighbour(vQ);
+
+		vP.addNeighbour(vR);
+
+		vQ.addNeighbour(vP);
+
+		vR.addNeighbour(vO);
+		vR.addNeighbour(vN);
+		vR.addNeighbour(vS);
+
+		vS.addNeighbour(vT);
+
+		vT.addNeighbour(vS);
+
+		vertices.addAll(Arrays.<Vertex> asList(vA, vB, vC, vD, vE, vF, vG, vH,
+				vI, vL, vM, vN, vO, vP, vQ, vR, vS, vT));
 
 		return OurModel.makeOurModelFrom(vertices);
 

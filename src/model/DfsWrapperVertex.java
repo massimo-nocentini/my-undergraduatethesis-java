@@ -30,7 +30,7 @@ public class DfsWrapperVertex extends WrapperVertex {
 	}
 
 	DfsWrapperVertex(Vertex wrappingVertex) {
-		super(wrappingVertex);
+		super(VertexFactory.makeSimpleVertex(wrappingVertex));
 	}
 
 	public String yourDfsIntervalToString() {

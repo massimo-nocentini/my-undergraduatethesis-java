@@ -77,4 +77,38 @@ public class PrinterPipeFilterUnitTest {
 
 		Assert.assertTrue("The file created is empty", workingFile.length() > 0);
 	}
+
+	@Test
+	public void applicationOfPrinterPipeFilterOnCrescenziModel() {
+		String pipeName = "applicationOfPrinterPipeFilterOnCrescenziModel";
+
+		PipeFilter printerPipeFilter = PipeFilterFactory
+				.MakePrinterPipeFilter();
+
+		File workingFile = DotFileUtilHandler
+				.makeDotOutputFile(printerPipeFilter
+						.formatPhaseIdentifier(pipeName));
+
+		if (workingFile.exists()) {
+			try {
+				workingFile.delete();
+			} catch (Exception e) {
+				Assert.fail("Impossible to prepare the context for run this test.");
+			}
+		}
+
+		final OurModel crescenziModel = OurModel.makeCrescenziModel();
+
+		OurModel outputModel = printerPipeFilter
+				.apply(pipeName, crescenziModel);
+
+		Assert.assertSame(crescenziModel, outputModel);
+
+		Assert.assertTrue(
+				"The filter application seem to be completed successfully "
+						+ "but the output file wasn't created",
+				workingFile.exists());
+
+		Assert.assertTrue("The file created is empty", workingFile.length() > 0);
+	}
 }

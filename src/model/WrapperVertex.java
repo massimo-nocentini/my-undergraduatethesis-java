@@ -18,12 +18,13 @@ public abstract class WrapperVertex implements Vertex {
 	}
 
 	protected WrapperVertex(Vertex wrappingVertex) {
-		wrappedVertex = VertexFactory.makeSimpleVertex(wrappingVertex);
+		wrappedVertex = wrappingVertex;
 	}
 
-	Vertex getWrappedVertex() {
-		return wrappedVertex;
-	}
+	// TODO: remove this method
+	// Vertex getWrappedVertex() {
+	// return wrappedVertex;
+	// }
 
 	@Override
 	public Vertex addNeighbour(Vertex neighbour) {
