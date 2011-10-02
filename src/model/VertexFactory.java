@@ -39,4 +39,8 @@ public class VertexFactory {
 	public static TarjanWrapperVertex makeTarjanWrapperVertex(Vertex vertex) {
 		return new TarjanWrapperVertex(vertex);
 	}
+
+	public static ConnectedComponentWrapperVertex makeConnectedComponentWrapperVertex() {
+		return new ConnectedComponentWrapperVertex();
+	}
 }

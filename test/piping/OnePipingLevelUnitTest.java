@@ -81,6 +81,42 @@ public class OnePipingLevelUnitTest {
 	}
 
 	@Test
+	public void OnePipingLevelUnitTest_Printer_Tarjan_PrinterPipe_Crescenzi() {
+		String pipelineName = "OnePipingLevelUnitTest_Printer_DFS_PrinterPipe_Crescenzi";
+
+		PipeFilter printerPipeFilter = PipeFilterFactory
+				.MakePrinterPipeFilter();
+
+		PipeFilter tarjanPipeFilter = PipeFilterFactory.MakeTarjanPipeFilter();
+
+		PipeFilter secondPrinterPipeFilter = PipeFilterFactory
+				.MakePrinterPipeFilter();
+
+		secondPrinterPipeFilter.pipeAfter(tarjanPipeFilter
+				.pipeAfter(printerPipeFilter));
+
+		secondPrinterPipeFilter.apply(pipelineName,
+				OurModel.makeCrescenziModel());
+
+		Assert.assertTrue(secondPrinterPipeFilter.isYourLevelOfWrapping(2));
+
+		// Assert.assertSame(firstPrinterPipeFilter, dfsPipeFilter);
+		// Assert.assertTrue(dfsPipeFilter
+		// .isYourWrappedPipeFilterEquals(printerPipeFilter));
+		//
+		// Assert.assertFalse(printerPipeFilter
+		// .isYourWrappedPipeFilterEquals(dfsPipeFilter));
+		// Assert.assertFalse(printerPipeFilter.isYourWrappedPipeFilterNotNull());
+		//
+		// Assert.assertTrue(dfsPipeFilter.isYourWrappedPipeFilterNotNull());
+		// Assert.assertFalse(printerPipeFilter.isYourWrappedPipeFilterNotNull());
+		//
+		// Assert.assertTrue(dfsPipeFilter.isYourLevelOfWrapping(1));
+		// Assert.assertTrue(printerPipeFilter.isYourLevelOfWrapping(0));
+
+	}
+
+	@Test
 	public void OnePipingLevelUnitTest_Printer_DFS_PrinterPipe_Papadimitriou_SingleRoot() {
 		String pipelineName = "OnePipingLevelUnitTest_Printer_DFS_PrinterPipe_Papadimitriou_SingleRoot";
 
@@ -159,6 +195,26 @@ public class OnePipingLevelUnitTest {
 		// Assert.assertTrue(dfsPipeFilter.isYourLevelOfWrapping(1));
 		// Assert.assertTrue(printerPipeFilter.isYourLevelOfWrapping(0));
 
+	}
+
+	@Test
+	public void OnePipingLevelUnitTest_Tarjan_RealBartonellaQuintanaToulouse() {
+		String pipelineName = "OnePipingLevelUnitTest_Tarjan_RealBartonellaQuintanaToulouse";
+
+		OurModel bartonellaModel = OurModel.makeOurModelFrom(DotFileUtilHandler
+				.getSbmlExampleModelsFolder().concat(
+						"BartonellaQuintanaToulouse.xml"));
+
+		PipeFilter tarjanPipeFilter = PipeFilterFactory.MakeTarjanPipeFilter();
+
+		PipeFilter secondPrinterPipeFilter = PipeFilterFactory
+				.MakePrinterPipeFilter();
+
+		secondPrinterPipeFilter.pipeAfter(tarjanPipeFilter);
+
+		secondPrinterPipeFilter.apply(pipelineName, bartonellaModel);
+
+		Assert.assertTrue(secondPrinterPipeFilter.isYourLevelOfWrapping(1));
 	}
 
 	@Test

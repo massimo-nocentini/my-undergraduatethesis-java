@@ -64,7 +64,7 @@ public class DfsWrapperVertexDotExportingUnitTest {
 				expectedStringForVertex.append(DotFileUtilHandler
 						.composeSquareBracketsWrapping(DotFileUtilHandler
 								.composeVertexLabelOutsideBox(dfsWrapper
-										.yourDfsIntervalToString())));
+										.provideOutsideLabel())));
 			} catch (IOException e) {
 				Assert.fail("Impossible to create the expected object.");
 			}

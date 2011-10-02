@@ -2,16 +2,20 @@ package tarjan;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Stack;
 
+import model.ConnectedComponentWrapperVertex;
 import model.TarjanWrapperVertex;
 import model.Vertex;
 import model.VertexFactory;
+import model.VertexLogicApplier;
 
 public class TarjanEventsListenerTreeBuilder implements DfsEventsListener {
 
 	private final Map<Vertex, TarjanWrapperVertex> verticesMap;
+	private final Map<Vertex, ConnectedComponentWrapperVertex> componentsMembershipMap;
 	private int clock;
 
 	private final Stack<Vertex> representatives;
@@ -22,6 +26,7 @@ public class TarjanEventsListenerTreeBuilder implements DfsEventsListener {
 		clock = 1;
 		representatives = new Stack<Vertex>();
 		partials = new Stack<Vertex>();
+		componentsMembershipMap = new HashMap<Vertex, ConnectedComponentWrapperVertex>();
 	}
 
 	@Override
@@ -34,7 +39,8 @@ public class TarjanEventsListenerTreeBuilder implements DfsEventsListener {
 			return;
 		}
 
-		Vertex connectedComponent = null;
+		ConnectedComponentWrapperVertex connectedComponent = VertexFactory
+				.makeConnectedComponentWrapperVertex();
 
 		while (partials.size() > 0) {
 
@@ -42,6 +48,9 @@ public class TarjanEventsListenerTreeBuilder implements DfsEventsListener {
 
 			retrieveWrapperOf(partialVertexOnTopOfTheStack)
 					.joinConnectedComponent(connectedComponent);
+
+			componentsMembershipMap.put(partialVertexOnTopOfTheStack,
+					connectedComponent);
 
 			if (u.equals(partialVertexOnTopOfTheStack) == true) {
 				break;
@@ -87,20 +96,39 @@ public class TarjanEventsListenerTreeBuilder implements DfsEventsListener {
 
 	@Override
 	public void fillCollectedVertices(Set<Vertex> vertices) {
-		// TODO Auto-generated method stub
+		fillCollectedVertices(vertices, this.verticesMap, componentsMembershipMap);
+	}
+
+	public void fillCollectedVertices(Set<Vertex> collectingVertices,
+			final Map<Vertex, TarjanWrapperVertex> map, Map<Vertex, ConnectedComponentWrapperVertex> componentsMembershipMap) {
+
+		for (Entry<Vertex, TarjanWrapperVertex> pair : map.entrySet()) {
+
+			final TarjanWrapperVertex tarjanWrapperVertex = pair.getValue();
+
+			tarjanWrapperVertex.doOnNeighbors(new VertexLogicApplier() {
+
+				@Override
+				public void apply(Vertex vertex) {
+					tarjanWrapperVertex.bridgeConnectedComponentOf(map
+							.get(vertex));
+				}
+			});
+
+			collectingVertices.add(componentsMembershipMap.get(pair.getKey()));
+		}
 
 	}
 
 	@Override
 	public void alreadyKnownVertex(Vertex vertex) {
+		TarjanWrapperVertex v = retrieveWrapperOf(vertex);
 
-		if (retrieveWrapperOf(vertex).haveYouParentComponent()) {
+		if (v.areYouMemberInSomeConnectedComponent()) {
 			return;
 		}
 
-		TarjanWrapperVertex tarjanWrapperVertex = retrieveWrapperOf(vertex);
-		while (tarjanWrapperVertex
-				.hadYouBeenDiscoveredFirstThan(retrieveWrapperOf(representativeOnTopOfTheStack()))) {
+		while (v.hadYouBeenDiscoveredFirstThan(retrieveWrapperOf(representativeOnTopOfTheStack()))) {
 
 			Vertex pop = representatives.pop();
 			// Assert.assertEquals(pop, actual);
