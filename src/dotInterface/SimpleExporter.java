@@ -3,7 +3,7 @@ package dotInterface;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import model.Vertex;
@@ -16,10 +16,18 @@ public class SimpleExporter implements DotExporter {
 	private final Set<String> edgeDefinitionDotRepresentation;
 
 	public SimpleExporter() {
-		verticesDefinitionDotRepresentation = new HashSet<String>();
-		generalSettingsDotRepresentation = new HashSet<String>();
-		edgeDefinitionDotRepresentation = new HashSet<String>();
-		verticesLabelsDefinitionDotRepresentation = new HashSet<String>();
+
+		// using a LinkedHashSet we can preserve the addition order of the
+		// element that is currently inserted into the container.
+		// TODO: for a complete ordering should be nice override the method
+		// compareTo in the DfsWrapperVertex in order to have a fixed and
+		// deterministic order (in this way the order works only because we use
+		// a TreeSet to store the neighbors relation on each vertex and
+		// the dfs motor use the standard iterator to explore these neighbors.
+		verticesDefinitionDotRepresentation = new LinkedHashSet<String>();
+		generalSettingsDotRepresentation = new LinkedHashSet<String>();
+		edgeDefinitionDotRepresentation = new LinkedHashSet<String>();
+		verticesLabelsDefinitionDotRepresentation = new LinkedHashSet<String>();
 
 		initGeneralSettings();
 	}
