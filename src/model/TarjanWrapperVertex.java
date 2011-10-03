@@ -41,10 +41,10 @@ public class TarjanWrapperVertex extends WrapperVertex {
 							+ "wrapper vertex at this point of the computation");
 		}
 
-		// usare equals va a confrontare i wrapped vertex, che per come vengono
-		// costruite le componenti connesse, si passano al costruttore della
-		// classe base due nuovi vertici usando la factory
-		if (connectedComponent == otherVertex.connectedComponent) {
+		// if the two vertices belong to the same connected component then
+		// we have to skip adding a self loop from the connected component to it
+		// self
+		if (connectedComponent.equals(otherVertex.connectedComponent)) {
 			return;
 		}
 

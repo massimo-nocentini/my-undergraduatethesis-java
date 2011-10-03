@@ -21,10 +21,9 @@ public abstract class WrapperVertex implements Vertex {
 		wrappedVertex = wrappingVertex;
 	}
 
-	// TODO: remove this method
-	// Vertex getWrappedVertex() {
-	// return wrappedVertex;
-	// }
+	Vertex getWrappedVertex() {
+		return wrappedVertex;
+	}
 
 	@Override
 	public Vertex addNeighbour(Vertex neighbour) {

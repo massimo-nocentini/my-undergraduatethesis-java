@@ -15,6 +15,36 @@ public class ConnectedComponentWrapperVertex extends
 		members = new LinkedHashSet<Vertex>();
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((members == null) ? 0 : members.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof ConnectedComponentWrapperVertex)) {
+			return false;
+		}
+		ConnectedComponentWrapperVertex other = (ConnectedComponentWrapperVertex) obj;
+		if (!super.equals(other.getWrappedVertex())) {
+			return false;
+		}
+		if (members == null) {
+			if (other.members != null) {
+				return false;
+			}
+		} else if (!members.equals(other.members)) {
+			return false;
+		}
+		return true;
+	}
+
 	public boolean isMember(Vertex vertex) {
 		return members.contains(vertex);
 	}

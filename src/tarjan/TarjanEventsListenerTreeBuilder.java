@@ -96,22 +96,20 @@ public class TarjanEventsListenerTreeBuilder implements DfsEventsListener {
 
 	@Override
 	public void fillCollectedVertices(Set<Vertex> vertices) {
-		fillCollectedVertices(vertices, this.verticesMap, componentsMembershipMap);
+		fillCollectedVertices(vertices, verticesMap, componentsMembershipMap);
 	}
 
 	public void fillCollectedVertices(Set<Vertex> collectingVertices,
-			final Map<Vertex, TarjanWrapperVertex> map, Map<Vertex, ConnectedComponentWrapperVertex> componentsMembershipMap) {
+			final Map<Vertex, TarjanWrapperVertex> map,
+			Map<Vertex, ConnectedComponentWrapperVertex> componentsMembershipMap) {
 
-		for (Entry<Vertex, TarjanWrapperVertex> pair : map.entrySet()) {
+		for (final Entry<Vertex, TarjanWrapperVertex> pair : map.entrySet()) {
 
-			final TarjanWrapperVertex tarjanWrapperVertex = pair.getValue();
-
-			tarjanWrapperVertex.doOnNeighbors(new VertexLogicApplier() {
+			pair.getKey().doOnNeighbors(new VertexLogicApplier() {
 
 				@Override
 				public void apply(Vertex vertex) {
-					tarjanWrapperVertex.bridgeConnectedComponentOf(map
-							.get(vertex));
+					pair.getValue().bridgeConnectedComponentOf(map.get(vertex));
 				}
 			});
 
