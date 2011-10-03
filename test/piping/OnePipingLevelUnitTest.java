@@ -218,6 +218,25 @@ public class OnePipingLevelUnitTest {
 	}
 
 	@Test
+	public void OnePipingLevelUnitTest_Tarjan_RealEscherichiaColiK12() {
+		String pipelineName = "OnePipingLevelUnitTest_Tarjan_RealEscherichiaColiK12";
+
+		OurModel escherichiaColiK12Model = OurModel.makeOurModelFrom(DotFileUtilHandler
+				.getSbmlExampleModelsFolder().concat("EscherichiaColiK12.xml"));
+
+		PipeFilter tarjanPipeFilter = PipeFilterFactory.MakeTarjanPipeFilter();
+
+		PipeFilter secondPrinterPipeFilter = PipeFilterFactory
+				.MakePrinterPipeFilter();
+
+		secondPrinterPipeFilter.pipeAfter(tarjanPipeFilter);
+
+		secondPrinterPipeFilter.apply(pipelineName, escherichiaColiK12Model);
+
+		Assert.assertTrue(secondPrinterPipeFilter.isYourLevelOfWrapping(1));
+	}
+
+	@Test
 	public void OnePipingLevelUnitTest_DFS_RealBartonellaQuintanaToulouse() {
 		String pipelineName = "OnePipingLevelUnitTest_DFS_RealBartonellaQuintanaToulouse";
 
