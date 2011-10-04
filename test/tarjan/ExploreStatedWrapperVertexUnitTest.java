@@ -18,7 +18,7 @@ import org.junit.Test;
 
 import util.CallbackSignalRecorder;
 
-public class VertexDfsMetadataUnitTest {
+public class ExploreStatedWrapperVertexUnitTest {
 
 	@Test
 	public void creation() {
