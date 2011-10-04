@@ -13,7 +13,6 @@ import java.util.TreeSet;
 
 import model.ExploreStatedWrapperVertex.ExploreStateWrapperVertexMapper;
 import tarjan.DfsEventsListener;
-import tarjan.DfsExplorer;
 import JSBMLInterface.Connector;
 import dotInterface.DotExportable;
 import dotInterface.DotExporter;
@@ -66,22 +65,6 @@ public class OurModel implements DotExportable {
 		});
 	}
 
-	private OurModel runDepthFirstSearch(DfsExplorer dfsVertexExplorer) {
-
-		Map<Vertex, ExploreStatedWrapperVertex> map = makeDfsVertexMetadataMap();
-
-		dfsVertexExplorer.searchStarted(map);
-
-		for (Entry<Vertex, ExploreStatedWrapperVertex> entry : map.entrySet()) {
-
-			entry.getValue().ifNotExplored(dfsVertexExplorer);
-		}
-
-		dfsVertexExplorer.searchCompleted(map);
-
-		return this;
-	}
-
 	public OurModel runDepthFirstSearch(DfsEventsListener dfsEventsListener) {
 
 		final Map<Vertex, ExploreStatedWrapperVertex> map = makeDfsVertexMetadataMap();
@@ -105,26 +88,27 @@ public class OurModel implements DotExportable {
 		return this;
 	}
 
-	public OurModel runDepthFirstSearch(final DfsExplorer dfsVertexExplorer,
-			final Vertex startingVertex) {
-
-		final Map<Vertex, ExploreStatedWrapperVertex> map = makeDfsVertexMetadataMap();
-
-		dfsVertexExplorer.searchStarted(map);
-
-		findVertexByExampleAndApplyLogicOnIt(startingVertex,
-				new VertexLogicApplier() {
-
-					@Override
-					public void apply(Vertex vertex) {
-						map.get(vertex).ifNotExplored(dfsVertexExplorer);
-					}
-				});
-
-		dfsVertexExplorer.searchCompleted(map);
-
-		return this;
-	}
+	// public OurModel runDepthFirstSearch(final DfsExplorer dfsVertexExplorer,
+	// final Vertex startingVertex) {
+	//
+	// final Map<Vertex, ExploreStatedWrapperVertex> map =
+	// makeDfsVertexMetadataMap();
+	//
+	// dfsVertexExplorer.searchStarted(map);
+	//
+	// findVertexByExampleAndApplyLogicOnIt(startingVertex,
+	// new VertexLogicApplier() {
+	//
+	// @Override
+	// public void apply(Vertex vertex) {
+	// map.get(vertex).ifNotExplored(dfsVertexExplorer);
+	// }
+	// });
+	//
+	// dfsVertexExplorer.searchCompleted(map);
+	//
+	// return this;
+	// }
 
 	private Map<Vertex, ExploreStatedWrapperVertex> makeDfsVertexMetadataMap() {
 

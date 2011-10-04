@@ -9,6 +9,7 @@ import java.util.TreeSet;
 
 import junit.framework.Assert;
 import model.ExploreStatedWrapperVertex;
+import model.ExploreStatedWrapperVertex.ExploreStateWrapperVertexMapper;
 import model.OurModel;
 import model.Vertex;
 import model.VertexFactory;
@@ -71,42 +72,14 @@ public class VertexDfsMetadataUnitTest {
 			}
 		};
 
-		DfsExplorer vertexExplorer = new DfsExplorer() {
+		metadata.ifNotExplored(eventListener,
+				new ExploreStateWrapperVertexMapper() {
 
-			@Override
-			public void searchStarted(
-					Map<Vertex, ExploreStatedWrapperVertex> map) {
-
-			}
-
-			@Override
-			public void searchCompleted(
-					Map<Vertex, ExploreStatedWrapperVertex> map) {
-
-			}
-
-			@Override
-			public void newVertexExplored(Vertex explorationCauseVertex,
-					Vertex vertex) {
-
-			}
-
-			@Override
-			public void exploreVertex(Vertex v) {
-
-			}
-
-			@Override
-			public void acceptDfsEventsListener(DfsEventsListener listener) {
-
-			}
-
-			@Override
-			public void alreadyKnownVertex(Vertex vertex) {
-			}
-		};
-		vertexExplorer.acceptDfsEventsListener(eventListener);
-		metadata.ifNotExplored(vertexExplorer);
+					@Override
+					public ExploreStatedWrapperVertex map(Vertex vertex) {
+						return null;
+					}
+				});
 
 		Assert.assertTrue(metadata.isExplored());
 	}

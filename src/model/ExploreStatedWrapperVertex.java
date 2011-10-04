@@ -1,7 +1,6 @@
 package model;
 
 import tarjan.DfsEventsListener;
-import tarjan.DfsExplorer;
 
 public class ExploreStatedWrapperVertex extends WrapperVertex {
 
@@ -60,32 +59,6 @@ public class ExploreStatedWrapperVertex extends WrapperVertex {
 			dfsEventsListener.postVisit(vertex);
 		} else {
 			dfsEventsListener.alreadyKnownVertex(vertex);
-		}
-
-		return this;
-	}
-
-	public ExploreStatedWrapperVertex ifNotExplored(DfsExplorer vertexExplorer) {
-		return ifNotExplored(vertexExplorer, null);
-	}
-
-	public ExploreStatedWrapperVertex ifNotExplored(DfsExplorer vertexExplorer,
-			Vertex explorationCauseVertex) {
-
-		Vertex vertex = getWrappedVertex();
-
-		if (isExplored() == false) {
-
-			toggle();
-
-			if (explorationCauseVertex != null) {
-				vertexExplorer
-						.newVertexExplored(explorationCauseVertex, vertex);
-			}
-
-			vertexExplorer.exploreVertex(vertex);
-		} else {
-			vertexExplorer.alreadyKnownVertex(vertex);
 		}
 
 		return this;
