@@ -11,7 +11,8 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-
+import model.ExploreStatedWrapperVertex.ExploreStateWrapperVertexMapper;
+import tarjan.DfsEventsListener;
 import tarjan.DfsExplorer;
 import JSBMLInterface.Connector;
 import dotInterface.DotExportable;
@@ -65,7 +66,7 @@ public class OurModel implements DotExportable {
 		});
 	}
 
-	public OurModel runDepthFirstSearch(DfsExplorer dfsVertexExplorer) {
+	private OurModel runDepthFirstSearch(DfsExplorer dfsVertexExplorer) {
 
 		Map<Vertex, ExploreStatedWrapperVertex> map = makeDfsVertexMetadataMap();
 
@@ -77,6 +78,29 @@ public class OurModel implements DotExportable {
 		}
 
 		dfsVertexExplorer.searchCompleted(map);
+
+		return this;
+	}
+
+	public OurModel runDepthFirstSearch(DfsEventsListener dfsEventsListener) {
+
+		final Map<Vertex, ExploreStatedWrapperVertex> map = makeDfsVertexMetadataMap();
+
+		dfsEventsListener.searchStarted(map);
+
+		for (Entry<Vertex, ExploreStatedWrapperVertex> entry : map.entrySet()) {
+
+			entry.getValue().ifNotExplored(dfsEventsListener,
+					new ExploreStateWrapperVertexMapper() {
+
+						@Override
+						public ExploreStatedWrapperVertex map(Vertex vertex) {
+							return map.get(vertex);
+						}
+					});
+		}
+
+		dfsEventsListener.searchCompleted(map);
 
 		return this;
 	}

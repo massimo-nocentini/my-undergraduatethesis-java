@@ -11,10 +11,10 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import junit.framework.Assert;
+import model.ExploreStatedWrapperVertex;
 import model.ModelsRepository;
 import model.OurModel;
 import model.Vertex;
-import model.ExploreStatedWrapperVertex;
 import model.VertexFactory;
 
 import org.junit.Test;
@@ -57,7 +57,8 @@ public class DfsExplorerUnitTest {
 			}
 
 			@Override
-			public void searchCompleted(Map<Vertex, ExploreStatedWrapperVertex> map) {
+			public void searchCompleted(
+					Map<Vertex, ExploreStatedWrapperVertex> map) {
 				actualSearchEventNotifications
 						.add(completeSearchNotificationName);
 			}
@@ -83,11 +84,7 @@ public class DfsExplorerUnitTest {
 			}
 		};
 
-		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.make();
-
-		dfsExplorer.acceptDfsEventsListener(dfsEventListener);
-
-		emptyModel.runDepthFirstSearch(dfsExplorer);
+		emptyModel.runDepthFirstSearch(dfsEventListener);
 
 		Assert.assertEquals(2, actualSearchEventNotifications.size());
 
@@ -126,9 +123,11 @@ public class DfsExplorerUnitTest {
 			}
 
 			@Override
-			public void searchCompleted(Map<Vertex, ExploreStatedWrapperVertex> map) {
+			public void searchCompleted(
+					Map<Vertex, ExploreStatedWrapperVertex> map) {
 
-				for (Entry<Vertex, ExploreStatedWrapperVertex> entry : map.entrySet()) {
+				for (Entry<Vertex, ExploreStatedWrapperVertex> entry : map
+						.entrySet()) {
 					Assert.assertTrue(entry.getValue().isExplored());
 					callbackSignalRecorder.signal();
 				}
@@ -154,11 +153,7 @@ public class DfsExplorerUnitTest {
 			}
 		};
 
-		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.make();
-
-		dfsExplorer.acceptDfsEventsListener(dfsEventListener);
-
-		tarjanModel.runDepthFirstSearch(dfsExplorer);
+		tarjanModel.runDepthFirstSearch(dfsEventListener);
 
 		Assert.assertTrue(callbackSignalRecorder.isSignaled());
 		Assert.assertTrue(callbackSignalRecorder.isCountOfSignals(vertices
@@ -198,7 +193,8 @@ public class DfsExplorerUnitTest {
 			}
 
 			@Override
-			public void searchCompleted(Map<Vertex, ExploreStatedWrapperVertex> map) {
+			public void searchCompleted(
+					Map<Vertex, ExploreStatedWrapperVertex> map) {
 			}
 
 			@Override
@@ -220,13 +216,9 @@ public class DfsExplorerUnitTest {
 			}
 		};
 
-		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.make();
-
-		dfsExplorer.acceptDfsEventsListener(dfsEventListener);
-
 		@SuppressWarnings("unused")
 		OurModel returnedTarjanModel = tarjanModel
-				.runDepthFirstSearch(dfsExplorer);
+				.runDepthFirstSearch(dfsEventListener);
 
 		Assert.assertEquals(expectedListenedEvents, listenedEvents);
 
@@ -251,9 +243,11 @@ public class DfsExplorerUnitTest {
 			}
 
 			@Override
-			public void searchCompleted(Map<Vertex, ExploreStatedWrapperVertex> map) {
+			public void searchCompleted(
+					Map<Vertex, ExploreStatedWrapperVertex> map) {
 				Vertex erroneousVerte = VertexFactory.makeSimpleVertex();
-				map.put(erroneousVerte, new ExploreStatedWrapperVertex(erroneousVerte));
+				map.put(erroneousVerte, new ExploreStatedWrapperVertex(
+						erroneousVerte));
 			}
 
 			@Override
@@ -275,13 +269,9 @@ public class DfsExplorerUnitTest {
 			}
 		};
 
-		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.make();
-
-		dfsExplorer.acceptDfsEventsListener(dfsEventListener);
-
 		@SuppressWarnings("unused")
 		OurModel returnedtarjanModel = tarjanModel
-				.runDepthFirstSearch(dfsExplorer);
+				.runDepthFirstSearch(dfsEventListener);
 
 	}
 
@@ -304,13 +294,16 @@ public class DfsExplorerUnitTest {
 			}
 
 			@Override
-			public void searchCompleted(Map<Vertex, ExploreStatedWrapperVertex> map) {
+			public void searchCompleted(
+					Map<Vertex, ExploreStatedWrapperVertex> map) {
 			}
 
 			@Override
-			public void searchStarted(Map<Vertex, ExploreStatedWrapperVertex> map) {
+			public void searchStarted(
+					Map<Vertex, ExploreStatedWrapperVertex> map) {
 				Vertex erroneousVerte = VertexFactory.makeSimpleVertex();
-				map.put(erroneousVerte, new ExploreStatedWrapperVertex(erroneousVerte));
+				map.put(erroneousVerte, new ExploreStatedWrapperVertex(
+						erroneousVerte));
 			}
 
 			@Override
@@ -328,13 +321,9 @@ public class DfsExplorerUnitTest {
 			}
 		};
 
-		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.make();
-
-		dfsExplorer.acceptDfsEventsListener(dfsEventListener);
-
 		@SuppressWarnings("unused")
 		OurModel returnedtarjanModel = tarjanModel
-				.runDepthFirstSearch(dfsExplorer);
+				.runDepthFirstSearch(dfsEventListener);
 
 	}
 
@@ -379,7 +368,8 @@ public class DfsExplorerUnitTest {
 			}
 
 			@Override
-			public void searchCompleted(Map<Vertex, ExploreStatedWrapperVertex> map) {
+			public void searchCompleted(
+					Map<Vertex, ExploreStatedWrapperVertex> map) {
 			}
 
 			@Override
@@ -402,13 +392,9 @@ public class DfsExplorerUnitTest {
 			}
 		};
 
-		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.make();
-
-		dfsExplorer.acceptDfsEventsListener(dfsEventListener);
-
 		@SuppressWarnings("unused")
 		OurModel returnedtarjanModel = tarjanModel
-				.runDepthFirstSearch(dfsExplorer);
+				.runDepthFirstSearch(dfsEventListener);
 
 		Assert.assertEquals(3, expectedOrderedPrevisitInvocation.size());
 		Assert.assertEquals(3, expectedOrderedPostvisitInvocation.size());

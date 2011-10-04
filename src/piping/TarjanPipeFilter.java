@@ -6,8 +6,6 @@ import java.util.TreeSet;
 import model.OurModel;
 import model.Vertex;
 import tarjan.DfsEventsListener;
-import tarjan.DfsExplorer;
-import tarjan.DfsExplorerDefaultImplementor;
 import tarjan.TarjanEventsListenerTreeBuilder;
 
 public class TarjanPipeFilter extends PipeFilter {
@@ -24,11 +22,7 @@ public class TarjanPipeFilter extends PipeFilter {
 
 		DfsEventsListener tarjanEventListener = new TarjanEventsListenerTreeBuilder();
 
-		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.make();
-
-		dfsExplorer.acceptDfsEventsListener(tarjanEventListener);
-
-		inputModel.runDepthFirstSearch(dfsExplorer);
+		inputModel.runDepthFirstSearch(tarjanEventListener);
 
 		Set<Vertex> vertices = new TreeSet<Vertex>();
 		tarjanEventListener.fillCollectedVertices(vertices);

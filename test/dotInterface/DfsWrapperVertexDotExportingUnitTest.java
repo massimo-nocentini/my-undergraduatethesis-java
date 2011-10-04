@@ -17,8 +17,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import tarjan.DfsEventsListenerTreeBuilder;
-import tarjan.DfsExplorer;
-import tarjan.DfsExplorerDefaultImplementor;
 
 public class DfsWrapperVertexDotExportingUnitTest {
 
@@ -39,11 +37,7 @@ public class DfsWrapperVertexDotExportingUnitTest {
 
 		DfsEventsListenerTreeBuilder dfsEventListener = new DfsEventsListenerTreeBuilder();
 
-		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.make();
-
-		dfsExplorer.acceptDfsEventsListener(dfsEventListener);
-
-		simpleModel.runDepthFirstSearch(dfsExplorer);
+		simpleModel.runDepthFirstSearch(dfsEventListener);
 
 		Set<Vertex> exploredVertices = new LinkedHashSet<Vertex>();
 		dfsEventListener.fillCollectedVertices(exploredVertices);

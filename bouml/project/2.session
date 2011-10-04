@@ -1,0 +1,13 @@
+window_sizes 1600 823 375 1219 685 64
+diagrams
+  active  classdiagram_ref 128002 // mainInterfaces
+    1219 685 100 4 122 0
+end
+show_stereotypes
+selected class_ref 134786 // VertexDfsMetadata
+open
+  classview_ref 128002 // dotInterface
+  classview_ref 128514 // tarjan
+  classview_ref 128770 // dotInterfaceClassView
+end
+end

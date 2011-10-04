@@ -16,8 +16,6 @@ import org.junit.Test;
 
 import tarjan.DfsEventsListener;
 import tarjan.DfsEventsListenerNullImplementor;
-import tarjan.DfsExplorer;
-import tarjan.DfsExplorerDefaultImplementor;
 import util.CallbackSignalRecorder;
 
 public class OurModelUnitTest {
@@ -36,10 +34,10 @@ public class OurModelUnitTest {
 
 	@Test
 	public void addingNeighborsOrderIsPreservedByVertex() {
-		Vertex vertex =VertexFactory.makeSimpleVertex();
-		Vertex a1 =VertexFactory.makeSimpleVertex();
-		Vertex a2 =VertexFactory.makeSimpleVertex();
-		Vertex a3 =VertexFactory.makeSimpleVertex();
+		Vertex vertex = VertexFactory.makeSimpleVertex();
+		Vertex a1 = VertexFactory.makeSimpleVertex();
+		Vertex a2 = VertexFactory.makeSimpleVertex();
+		Vertex a3 = VertexFactory.makeSimpleVertex();
 
 		Set<Vertex> vertices = new TreeSet<Vertex>();
 		vertices.add(vertex);
@@ -83,12 +81,8 @@ public class OurModelUnitTest {
 
 		DfsEventsListener dfsEventListener = new DfsEventsListenerNullImplementor();
 
-		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.make();
-
-		dfsExplorer.acceptDfsEventsListener(dfsEventListener);
-
 		OurModel returnedtarjanModel = tarjanModel
-				.runDepthFirstSearch(dfsExplorer);
+				.runDepthFirstSearch(dfsEventListener);
 
 		Assert.assertNotNull(returnedtarjanModel);
 		Assert.assertSame(tarjanModel, returnedtarjanModel);
@@ -102,12 +96,8 @@ public class OurModelUnitTest {
 
 		DfsEventsListener dfsEventListener = new DfsEventsListenerNullImplementor();
 
-		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.make();
-
-		dfsExplorer.acceptDfsEventsListener(dfsEventListener);
-
 		OurModel returnedtarjanModel = tarjanModel
-				.runDepthFirstSearch(dfsExplorer);
+				.runDepthFirstSearch(dfsEventListener);
 
 		Assert.assertNotNull(returnedtarjanModel);
 		Assert.assertSame(tarjanModel, returnedtarjanModel);
@@ -121,11 +111,7 @@ public class OurModelUnitTest {
 
 		DfsEventsListener dfsEventListener = null;
 
-		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.make();
-
-		dfsExplorer.acceptDfsEventsListener(dfsEventListener);
-
-		tarjanModel.runDepthFirstSearch(dfsExplorer);
+		tarjanModel.runDepthFirstSearch(dfsEventListener);
 
 	}
 
@@ -133,9 +119,10 @@ public class OurModelUnitTest {
 	public void retrieveVertexAndApplyLogic() {
 		String compartment_id = "compartment_id";
 		String species_id = "species_id";
-		final Vertex v =VertexFactory.makeSimpleVertex(species_id, compartment_id);
-		Vertex v2 =VertexFactory.makeSimpleVertex();
-		Vertex v3 =VertexFactory.makeSimpleVertex();
+		final Vertex v = VertexFactory.makeSimpleVertex(species_id,
+				compartment_id);
+		Vertex v2 = VertexFactory.makeSimpleVertex();
+		Vertex v3 = VertexFactory.makeSimpleVertex();
 
 		v.addNeighbour(v2);
 
@@ -144,7 +131,7 @@ public class OurModelUnitTest {
 		vertices.add(v2);
 		vertices.add(v3);
 
-		final Vertex exampleVertex =VertexFactory.makeSimpleVertex(species_id,
+		final Vertex exampleVertex = VertexFactory.makeSimpleVertex(species_id,
 				compartment_id);
 
 		final CallbackSignalRecorder recorder = new CallbackSignalRecorder();
@@ -175,9 +162,10 @@ public class OurModelUnitTest {
 	public void retrieveVertexAndApplyLogic_VacouslySearch() {
 		String compartment_id = "compartment_id";
 		String species_id = "species_id";
-		final Vertex v =VertexFactory.makeSimpleVertex(species_id, compartment_id);
-		Vertex v2 =VertexFactory.makeSimpleVertex();
-		Vertex v3 =VertexFactory.makeSimpleVertex();
+		final Vertex v = VertexFactory.makeSimpleVertex(species_id,
+				compartment_id);
+		Vertex v2 = VertexFactory.makeSimpleVertex();
+		Vertex v3 = VertexFactory.makeSimpleVertex();
 
 		v.addNeighbour(v2);
 
@@ -186,7 +174,7 @@ public class OurModelUnitTest {
 		vertices.add(v2);
 		vertices.add(v3);
 
-		final Vertex exampleVertex =VertexFactory.makeSimpleVertex(
+		final Vertex exampleVertex = VertexFactory.makeSimpleVertex(
 				"some_different_species_id", compartment_id);
 
 		final CallbackSignalRecorder recorder = new CallbackSignalRecorder();

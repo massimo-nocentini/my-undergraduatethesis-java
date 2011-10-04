@@ -167,6 +167,7 @@ public static final ${class} ${name} = new ${class}(_${name});
   java_default_operation_definition "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
   ${body}}
 "
+  java_dir_filter "/home/massimo/developer/working-copies/git/my-undergraduatethesis-java/src/" case_sensitive
   php_default_src_content "<?php
 ${comment}
 ${require_once}

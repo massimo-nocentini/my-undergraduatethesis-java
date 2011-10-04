@@ -6,10 +6,10 @@ import java.util.Set;
 
 import junit.framework.Assert;
 import model.DfsWrapperVertex;
+import model.ExploreStatedWrapperVertex;
 import model.ModelsRepository;
 import model.OurModel;
 import model.Vertex;
-import model.ExploreStatedWrapperVertex;
 import model.VertexFactory;
 
 import org.junit.Test;
@@ -48,7 +48,8 @@ public class DfsEventsListenerTreeBuilderUnitTest {
 			}
 
 			@Override
-			public void searchCompleted(Map<Vertex, ExploreStatedWrapperVertex> map) {
+			public void searchCompleted(
+					Map<Vertex, ExploreStatedWrapperVertex> map) {
 			}
 
 			@Override
@@ -70,11 +71,7 @@ public class DfsEventsListenerTreeBuilderUnitTest {
 			}
 		};
 
-		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.make();
-
-		dfsExplorer.acceptDfsEventsListener(dfsEventListener);
-
-		papadimitriouModel.runDepthFirstSearch(dfsExplorer);
+		papadimitriouModel.runDepthFirstSearch(dfsEventListener);
 
 		Assert.assertEquals(expectedSearchEventNotifications,
 				actualSearchEventNotifications);
@@ -97,11 +94,7 @@ public class DfsEventsListenerTreeBuilderUnitTest {
 
 		DfsEventsListenerTreeBuilder dfsEventListener = new DfsEventsListenerTreeBuilder();
 
-		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.make();
-
-		dfsExplorer.acceptDfsEventsListener(dfsEventListener);
-
-		papadimitriouModel.runDepthFirstSearch(dfsExplorer);
+		papadimitriouModel.runDepthFirstSearch(dfsEventListener);
 
 		CallbackSignalRecorder signalRecorder = new CallbackSignalRecorder();
 

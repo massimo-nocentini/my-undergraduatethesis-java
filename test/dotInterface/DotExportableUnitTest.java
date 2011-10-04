@@ -20,8 +20,6 @@ import org.junit.Test;
 import org.sbml.jsbml.Species;
 
 import tarjan.DfsEventsListenerTreeBuilder;
-import tarjan.DfsExplorer;
-import tarjan.DfsExplorerDefaultImplementor;
 
 public class DotExportableUnitTest {
 
@@ -164,11 +162,7 @@ public class DotExportableUnitTest {
 
 		DfsEventsListenerTreeBuilder dfsEventListener = new DfsEventsListenerTreeBuilder();
 
-		DfsExplorer dfsExplorer = DfsExplorerDefaultImplementor.make();
-
-		dfsExplorer.acceptDfsEventsListener(dfsEventListener);
-
-		simpleModel.runDepthFirstSearch(dfsExplorer);
+		simpleModel.runDepthFirstSearch(dfsEventListener);
 
 		Set<Vertex> exploredVertices = new LinkedHashSet<Vertex>();
 		dfsEventListener.fillCollectedVertices(exploredVertices);
