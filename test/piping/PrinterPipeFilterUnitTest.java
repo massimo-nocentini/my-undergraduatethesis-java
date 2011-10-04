@@ -3,6 +3,7 @@ package piping;
 import java.io.File;
 
 import junit.framework.Assert;
+import model.ModelsRepository;
 import model.OurModel;
 
 import org.junit.Test;
@@ -30,7 +31,7 @@ public class PrinterPipeFilterUnitTest {
 			}
 		}
 
-		final OurModel tarjanModel = OurModel.makeTarjanModel();
+		final OurModel tarjanModel = ModelsRepository.makeTarjanModel();
 
 		OurModel outputModel = printerPipeFilter.apply(pipeName, tarjanModel);
 
@@ -63,7 +64,7 @@ public class PrinterPipeFilterUnitTest {
 			}
 		}
 
-		final OurModel papadimitriouModel = OurModel.makePapadimitriouModel();
+		final OurModel papadimitriouModel = ModelsRepository.makePapadimitriouModel();
 
 		OurModel outputModel = printerPipeFilter.apply(pipeName,
 				papadimitriouModel);
@@ -97,7 +98,7 @@ public class PrinterPipeFilterUnitTest {
 			}
 		}
 
-		final OurModel crescenziModel = OurModel.makeCrescenziModel();
+		final OurModel crescenziModel = ModelsRepository.makeCrescenziModel();
 
 		OurModel outputModel = printerPipeFilter
 				.apply(pipeName, crescenziModel);

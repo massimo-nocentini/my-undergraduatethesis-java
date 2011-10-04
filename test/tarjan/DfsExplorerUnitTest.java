@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import junit.framework.Assert;
+import model.ModelsRepository;
 import model.OurModel;
 import model.Vertex;
 import model.VertexFactory;
@@ -109,7 +110,7 @@ public class DfsExplorerUnitTest {
 	public void assuringAllVerticesAreExploredAtTheEndOfDFS() {
 
 		Set<Vertex> vertices = new TreeSet<Vertex>();
-		OurModel tarjanModel = OurModel.makeTarjanModel(vertices);
+		OurModel tarjanModel = ModelsRepository.makeTarjanModel(vertices);
 
 		final CallbackSignalRecorder callbackSignalRecorder = new CallbackSignalRecorder();
 

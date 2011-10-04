@@ -11,6 +11,7 @@ import java.util.TreeSet;
 
 import junit.framework.Assert;
 import model.DfsWrapperVertex;
+import model.ModelsRepository;
 import model.OurModel;
 import model.Vertex;
 import model.VertexFactory;
@@ -122,7 +123,7 @@ public class DotExportableUnitTest {
 		Set<String> expectedEdgeDefinitionPart = new HashSet<String>();
 		DotExporter exporter = new SimpleExporter();
 
-		OurModel.makeTarjanNetworkVertexSetWithRelation(vertices,
+		ModelsRepository.makeTarjanNetworkVertexSetWithRelation(vertices,
 				expectedVertexDefinitionPart, expectedEdgeDefinitionPart,
 				exporter);
 

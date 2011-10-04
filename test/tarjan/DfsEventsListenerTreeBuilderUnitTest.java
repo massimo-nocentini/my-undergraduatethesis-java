@@ -6,6 +6,7 @@ import java.util.Set;
 
 import junit.framework.Assert;
 import model.DfsWrapperVertex;
+import model.ModelsRepository;
 import model.OurModel;
 import model.Vertex;
 import model.VertexFactory;
@@ -28,7 +29,7 @@ public class DfsEventsListenerTreeBuilderUnitTest {
 	public void checkingNewExploredNotificationOnPapadimitriouModel() {
 
 		LinkedHashSet<Vertex> expectedSearchEventNotifications = new LinkedHashSet<Vertex>();
-		OurModel papadimitriouModel = OurModel
+		OurModel papadimitriouModel = ModelsRepository
 				.makePapadimitriouModel(expectedSearchEventNotifications);
 
 		final LinkedHashSet<Vertex> actualSearchEventNotifications = new LinkedHashSet<Vertex>();
@@ -90,7 +91,7 @@ public class DfsEventsListenerTreeBuilderUnitTest {
 	public void checkingClockIntervalsOnPapadimitriouModel() {
 
 		LinkedHashSet<Vertex> expectedSearchEventNotifications = new LinkedHashSet<Vertex>();
-		OurModel papadimitriouModel = OurModel
+		OurModel papadimitriouModel = ModelsRepository
 				.makePapadimitriouModel(expectedSearchEventNotifications);
 
 		DfsEventsListenerTreeBuilder dfsEventListener = new DfsEventsListenerTreeBuilder();

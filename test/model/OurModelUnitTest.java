@@ -79,7 +79,7 @@ public class OurModelUnitTest {
 	@Test
 	public void applyDfsSearchOnAllVertices() {
 
-		OurModel tarjanModel = OurModel.makeTarjanModel();
+		OurModel tarjanModel = ModelsRepository.makeTarjanModel();
 
 		DfsEventsListener dfsEventListener = new DfsEventsListenerNullImplementor();
 
@@ -98,7 +98,7 @@ public class OurModelUnitTest {
 	@Test
 	public void applyDfsSearchForSingleVertex() {
 
-		OurModel tarjanModel = OurModel.makeTarjanModel();
+		OurModel tarjanModel = ModelsRepository.makeTarjanModel();
 
 		DfsEventsListener dfsEventListener = new DfsEventsListenerNullImplementor();
 
@@ -117,7 +117,7 @@ public class OurModelUnitTest {
 	@Test(expected = NullPointerException.class)
 	public void applyDfsSearchWithNullListenerThrowsException() {
 
-		OurModel tarjanModel = OurModel.makeTarjanModel();
+		OurModel tarjanModel = ModelsRepository.makeTarjanModel();
 
 		DfsEventsListener dfsEventListener = null;
 

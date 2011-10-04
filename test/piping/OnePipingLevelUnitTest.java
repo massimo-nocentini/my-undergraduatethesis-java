@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.TreeSet;
 
 import junit.framework.Assert;
+import model.ModelsRepository;
 import model.OurModel;
 import model.Vertex;
 import model.VertexFactory;
@@ -60,7 +61,7 @@ public class OnePipingLevelUnitTest {
 				.pipeAfter(printerPipeFilter));
 
 		secondPrinterPipeFilter.apply(pipelineName,
-				OurModel.makePapadimitriouModel());
+				ModelsRepository.makePapadimitriouModel());
 
 		Assert.assertTrue(secondPrinterPipeFilter.isYourLevelOfWrapping(2));
 
@@ -96,7 +97,7 @@ public class OnePipingLevelUnitTest {
 				.pipeAfter(printerPipeFilter));
 
 		secondPrinterPipeFilter.apply(pipelineName,
-				OurModel.makeCrescenziModel());
+				ModelsRepository.makeCrescenziModel());
 
 		Assert.assertTrue(secondPrinterPipeFilter.isYourLevelOfWrapping(2));
 
@@ -132,7 +133,7 @@ public class OnePipingLevelUnitTest {
 				.pipeAfter(printerPipeFilter));
 
 		secondPrinterPipeFilter.apply(pipelineName,
-				OurModel.makePapadimitriouModel());
+				ModelsRepository.makePapadimitriouModel());
 
 		Assert.assertTrue(secondPrinterPipeFilter.isYourLevelOfWrapping(2));
 
@@ -273,7 +274,7 @@ public class OnePipingLevelUnitTest {
 	public void OnePipingLevelUnitTest_DFS_CrescenziModel() {
 		String pipelineName = "OnePipingLevelUnitTest_DFS_CrescenziModel";
 
-		OurModel crescenziModel = OurModel.makeCrescenziModel();
+		OurModel crescenziModel = ModelsRepository.makeCrescenziModel();
 
 		PipeFilter dfsPipeFilter = PipeFilterFactory.MakeDfsPipeFilter();
 
@@ -312,7 +313,7 @@ public class OnePipingLevelUnitTest {
 
 		final CallbackSignalRecorder callbackSignalRecorder = new CallbackSignalRecorder();
 
-		OurModel tarjanModel = OurModel.makeTarjanModel();
+		OurModel tarjanModel = ModelsRepository.makeTarjanModel();
 
 		final List<OurModel> actualList = new LinkedList<OurModel>();
 
@@ -353,7 +354,7 @@ public class OnePipingLevelUnitTest {
 
 		PipeFilter dfsPipeFilter = PipeFilterFactory.MakeDfsPipeFilter();
 
-		OurModel tarjanModel = OurModel.makeTarjanModel();
+		OurModel tarjanModel = ModelsRepository.makeTarjanModel();
 
 		// run the computation
 		OurModel outputModel = dfsPipeFilter.pipeAfter(printerPipeFilter)
