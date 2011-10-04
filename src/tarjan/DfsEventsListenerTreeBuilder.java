@@ -7,6 +7,7 @@ import java.util.Set;
 
 import model.DfsWrapperVertex;
 import model.Vertex;
+import model.VertexDfsMetadata;
 import model.VertexFactory;
 
 public class DfsEventsListenerTreeBuilder implements DfsEventsListener {

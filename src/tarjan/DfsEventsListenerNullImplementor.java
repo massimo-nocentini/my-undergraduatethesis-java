@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Set;
 
 import model.Vertex;
+import model.VertexDfsMetadata;
 
 public class DfsEventsListenerNullImplementor implements DfsEventsListener {
 

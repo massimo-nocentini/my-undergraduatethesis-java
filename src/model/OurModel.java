@@ -13,7 +13,6 @@ import java.util.TreeSet;
 
 
 import tarjan.DfsExplorer;
-import tarjan.VertexDfsMetadata;
 import JSBMLInterface.Connector;
 import dotInterface.DotExportable;
 import dotInterface.DotExporter;

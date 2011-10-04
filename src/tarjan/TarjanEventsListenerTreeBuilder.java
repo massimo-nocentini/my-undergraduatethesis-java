@@ -9,6 +9,7 @@ import java.util.Stack;
 import model.ConnectedComponentWrapperVertex;
 import model.TarjanWrapperVertex;
 import model.Vertex;
+import model.VertexDfsMetadata;
 import model.VertexFactory;
 import model.VertexLogicApplier;
 

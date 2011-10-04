@@ -9,6 +9,7 @@ import model.DfsWrapperVertex;
 import model.ModelsRepository;
 import model.OurModel;
 import model.Vertex;
+import model.VertexDfsMetadata;
 import model.VertexFactory;
 
 import org.junit.Test;

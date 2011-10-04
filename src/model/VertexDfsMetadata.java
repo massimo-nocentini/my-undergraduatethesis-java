@@ -1,6 +1,6 @@
-package tarjan;
+package model;
 
-import model.Vertex;
+import tarjan.DfsExplorer;
 
 public class VertexDfsMetadata {
 	private boolean explored;

@@ -3,6 +3,7 @@ package tarjan;
 import java.util.Map;
 
 import model.Vertex;
+import model.VertexDfsMetadata;
 
 public interface DfsExplorer {
 

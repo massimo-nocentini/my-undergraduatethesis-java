@@ -10,6 +10,7 @@ import java.util.TreeSet;
 import junit.framework.Assert;
 import model.OurModel;
 import model.Vertex;
+import model.VertexDfsMetadata;
 import model.VertexFactory;
 
 import org.junit.Test;
