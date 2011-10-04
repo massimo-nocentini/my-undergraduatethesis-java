@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.Set;
 
 import model.Vertex;
-import model.VertexDfsMetadata;
+import model.ExploreStatedWrapperVertex;
 
 public class DfsEventsListenerNullImplementor implements DfsEventsListener {
 
@@ -17,11 +17,11 @@ public class DfsEventsListenerNullImplementor implements DfsEventsListener {
 	}
 
 	@Override
-	public void searchCompleted(Map<Vertex, VertexDfsMetadata> map) {
+	public void searchCompleted(Map<Vertex, ExploreStatedWrapperVertex> map) {
 	}
 
 	@Override
-	public void searchStarted(Map<Vertex, VertexDfsMetadata> map) {
+	public void searchStarted(Map<Vertex, ExploreStatedWrapperVertex> map) {
 	}
 
 	@Override

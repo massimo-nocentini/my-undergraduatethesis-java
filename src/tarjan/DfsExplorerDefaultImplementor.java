@@ -3,13 +3,13 @@ package tarjan;
 import java.util.Map;
 
 import model.Vertex;
-import model.VertexDfsMetadata;
+import model.ExploreStatedWrapperVertex;
 import model.VertexLogicApplierWithNeighborhoodRelation;
 
 public class DfsExplorerDefaultImplementor implements DfsExplorer {
 
 	private DfsEventsListener dfsEventsListener;
-	private Map<Vertex, VertexDfsMetadata> exploredVertexMetadatasMap;
+	private Map<Vertex, ExploreStatedWrapperVertex> exploredVertexMetadatasMap;
 
 	private DfsExplorerDefaultImplementor() {
 	}
@@ -42,7 +42,7 @@ public class DfsExplorerDefaultImplementor implements DfsExplorer {
 
 	@Override
 	public void searchStarted(
-			Map<Vertex, VertexDfsMetadata> exploredVertexMetadatasMap) {
+			Map<Vertex, ExploreStatedWrapperVertex> exploredVertexMetadatasMap) {
 
 		this.exploredVertexMetadatasMap = exploredVertexMetadatasMap;
 
@@ -54,7 +54,7 @@ public class DfsExplorerDefaultImplementor implements DfsExplorer {
 	}
 
 	@Override
-	public void searchCompleted(Map<Vertex, VertexDfsMetadata> map) {
+	public void searchCompleted(Map<Vertex, ExploreStatedWrapperVertex> map) {
 		dfsEventsListener.searchCompleted(map);
 	}
 

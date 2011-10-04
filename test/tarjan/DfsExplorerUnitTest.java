@@ -14,7 +14,7 @@ import junit.framework.Assert;
 import model.ModelsRepository;
 import model.OurModel;
 import model.Vertex;
-import model.VertexDfsMetadata;
+import model.ExploreStatedWrapperVertex;
 import model.VertexFactory;
 
 import org.junit.Test;
@@ -57,14 +57,14 @@ public class DfsExplorerUnitTest {
 			}
 
 			@Override
-			public void searchCompleted(Map<Vertex, VertexDfsMetadata> map) {
+			public void searchCompleted(Map<Vertex, ExploreStatedWrapperVertex> map) {
 				actualSearchEventNotifications
 						.add(completeSearchNotificationName);
 			}
 
 			@Override
 			public void searchStarted(
-					Map<Vertex, VertexDfsMetadata> exploredVertexMetadatasMap) {
+					Map<Vertex, ExploreStatedWrapperVertex> exploredVertexMetadatasMap) {
 				actualSearchEventNotifications.add(startSearchNotificationName);
 			}
 
@@ -126,9 +126,9 @@ public class DfsExplorerUnitTest {
 			}
 
 			@Override
-			public void searchCompleted(Map<Vertex, VertexDfsMetadata> map) {
+			public void searchCompleted(Map<Vertex, ExploreStatedWrapperVertex> map) {
 
-				for (Entry<Vertex, VertexDfsMetadata> entry : map.entrySet()) {
+				for (Entry<Vertex, ExploreStatedWrapperVertex> entry : map.entrySet()) {
 					Assert.assertTrue(entry.getValue().isExplored());
 					callbackSignalRecorder.signal();
 				}
@@ -137,7 +137,7 @@ public class DfsExplorerUnitTest {
 
 			@Override
 			public void searchStarted(
-					Map<Vertex, VertexDfsMetadata> exploredVertexMetadatasMap) {
+					Map<Vertex, ExploreStatedWrapperVertex> exploredVertexMetadatasMap) {
 			}
 
 			@Override
@@ -198,12 +198,12 @@ public class DfsExplorerUnitTest {
 			}
 
 			@Override
-			public void searchCompleted(Map<Vertex, VertexDfsMetadata> map) {
+			public void searchCompleted(Map<Vertex, ExploreStatedWrapperVertex> map) {
 			}
 
 			@Override
 			public void searchStarted(
-					Map<Vertex, VertexDfsMetadata> exploredVertexMetadatasMap) {
+					Map<Vertex, ExploreStatedWrapperVertex> exploredVertexMetadatasMap) {
 			}
 
 			@Override
@@ -251,14 +251,14 @@ public class DfsExplorerUnitTest {
 			}
 
 			@Override
-			public void searchCompleted(Map<Vertex, VertexDfsMetadata> map) {
+			public void searchCompleted(Map<Vertex, ExploreStatedWrapperVertex> map) {
 				Vertex erroneousVerte = VertexFactory.makeSimpleVertex();
-				map.put(erroneousVerte, new VertexDfsMetadata(erroneousVerte));
+				map.put(erroneousVerte, new ExploreStatedWrapperVertex(erroneousVerte));
 			}
 
 			@Override
 			public void searchStarted(
-					Map<Vertex, VertexDfsMetadata> exploredVertexMetadatasMap) {
+					Map<Vertex, ExploreStatedWrapperVertex> exploredVertexMetadatasMap) {
 			}
 
 			@Override
@@ -304,13 +304,13 @@ public class DfsExplorerUnitTest {
 			}
 
 			@Override
-			public void searchCompleted(Map<Vertex, VertexDfsMetadata> map) {
+			public void searchCompleted(Map<Vertex, ExploreStatedWrapperVertex> map) {
 			}
 
 			@Override
-			public void searchStarted(Map<Vertex, VertexDfsMetadata> map) {
+			public void searchStarted(Map<Vertex, ExploreStatedWrapperVertex> map) {
 				Vertex erroneousVerte = VertexFactory.makeSimpleVertex();
-				map.put(erroneousVerte, new VertexDfsMetadata(erroneousVerte));
+				map.put(erroneousVerte, new ExploreStatedWrapperVertex(erroneousVerte));
 			}
 
 			@Override
@@ -379,12 +379,12 @@ public class DfsExplorerUnitTest {
 			}
 
 			@Override
-			public void searchCompleted(Map<Vertex, VertexDfsMetadata> map) {
+			public void searchCompleted(Map<Vertex, ExploreStatedWrapperVertex> map) {
 			}
 
 			@Override
 			public void searchStarted(
-					Map<Vertex, VertexDfsMetadata> exploredVertexMetadatasMap) {
+					Map<Vertex, ExploreStatedWrapperVertex> exploredVertexMetadatasMap) {
 
 			}
 

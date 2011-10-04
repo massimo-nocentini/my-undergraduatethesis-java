@@ -10,7 +10,7 @@ import java.util.TreeSet;
 import junit.framework.Assert;
 import model.OurModel;
 import model.Vertex;
-import model.VertexDfsMetadata;
+import model.ExploreStatedWrapperVertex;
 import model.VertexFactory;
 
 import org.junit.Test;
@@ -22,7 +22,7 @@ public class VertexDfsMetadataUnitTest {
 	@Test
 	public void creation() {
 		Vertex v = VertexFactory.makeSimpleVertex();
-		VertexDfsMetadata metadata = new VertexDfsMetadata(v);
+		ExploreStatedWrapperVertex metadata = new ExploreStatedWrapperVertex(v);
 
 		Assert.assertFalse(metadata.isExplored());
 	}
@@ -30,12 +30,12 @@ public class VertexDfsMetadataUnitTest {
 	@Test
 	public void isExploredSideEffect() {
 		final Vertex v = VertexFactory.makeSimpleVertex();
-		VertexDfsMetadata metadata = new VertexDfsMetadata(v);
+		ExploreStatedWrapperVertex metadata = new ExploreStatedWrapperVertex(v);
 
 		DfsEventsListener eventListener = new DfsEventsListener() {
 
 			@Override
-			public void searchCompleted(Map<Vertex, VertexDfsMetadata> map) {
+			public void searchCompleted(Map<Vertex, ExploreStatedWrapperVertex> map) {
 				Assert.assertEquals(1, map.size());
 			}
 
@@ -52,7 +52,7 @@ public class VertexDfsMetadataUnitTest {
 
 			@Override
 			public void searchStarted(
-					Map<Vertex, VertexDfsMetadata> exploredVertexMetadatasMap) {
+					Map<Vertex, ExploreStatedWrapperVertex> exploredVertexMetadatasMap) {
 
 			}
 
@@ -73,12 +73,12 @@ public class VertexDfsMetadataUnitTest {
 		DfsExplorer vertexExplorer = new DfsExplorer() {
 
 			@Override
-			public void searchStarted(Map<Vertex, VertexDfsMetadata> map) {
+			public void searchStarted(Map<Vertex, ExploreStatedWrapperVertex> map) {
 
 			}
 
 			@Override
-			public void searchCompleted(Map<Vertex, VertexDfsMetadata> map) {
+			public void searchCompleted(Map<Vertex, ExploreStatedWrapperVertex> map) {
 
 			}
 
@@ -146,12 +146,12 @@ public class VertexDfsMetadataUnitTest {
 			}
 
 			@Override
-			public void searchCompleted(Map<Vertex, VertexDfsMetadata> map) {
+			public void searchCompleted(Map<Vertex, ExploreStatedWrapperVertex> map) {
 			}
 
 			@Override
 			public void searchStarted(
-					Map<Vertex, VertexDfsMetadata> exploredVertexMetadatasMap) {
+					Map<Vertex, ExploreStatedWrapperVertex> exploredVertexMetadatasMap) {
 
 			}
 
@@ -197,7 +197,7 @@ public class VertexDfsMetadataUnitTest {
 	public void checkToggleMethod() {
 
 		final Vertex v = VertexFactory.makeSimpleVertex();
-		VertexDfsMetadata metadata = new VertexDfsMetadata(v);
+		ExploreStatedWrapperVertex metadata = new ExploreStatedWrapperVertex(v);
 
 		Assert.assertFalse(metadata.isExplored());
 		Assert.assertTrue(metadata.toggle().isExplored());

@@ -9,7 +9,7 @@ import java.util.Stack;
 import model.ConnectedComponentWrapperVertex;
 import model.TarjanWrapperVertex;
 import model.Vertex;
-import model.VertexDfsMetadata;
+import model.ExploreStatedWrapperVertex;
 import model.VertexFactory;
 import model.VertexLogicApplier;
 
@@ -31,7 +31,7 @@ public class TarjanEventsListenerTreeBuilder implements DfsEventsListener {
 	}
 
 	@Override
-	public void searchCompleted(Map<Vertex, VertexDfsMetadata> map) {
+	public void searchCompleted(Map<Vertex, ExploreStatedWrapperVertex> map) {
 	}
 
 	@Override
@@ -81,7 +81,7 @@ public class TarjanEventsListenerTreeBuilder implements DfsEventsListener {
 	@Override
 	// TODO: duplicated code with the dfs tree listener. Did copy and paste of
 	// this code, how we can refactor it?
-	public void searchStarted(Map<Vertex, VertexDfsMetadata> map) {
+	public void searchStarted(Map<Vertex, ExploreStatedWrapperVertex> map) {
 
 		for (Vertex vertex : map.keySet()) {
 

@@ -4,17 +4,17 @@ import java.util.Map;
 import java.util.Set;
 
 import model.Vertex;
-import model.VertexDfsMetadata;
+import model.ExploreStatedWrapperVertex;
 
 public interface DfsEventsListener {
 
-	void searchCompleted(Map<Vertex, VertexDfsMetadata> map);
+	void searchCompleted(Map<Vertex, ExploreStatedWrapperVertex> map);
 
 	void postVisit(Vertex v);
 
 	void preVisit(Vertex v);
 
-	void searchStarted(Map<Vertex, VertexDfsMetadata> map);
+	void searchStarted(Map<Vertex, ExploreStatedWrapperVertex> map);
 
 	void newVertexExplored(Vertex explorationCauseVertex, Vertex vertex);
 

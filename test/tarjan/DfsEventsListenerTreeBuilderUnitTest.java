@@ -9,7 +9,7 @@ import model.DfsWrapperVertex;
 import model.ModelsRepository;
 import model.OurModel;
 import model.Vertex;
-import model.VertexDfsMetadata;
+import model.ExploreStatedWrapperVertex;
 import model.VertexFactory;
 
 import org.junit.Test;
@@ -48,12 +48,12 @@ public class DfsEventsListenerTreeBuilderUnitTest {
 			}
 
 			@Override
-			public void searchCompleted(Map<Vertex, VertexDfsMetadata> map) {
+			public void searchCompleted(Map<Vertex, ExploreStatedWrapperVertex> map) {
 			}
 
 			@Override
 			public void searchStarted(
-					Map<Vertex, VertexDfsMetadata> exploredVertexMetadatasMap) {
+					Map<Vertex, ExploreStatedWrapperVertex> exploredVertexMetadatasMap) {
 			}
 
 			@Override

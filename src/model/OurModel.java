@@ -67,11 +67,11 @@ public class OurModel implements DotExportable {
 
 	public OurModel runDepthFirstSearch(DfsExplorer dfsVertexExplorer) {
 
-		Map<Vertex, VertexDfsMetadata> map = makeDfsVertexMetadataMap();
+		Map<Vertex, ExploreStatedWrapperVertex> map = makeDfsVertexMetadataMap();
 
 		dfsVertexExplorer.searchStarted(map);
 
-		for (Entry<Vertex, VertexDfsMetadata> entry : map.entrySet()) {
+		for (Entry<Vertex, ExploreStatedWrapperVertex> entry : map.entrySet()) {
 
 			entry.getValue().ifNotExplored(dfsVertexExplorer);
 		}
@@ -84,7 +84,7 @@ public class OurModel implements DotExportable {
 	public OurModel runDepthFirstSearch(final DfsExplorer dfsVertexExplorer,
 			final Vertex startingVertex) {
 
-		final Map<Vertex, VertexDfsMetadata> map = makeDfsVertexMetadataMap();
+		final Map<Vertex, ExploreStatedWrapperVertex> map = makeDfsVertexMetadataMap();
 
 		dfsVertexExplorer.searchStarted(map);
 
@@ -102,15 +102,15 @@ public class OurModel implements DotExportable {
 		return this;
 	}
 
-	private Map<Vertex, VertexDfsMetadata> makeDfsVertexMetadataMap() {
+	private Map<Vertex, ExploreStatedWrapperVertex> makeDfsVertexMetadataMap() {
 
-		final Map<Vertex, VertexDfsMetadata> map = new TreeMap<Vertex, VertexDfsMetadata>();
+		final Map<Vertex, ExploreStatedWrapperVertex> map = new TreeMap<Vertex, ExploreStatedWrapperVertex>();
 
 		doOnVertices(new VertexLogicApplier() {
 
 			@Override
 			public void apply(Vertex vertex) {
-				map.put(vertex, new VertexDfsMetadata(vertex));
+				map.put(vertex, new ExploreStatedWrapperVertex(vertex));
 			}
 		});
 

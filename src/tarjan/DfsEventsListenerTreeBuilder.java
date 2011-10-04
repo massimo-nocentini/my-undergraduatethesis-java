@@ -7,7 +7,7 @@ import java.util.Set;
 
 import model.DfsWrapperVertex;
 import model.Vertex;
-import model.VertexDfsMetadata;
+import model.ExploreStatedWrapperVertex;
 import model.VertexFactory;
 
 public class DfsEventsListenerTreeBuilder implements DfsEventsListener {
@@ -41,12 +41,12 @@ public class DfsEventsListenerTreeBuilder implements DfsEventsListener {
 	}
 
 	@Override
-	public void searchCompleted(Map<Vertex, VertexDfsMetadata> map) {
+	public void searchCompleted(Map<Vertex, ExploreStatedWrapperVertex> map) {
 	}
 
 	@Override
 	public void searchStarted(
-			Map<Vertex, VertexDfsMetadata> exploredVertexMetadatasMap) {
+			Map<Vertex, ExploreStatedWrapperVertex> exploredVertexMetadatasMap) {
 
 		for (Vertex vertex : exploredVertexMetadatasMap.keySet()) {
 
