@@ -1,0 +1,686 @@
+format 74
+"piping" // src::piping
+  revision 1
+  modified_by 2 "massimo"
+  // class settings
+  //class diagram settings
+  draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+  //use case diagram settings
+  package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
+  //sequence diagram settings
+  show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default show_stereotype_properties default show_class_context_mode default show_msg_context_mode default
+  //collaboration diagram settings
+  show_full_operations_definition default show_hierarchical_rank default write_horizontally default drawing_language default package_name_in_tab default show_context default show_msg_context default draw_all_relations default shadow default show_stereotype_properties default
+  //object diagram settings
+   write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default show_stereotype_properties default
+  //component diagram settings
+  package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+  draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+  //deployment diagram settings
+  package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
+  draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+  //state diagram settings
+  package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+  show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+  //activity diagram settings
+  package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+  show_infonote default drawing_language default show_stereotype_properties default
+  
+  java_dir "/home/massimo/developer/working-copies/git/my-undergraduatethesis-java/src/piping/"
+  java_package "piping"
+  classview 128642 "piping"
+    //class diagram settings
+    draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+    //collaboration diagram settings
+    show_full_operations_definition default show_hierarchical_rank default write_horizontally default drawing_language default package_name_in_tab default show_context default show_msg_context default draw_all_relations default shadow default show_stereotype_properties default
+    //object diagram settings
+     write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default show_stereotype_properties default
+    //sequence diagram settings
+    show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default show_stereotype_properties default show_class_context_mode default show_msg_context_mode default
+    //state diagram settings
+    package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+    show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+    //class settings
+    //activity diagram settings
+    package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+    show_infonote default drawing_language default show_stereotype_properties default
+    class 132738 "AvailableFilters"
+      visibility public stereotype "enum"
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}enum ${name}${implements} {
+${items};
+${members}}
+"
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      attribute 128514 "Printer"
+	public type class_ref 132738 // AvailableFilters
+	cpp_decl ""
+	java_decl "  ${@}${name}${value},${comment}"
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      attribute 128642 "DFS"
+	public type class_ref 132738 // AvailableFilters
+	cpp_decl ""
+	java_decl "  ${@}${name}${value},${comment}"
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      attribute 128770 "ByPass"
+	public type class_ref 132738 // AvailableFilters
+	cpp_decl ""
+	java_decl "  ${@}${name}${value},${comment}"
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      attribute 128898 "Tarjan"
+	public type class_ref 132738 // AvailableFilters
+	cpp_decl ""
+	java_decl "  ${@}${name}${value},${comment}"
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+    end
+
+    class 132866 "ByPassPipeFilter"
+      visibility public 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 130818 // <generalisation>
+	relation 130818 ---|>
+	  a public
+	    java "${type}"
+	    classrelation_ref 130818 // <generalisation>
+	  b parent class_ref 132994 // PipeFilter
+      end
+
+      operation 159106 "isYourTagEquals"
+	public explicit_return_type "boolean"
+	nparams 1
+	  param inout name "other" type class_ref 132738 // AvailableFilters
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 159234 "doYourComputationOn"
+	protected return_type class_ref 131714 // OurModel
+	nparams 3
+	  param in name "pipelineName" explicit_type "String"
+	  param inout name "inputModel" type class_ref 131714 // OurModel
+	  param inout name "computationListener" type class_ref 133122 // PipeFilterComputationListener
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}, ${t2} ${p2}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+    end
+
+    class 132994 "PipeFilter"
+      abstract visibility public 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      operation 157698 "PipeFilter"
+	package explicit_return_type ""
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	comment "Package access for the constructor, only the factory can call it"
+      end
+
+      operation 157826 "isYourLevelOfWrapping"
+	public explicit_return_type "boolean"
+	nparams 1
+	  param in name "levelOfWrapping" explicit_type "int"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 157954 "isYourWrappedPipeFilterEquals"
+	public explicit_return_type "boolean"
+	nparams 1
+	  param inout name "otherPipeFilter" type class_ref 132994 // PipeFilter
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 158082 "isYourWrappedPipeFilterNotNull"
+	public explicit_return_type "boolean"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 158210 "isYourTagEquals"
+	abstract public explicit_return_type "boolean"
+	nparams 1
+	  param inout name "other" type class_ref 132738 // AvailableFilters
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 158338 "doYourComputationOn"
+	abstract protected return_type class_ref 131714 // OurModel
+	nparams 3
+	  param in name "pipelineName" explicit_type "String"
+	  param inout name "inputModel" type class_ref 131714 // OurModel
+	  param inout name "computationListener" type class_ref 133122 // PipeFilterComputationListener
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}, ${t2} ${p2}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 158466 "apply"
+	public return_type class_ref 131714 // OurModel
+	nparams 2
+	  param in name "pipelineName" explicit_type "String"
+	  param inout name "inputModel" type class_ref 131714 // OurModel
+	
+	final java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 158594 "applyWithListener"
+	public return_type class_ref 131714 // OurModel
+	nparams 3
+	  param in name "pipelineName" explicit_type "String"
+	  param inout name "inputModel" type class_ref 131714 // OurModel
+	  param inout name "computationListener" type class_ref 133122 // PipeFilterComputationListener
+	
+	final java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}, ${t2} ${p2}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 158722 "pipeAfter"
+	public return_type class_ref 132994 // PipeFilter
+	nparams 1
+	  param inout name "pipeFilterToWrap" type class_ref 132994 // PipeFilter
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 158850 "formatPhaseIdentifier"
+	protected explicit_return_type "String"
+	nparams 1
+	  param in name "pipelineName" explicit_type "String"
+	
+	final java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 158978 "collectPhaseInformation"
+	public explicit_return_type "String"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	comment "This method collect the informations relative to the application of this
+filter. This informations returned are build on top of these components:
+<ul>
+<li>phase identifier (which for now is computed by getting the classname
+of this object's class)
+<li>the level of depth where this filter happen to do its job
+</ul>
+
+@return a string with the previously described informations formatted in
+        some way (encapsulated by this method)"
+      end
+    end
+
+    class 133122 "PipeFilterComputationListener"
+      visibility public stereotype "interface"
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}interface ${name}${extends} {
+${members}}
+"
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      operation 159874 "onComputationStarted"
+	public explicit_return_type "void"
+	nparams 2
+	  param in name "pipelineIdentifier" explicit_type "String"
+	  param inout name "inputModel" type class_ref 131714 // OurModel
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 160002 "onSkippedComputation"
+	public explicit_return_type "void"
+	nparams 3
+	  param inout name "pipeFilter" type class_ref 132994 // PipeFilter
+	  param in name "collectedPhaseInformation" explicit_type "String"
+	  param inout name "inputModel" type class_ref 131714 // OurModel
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}, ${t2} ${p2}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+    end
+
+    class 133250 "DfsPipeFilter"
+      visibility public 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 130946 // <generalisation>
+	relation 130946 ---|>
+	  a public
+	    java "${type}"
+	    classrelation_ref 130946 // <generalisation>
+	  b parent class_ref 132994 // PipeFilter
+      end
+
+      operation 159362 "isYourTagEquals"
+	public explicit_return_type "boolean"
+	nparams 1
+	  param inout name "other" type class_ref 132738 // AvailableFilters
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 159490 "doYourComputationOn"
+	protected return_type class_ref 131714 // OurModel
+	nparams 3
+	  param in name "pipelineName" explicit_type "String"
+	  param inout name "inputModel" type class_ref 131714 // OurModel
+	  param inout name "computationListener" type class_ref 133122 // PipeFilterComputationListener
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}, ${t2} ${p2}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+    end
+
+    class 133378 "NullPipeFilterOutputListener"
+      visibility public 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 131074 // <realization>
+	relation 131074 -_-|>
+	  a public
+	    java "${type}"
+	    classrelation_ref 131074 // <realization>
+	  b parent class_ref 133506 // PipeFilterOutputListener
+      end
+
+      operation 159746 "onOutputProduced"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "ourModel" type class_ref 131714 // OurModel
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+    end
+
+    class 133506 "PipeFilterOutputListener"
+      visibility public stereotype "interface"
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}interface ${name}${extends} {
+${members}}
+"
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      operation 159618 "onOutputProduced"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "manufacturedModel" type class_ref 131714 // OurModel
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+    end
+
+    class 133634 "PipeFilterComputationListenerNullObject"
+      visibility public 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 131202 // <realization>
+	relation 131202 -_-|>
+	  a public
+	    java "${type}"
+	    classrelation_ref 131202 // <realization>
+	  b parent class_ref 133122 // PipeFilterComputationListener
+      end
+
+      operation 160130 "onSkippedComputation"
+	public explicit_return_type "void"
+	nparams 3
+	  param inout name "pipeFilter" type class_ref 132994 // PipeFilter
+	  param in name "collectedPhaseInformation" explicit_type "String"
+	  param inout name "inputModel" type class_ref 131714 // OurModel
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}, ${t2} ${p2}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 160258 "onComputationStarted"
+	public explicit_return_type "void"
+	nparams 2
+	  param in name "pipelineIdentifier" explicit_type "String"
+	  param inout name "inputModel" type class_ref 131714 // OurModel
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+    end
+
+    class 133762 "PipeFilterFactory"
+      visibility public 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      operation 160386 "MakeDfsPipeFilter"
+	class_operation public return_type class_ref 132994 // PipeFilter
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 160514 "MakePrinterPipeFilter"
+	class_operation public return_type class_ref 132994 // PipeFilter
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 160642 "MakeByPassPipeFilter"
+	class_operation public return_type class_ref 132994 // PipeFilter
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 160770 "MakeTarjanPipeFilter"
+	class_operation public return_type class_ref 132994 // PipeFilter
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+    end
+
+    class 133890 "PrinterPipeFilter"
+      visibility public 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 131330 // <generalisation>
+	relation 131330 ---|>
+	  a public
+	    java "${type}"
+	    classrelation_ref 131330 // <generalisation>
+	  b parent class_ref 132994 // PipeFilter
+      end
+
+      operation 160898 "isYourTagEquals"
+	public explicit_return_type "boolean"
+	nparams 1
+	  param inout name "other" type class_ref 132738 // AvailableFilters
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 161026 "doYourComputationOn"
+	protected return_type class_ref 131714 // OurModel
+	nparams 3
+	  param in name "pipelineName" explicit_type "String"
+	  param inout name "inputModel" type class_ref 131714 // OurModel
+	  param inout name "computationListener" type class_ref 133122 // PipeFilterComputationListener
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}, ${t2} ${p2}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+    end
+
+    class 134018 "TarjanPipeFilter"
+      visibility public 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 131458 // <generalisation>
+	relation 131458 ---|>
+	  a public
+	    java "${type}"
+	    classrelation_ref 131458 // <generalisation>
+	  b parent class_ref 132994 // PipeFilter
+      end
+
+      operation 161154 "isYourTagEquals"
+	public explicit_return_type "boolean"
+	nparams 1
+	  param inout name "other" type class_ref 132738 // AvailableFilters
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 161282 "doYourComputationOn"
+	protected return_type class_ref 131714 // OurModel
+	nparams 3
+	  param in name "pipelineName" explicit_type "String"
+	  param inout name "inputModel" type class_ref 131714 // OurModel
+	  param inout name "computationListener" type class_ref 133122 // PipeFilterComputationListener
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}, ${t2} ${p2}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+    end
+  end
+end

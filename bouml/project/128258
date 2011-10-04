@@ -1,0 +1,2490 @@
+format 74
+"model" // src::model
+  revision 1
+  modified_by 2 "massimo"
+  // class settings
+  //class diagram settings
+  draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+  //use case diagram settings
+  package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
+  //sequence diagram settings
+  show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default show_stereotype_properties default show_class_context_mode default show_msg_context_mode default
+  //collaboration diagram settings
+  show_full_operations_definition default show_hierarchical_rank default write_horizontally default drawing_language default package_name_in_tab default show_context default show_msg_context default draw_all_relations default shadow default show_stereotype_properties default
+  //object diagram settings
+   write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default show_stereotype_properties default
+  //component diagram settings
+  package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+  draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+  //deployment diagram settings
+  package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
+  draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+  //state diagram settings
+  package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+  show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+  //activity diagram settings
+  package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+  show_infonote default drawing_language default show_stereotype_properties default
+  
+  java_dir "/home/massimo/developer/working-copies/git/my-undergraduatethesis-java/src/model/"
+  java_package "model"
+  classview 128130 "model"
+    //class diagram settings
+    draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+    //collaboration diagram settings
+    show_full_operations_definition default show_hierarchical_rank default write_horizontally default drawing_language default package_name_in_tab default show_context default show_msg_context default draw_all_relations default shadow default show_stereotype_properties default
+    //object diagram settings
+     write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default show_stereotype_properties default
+    //sequence diagram settings
+    show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default show_stereotype_properties default show_class_context_mode default show_msg_context_mode default
+    //state diagram settings
+    package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+    show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+    //class settings
+    //activity diagram settings
+    package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+    show_infonote default drawing_language default show_stereotype_properties default
+    class 128386 "Vertex"
+      abstract visibility public stereotype "interface"
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}interface ${name}${extends} {
+${members}}
+"
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 129282 // <generalisation>
+	relation 129282 ---|>
+	  a public
+	    java "${type}"
+	    classrelation_ref 129282 // <generalisation>
+	  b parent class_ref 128130 // DotExportable
+      end
+
+      classrelation 129410 // <realization>
+	relation 129410 -_-|>
+	  a public
+	    java "${type}<Vertex>"
+	    classrelation_ref 129410 // <realization>
+	  b parent class_ref 130946 // Comparable
+      end
+
+      operation 138626 "addNeighbour"
+	abstract public return_type class_ref 128386 // Vertex
+	nparams 1
+	  param inout name "neighbour" type class_ref 128386 // Vertex
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 138754 "doOnNeighbors"
+	abstract public explicit_return_type "void"
+	nparams 1
+	  param inout name "applier" type class_ref 131074 // VertexLogicApplier
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 138882 "doOnNeighbors"
+	abstract public explicit_return_type "void"
+	nparams 1
+	  param inout name "applier" type class_ref 131202 // VertexLogicApplierWithNeighborhoodRelation
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 139010 "isYourNeighborhoodEquals"
+	abstract public explicit_return_type "boolean"
+	nparams 1
+	  param inout name "products" explicit_type "Set<Vertex>"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 139138 "isYourNeighborhoodEmpty"
+	abstract public explicit_return_type "boolean"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 139266 "isYourSpeciesId"
+	abstract public explicit_return_type "boolean"
+	nparams 1
+	  param in name "speciesId" explicit_type "String"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 139394 "isYourCompartmentId"
+	abstract public explicit_return_type "boolean"
+	nparams 1
+	  param in name "compartmentId" explicit_type "String"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 139522 "hashCode"
+	abstract public explicit_return_type "int"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 139650 "equals"
+	abstract public explicit_return_type "boolean"
+	nparams 1
+	  param inout name "obj" explicit_type "Object"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 139778 "haveYouSelfLoop"
+	abstract public explicit_return_type "boolean"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 139906 "isYourOrigin"
+	abstract public explicit_return_type "boolean"
+	nparams 1
+	  param inout name "aSpecies" explicit_type "Species"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 140034 "acceptExporter"
+	abstract public explicit_return_type "void"
+	nparams 1
+	  param inout name "exporter" type class_ref 128258 // DotExporter
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 140162 "isSink"
+	abstract public explicit_return_type "boolean"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 140290 "isSource"
+	abstract public explicit_return_type "boolean"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 140418 "isYourNeighbour"
+	abstract public explicit_return_type "boolean"
+	nparams 1
+	  param inout name "a" type class_ref 128386 // Vertex
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 140546 "isNeighborsCountEquals"
+	abstract public explicit_return_type "boolean"
+	nparams 1
+	  param in name "guess" explicit_type "int"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 140674 "matchCompartmentWith"
+	abstract public explicit_return_type "boolean"
+	nparams 1
+	  param inout name "otherVertex" type class_ref 128386 // Vertex
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 140802 "matchSpeciesWith"
+	abstract public explicit_return_type "boolean"
+	nparams 1
+	  param inout name "otherVertex" type class_ref 128386 // Vertex
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 140930 "collectYourDefinitionInto"
+	abstract public explicit_return_type "void"
+	nparams 1
+	  param inout name "writer" explicit_type "Writer"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 141058 "getSourceDecorator"
+	abstract public return_type class_ref 128898 // LineDecorator
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 141186 "getIdentifierDecorator"
+	abstract public return_type class_ref 128898 // LineDecorator
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 141314 "getSquareBracketsDecorator"
+	abstract public return_type class_ref 128898 // LineDecorator
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 141442 "collectEdgeDefinitionInto"
+	abstract public explicit_return_type "void"
+	nparams 2
+	  param inout name "writer" explicit_type "Writer"
+	  param inout name "neighbour" type class_ref 128386 // Vertex
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 141570 "collectVertexLabelOutsideBoxInto"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "writer" explicit_type "Writer"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 141698 "compareYourCompartmentIdWith"
+	abstract public explicit_return_type "int"
+	nparams 1
+	  param in name "compartment_id" explicit_type "String"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	comment " TODO: the following methods need to be unit tested each one"
+      end
+
+      operation 141826 "compareYourSpeciesIdWith"
+	abstract public explicit_return_type "int"
+	nparams 1
+	  param in name "species_id" explicit_type "String"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 141954 "addDirectAncestors"
+	abstract public explicit_return_type "void"
+	nparams 1
+	  param inout name "vertex" type class_ref 128386 // Vertex
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 142082 "asSimpleVertex"
+	abstract public return_type class_ref 131330 // SimpleVertex
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      classrelation 132226 // <aggregation>
+	relation_ref 132098 // <aggregation>
+      end
+    end
+
+    class 130562 "ConnectedComponentWrapperVertex"
+      visibility public 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 129794 // <generalisation>
+	relation 129794 ---|>
+	  a public
+	    java "${type}"
+	    classrelation_ref 129794 // <generalisation>
+	  b parent class_ref 130690 // VertexWithLabelWrapperVertex
+      end
+
+      operation 146690 "ConnectedComponentWrapperVertex"
+	protected explicit_return_type ""
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 146818 "hashCode"
+	public explicit_return_type "int"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 146946 "equals"
+	public explicit_return_type "boolean"
+	nparams 1
+	  param inout name "obj" explicit_type "Object"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 147074 "isMember"
+	public explicit_return_type "boolean"
+	nparams 1
+	  param inout name "vertex" type class_ref 128386 // Vertex
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 147202 "includeMember"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "vertex" type class_ref 128386 // Vertex
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 147330 "provideOutsideLabel"
+	protected explicit_return_type "String"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+    end
+
+    class 130690 "VertexWithLabelWrapperVertex"
+      abstract visibility package 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 129666 // <generalisation>
+	relation 129666 ---|>
+	  a public
+	    java "${type}"
+	    classrelation_ref 129666 // <generalisation>
+	  b parent class_ref 130818 // WrapperVertex
+      end
+
+      operation 146178 "VertexWithLabelWrapperVertex"
+	protected explicit_return_type ""
+	nparams 1
+	  param inout name "wrappingVertex" type class_ref 128386 // Vertex
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 146306 "acceptExporter"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "exporter" type class_ref 128258 // DotExporter
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 146434 "collectVertexLabelOutsideBoxInto"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "writer" explicit_type "Writer"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 146562 "provideOutsideLabel"
+	abstract protected explicit_return_type "String"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+    end
+
+    class 130818 "WrapperVertex"
+      abstract visibility public 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 129538 // <realization>
+	relation 129538 -_-|>
+	  a public
+	    java "${type}"
+	    classrelation_ref 129538 // <realization>
+	  b parent class_ref 128386 // Vertex
+      end
+
+      operation 142210 "collectVertexLabelOutsideBoxInto"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "writer" explicit_type "Writer"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 142338 "WrapperVertex"
+	protected explicit_return_type ""
+	nparams 1
+	  param inout name "wrappingVertex" type class_ref 128386 // Vertex
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 142466 "getWrappedVertex"
+	package return_type class_ref 128386 // Vertex
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 142594 "addNeighbour"
+	public return_type class_ref 128386 // Vertex
+	nparams 1
+	  param inout name "neighbour" type class_ref 128386 // Vertex
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 142722 "doOnNeighbors"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "applier" type class_ref 131074 // VertexLogicApplier
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 142850 "doOnNeighbors"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "applier" type class_ref 131202 // VertexLogicApplierWithNeighborhoodRelation
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 142978 "isYourNeighborhoodEquals"
+	public explicit_return_type "boolean"
+	nparams 1
+	  param inout name "products" explicit_type "Set<Vertex>"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 143106 "isYourNeighborhoodEmpty"
+	public explicit_return_type "boolean"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 143234 "isYourSpeciesId"
+	public explicit_return_type "boolean"
+	nparams 1
+	  param in name "speciesId" explicit_type "String"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 143362 "isYourCompartmentId"
+	public explicit_return_type "boolean"
+	nparams 1
+	  param in name "compartmentId" explicit_type "String"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 143490 "hashCode"
+	public explicit_return_type "int"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 143618 "equals"
+	public explicit_return_type "boolean"
+	nparams 1
+	  param inout name "obj" explicit_type "Object"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 143746 "haveYouSelfLoop"
+	public explicit_return_type "boolean"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 143874 "isYourOrigin"
+	public explicit_return_type "boolean"
+	nparams 1
+	  param inout name "aSpecies" explicit_type "Species"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 144002 "acceptExporter"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "exporter" type class_ref 128258 // DotExporter
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 144130 "isSink"
+	public explicit_return_type "boolean"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 144258 "isSource"
+	public explicit_return_type "boolean"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 144386 "isYourNeighbour"
+	public explicit_return_type "boolean"
+	nparams 1
+	  param inout name "a" type class_ref 128386 // Vertex
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 144514 "isNeighborsCountEquals"
+	public explicit_return_type "boolean"
+	nparams 1
+	  param in name "guess" explicit_type "int"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 144642 "matchCompartmentWith"
+	public explicit_return_type "boolean"
+	nparams 1
+	  param inout name "otherVertex" type class_ref 128386 // Vertex
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 144770 "matchSpeciesWith"
+	public explicit_return_type "boolean"
+	nparams 1
+	  param inout name "otherVertex" type class_ref 128386 // Vertex
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 144898 "collectYourDefinitionInto"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "writer" explicit_type "Writer"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 145026 "getSourceDecorator"
+	public return_type class_ref 128898 // LineDecorator
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 145154 "getIdentifierDecorator"
+	public return_type class_ref 128898 // LineDecorator
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 145282 "getSquareBracketsDecorator"
+	public return_type class_ref 128898 // LineDecorator
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 145410 "collectEdgeDefinitionInto"
+	public explicit_return_type "void"
+	nparams 2
+	  param inout name "writer" explicit_type "Writer"
+	  param inout name "neighbour" type class_ref 128386 // Vertex
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 145538 "compareYourCompartmentIdWith"
+	public explicit_return_type "int"
+	nparams 1
+	  param in name "compartment_id" explicit_type "String"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 145666 "compareYourSpeciesIdWith"
+	public explicit_return_type "int"
+	nparams 1
+	  param in name "species_id" explicit_type "String"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 145794 "addDirectAncestors"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "vertex" type class_ref 128386 // Vertex
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 145922 "asSimpleVertex"
+	public return_type class_ref 131330 // SimpleVertex
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 146050 "compareTo"
+	public explicit_return_type "int"
+	nparams 1
+	  param inout name "o" type class_ref 128386 // Vertex
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+    end
+
+    class 131074 "VertexLogicApplier"
+      visibility public stereotype "interface"
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}interface ${name}${extends} {
+${members}}
+"
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      operation 157442 "apply"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "vertex" type class_ref 128386 // Vertex
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+    end
+
+    class 131202 "VertexLogicApplierWithNeighborhoodRelation"
+      visibility public stereotype "interface"
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}interface ${name}${extends} {
+${members}}
+"
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      operation 157570 "apply"
+	public explicit_return_type "void"
+	nparams 2
+	  param inout name "parent" type class_ref 128386 // Vertex
+	  param inout name "neighbour" type class_ref 128386 // Vertex
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+    end
+
+    class 131330 "SimpleVertex"
+      visibility public 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 130178 // <realization>
+	relation 130178 -_-|>
+	  a public
+	    java "${type}"
+	    classrelation_ref 130178 // <realization>
+	  b parent class_ref 128386 // Vertex
+      end
+
+      attribute 128002 "DummySpeciesId"
+	class_attribute package explicit_type "String"
+	init_value " \"dummy_species_id\""
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	comment "Dummy value
+"
+      end
+
+      attribute 128130 "DummyCompartmentId"
+	class_attribute package explicit_type "String"
+	init_value " \"dummy_compartment_id\""
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      class 131970 "VertexIntegerEnumerator"
+	visibility package 
+	cpp_decl ""
+	java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+	php_decl ""
+	python_2_2 python_decl ""
+	idl_decl ""
+	explicit_switch_type ""
+	
+	operation 150786 "enumerateNewVertex"
+	  class_operation package explicit_return_type "int"
+	  nparams 0
+	  
+	  synchronized java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	  
+	  
+	  
+	end
+
+	operation 150914 "getCurrentEnumerationValue"
+	  class_operation package explicit_return_type "int"
+	  nparams 0
+	  
+	  java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	  
+	  
+	  
+	end
+      end
+
+      attribute 128258 "species_id"
+	package explicit_type "String"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      attribute 128386 "compartment_id"
+	package explicit_type "String"
+	cpp_decl ""
+	java_decl "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      operation 151042 "addNeighbour"
+	public return_type class_ref 128386 // Vertex
+	nparams 1
+	  param inout name "neighbour" type class_ref 128386 // Vertex
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 151170 "doOnNeighbors"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "applier" type class_ref 131074 // VertexLogicApplier
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 151298 "doOnNeighbors"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "applier" type class_ref 131202 // VertexLogicApplierWithNeighborhoodRelation
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 151426 "isYourNeighborhoodEquals"
+	public explicit_return_type "boolean"
+	nparams 1
+	  param inout name "products" explicit_type "Set<Vertex>"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 151554 "isYourNeighborhoodEmpty"
+	public explicit_return_type "boolean"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 151682 "isYourSpeciesId"
+	public explicit_return_type "boolean"
+	nparams 1
+	  param in name "speciesId" explicit_type "String"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 151810 "isYourCompartmentId"
+	public explicit_return_type "boolean"
+	nparams 1
+	  param in name "compartmentId" explicit_type "String"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 151938 "hashCode"
+	public explicit_return_type "int"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 152066 "equals"
+	public explicit_return_type "boolean"
+	nparams 1
+	  param inout name "obj" explicit_type "Object"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 152194 "haveYouSelfLoop"
+	public explicit_return_type "boolean"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 152322 "isYourOrigin"
+	public explicit_return_type "boolean"
+	nparams 1
+	  param inout name "aSpecies" explicit_type "Species"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 152450 "acceptExporter"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "exporter" type class_ref 128258 // DotExporter
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 152578 "isSink"
+	public explicit_return_type "boolean"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 152706 "isSource"
+	public explicit_return_type "boolean"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 152834 "isYourNeighbour"
+	public explicit_return_type "boolean"
+	nparams 1
+	  param inout name "a" type class_ref 128386 // Vertex
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 152962 "isNeighborsCountEquals"
+	public explicit_return_type "boolean"
+	nparams 1
+	  param in name "guess" explicit_type "int"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 153090 "matchCompartmentWith"
+	public explicit_return_type "boolean"
+	nparams 1
+	  param inout name "otherVertex" type class_ref 128386 // Vertex
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 153218 "matchSpeciesWith"
+	public explicit_return_type "boolean"
+	nparams 1
+	  param inout name "otherVertex" type class_ref 128386 // Vertex
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 153346 "compareTo"
+	public explicit_return_type "int"
+	nparams 1
+	  param inout name "o" type class_ref 128386 // Vertex
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 153474 "makeVertex"
+	class_operation package return_type class_ref 131330 // SimpleVertex
+	nparams 2
+	  param in name "species_id" explicit_type "String"
+	  param in name "compartment_id" explicit_type "String"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 153602 "compareYourCompartmentIdWith"
+	public explicit_return_type "int"
+	nparams 1
+	  param in name "compartment_id" explicit_type "String"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 153730 "compareYourSpeciesIdWith"
+	public explicit_return_type "int"
+	nparams 1
+	  param in name "species_id" explicit_type "String"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 153858 "addDirectAncestors"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "vertex" type class_ref 128386 // Vertex
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 153986 "asSimpleVertex"
+	public return_type class_ref 131330 // SimpleVertex
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 154114 "collectYourDefinitionInto"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "writer" explicit_type "Writer"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 154242 "composeIdentifier"
+	class_operation public explicit_return_type "String"
+	nparams 2
+	  param in name "species_id" explicit_type "String"
+	  param in name "compartment_id" explicit_type "String"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 154370 "getSourceSinkToken"
+	class_operation public explicit_return_type "String"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 154498 "getSourceDecorator"
+	public return_type class_ref 128898 // LineDecorator
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      class 132098 "SourceSinkLineDecorator"
+	visibility public 
+	cpp_decl ""
+	java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+	php_decl ""
+	python_2_2 python_decl ""
+	idl_decl ""
+	explicit_switch_type ""
+	
+	classrelation 130306 // <realization>
+	  relation 130306 -_-|>
+	    a public
+	      java "${type}"
+	      classrelation_ref 130306 // <realization>
+	    b parent class_ref 128898 // LineDecorator
+	end
+
+	operation 154626 "decore"
+	  public explicit_return_type "String"
+	  nparams 1
+	    param in name "line" explicit_type "String"
+	  
+	  java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	  java_annotation "@Override
+"
+	  
+	  
+	  
+	end
+      end
+
+      class 132226 "IdentifierLineDecorator"
+	visibility public 
+	cpp_decl ""
+	java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+	php_decl ""
+	python_2_2 python_decl ""
+	idl_decl ""
+	explicit_switch_type ""
+	
+	classrelation 130434 // <realization>
+	  relation 130434 -_-|>
+	    a public
+	      java "${type}"
+	      classrelation_ref 130434 // <realization>
+	    b parent class_ref 128898 // LineDecorator
+	end
+
+	operation 154754 "decore"
+	  public explicit_return_type "String"
+	  nparams 1
+	    param in name "line" explicit_type "String"
+	  
+	  java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	  java_annotation "@Override
+"
+	  
+	  
+	  
+	end
+      end
+
+      class 132354 "SquareBracketsLineDecorator"
+	visibility public 
+	cpp_decl ""
+	java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+	php_decl ""
+	python_2_2 python_decl ""
+	idl_decl ""
+	explicit_switch_type ""
+	
+	classrelation 130562 // <realization>
+	  relation 130562 -_-|>
+	    a public
+	      java "${type}"
+	      classrelation_ref 130562 // <realization>
+	    b parent class_ref 128898 // LineDecorator
+	end
+
+	operation 154882 "decore"
+	  public explicit_return_type "String"
+	  nparams 1
+	    param in name "line" explicit_type "String"
+	  
+	  java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	  java_annotation "@Override
+"
+	  
+	  
+	  
+	end
+      end
+
+      operation 155010 "getIdentifierDecorator"
+	public return_type class_ref 128898 // LineDecorator
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 155138 "getSquareBracketsDecorator"
+	public return_type class_ref 128898 // LineDecorator
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 155266 "collectEdgeDefinitionInto"
+	public explicit_return_type "void"
+	nparams 2
+	  param inout name "writer" explicit_type "Writer"
+	  param inout name "neighbour" type class_ref 128386 // Vertex
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 155394 "composeNeighbourRelationInfixRelation"
+	class_operation public explicit_return_type "String"
+	nparams 2
+	  param in name "sourceIdentifier" explicit_type "String"
+	  param in name "neighbourIdentifier" explicit_type "String"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 155522 "collectVertexLabelOutsideBoxInto"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "writer" explicit_type "Writer"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+    end
+
+    class 131458 "DfsWrapperVertex"
+      visibility public 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 129922 // <generalisation>
+	relation 129922 ---|>
+	  a public
+	    java "${type}"
+	    classrelation_ref 129922 // <generalisation>
+	  b parent class_ref 130690 // VertexWithLabelWrapperVertex
+      end
+
+      operation 147458 "previsitedAt"
+	public return_type class_ref 131458 // DfsWrapperVertex
+	nparams 1
+	  param in name "instant" explicit_type "int"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 147586 "isYourPreVisitClock"
+	public explicit_return_type "boolean"
+	nparams 1
+	  param in name "otherClock" explicit_type "int"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 147714 "postvisitedAt"
+	public return_type class_ref 131458 // DfsWrapperVertex
+	nparams 1
+	  param in name "other" explicit_type "int"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 147842 "isYourPostVisitClock"
+	public explicit_return_type "boolean"
+	nparams 1
+	  param in name "otherClock" explicit_type "int"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 147970 "DfsWrapperVertex"
+	package explicit_return_type ""
+	nparams 1
+	  param inout name "wrappingVertex" type class_ref 128386 // Vertex
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 148098 "provideOutsideLabel"
+	public explicit_return_type "String"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+    end
+
+    class 131586 "ModelsRepository"
+      visibility public 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      operation 148226 "makeCrescenziModel"
+	class_operation public return_type class_ref 131714 // OurModel
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 148354 "makeCrescenziModel"
+	class_operation public return_type class_ref 131714 // OurModel
+	nparams 1
+	  param inout name "vertices" explicit_type "LinkedHashSet<Vertex>"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	comment "Network model described at page 274 of Crescenzi book.
+
+@param vertices
+@return"
+      end
+
+      operation 148482 "makeTarjanModel"
+	class_operation public return_type class_ref 131714 // OurModel
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	comment "This method build the Tarjan network illustrated on page 158 of its
+original article.
+
+@return return a Tarjan test model specified in its original paper."
+      end
+
+      operation 148610 "makeTarjanModel"
+	class_operation public return_type class_ref 131714 // OurModel
+	nparams 1
+	  param inout name "vertices" explicit_type "Set<Vertex>"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 148738 "makePapadimitriouModel"
+	class_operation public return_type class_ref 131714 // OurModel
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 148866 "makeTarjanNetworkVertexSetWithRelation"
+	class_operation public explicit_return_type "void"
+	nparams 4
+	  param inout name "vertices" explicit_type "Set<Vertex>"
+	  param inout name "expectedVertexDefinitionPart" explicit_type "Set<String>"
+	  param inout name "expectedEdgeDefinitionPart" explicit_type "Set<String>"
+	  param inout name "exporter" type class_ref 128258 // DotExporter
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}, ${t2} ${p2}, ${t3} ${p3}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	comment "This method build the Tarjan network illustrated on page 158 of its
+original article. This method is intended only for test scope because it
+accepts 'collecting parameters' sets, in order to specify the real
+vertices that the network is composed with, and other set of strings that
+represents the expected representations in dot language (this is the part
+'test only')
+
+@param vertices
+           collecting parameter to fill with network vertices.
+@param expectedVertexDefinitionPart
+           dot representation of the vertex definition compartment
+@param expectedEdgeDefinitionPart
+           dot representation of the edge (reachability relation)
+           definition compartment
+@param exporter
+           the dot exporter to use in order to format properly the dot
+           strings."
+      end
+
+      operation 148994 "makePapadimitriouModel"
+	class_operation public return_type class_ref 131714 // OurModel
+	nparams 1
+	  param inout name "vertices" explicit_type "LinkedHashSet<Vertex>"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	comment "This method makes the Papadimitriou model (described on page 86 of his
+book Algorithms). The unique parameter that this method accepts is an
+object of a specialized type in the set's hierarchy: this catch the
+concept that the addition of vertices to the set preserve the insertion
+ordering (this is the only way to require such data structure in order to
+maintain the order). This insertion order is the visit order that must be
+match by a DFS search run.
+
+@param vertices
+           collecting parameter. The vertices added to this set preserve
+           the addition order
+@return a Papadimitriou model described at page 86 of his book"
+      end
+
+      operation 149122 "makeTarjanNetworkVertexSetWithRelation"
+	class_operation public explicit_return_type "void"
+	nparams 5
+	  param inout name "vertices" explicit_type "Set<Vertex>"
+	  param inout name "expectedVertexDefinitionPart" explicit_type "Set<String>"
+	  param inout name "expectedEdgeDefinitionPart" explicit_type "Set<String>"
+	  param inout name "expectedVertexLabelOutsideBoxPart" explicit_type "Set<String>"
+	  param inout name "exporter" type class_ref 128258 // DotExporter
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}, ${t2} ${p2}, ${t3} ${p3}, ${t4} ${p4}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+    end
+
+    class 131714 "OurModel"
+      visibility public 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 130050 // <realization>
+	relation 130050 -_-|>
+	  a public
+	    java "${type}"
+	    classrelation_ref 130050 // <realization>
+	  b parent class_ref 128130 // DotExportable
+      end
+
+      operation 149250 "isEmpty"
+	public explicit_return_type "boolean"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 149378 "makeEmptyModel"
+	class_operation public return_type class_ref 131714 // OurModel
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	comment "Build an empty model: the encapsulated network has both the vertex set
+both the edge set equals to the empty set."
+      end
+
+      operation 149506 "makeOurModelFrom"
+	class_operation public return_type class_ref 131714 // OurModel
+	nparams 1
+	  param inout name "vertices" explicit_type "Set<Vertex>"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 149634 "makeOurModelFrom"
+	class_operation public return_type class_ref 131714 // OurModel
+	nparams 1
+	  param in name "path" explicit_type "String"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 149762 "acceptExporter"
+	public explicit_return_type "void"
+	nparams 1
+	  param in name "exporter" type class_ref 128258 // DotExporter
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}final ${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	java_annotation "@Override
+"
+	
+	
+	
+      end
+
+      operation 149890 "runDepthFirstSearch"
+	public return_type class_ref 131714 // OurModel
+	nparams 1
+	  param inout name "dfsVertexExplorer" type class_ref 131842 // DfsExplorer
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 150018 "runDepthFirstSearch"
+	public return_type class_ref 131714 // OurModel
+	nparams 2
+	  param in name "dfsVertexExplorer" type class_ref 131842 // DfsExplorer
+	  param in name "startingVertex" type class_ref 128386 // Vertex
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}final ${t0} ${p0}, final ${t1} ${p1}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 150146 "doOnVertices"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "vertexLogicApplier" type class_ref 131074 // VertexLogicApplier
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 150274 "getDefaultCompartmentId"
+	class_operation public explicit_return_type "String"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 150402 "findVertexByExampleAndApplyLogicOnIt"
+	public return_type class_ref 131714 // OurModel
+	nparams 2
+	  param in name "exampleVertex" type class_ref 128386 // Vertex
+	  param in name "logicApplier" type class_ref 131074 // VertexLogicApplier
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}final ${t0} ${p0}, final ${t1} ${p1}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 150530 "collectEdgeDefinitionInto"
+	class_operation public explicit_return_type "void"
+	nparams 3
+	  param inout name "expectedEdgeDefinitionPart" explicit_type "Set<String>"
+	  param inout name "source" type class_ref 128386 // Vertex
+	  param inout name "neighbour" type class_ref 128386 // Vertex
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}, ${t2} ${p2}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 150658 "collectVertexDefinitionInto"
+	class_operation public explicit_return_type "void"
+	nparams 2
+	  param inout name "expectedVertexDefinitionPart" explicit_type "Set<String>"
+	  param inout name "vertex" type class_ref 128386 // Vertex
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      classrelation 132098 // <aggregation>
+	relation 132098 o---
+	  a role_name "" private
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	    classrelation_ref 132098 // <aggregation>
+	  b role_name "" private
+	    java "  ${comment}${@}${visibility}${static}${final}${transient}${volatile}${type} ${name}${value};
+"
+	    classrelation_ref 132226 // <aggregation>
+      end
+    end
+
+    class 132482 "TarjanWrapperVertex"
+      visibility public 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 130690 // <generalisation>
+	relation 130690 ---|>
+	  a public
+	    java "${type}"
+	    classrelation_ref 130690 // <generalisation>
+	  b parent class_ref 130818 // WrapperVertex
+      end
+
+      operation 155650 "TarjanWrapperVertex"
+	package explicit_return_type ""
+	nparams 1
+	  param inout name "wrappingVertex" type class_ref 128386 // Vertex
+	
+	java_def "  ${comment}${@}${visibility}${synchronized}${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 155778 "exploredAt"
+	public explicit_return_type "void"
+	nparams 1
+	  param in name "clock" explicit_type "int"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 155906 "isYourExploredInstantEquals"
+	public explicit_return_type "boolean"
+	nparams 1
+	  param in name "instant" explicit_type "int"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 156034 "areYouMemberInSomeConnectedComponent"
+	public explicit_return_type "boolean"
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 156162 "joinConnectedComponent"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "connectedComponent" type class_ref 130562 // ConnectedComponentWrapperVertex
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 156290 "hadYouBeenDiscoveredFirstThan"
+	public explicit_return_type "boolean"
+	nparams 1
+	  param inout name "otherVertex" type class_ref 132482 // TarjanWrapperVertex
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 156418 "bridgeConnectedComponentOf"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "otherVertex" type class_ref 132482 // TarjanWrapperVertex
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+    end
+
+    class 132610 "VertexFactory"
+      visibility public 
+      cpp_decl ""
+      java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
+${members}}
+"
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      comment " TODO: check if exists some unit tests for the dfs and Tarjan factory methods."
+      operation 156546 "makeSimpleVertex"
+	class_operation public return_type class_ref 131330 // SimpleVertex
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 156674 "makeSimpleVertex"
+	class_operation public return_type class_ref 131330 // SimpleVertex
+	nparams 1
+	  param inout name "species" explicit_type "Species"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 156802 "makeSimpleVertex"
+	class_operation public return_type class_ref 131330 // SimpleVertex
+	nparams 2
+	  param in name "species_id" explicit_type "String"
+	  param in name "compartment_id" explicit_type "String"
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 156930 "makeSimpleVertex"
+	class_operation public return_type class_ref 131330 // SimpleVertex
+	nparams 1
+	  param inout name "vertex" type class_ref 128386 // Vertex
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 157058 "makeDfsWrapperVertex"
+	class_operation public return_type class_ref 131458 // DfsWrapperVertex
+	nparams 1
+	  param inout name "vertex" type class_ref 128386 // Vertex
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 157186 "makeTarjanWrapperVertex"
+	class_operation public return_type class_ref 132482 // TarjanWrapperVertex
+	nparams 1
+	  param inout name "vertex" type class_ref 128386 // Vertex
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${t0} ${p0}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+
+      operation 157314 "makeConnectedComponentWrapperVertex"
+	class_operation public return_type class_ref 130562 // ConnectedComponentWrapperVertex
+	nparams 0
+	
+	java_def "  ${comment}${@}${visibility}${final}${static}${abstract}${synchronized}${type} ${name}${(}${)}${throws}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+      end
+    end
+  end
+end
