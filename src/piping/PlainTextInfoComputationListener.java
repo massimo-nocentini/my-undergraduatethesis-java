@@ -1,19 +1,23 @@
 package piping;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import model.OurModel;
 import model.PlainTextStatsComponents;
 import model.VertexStatsRecorder;
+import dotInterface.DotFileUtilHandler;
 
 public class PlainTextInfoComputationListener implements
 		PipeFilterComputationListener {
 
-	Map<PlainTextStatsComponents, Integer> map;
+	Map<PipeFilter, VertexStatsRecorder> map;
 
 	PlainTextInfoComputationListener() {
-		map = new HashMap<PlainTextStatsComponents, Integer>();
+		map = new HashMap<PipeFilter, VertexStatsRecorder>();
 	}
 
 	@Override
@@ -28,9 +32,15 @@ public class PlainTextInfoComputationListener implements
 
 	}
 
-	public boolean isPlainTextInfoEquals(
+	public boolean isPlainTextInfoEquals(PipeFilter pipeFilter,
 			Map<PlainTextStatsComponents, Integer> otherMap) {
-		return map.equals(otherMap);
+
+		if (map.containsKey(pipeFilter) == false) {
+
+			return false;
+		}
+
+		return map.get(pipeFilter).collectVotes().equals(otherMap);
 	}
 
 	@Override
@@ -40,7 +50,43 @@ public class PlainTextInfoComputationListener implements
 		if (pipeFilterCustomOutput instanceof VertexStatsRecorder) {
 			VertexStatsRecorder vertexStatsRecorder = (VertexStatsRecorder) pipeFilterCustomOutput;
 
-			map.putAll(vertexStatsRecorder.collectVotes());
+			map.put(pipeFilter, vertexStatsRecorder);
 		}
+	}
+
+	public void writeOn(Writer writer) {
+
+		for (Entry<PipeFilter, VertexStatsRecorder> entry : map.entrySet()) {
+			try {
+				writer.append(entry.getKey().collectPhaseInformation()
+						.concat(DotFileUtilHandler.getNewLineSeparator()));
+
+				Map<PlainTextStatsComponents, Integer> collectedStats = entry
+						.getValue().collectVotes();
+
+				StringBuilder line = new StringBuilder();
+				StringBuilder headerLine = new StringBuilder();
+				for (PlainTextStatsComponents component : PlainTextStatsComponents
+						.values()) {
+
+					headerLine.append(DotFileUtilHandler.getTabString().concat(
+							component.name()));
+
+					if (collectedStats.containsKey(component) == true) {
+						line.append(DotFileUtilHandler.getTabString().concat(
+								String.valueOf(collectedStats.get(component))));
+					}
+				}
+
+				writer.append(headerLine.toString().concat(
+						DotFileUtilHandler.getNewLineSeparator()));
+
+				writer.append(line.toString().concat(
+						DotFileUtilHandler.getNewLineSeparator()));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
 }
