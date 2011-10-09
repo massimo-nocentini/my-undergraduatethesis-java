@@ -1,6 +1,6 @@
 package model;
 
 public enum PlainTextStatsComponents {
-	NumberOfVertices, NumberOfEdges, NumberOfSources, NumberOfSinks, NumberOfWhites
+	NOfVertices, NOfEdges, NOfSources, NOfSinks, NOfWhites, NOfComponents
 
 }

@@ -30,18 +30,19 @@ public class PlainTextStatsPipeFilterUnitTest {
 
 		Map<PlainTextStatsComponents, Integer> map = new HashMap<PlainTextStatsComponents, Integer>();
 
-		map.put(PlainTextStatsComponents.NumberOfVertices, 12);
-		map.put(PlainTextStatsComponents.NumberOfEdges, 26);
-		map.put(PlainTextStatsComponents.NumberOfSources, 0);
-		map.put(PlainTextStatsComponents.NumberOfSinks, 1);
-		map.put(PlainTextStatsComponents.NumberOfWhites, 11);
+		map.put(PlainTextStatsComponents.NOfVertices, 12);
+		map.put(PlainTextStatsComponents.NOfEdges, 26);
+		map.put(PlainTextStatsComponents.NOfSources, 0);
+		map.put(PlainTextStatsComponents.NOfSinks, 1);
+		map.put(PlainTextStatsComponents.NOfWhites, 11);
 
 		Writer writer;
 		try {
 			writer = new FileWriter(DotFileUtilHandler
-					.dotOutputFolderPathName().concat(
-							plainTextStatsPipeFilter.collectPhaseInformation()).concat(
-									DotFileUtilHandler.getPlainTextFilenameExtensionToken()));
+					.dotOutputFolderPathName()
+					.concat(plainTextStatsPipeFilter.collectPhaseInformation())
+					.concat(DotFileUtilHandler
+							.getPlainTextFilenameExtensionToken()));
 
 			plainTextInfoComputationListener.writeOn(writer);
 			writer.close();
@@ -51,5 +52,50 @@ public class PlainTextStatsPipeFilterUnitTest {
 
 		Assert.assertTrue(plainTextInfoComputationListener
 				.isPlainTextInfoEquals(plainTextStatsPipeFilter, map));
+	}
+
+	@Test
+	public void gettingInformationFromPapadimitriouModelAfterTarjanPipeFilter() {
+
+		PipeFilter tarjanPipeFilter = PipeFilterFactory.MakeTarjanPipeFilter();
+
+		PipeFilter plainTextStatsPipeFilter = PipeFilterFactory
+				.MakePlainTextStatsPipeFilter();
+
+		plainTextStatsPipeFilter.pipeAfter(tarjanPipeFilter);
+
+		PlainTextInfoComputationListener plainTextInfoComputationListener = new PlainTextInfoComputationListener();
+
+		plainTextStatsPipeFilter
+				.applyWithListener(
+						"gettingInformationFromPapadimitriouModelAfterTarjanPipeFilter",
+						ModelsRepository.makePapadimitriouModel(),
+						plainTextInfoComputationListener);
+
+		// Map<PlainTextStatsComponents, Integer> map = new
+		// HashMap<PlainTextStatsComponents, Integer>();
+		//
+		// map.put(PlainTextStatsComponents.NOfVertices, 12);
+		// map.put(PlainTextStatsComponents.NOfEdges, 26);
+		// map.put(PlainTextStatsComponents.NOfSources, 0);
+		// map.put(PlainTextStatsComponents.NOfSinks, 1);
+		// map.put(PlainTextStatsComponents.NOfWhites, 11);
+
+		Writer writer;
+		try {
+			writer = new FileWriter(DotFileUtilHandler
+					.dotOutputFolderPathName()
+					.concat(plainTextStatsPipeFilter.collectPhaseInformation())
+					.concat(DotFileUtilHandler
+							.getPlainTextFilenameExtensionToken()));
+
+			plainTextInfoComputationListener.writeOn(writer);
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		// Assert.assertTrue(plainTextInfoComputationListener
+		// .isPlainTextInfoEquals(plainTextStatsPipeFilter, map));
 	}
 }

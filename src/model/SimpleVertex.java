@@ -5,6 +5,8 @@ import java.io.Writer;
 import java.util.Set;
 import java.util.TreeSet;
 
+import model.VertexStatsRecorder.SimpleVertexVoteAccepter;
+
 import org.sbml.jsbml.Species;
 
 import dotInterface.DotExporter;
@@ -349,9 +351,18 @@ public class SimpleVertex implements Vertex {
 	@Override
 	public void publishYourStatsOn(VertexStatsRecorder vertexStatsRecorder) {
 
-		// TODO: create a property for catch the white color?
-		vertexStatsRecorder.recordSimpleVertex(neighbors.size(), isSource(),
-				isSink(), !(isSource() || isSink()));
+		SimpleVertexVoteAccepter voteAccepter = vertexStatsRecorder
+				.recordSimpleVertex();
 
+		voteAccepter.pushEdges(neighbors.size());
+
+		if (isSink()) {
+			voteAccepter.pushSink();
+		} else if (isSource()) {
+			voteAccepter.pushSource();
+		} else {
+			voteAccepter.pushWhite();
+		}
 	}
+
 }

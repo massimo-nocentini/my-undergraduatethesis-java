@@ -40,7 +40,7 @@ public class PlainTextInfoComputationListener implements
 			return false;
 		}
 
-		return map.get(pipeFilter).collectVotes().equals(otherMap);
+		return map.get(pipeFilter).isSimpleVerticesVotesEquals(otherMap);
 	}
 
 	@Override
@@ -61,28 +61,8 @@ public class PlainTextInfoComputationListener implements
 				writer.append(entry.getKey().collectPhaseInformation()
 						.concat(DotFileUtilHandler.getNewLineSeparator()));
 
-				Map<PlainTextStatsComponents, Integer> collectedStats = entry
-						.getValue().collectVotes();
+				entry.getValue().writeOn(writer);
 
-				StringBuilder line = new StringBuilder();
-				StringBuilder headerLine = new StringBuilder();
-				for (PlainTextStatsComponents component : PlainTextStatsComponents
-						.values()) {
-
-					headerLine.append(DotFileUtilHandler.getTabString().concat(
-							component.name()));
-
-					if (collectedStats.containsKey(component) == true) {
-						line.append(DotFileUtilHandler.getTabString().concat(
-								String.valueOf(collectedStats.get(component))));
-					}
-				}
-
-				writer.append(headerLine.toString().concat(
-						DotFileUtilHandler.getNewLineSeparator()));
-
-				writer.append(line.toString().concat(
-						DotFileUtilHandler.getNewLineSeparator()));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
