@@ -164,4 +164,9 @@ public abstract class WrapperVertex implements Vertex {
 	public int compareTo(Vertex o) {
 		return wrappedVertex.compareTo(o);
 	}
+
+	@Override
+	public void publishYourStatsOn(VertexStatsRecorder vertexStatsRecorder) {
+
+	}
 }

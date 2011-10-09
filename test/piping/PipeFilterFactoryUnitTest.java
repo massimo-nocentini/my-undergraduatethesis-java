@@ -51,11 +51,25 @@ public class PipeFilterFactoryUnitTest {
 	 */
 	@Test
 	public void creationOfTarjanPipeFilter() {
-		PipeFilter byPassPipeFilter = PipeFilterFactory.MakeTarjanPipeFilter();
+		PipeFilter tarjanPipeFilter = PipeFilterFactory.MakeTarjanPipeFilter();
 
-		Assert.assertNotNull(byPassPipeFilter);
-		Assert.assertTrue(byPassPipeFilter
+		Assert.assertNotNull(tarjanPipeFilter);
+		Assert.assertTrue(tarjanPipeFilter
 				.isYourTagEquals(AvailableFilters.Tarjan));
+	}
+
+	/**
+	 * This test assures that the factory PipeFilterFactory builds a
+	 * PlainTextStats filter correctly
+	 */
+	@Test
+	public void creationOfPlainTextStatsPipeFilter() {
+		PipeFilter plainTextStatsPipeFilter = PipeFilterFactory
+				.MakePlainTextStatsPipeFilter();
+
+		Assert.assertNotNull(plainTextStatsPipeFilter);
+		Assert.assertTrue(plainTextStatsPipeFilter
+				.isYourTagEquals(AvailableFilters.PlainTextStats));
 	}
 
 }

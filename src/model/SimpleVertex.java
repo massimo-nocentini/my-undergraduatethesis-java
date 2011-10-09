@@ -346,4 +346,12 @@ public class SimpleVertex implements Vertex {
 		// to draw near the vertex box.
 	}
 
+	@Override
+	public void publishYourStatsOn(VertexStatsRecorder vertexStatsRecorder) {
+
+		// TODO: create a property for catch the white color?
+		vertexStatsRecorder.recordSimpleVertex(neighbors.size(), isSource(),
+				isSink(), !(isSource() || isSink()));
+
+	}
 }

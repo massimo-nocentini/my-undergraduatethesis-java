@@ -222,8 +222,10 @@ public class OnePipingLevelUnitTest {
 	public void OnePipingLevelUnitTest_Tarjan_RealEscherichiaColiK12() {
 		String pipelineName = "OnePipingLevelUnitTest_Tarjan_RealEscherichiaColiK12";
 
-		OurModel escherichiaColiK12Model = OurModel.makeOurModelFrom(DotFileUtilHandler
-				.getSbmlExampleModelsFolder().concat("EscherichiaColiK12.xml"));
+		OurModel escherichiaColiK12Model = OurModel
+				.makeOurModelFrom(DotFileUtilHandler
+						.getSbmlExampleModelsFolder().concat(
+								"EscherichiaColiK12.xml"));
 
 		PipeFilter tarjanPipeFilter = PipeFilterFactory.MakeTarjanPipeFilter();
 
@@ -335,6 +337,12 @@ public class OnePipingLevelUnitTest {
 
 						callbackSignalRecorder.signal();
 						actualList.add(inputModel);
+					}
+
+					@Override
+					public void onComputationFinished(PipeFilter pipeFilter,
+							Object pipeFilterCustomOutput) {
+
 					}
 				});
 

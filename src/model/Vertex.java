@@ -73,4 +73,7 @@ public interface Vertex extends DotExportable, Comparable<Vertex> {
 
 	public abstract SimpleVertex asSimpleVertex();
 
+	public abstract void publishYourStatsOn(
+			VertexStatsRecorder vertexStatsRecorder);
+
 }

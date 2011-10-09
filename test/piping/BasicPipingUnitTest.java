@@ -36,6 +36,12 @@ public class BasicPipingUnitTest {
 						callbackSignalRecorder.signal();
 						Assert.assertEquals(inputModel, innerInputModel);
 					}
+
+					@Override
+					public void onComputationFinished(PipeFilter pipeFilter,
+							Object pipeFilterCustomOutput) {
+
+					}
 				});
 
 		Assert.assertTrue(callbackSignalRecorder.isSignaled());
@@ -77,6 +83,12 @@ public class BasicPipingUnitTest {
 					String collectedPhaseInformation, OurModel inputModel) {
 
 				Assert.fail("The computation must continue, no reason to stop it.");
+			}
+
+			@Override
+			public void onComputationFinished(PipeFilter pipeFilter,
+					Object pipeFilterCustomOutput) {
+
 			}
 
 		};

@@ -18,4 +18,8 @@ public class PipeFilterFactory {
 		return new TarjanPipeFilter();
 	}
 
+	public static PipeFilter MakePlainTextStatsPipeFilter() {
+		return new PlainTextStatsPipeFilter();
+	}
+
 }

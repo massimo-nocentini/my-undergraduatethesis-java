@@ -9,4 +9,7 @@ public interface PipeFilterComputationListener {
 	void onSkippedComputation(PipeFilter pipeFilter,
 			String collectedPhaseInformation, OurModel inputModel);
 
+	void onComputationFinished(PipeFilter pipeFilter,
+			Object pipeFilterCustomOutput);
+
 }

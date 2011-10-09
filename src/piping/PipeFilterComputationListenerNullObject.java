@@ -16,4 +16,10 @@ public class PipeFilterComputationListenerNullObject implements
 
 	}
 
+	@Override
+	public void onComputationFinished(PipeFilter pipeFilter,
+			Object pipeFilterCustomOutput) {
+
+	}
+
 }

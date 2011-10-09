@@ -36,6 +36,12 @@ public class ByPassPipeFilterUnitTest {
 
 						computationStartedRecorder.signal();
 					}
+
+					@Override
+					public void onComputationFinished(PipeFilter pipeFilter,
+							Object pipeFilterCustomOutput) {
+
+					}
 				});
 
 		Assert.assertTrue(computationStartedRecorder.isSignaled());
