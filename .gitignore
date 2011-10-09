@@ -1,6 +1,7 @@
 bin/
 test.sbml.xml
-dot-test-files/tests-output/
+dot-test-files/tests-output/*.svg
+dot-test-files/tests-output/*.dot
 *.log*
 dot-test-files/*.svg
 
