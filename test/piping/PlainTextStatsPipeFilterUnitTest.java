@@ -40,7 +40,8 @@ public class PlainTextStatsPipeFilterUnitTest {
 		try {
 			writer = new FileWriter(DotFileUtilHandler
 					.dotOutputFolderPathName().concat(
-							plainTextStatsPipeFilter.collectPhaseInformation()));
+							plainTextStatsPipeFilter.collectPhaseInformation()).concat(
+									DotFileUtilHandler.getPlainTextFilenameExtensionToken()));
 
 			plainTextInfoComputationListener.writeOn(writer);
 			writer.close();

@@ -182,4 +182,8 @@ public class DotFileUtilHandler {
 		return " -> ";
 	}
 
+	public static String getPlainTextFilenameExtensionToken() {
+		return ".txt";
+	}
+
 }

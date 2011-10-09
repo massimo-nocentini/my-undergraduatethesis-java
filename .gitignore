@@ -2,6 +2,7 @@ bin/
 test.sbml.xml
 dot-test-files/tests-output/*.svg
 dot-test-files/tests-output/*.dot
+dot-test-files/tests-output/*.txt
 *.log*
 dot-test-files/*.svg
 
