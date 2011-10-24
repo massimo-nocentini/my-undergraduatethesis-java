@@ -187,4 +187,69 @@ public class OurModel implements DotExportable {
 		}
 	}
 
+	public OurModel collapseSources() {
+		final Set<Vertex> sources = new TreeSet<Vertex>();
+
+		final Vertex newCollapsedSource = VertexFactory.makeSimpleVertex();
+
+		final VertexLogicApplier appendNeighbourToNewSource = new VertexLogicApplier() {
+
+			@Override
+			public void apply(Vertex vertex) {
+				newCollapsedSource.addNeighbour(vertex);
+			}
+		};
+
+		VertexLogicApplier sourceCollapser = new VertexLogicApplier() {
+
+			@Override
+			public void apply(Vertex source) {
+
+				// keep track of the source that I'm now currently scanning
+				sources.add(source);
+
+				// for each neighbor of this current source we add
+				// them to the neighborhood of the new source that
+				// collapse the others.
+				source.doOnNeighbors(appendNeighbourToNewSource);
+			}
+		};
+
+		this.applyOnSources(sourceCollapser);
+
+		// now we can add the source to the vertices set if
+		// it is not a sink (hence must have at least a neighbor)
+		if (newCollapsedSource.isSink() == false) {
+			this.vertices.add(newCollapsedSource);
+
+			for (Vertex source : sources) {
+				// for all neighbors of the source that we want to remove
+				// we have to broke the direct ancestor relation, decoupling
+				// the neighbor from the source that are going to be deleted.
+				source.brokeYourNeighborhoodRelations();
+
+				// now we can erase the source from our model
+				vertices.remove(source);
+			}
+		}
+
+		return this;
+	}
+
+	private void applyOnSources(VertexLogicApplier sourceCollapser) {
+		for (Vertex vertex : vertices) {
+			if (vertex.isSource() == true) {
+				sourceCollapser.apply(vertex);
+			}
+		}
+	}
+
+	public boolean isVertices(Set<Vertex> vertices) {
+		return this.vertices.equals(vertices);
+	}
+
+	public boolean isVerticesCount(int guess) {
+		return vertices.size() == guess;
+	}
+
 }

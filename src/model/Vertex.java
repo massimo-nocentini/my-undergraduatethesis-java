@@ -76,4 +76,8 @@ public interface Vertex extends DotExportable, Comparable<Vertex> {
 	public abstract void publishYourStatsOn(
 			VertexStatsRecorder vertexStatsRecorder);
 
+	public abstract void brokeDirectAncestorRelationWith(Vertex source);
+
+	public abstract void brokeYourNeighborhoodRelations();
+
 }

@@ -365,4 +365,29 @@ public class SimpleVertex implements Vertex {
 		}
 	}
 
+	@Override
+	public void brokeDirectAncestorRelationWith(Vertex source) {
+
+		if (directAncestors.contains(source)) {
+			directAncestors.remove(source);
+		}
+	}
+
+	@Override
+	public void brokeYourNeighborhoodRelations() {
+
+		final VertexLogicApplierWithNeighborhoodRelation directAncestorBroker = new VertexLogicApplierWithNeighborhoodRelation() {
+
+			@Override
+			public void apply(Vertex source, Vertex neighbour) {
+
+				neighbour.brokeDirectAncestorRelationWith(source);
+
+				neighbors.remove(neighbour);
+			}
+		};
+
+		doOnNeighbors(directAncestorBroker);
+	}
+
 }

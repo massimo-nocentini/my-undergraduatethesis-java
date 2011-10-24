@@ -169,4 +169,15 @@ public abstract class WrapperVertex implements Vertex {
 	public void publishYourStatsOn(VertexStatsRecorder vertexStatsRecorder) {
 
 	}
+
+	@Override
+	public void brokeDirectAncestorRelationWith(Vertex source) {
+		wrappedVertex.brokeDirectAncestorRelationWith(source);
+	}
+
+	@Override
+	public void brokeYourNeighborhoodRelations() {
+		wrappedVertex.brokeYourNeighborhoodRelations();
+	}
+
 }

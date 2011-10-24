@@ -79,10 +79,8 @@ public class OurModelUnitTest {
 
 		OurModel tarjanModel = ModelsRepository.makeTarjanModel();
 
-		DfsEventsListener dfsEventListener = new DfsEventsListenerNullImplementor();
-
 		OurModel returnedtarjanModel = tarjanModel
-				.runDepthFirstSearch(dfsEventListener);
+				.runDepthFirstSearch(new DfsEventsListenerNullImplementor());
 
 		Assert.assertNotNull(returnedtarjanModel);
 		Assert.assertSame(tarjanModel, returnedtarjanModel);
@@ -195,5 +193,68 @@ public class OurModelUnitTest {
 				exampleVertex, logicApplier);
 
 		Assert.assertFalse(recorder.isSignaled());
+	}
+
+	@Test
+	public void collapseAllSourcesIntoOneOfEmptyModel() {
+		OurModel model = OurModel.makeEmptyModel();
+
+		OurModel collapsedModel = model.collapseSources();
+
+		final CallbackSignalRecorder recorder = new CallbackSignalRecorder();
+
+		VertexLogicApplier sourcesRecorder = new VertexLogicApplier() {
+
+			@Override
+			public void apply(Vertex vertex) {
+				if (vertex.isSource()) {
+					recorder.signal();
+				}
+			}
+		};
+
+		Assert.assertNotNull(collapsedModel);
+		Assert.assertSame(model, collapsedModel);
+
+		collapsedModel.doOnVertices(sourcesRecorder);
+
+		Assert.assertTrue(collapsedModel.isEmpty());
+		Assert.assertFalse(recorder.isSignaled());
+	}
+
+	@Test
+	public void collapseAllSourcesIntoOne() {
+		Set<Vertex> vertices = new HashSet<Vertex>();
+
+		Vertex source = VertexFactory.makeSimpleVertex();
+		Vertex sink = VertexFactory.makeSimpleVertex();
+
+		source.addNeighbour(sink);
+
+		vertices.add(source);
+		vertices.add(sink);
+
+		OurModel collapsedModel = OurModel.makeOurModelFrom(vertices)
+				.collapseSources();
+
+		final CallbackSignalRecorder recorder = new CallbackSignalRecorder();
+
+		VertexLogicApplier sourcesRecorder = new VertexLogicApplier() {
+
+			@Override
+			public void apply(Vertex vertex) {
+				if (vertex.isSource() == true) {
+					recorder.signal();
+				}
+			}
+		};
+
+		Assert.assertNotNull(collapsedModel);
+
+		collapsedModel.doOnVertices(sourcesRecorder);
+
+		Assert.assertTrue(recorder.isCountOfSignals(1));
+		Assert.assertTrue(collapsedModel.isVerticesCount(2));
+		Assert.assertFalse(collapsedModel.isVertices(vertices));
 	}
 }
