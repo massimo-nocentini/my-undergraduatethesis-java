@@ -80,4 +80,6 @@ public interface Vertex extends DotExportable, Comparable<Vertex> {
 
 	public abstract void brokeYourNeighborhoodRelations();
 
+	public abstract boolean isYourAncestorsEmpty();
+
 }

@@ -382,12 +382,21 @@ public class SimpleVertex implements Vertex {
 			public void apply(Vertex source, Vertex neighbour) {
 
 				neighbour.brokeDirectAncestorRelationWith(source);
-
-				neighbors.remove(neighbour);
 			}
 		};
 
 		doOnNeighbors(directAncestorBroker);
+
+		// we have to send the following message here and not in the
+		// anonymous implementation of the applier otherwise we get a
+		// concurrent exception because we are trying to modify the source
+		// object
+		neighbors.clear();
+	}
+
+	@Override
+	public boolean isYourAncestorsEmpty() {
+		return directAncestors.size() == 0;
 	}
 
 }

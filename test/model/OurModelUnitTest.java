@@ -199,7 +199,7 @@ public class OurModelUnitTest {
 	public void collapseAllSourcesIntoOneOfEmptyModel() {
 		OurModel model = OurModel.makeEmptyModel();
 
-		OurModel collapsedModel = model.collapseSources();
+		Vertex newSource = model.collapseSources();
 
 		final CallbackSignalRecorder recorder = new CallbackSignalRecorder();
 
@@ -213,17 +213,15 @@ public class OurModelUnitTest {
 			}
 		};
 
-		Assert.assertNotNull(collapsedModel);
-		Assert.assertSame(model, collapsedModel);
+		model.doOnVertices(sourcesRecorder);
 
-		collapsedModel.doOnVertices(sourcesRecorder);
-
-		Assert.assertTrue(collapsedModel.isEmpty());
+		Assert.assertNull(newSource);
 		Assert.assertFalse(recorder.isSignaled());
 	}
 
 	@Test
-	public void collapseAllSourcesIntoOne() {
+	public void collapseTheSingleSourceIntoANewOne() {
+
 		Set<Vertex> vertices = new HashSet<Vertex>();
 
 		Vertex source = VertexFactory.makeSimpleVertex();
@@ -234,8 +232,13 @@ public class OurModelUnitTest {
 		vertices.add(source);
 		vertices.add(sink);
 
-		OurModel collapsedModel = OurModel.makeOurModelFrom(vertices)
-				.collapseSources();
+		OurModel collapsedModel = OurModel.makeOurModelFrom(vertices);
+
+		Vertex newSource = collapsedModel.collapseSources();
+
+		Set<Vertex> expectedVerticesInsideModel = new HashSet<Vertex>();
+		expectedVerticesInsideModel.add(newSource);
+		expectedVerticesInsideModel.add(sink);
 
 		final CallbackSignalRecorder recorder = new CallbackSignalRecorder();
 
@@ -255,6 +258,68 @@ public class OurModelUnitTest {
 
 		Assert.assertTrue(recorder.isCountOfSignals(1));
 		Assert.assertTrue(collapsedModel.isVerticesCount(2));
+
 		Assert.assertFalse(collapsedModel.isVertices(vertices));
+		Assert.assertTrue(collapsedModel
+				.isVertices(expectedVerticesInsideModel));
+	}
+
+	@Test
+	public void collapseSources() {
+
+		Set<Vertex> vertices = new HashSet<Vertex>();
+
+		Vertex source1 = VertexFactory.makeSimpleVertex();
+		Vertex source2 = VertexFactory.makeSimpleVertex();
+		Vertex source3 = VertexFactory.makeSimpleVertex();
+
+		Vertex white = VertexFactory.makeSimpleVertex();
+
+		Vertex sink = VertexFactory.makeSimpleVertex();
+
+		source1.addNeighbour(white);
+		source2.addNeighbour(white);
+
+		source3.addNeighbour(sink);
+
+		white.addNeighbour(sink);
+
+		vertices.add(source1);
+		vertices.add(source2);
+		vertices.add(source3);
+		vertices.add(white);
+		vertices.add(sink);
+
+		OurModel collapsedModel = OurModel.makeOurModelFrom(vertices);
+
+		Vertex newSource = collapsedModel.collapseSources();
+
+		Set<Vertex> expectedVerticesInsideModel = new HashSet<Vertex>();
+		expectedVerticesInsideModel.add(newSource);
+		expectedVerticesInsideModel.add(white);
+		expectedVerticesInsideModel.add(sink);
+
+		final CallbackSignalRecorder recorder = new CallbackSignalRecorder();
+
+		VertexLogicApplier sourcesRecorder = new VertexLogicApplier() {
+
+			@Override
+			public void apply(Vertex vertex) {
+				if (vertex.isSource() == true) {
+					recorder.signal();
+				}
+			}
+		};
+
+		Assert.assertNotNull(collapsedModel);
+
+		collapsedModel.doOnVertices(sourcesRecorder);
+
+		Assert.assertTrue(recorder.isCountOfSignals(1));
+		Assert.assertTrue(collapsedModel.isVerticesCount(3));
+
+		Assert.assertFalse(collapsedModel.isVertices(vertices));
+		Assert.assertTrue(collapsedModel
+				.isVertices(expectedVerticesInsideModel));
 	}
 }

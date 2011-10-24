@@ -171,6 +171,11 @@ public abstract class WrapperVertex implements Vertex {
 	}
 
 	@Override
+	public boolean isYourAncestorsEmpty() {
+		return wrappedVertex.isYourAncestorsEmpty();
+	}
+
+	@Override
 	public void brokeDirectAncestorRelationWith(Vertex source) {
 		wrappedVertex.brokeDirectAncestorRelationWith(source);
 	}

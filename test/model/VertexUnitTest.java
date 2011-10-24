@@ -619,4 +619,78 @@ public class VertexUnitTest {
 		Assert.assertNotSame(vertex, clonedVertex);
 		Assert.assertTrue(clonedVertex.isYourNeighborhoodEmpty());
 	}
+
+	@Test
+	public void brokeYourNeighborhoodRelationsVacously() {
+
+		Vertex source = VertexFactory.makeSimpleVertex();
+
+		source.brokeYourNeighborhoodRelations();
+
+		Assert.assertTrue(source.isYourNeighborhoodEmpty());
+	}
+
+	@Test
+	public void brokeDirectAncestorRelationWithSimple() {
+
+		Vertex source = VertexFactory.makeSimpleVertex();
+		Vertex sink = VertexFactory.makeSimpleVertex();
+
+		source.addNeighbour(sink);
+
+		sink.brokeDirectAncestorRelationWith(source);
+
+		Assert.assertFalse(source.isYourNeighborhoodEmpty());
+		Assert.assertTrue(sink.isYourNeighborhoodEmpty());
+	}
+
+	@Test
+	public void brokeDirectAncestorRelationWithVacously() {
+
+		Vertex source = VertexFactory.makeSimpleVertex();
+		Vertex sink = VertexFactory.makeSimpleVertex();
+
+		source.addNeighbour(sink);
+
+		sink.brokeDirectAncestorRelationWith(VertexFactory.makeSimpleVertex());
+
+		Assert.assertFalse(source.isYourNeighborhoodEmpty());
+		Assert.assertFalse(sink.isYourAncestorsEmpty());
+	}
+
+	@Test
+	public void brokeDirectAncestorRelationWithIbridSituation() {
+
+		Vertex source = VertexFactory.makeSimpleVertex();
+		Vertex sink = VertexFactory.makeSimpleVertex();
+		Vertex sink2 = VertexFactory.makeSimpleVertex();
+
+		source.addNeighbour(sink).addNeighbour(sink2);
+
+		sink.brokeDirectAncestorRelationWith(source);
+
+		Set<Vertex> expectedNeighborhood = new HashSet<Vertex>();
+		expectedNeighborhood.add(sink2);
+
+		Assert.assertFalse(source
+				.isYourNeighborhoodEquals(expectedNeighborhood));
+		Assert.assertFalse(sink2.isYourAncestorsEmpty());
+		Assert.assertTrue(sink.isYourAncestorsEmpty());
+	}
+
+	@Test
+	public void brokeYourNeighborhoodRelations() {
+
+		Vertex source = VertexFactory.makeSimpleVertex();
+		Vertex sink = VertexFactory.makeSimpleVertex();
+		Vertex sink2 = VertexFactory.makeSimpleVertex();
+
+		source.addNeighbour(sink).addNeighbour(sink2);
+
+		source.brokeYourNeighborhoodRelations();
+
+		Assert.assertTrue(source.isYourNeighborhoodEmpty());
+		Assert.assertTrue(sink2.isYourAncestorsEmpty());
+		Assert.assertTrue(sink.isYourAncestorsEmpty());
+	}
 }

@@ -187,7 +187,7 @@ public class OurModel implements DotExportable {
 		}
 	}
 
-	public OurModel collapseSources() {
+	public Vertex collapseSources() {
 		final Set<Vertex> sources = new TreeSet<Vertex>();
 
 		final Vertex newCollapsedSource = VertexFactory.makeSimpleVertex();
@@ -231,9 +231,13 @@ public class OurModel implements DotExportable {
 				// now we can erase the source from our model
 				vertices.remove(source);
 			}
+		} else {
+			// we haven't introduced any new source so we
+			// don't return nothing.
+			return null;
 		}
 
-		return this;
+		return newCollapsedSource;
 	}
 
 	private void applyOnSources(VertexLogicApplier sourceCollapser) {
