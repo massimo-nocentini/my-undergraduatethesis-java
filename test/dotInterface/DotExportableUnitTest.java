@@ -42,10 +42,12 @@ public class DotExportableUnitTest {
 
 		OurModel.collectVertexDefinitionInto(expectedVertexDefinitionPart, v);
 
-		Assert.assertTrue(exporter
+		DotDocumentPartHandlerTestingBehaviour dotDocumentPartHandlerTestingBehaviour = (DotDocumentPartHandlerTestingBehaviour) exporter;
+
+		Assert.assertTrue(dotDocumentPartHandlerTestingBehaviour
 				.isVertexDefinitionPartEquals(expectedVertexDefinitionPart));
 
-		Assert.assertTrue(exporter
+		Assert.assertTrue(dotDocumentPartHandlerTestingBehaviour
 				.isEdgeDefinitionPartEquals(new HashSet<String>()));
 
 		DotFileUtilHandler
@@ -102,10 +104,12 @@ public class DotExportableUnitTest {
 
 		OurModel.collectEdgeDefinitionInto(expectedEdgeDefinitionPart, v2, v3);
 
-		Assert.assertTrue(exporter
+		DotDocumentPartHandlerTestingBehaviour dotDocumentPartHandlerTestingBehaviour = (DotDocumentPartHandlerTestingBehaviour) exporter;
+
+		Assert.assertTrue(dotDocumentPartHandlerTestingBehaviour
 				.isVertexDefinitionPartEquals(expectedVertexDefinitionPart));
 
-		Assert.assertTrue(exporter
+		Assert.assertTrue(dotDocumentPartHandlerTestingBehaviour
 				.isEdgeDefinitionPartEquals(expectedEdgeDefinitionPart));
 
 		DotFileUtilHandler.MakeHandler("simpleThreeNodeChainDotExporting")
@@ -132,10 +136,12 @@ public class DotExportableUnitTest {
 		Assert.assertEquals(12, expectedEdgeDefinitionPart.size());
 		Assert.assertEquals(8, expectedVertexDefinitionPart.size());
 
-		Assert.assertTrue(exporter
+		DotDocumentPartHandlerTestingBehaviour dotDocumentPartHandlerTestingBehaviour = (DotDocumentPartHandlerTestingBehaviour) exporter;
+
+		Assert.assertTrue(dotDocumentPartHandlerTestingBehaviour
 				.isVertexDefinitionPartEquals(expectedVertexDefinitionPart));
 
-		Assert.assertTrue(exporter
+		Assert.assertTrue(dotDocumentPartHandlerTestingBehaviour
 				.isEdgeDefinitionPartEquals(expectedEdgeDefinitionPart));
 
 		DotFileUtilHandler.MakeHandler("tarjanPaperTestNetwork")

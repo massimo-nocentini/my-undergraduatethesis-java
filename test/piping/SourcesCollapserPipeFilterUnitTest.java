@@ -2,14 +2,11 @@ package piping;
 
 import junit.framework.Assert;
 import model.OurModel;
-
-import org.junit.Test;
-
 import dotInterface.DotFileUtilHandler;
 
 public class SourcesCollapserPipeFilterUnitTest {
 
-	@Test
+	// @Test
 	public void realBartonellaQuintanaToulouse_Parsing_CollapsingSources() {
 		String pipelineName = "realBartonellaQuintanaToulouse_Parsing_CollapsingSources";
 

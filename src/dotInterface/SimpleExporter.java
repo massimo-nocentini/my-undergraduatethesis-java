@@ -8,7 +8,8 @@ import java.util.Set;
 
 import model.Vertex;
 
-public class SimpleExporter implements DotExporter {
+public class SimpleExporter implements DotExporter,
+		DotDocumentPartHandlerTestingBehaviour {
 
 	private final Set<String> verticesDefinitionDotRepresentation;
 	private final Set<String> verticesLabelsDefinitionDotRepresentation;
@@ -48,8 +49,8 @@ public class SimpleExporter implements DotExporter {
 		return this;
 	}
 
-	private DotExporter collectSetOfElementsInto(Writer outputPlugObject,
-			Set<String> elements) {
+	private DotDocumentPartHandler collectSetOfElementsInto(
+			Writer outputPlugObject, Set<String> elements) {
 
 		for (String dotElement : elements) {
 			try {
@@ -111,6 +112,7 @@ public class SimpleExporter implements DotExporter {
 
 		collectSetOfElementsInto(outputPlugObject,
 				generalSettingsDotRepresentation);
+
 		return this;
 	}
 
