@@ -22,4 +22,8 @@ public class PipeFilterFactory {
 		return new PlainTextStatsPipeFilter();
 	}
 
+	public static PipeFilter MakeSourcesCollapserPipeFilter() {
+		return new SourcesCollapserPipeFilter();
+	}
+
 }

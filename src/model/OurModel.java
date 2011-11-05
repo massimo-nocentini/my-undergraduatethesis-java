@@ -23,11 +23,13 @@ public class OurModel implements DotExportable {
 
 	private OurModel(Set<Vertex> vertices) {
 
-		this.vertices = new TreeSet<Vertex>();
+		this.vertices = new TreeSet<Vertex>(vertices);
 
-		for (Vertex vertex : vertices) {
-			this.vertices.add(vertex);
-		}
+		// this.vertices.addAll(vertices);
+
+		// for (Vertex vertex : vertices) {
+		// this.vertices.add(vertex);
+		// }
 	}
 
 	public boolean isEmpty() {
@@ -254,6 +256,11 @@ public class OurModel implements DotExportable {
 
 	public boolean isVerticesCount(int guess) {
 		return vertices.size() == guess;
+	}
+
+	public OurModel cloneYourself() {
+
+		return OurModel.makeOurModelFrom(vertices);
 	}
 
 }

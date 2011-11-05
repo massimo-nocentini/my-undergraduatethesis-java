@@ -72,4 +72,18 @@ public class PipeFilterFactoryUnitTest {
 				.isYourTagEquals(AvailableFilters.PlainTextStats));
 	}
 
+	/**
+	 * This test assures that the factory PipeFilterFactory builds a
+	 * PlainTextStats filter correctly
+	 */
+	@Test
+	public void creationOfSourcesCollapserPipeFilter() {
+		PipeFilter sourcesCollapserPipeFilter = PipeFilterFactory
+				.MakeSourcesCollapserPipeFilter();
+
+		Assert.assertNotNull(sourcesCollapserPipeFilter);
+		Assert.assertTrue(sourcesCollapserPipeFilter
+				.isYourTagEquals(AvailableFilters.SourcesCollapser));
+	}
+
 }

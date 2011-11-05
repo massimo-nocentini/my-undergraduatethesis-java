@@ -17,6 +17,7 @@ import org.junit.Test;
 import tarjan.DfsEventsListener;
 import tarjan.DfsEventsListenerNullImplementor;
 import util.CallbackSignalRecorder;
+import dotInterface.DotFileUtilHandler;
 
 public class OurModelUnitTest {
 
@@ -321,5 +322,77 @@ public class OurModelUnitTest {
 		Assert.assertFalse(collapsedModel.isVertices(vertices));
 		Assert.assertTrue(collapsedModel
 				.isVertices(expectedVerticesInsideModel));
+	}
+
+	@Test
+	public void cloneOurModelWithoutVertices() {
+		OurModel model = OurModel.makeEmptyModel();
+
+		OurModel clone = model.cloneYourself();
+
+		Assert.assertNotNull(clone);
+		Assert.assertNotSame(model, clone);
+
+		Assert.assertTrue(clone.isEmpty());
+	}
+
+	@Test
+	public void cloneOurModelWithVertices() {
+
+		Set<Vertex> vertices = new HashSet<Vertex>();
+		Vertex v1 = VertexFactory.makeSimpleVertex();
+		Vertex v2 = VertexFactory.makeSimpleVertex();
+		Vertex v3 = VertexFactory.makeSimpleVertex();
+		Vertex v4 = VertexFactory.makeSimpleVertex();
+
+		// make a cycle
+		v1.addNeighbour(v2);
+		v2.addNeighbour(v3);
+		v3.addNeighbour(v1);
+
+		vertices.add(v1);
+		vertices.add(v2);
+		vertices.add(v3);
+		vertices.add(v4);
+
+		OurModel model = OurModel.makeOurModelFrom(vertices);
+
+		OurModel clone = model.cloneYourself();
+
+		Assert.assertNotNull(clone);
+		Assert.assertNotSame(model, clone);
+
+		Assert.assertFalse(clone.isEmpty());
+		Assert.assertTrue(clone.isVertices(vertices));
+
+	}
+
+	@Test
+	public void realBartonellaQuintanaToulouse_Parsing_CollapsingSources() {
+
+		OurModel bartonellaModel = OurModel.makeOurModelFrom(DotFileUtilHandler
+				.getSbmlExampleModelsFolder().concat(
+						"BartonellaQuintanaToulouse.xml"));
+
+		@SuppressWarnings("unused")
+		Vertex collapseSource = bartonellaModel.collapseSources();
+
+		final CallbackSignalRecorder recorder = new CallbackSignalRecorder();
+
+		VertexLogicApplier sourceRecorder = new VertexLogicApplier() {
+
+			@Override
+			public void apply(Vertex vertex) {
+				if (vertex.isSource()) {
+					recorder.signal();
+				}
+			}
+		};
+
+		bartonellaModel.doOnVertices(sourceRecorder);
+
+		Assert.assertTrue(recorder.isCountOfSignals(1));
+		Assert.assertFalse(recorder.isCountOfSignals(0));
+		Assert.assertFalse(recorder.isCountOfSignals(49));
 	}
 }
