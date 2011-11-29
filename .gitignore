@@ -5,4 +5,4 @@ dot-test-files/tests-output/*.dot
 dot-test-files/tests-output/*.txt
 *.log*
 dot-test-files/*.svg
-
+*~
