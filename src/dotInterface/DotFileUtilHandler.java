@@ -135,18 +135,20 @@ public class DotFileUtilHandler {
 
 	public void produceSvgOutput() {
 
-		String dotCommand = "dot -Tsvg " + file.getAbsolutePath() + " -o "
-				+ file.getAbsolutePath().replace(".dot", "") + ".svg";
+		return;
 
-		String command = dotCommand;
-
-		try {
-			Runtime.getRuntime().exec(command).waitFor();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		// String dotCommand = "dot -Tsvg " + file.getAbsolutePath() + " -o "
+		// + file.getAbsolutePath().replace(".dot", "") + ".svg";
+		//
+		// String command = dotCommand;
+		//
+		// try {
+		// Runtime.getRuntime().exec(command).waitFor();
+		// } catch (InterruptedException e) {
+		// e.printStackTrace();
+		// } catch (IOException e) {
+		// e.printStackTrace();
+		// }
 	}
 
 	public static String composeSquareBracketsWrapping(String wrappingContent) {

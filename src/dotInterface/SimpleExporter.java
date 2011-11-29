@@ -8,7 +8,7 @@ import java.util.Set;
 
 import model.Vertex;
 
-public class SimpleExporter implements DotExporter,
+public class SimpleExporter implements DotExporter, DotDocumentPartHandler,
 		DotDocumentPartHandlerTestingBehaviour {
 
 	private final Set<String> verticesDefinitionDotRepresentation;
@@ -33,20 +33,27 @@ public class SimpleExporter implements DotExporter,
 		initGeneralSettings();
 	}
 
+	private void initGeneralSettings() {
+		generalSettingsDotRepresentation.add("ratio=1");
+		generalSettingsDotRepresentation.add("center = true");
+		generalSettingsDotRepresentation
+				.add("edge [arrowsize=.5, weight=.1, color=\"gray\", fontsize=8]");
+		generalSettingsDotRepresentation
+				.add("node [label=\"\",shape=circle,height=0.12,width=0.12,fontsize=1]");
+		// .add("node [shape=circle]");
+	}
+
 	@Override
-	public DotExporter buildVertexDefinition(Vertex vertex) {
-
+	public String toString() {
+		Writer stringWriter = new StringWriter();
+		collectCompleteContent(EndLineFillerWriter.MakeWrapper(stringWriter));
 		try {
-			Writer writer = new StringWriter();
-			vertex.collectYourDefinitionInto(writer);
-			writer.close();
-			verticesDefinitionDotRepresentation.add(writer.toString());
-
+			stringWriter.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		return this;
+		return stringWriter.toString();
 	}
 
 	private DotDocumentPartHandler collectSetOfElementsInto(
@@ -64,45 +71,11 @@ public class SimpleExporter implements DotExporter,
 	}
 
 	@Override
-	public String toString() {
-		Writer stringWriter = new StringWriter();
-		collectCompleteContent(EndLineFillerWriter.MakeWrapper(stringWriter));
-		try {
-			stringWriter.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return stringWriter.toString();
-	}
-
-	@Override
-	public boolean isVertexDefinitionPartEquals(Set<String> otherPart) {
-		return verticesDefinitionDotRepresentation.equals(otherPart);
-	}
-
-	@Override
 	public DotDocumentPartHandler collectVertexDefinitionPart(
 			Writer outputPlugObject) {
 
 		collectSetOfElementsInto(outputPlugObject,
 				verticesDefinitionDotRepresentation);
-		return this;
-	}
-
-	@Override
-	public DotExporter collectCompleteContent(Writer outputPlugObject) {
-
-		// for clarity I cast the object itself to be focus on the task to
-		// collect part informations.
-		DotDocumentPartHandler dotDocumentPartHandler = this;
-
-		dotDocumentPartHandler.collectGeneralSettingsPart(outputPlugObject);
-		dotDocumentPartHandler.collectEdgeDefinitionPart(outputPlugObject);
-		dotDocumentPartHandler.collectVertexDefinitionPart(outputPlugObject);
-		dotDocumentPartHandler
-				.collectVertexLabelOutsideBoxPart(outputPlugObject);
-
 		return this;
 	}
 
@@ -116,16 +89,6 @@ public class SimpleExporter implements DotExporter,
 		return this;
 	}
 
-	private void initGeneralSettings() {
-		generalSettingsDotRepresentation.add("ratio=1");
-		generalSettingsDotRepresentation.add("center = true");
-		generalSettingsDotRepresentation
-				.add("edge [arrowsize=.5, weight=.1, color=\"gray\", fontsize=8]");
-		generalSettingsDotRepresentation
-				.add("node [label=\"\",shape=circle,height=0.12,width=0.12,fontsize=1]");
-		// .add("node [shape=circle]");
-	}
-
 	@Override
 	public DotDocumentPartHandler collectEdgeDefinitionPart(
 			Writer outputPlugObject) {
@@ -136,16 +99,6 @@ public class SimpleExporter implements DotExporter,
 	}
 
 	@Override
-	public boolean isEdgeDefinitionPartEquals(Set<String> part) {
-		return edgeDefinitionDotRepresentation.equals(part);
-	}
-
-	@Override
-	public boolean isVertexLabelOutsideBoxPartEquals(Set<String> part) {
-		return verticesLabelsDefinitionDotRepresentation.equals(part);
-	}
-
-	@Override
 	public DotDocumentPartHandler collectVertexLabelOutsideBoxPart(
 			Writer outputPlugObject) {
 
@@ -153,6 +106,21 @@ public class SimpleExporter implements DotExporter,
 				verticesLabelsDefinitionDotRepresentation);
 
 		return this;
+	}
+
+	@Override
+	public boolean isVertexDefinitionPartEquals(Set<String> otherPart) {
+		return verticesDefinitionDotRepresentation.equals(otherPart);
+	}
+
+	@Override
+	public boolean isEdgeDefinitionPartEquals(Set<String> part) {
+		return edgeDefinitionDotRepresentation.equals(part);
+	}
+
+	@Override
+	public boolean isVertexLabelOutsideBoxPartEquals(Set<String> part) {
+		return verticesLabelsDefinitionDotRepresentation.equals(part);
 	}
 
 	@Override
@@ -172,6 +140,22 @@ public class SimpleExporter implements DotExporter,
 	}
 
 	@Override
+	public DotExporter buildVertexDefinition(Vertex vertex) {
+
+		try {
+			Writer writer = new StringWriter();
+			vertex.collectYourDefinitionInto(writer);
+			writer.close();
+			verticesDefinitionDotRepresentation.add(writer.toString());
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return this;
+	}
+
+	@Override
 	public DotExporter buildVertexLabelOutsideBoxDefinition(Vertex vertex) {
 		try {
 			Writer writer = new StringWriter();
@@ -182,6 +166,22 @@ public class SimpleExporter implements DotExporter,
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+		return this;
+	}
+
+	@Override
+	public DotExporter collectCompleteContent(Writer outputPlugObject) {
+
+		// for clarity I cast the object itself to be focus on the task to
+		// collect part informations.
+		DotDocumentPartHandler dotDocumentPartHandler = this;
+
+		dotDocumentPartHandler.collectGeneralSettingsPart(outputPlugObject);
+		dotDocumentPartHandler.collectEdgeDefinitionPart(outputPlugObject);
+		dotDocumentPartHandler.collectVertexDefinitionPart(outputPlugObject);
+		dotDocumentPartHandler
+				.collectVertexLabelOutsideBoxPart(outputPlugObject);
 
 		return this;
 	}

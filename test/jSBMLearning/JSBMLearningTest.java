@@ -36,6 +36,11 @@ import org.sbml.jsbml.SpeciesReference;
 
 public class JSBMLearningTest {
 
+	/**
+	 * This test ensure that the sets of reactants and products of a reaction
+	 * capture the concept of mathematical set: they doesn't contains
+	 * duplicates.
+	 */
 	@Test
 	public void SBMLCheckingNONUniquenessOfSpeciesInReactantAndProductSets() {
 		try {
@@ -63,6 +68,8 @@ public class JSBMLearningTest {
 								+ " appears more tha one time in reactants set of"
 								+ " reaction " + reaction.getId());
 					}
+
+					result.add(species.getSpeciesInstance());
 				}
 
 				result.clear();
@@ -81,6 +88,8 @@ public class JSBMLearningTest {
 								+ " appears more tha one time in products set of"
 								+ " reaction " + reaction.getId());
 					}
+
+					result.add(species.getSpeciesInstance());
 				}
 
 			}
