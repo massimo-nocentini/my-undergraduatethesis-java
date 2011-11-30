@@ -19,9 +19,6 @@ import org.sbml.jsbml.SBMLDocument;
 import org.sbml.jsbml.SBMLReader;
 import org.sbml.jsbml.SpeciesReference;
 
-/**
- * @author massimo This is a sample java doc.
- */
 public class Connector {
 
 	private Model sbmlModel;
@@ -37,7 +34,7 @@ public class Connector {
 
 	public static Connector makeConnector(String path) {
 		return new Connector(path);
-	} 
+	}
 
 	public Set<Vertex> readReaction(Reaction reaction,
 			VertexHandlingWithSourceListener listener) {
