@@ -38,13 +38,17 @@ public class DotFileUtilHandler {
 	public static File makeDotOutputFile(String fileName) {
 
 		String relativeFileName = DotFileUtilHandler.dotOutputFolderPathName()
-				.concat(fileName).concat(".dot");
+				.concat(fileName).concat(getDotFilenameExtension());
 
 		return new File(relativeFileName);
 	}
 
+	public static String getDotFilenameExtension() {
+		return ".dot";
+	}
+
 	public static String getSbmlExampleModelsFolder() {
-		return "sbml-test-files".concat(DotFileUtilHandler.getFileSeparator());
+		return "sbml-test-files".concat(getFileSeparator());
 	}
 
 	public static String getNewLineSeparator() {
@@ -79,11 +83,11 @@ public class DotFileUtilHandler {
 		this.filename = filename;
 	}
 
-	public static DotFileUtilHandler MakeHandler(String filename) {
+	public static DotFileUtilHandler makeHandler(String filename) {
 		return new DotFileUtilHandler(filename);
 	}
 
-	public static DotFileUtilHandler MakeHandlerForExistingFile(String filename) {
+	public static DotFileUtilHandler makeHandlerForExistingFile(String filename) {
 		DotFileUtilHandler dotFileUtilHandler = new DotFileUtilHandler(filename);
 		dotFileUtilHandler.file = new File(filename);
 		return dotFileUtilHandler;
@@ -94,17 +98,17 @@ public class DotFileUtilHandler {
 			DotExporter dotExporter) {
 
 		FileWriter outFile;
-		String filenameWithExtension = filename.concat(".dot");
+		String filenameWithExtension = filename
+				.concat(getDotFilenameExtension());
 
-		String savingFilename = DotFileUtilHandler.dotOutputFolderPathName()
-				.concat(filenameWithExtension);
+		String savingFilename = dotOutputFolderPathName().concat(
+				filenameWithExtension);
 
 		try {
 			outFile = new FileWriter(savingFilename);
 			PrintWriter out = new PrintWriter(outFile);
 
-			out.append("digraph G {".concat(DotFileUtilHandler
-					.getNewLineSeparator()));
+			out.append("digraph G {".concat(getNewLineSeparator()));
 
 			dotExporter.collectCompleteContent(EndLineFillerWriter
 					.MakeWrapper(out));
@@ -124,26 +128,59 @@ public class DotFileUtilHandler {
 		return this;
 	}
 
-	public static void EvaluateDotFilesInOutputFolder() {
-		File dir = new File(DotFileUtilHandler.dotOutputFolderPathName());
+	public static void evaluateDotFilesInOutputFolder() {
+
+		DotUtilAction<File> action = new DotUtilAction<File>() {
+
+			@Override
+			public void apply(File element) {
+
+				makeHandlerForExistingFile(element.getAbsolutePath())
+						.produceSvgOutput();
+			}
+		};
+
+		mapOnFilesInFolderFilteringByExtension(dotOutputFolderPathName(),
+				getDotFilenameExtension(), action);
+	}
+
+	public interface DotUtilAction<T> {
+		void apply(T element);
+	}
+
+	public static void mapOnFilesInFolderFilteringByExtension(String folder,
+			String extensionFilter, DotUtilAction<File> action) {
+
+		File dir = new File(folder);
 
 		for (File existingFile : dir.listFiles()) {
-			DotFileUtilHandler.MakeHandlerForExistingFile(
-					existingFile.getAbsolutePath()).produceSvgOutput();
+
+			if (extensionFilter != null
+					&& existingFile.getName().endsWith(extensionFilter) == false) {
+
+				continue;
+			}
+
+			action.apply(existingFile);
 		}
+	}
+
+	public static void mapOnAllFilesInFolder(String folder,
+			DotUtilAction<File> action) {
+
+		// just delegate the work saying that no filter on the file extension
+		// must be considered
+		mapOnFilesInFolderFilteringByExtension(folder, null, action);
 	}
 
 	public void produceSvgOutput() {
 
-		// return;
-
 		String dotCommand = "dot -Tsvg " + file.getAbsolutePath() + " -o "
-				+ file.getAbsolutePath().replace(".dot", "") + ".svg";
-
-		String command = dotCommand;
+				+ file.getAbsolutePath().replace(getDotFilenameExtension(), "")
+				+ ".svg";
 
 		try {
-			Runtime.getRuntime().exec(command).waitFor();
+			Runtime.getRuntime().exec(dotCommand).waitFor();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -157,12 +194,14 @@ public class DotFileUtilHandler {
 				getClosingDotDecorationString());
 	}
 
+	// TODO: this method should really be defined here? It seems better to move
+	// it in the decoration classes?
 	public static String composeVertexLabelOutsideBox(String label) {
 		return "taillabel=\"".concat(label).concat(
 				"\", labelangle=45, labeldistance=1, color=transparent");
 	}
 
-	protected static DotFileUtilHandler MakeHandlerForExampleSbmlModel(
+	public static DotFileUtilHandler MakeHandlerForExampleSbmlModel(
 			String sbmlExampleSelector) {
 
 		String sourceRelativeFileName = DotFileUtilHandler
@@ -175,7 +214,7 @@ public class DotFileUtilHandler {
 		DotExporter exporter = new SimpleExporter();
 		exportable.acceptExporter(exporter);
 
-		return DotFileUtilHandler.MakeHandler(sbmlExampleSelector)
+		return DotFileUtilHandler.makeHandler(sbmlExampleSelector)
 				.writeDotRepresentationInTestFolder(exporter);
 
 	}

@@ -20,7 +20,7 @@ public class PrinterPipeFilter extends PipeFilter {
 		DotExporter exporter = new SimpleExporter();
 		inputModel.acceptExporter(exporter);
 
-		DotFileUtilHandler.MakeHandler(formatPhaseIdentifier(pipelineName))
+		DotFileUtilHandler.makeHandler(formatPhaseIdentifier(pipelineName))
 				.writeDotRepresentationInTestFolder(exporter)
 				.produceSvgOutput();
 

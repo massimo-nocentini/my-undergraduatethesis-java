@@ -51,7 +51,7 @@ public class DotExportableUnitTest {
 				.isEdgeDefinitionPartEquals(new HashSet<String>()));
 
 		DotFileUtilHandler
-				.MakeHandler("simpleNodeWithoutNeighboursDotExporting")
+				.makeHandler("simpleNodeWithoutNeighboursDotExporting")
 				.writeDotRepresentationInTestFolder(exporter)
 				.produceSvgOutput();
 	}
@@ -112,7 +112,7 @@ public class DotExportableUnitTest {
 		Assert.assertTrue(dotDocumentPartHandlerTestingBehaviour
 				.isEdgeDefinitionPartEquals(expectedEdgeDefinitionPart));
 
-		DotFileUtilHandler.MakeHandler("simpleThreeNodeChainDotExporting")
+		DotFileUtilHandler.makeHandler("simpleThreeNodeChainDotExporting")
 				.writeDotRepresentationInTestFolder(exporter)
 				.produceSvgOutput();
 	}
@@ -144,7 +144,7 @@ public class DotExportableUnitTest {
 		Assert.assertTrue(dotDocumentPartHandlerTestingBehaviour
 				.isEdgeDefinitionPartEquals(expectedEdgeDefinitionPart));
 
-		DotFileUtilHandler.MakeHandler("tarjanPaperTestNetwork")
+		DotFileUtilHandler.makeHandler("tarjanPaperTestNetwork")
 				.writeDotRepresentationInTestFolder(exporter)
 				.produceSvgOutput();
 	}
@@ -194,7 +194,7 @@ public class DotExportableUnitTest {
 		// Assert.assertTrue(exporter
 		// .isVertexLabelOutsideBoxPartEquals(expectedVertexLabelOutsideBoxPart));
 
-		DotFileUtilHandler.MakeHandler("testVerticesLabelOutsideBox")
+		DotFileUtilHandler.makeHandler("testVerticesLabelOutsideBox")
 				.writeDotRepresentationInTestFolder(exporter)
 				.produceSvgOutput();
 

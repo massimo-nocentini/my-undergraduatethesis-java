@@ -57,14 +57,17 @@ public class SourcesCollapserPipeFilterUnitTest {
 				.getSbmlExampleModelsFolder().concat(
 						"BartonellaQuintanaToulouse.xml"));
 
+		String test_method_name = "collapse_sources_of_bartonella_and_apply_plain_statistics";
+		
 		plainTextStatsPipeFilter.applyWithListener(
-				"collapse_sources_of_bartonella_and_apply_plain_statistics",
+				test_method_name,
 				bartonellaModel, plainTextInfoComputationListener);
 
 		Writer writer;
 		try {
 			writer = new FileWriter(DotFileUtilHandler
 					.dotOutputFolderPathName()
+					.concat(test_method_name)
 					.concat(plainTextStatsPipeFilter.collectPhaseInformation())
 					.concat(DotFileUtilHandler
 							.getPlainTextFilenameExtensionToken()));
