@@ -1,5 +1,6 @@
 package JSBMLInterface;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Collection;
 import java.util.HashMap;
@@ -21,19 +22,113 @@ import org.sbml.jsbml.SpeciesReference;
 
 public class Connector {
 
-	private Model sbmlModel;
-	private final String path;
+	private interface ConnectorState {
 
-	private Connector(String path) {
-		this.path = path;
+		Set<Vertex> parse();
+
+		boolean canParse();
+	}
+
+	private class StatelessConnectorState implements ConnectorState {
+
+		@Override
+		public Set<Vertex> parse() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public boolean canParse() {
+			return false;
+		}
+	}
+
+	private class StatefullConnectorState implements ConnectorState {
+
+		private final String data_path;
+
+		public StatefullConnectorState(String path) {
+			this.data_path = path;
+		}
+
+		private Model readModel(String path) {
+
+			Model model = null;
+			SBMLDocument document = null;
+
+			try {
+				document = (new SBMLReader()).readSBML(path);
+			} catch (FileNotFoundException e) {
+			} catch (XMLStreamException e) {
+			} catch (Exception e) {
+			}
+
+			if (document != null) {
+				model = document.getModel();
+			}
+
+			return model;
+		}
+
+		@Override
+		public Set<Vertex> parse() {
+
+			HashSet<Vertex> hashSet = new HashSet<Vertex>();
+
+			Model model = readModel(data_path);
+
+			// here we use the reference of our enclosing class in order to use
+			// its 'readReactions' method. This seems quite a closure, although
+			// is checked and supplied directly from the language.
+			// To have a more functional-style code, we should pass a delegate
+			// which capture the logic for reading the reaction, leaving this
+			// code the responsibility to invoke it.
+			hashSet.addAll(Connector.this.readReactions(model
+					.getListOfReactions()));
+
+			return hashSet;
+
+		}
+
+		@Override
+		public boolean canParse() {
+			return true;
+		}
+	}
+
+	private ConnectorState state;
+
+	private Connector() {
+		// the private constructor to prevent non-controlled instantiation by
+		// clients, use the static factories instead
 	}
 
 	public static Connector makeConnector() {
-		return new Connector("");
+		// this method doesn't call the other overload because in this way
+		// we preevent that overload to be force to check for null argument
+		// in order to satify this creation request. In this way we put here the
+		// logic necessary for the construction of the stateless state for the
+		// connector instead.
+		Connector connector = new Connector();
+		connector.state = connector.new StatelessConnectorState();
+		return connector;
 	}
 
 	public static Connector makeConnector(String path) {
-		return new Connector(path);
+		Connector connector = new Connector();
+
+		connector.state = checkPathValidity(path, connector);
+		return connector;
+	}
+
+	private static ConnectorState checkPathValidity(String path,
+			Connector connector) {
+
+		if (path == null || "".equals(path)
+				|| (new File(path)).exists() == false) {
+			return connector.new StatelessConnectorState();
+		}
+
+		return connector.new StatefullConnectorState(path);
 	}
 
 	public Set<Vertex> readReaction(Reaction reaction,
@@ -140,32 +235,13 @@ public class Connector {
 				new VertexHandlerListenerNullObject());
 	}
 
-	public Connector readModel() {
-		SBMLDocument document = null;
-		try {
-			document = (new SBMLReader()).readSBML(path);
-		} catch (FileNotFoundException e) {
-		} catch (XMLStreamException e) {
-		} catch (Exception e) {
-		}
-
-		if (document != null) {
-			this.sbmlModel = document.getModel();
-		}
-
-		return this;
-	}
-
 	public Set<Vertex> parseModel() {
 
-		HashSet<Vertex> hashSet = new HashSet<Vertex>();
-
-		hashSet.addAll(this.readReactions(sbmlModel.getListOfReactions()));
-
-		return hashSet;
+		return state.parse();
 	}
 
-	public boolean hadYouReadSuccessfully() {
-		return this.sbmlModel != null;
+	public boolean canParse() {
+		return state.canParse();
 	}
+
 }

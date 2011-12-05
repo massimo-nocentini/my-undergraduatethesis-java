@@ -24,6 +24,7 @@ public class ConnectorUnitTest {
 	public void creation() {
 		Connector connector = Connector.makeConnector();
 		assertNotNull(connector);
+		assertFalse(connector.canParse());
 	}
 
 	@Test
@@ -67,32 +68,23 @@ public class ConnectorUnitTest {
 
 	@Test
 	public void parseModel() {
-		String path = "sbml-test-files/allCpdsMetabSmmReactionsCompounds.xml";
 
-		Connector connector = Connector.makeConnector(path).readModel();
-
-		Assert.assertTrue(connector.hadYouReadSuccessfully());
+		Connector connector = Connector
+				.makeConnector("sbml-test-files/allCpdsMetabSmmReactionsCompounds.xml");
+		Assert.assertTrue(connector.canParse());
 	}
 
 	@Test
 	public void parseModelInducingErrors() {
-		String path = null;
 
-		Connector connector = Connector.makeConnector(path).readModel();
-
-		Assert.assertFalse(connector.hadYouReadSuccessfully());
+		Connector connector = Connector.makeConnector(null);
+		Assert.assertFalse(connector.canParse());
 	}
 
-	@Test
+	@Test(expected = UnsupportedOperationException.class)
 	public void parseModelInducingErrorsExceptionTest() {
 		String path = null;
-		Connector connector = Connector.makeConnector(path).readModel();
-		try {
-			connector.parseModel();
-			Assert.fail("Impossible to had successfully read a SBML model from nowhere.");
-		} catch (NullPointerException e) {
-			Assert.assertFalse(connector.hadYouReadSuccessfully());
-		}
+		Connector.makeConnector(path).parseModel();
 	}
 
 	@Test
@@ -105,15 +97,11 @@ public class ConnectorUnitTest {
 		Assert.assertFalse(model.isEmpty());
 	}
 
-	@Test
+	@Test(expected = UnsupportedOperationException.class)
 	public void makeOurModelInducingError() {
+
 		String path = null;
 
-		try {
-			@SuppressWarnings("unused")
-			OurModel model = OurModel.makeOurModelFrom(path);
-			Assert.fail("Impossible to had successfully create a OurModel object from nowhere.");
-		} catch (NullPointerException e) {
-		}
+		OurModel.makeOurModelFrom(path);
 	}
 }
