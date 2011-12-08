@@ -98,7 +98,7 @@ public class Connector {
 	private ConnectorState state;
 
 	private Connector() {
-		// the private constructor to prevent non-controlled instantiation by
+		// private constructor to prevent non-controlled instantiation by
 		// clients, use the static factories instead
 	}
 

@@ -6,7 +6,6 @@ import java.util.Set;
 import org.sbml.jsbml.Species;
 
 import dotInterface.DotExportable;
-import dotInterface.DotExporter;
 import dotInterface.LineDecorator;
 
 public interface Vertex extends DotExportable, Comparable<Vertex> {
@@ -36,9 +35,6 @@ public interface Vertex extends DotExportable, Comparable<Vertex> {
 
 	public abstract boolean isYourOrigin(Species aSpecies);
 
-	@Override
-	public abstract void acceptExporter(DotExporter exporter);
-
 	public abstract boolean isSink();
 
 	public abstract boolean isSource();
@@ -62,7 +58,7 @@ public interface Vertex extends DotExportable, Comparable<Vertex> {
 	public abstract void collectEdgeDefinitionInto(Writer writer,
 			Vertex neighbour);
 
-	public void collectVertexLabelOutsideBoxInto(Writer writer);
+	public abstract void collectVertexLabelOutsideBoxInto(Writer writer);
 
 	// TODO: the following methods need to be unit tested each one
 	public abstract int compareYourCompartmentIdWith(String compartment_id);
