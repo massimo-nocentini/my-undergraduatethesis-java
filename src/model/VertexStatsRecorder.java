@@ -126,4 +126,10 @@ public class VertexStatsRecorder {
 		return result;
 
 	}
+
+	public boolean areConsistent() {
+
+		return isSimpleVerticesVoteAccepterConsistent()
+				&& isConnectedComponentsVoteAccepterConsistent();
+	}
 }

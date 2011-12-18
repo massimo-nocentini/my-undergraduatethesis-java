@@ -194,7 +194,7 @@ public class VertexStatsRecorderUnitTest {
 
 	}
 
-	// @Test
+	@Test
 	public void generating_massive_stats_reports_forall_sbml_models() {
 
 		DotUtilAction<File> action = new DotUtilAction<File>() {

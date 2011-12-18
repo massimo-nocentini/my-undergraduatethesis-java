@@ -14,7 +14,7 @@ import dotInterface.DotFileUtilHandler;
 public class PlainTextInfoComputationListener implements
 		PipeFilterComputationListener {
 
-	Map<PipeFilter, VertexStatsRecorder> map;
+	private final Map<PipeFilter, VertexStatsRecorder> map;
 
 	public PlainTextInfoComputationListener() {
 		map = new HashMap<PipeFilter, VertexStatsRecorder>();
@@ -71,7 +71,13 @@ public class PlainTextInfoComputationListener implements
 	}
 
 	public boolean arePlainTextInfoConsistent() {
-		// TODO Auto-generated method stub
-		return false;
+
+		boolean result = true;
+
+		for (Entry<PipeFilter, VertexStatsRecorder> entry : map.entrySet()) {
+			result = result & entry.getValue().areConsistent();
+		}
+
+		return result;
 	}
 }
