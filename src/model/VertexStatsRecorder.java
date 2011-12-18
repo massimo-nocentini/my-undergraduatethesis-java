@@ -38,8 +38,8 @@ public class VertexStatsRecorder {
 
 			if (entry.getValue().isEmpty() == true) {
 
-				// we draw only if the vote accepter has all its components
-				// empty
+				// we doesn't print the accepter if the vote accepter has all
+				// its components empty
 				continue;
 			}
 
@@ -93,5 +93,37 @@ public class VertexStatsRecorder {
 
 		return componentsVoteAccepterByCCCardinality.get(cardinality)
 				.areVotesEquals(expected);
+	}
+
+	public boolean isSimpleVerticesVoteAccepterConsistent() {
+
+		return areConsistentTheVotesContainedIn(simpleVertexVoteAccepter);
+	}
+
+	private boolean areConsistentTheVotesContainedIn(
+			VertexVoteAccepter voteAccepter) {
+
+		int vertexDistinction = voteAccepter
+				.sumVerticesVotesOverTypePartition();
+
+		int vertexGroupSum = voteAccepter.getGroupTotal();
+
+		return vertexDistinction == vertexGroupSum;
+
+	}
+
+	public boolean isConnectedComponentsVoteAccepterConsistent() {
+
+		boolean result = true;
+
+		for (Entry<Integer, VertexVoteAccepter> entry : componentsVoteAccepterByCCCardinality
+				.entrySet()) {
+
+			result = result
+					& areConsistentTheVotesContainedIn(entry.getValue());
+		}
+
+		return result;
+
 	}
 }

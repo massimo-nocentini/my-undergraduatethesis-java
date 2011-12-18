@@ -3,9 +3,11 @@ package model;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import dotInterface.DotFileUtilHandler;
 
@@ -175,6 +177,9 @@ public class VertexVoteAccepter {
 
 		void characteristicComponentRequested(
 				Map<PlainTextStatsComponents, IntegerCounter> votesMap);
+
+		int supplyValueOfCharacteristicComponent(
+				Map<PlainTextStatsComponents, IntegerCounter> votesMap);
 	}
 
 	static class SimpleVertexVoteAccepterHookMethodsSupplier implements
@@ -202,6 +207,13 @@ public class VertexVoteAccepter {
 		public boolean ignoreComponent(PlainTextStatsComponents key) {
 
 			return PlainTextStatsComponents.NOfComponents.equals(key);
+		}
+
+		@Override
+		public int supplyValueOfCharacteristicComponent(
+				Map<PlainTextStatsComponents, IntegerCounter> votesMap) {
+
+			return votesMap.get(characteristicComponent).getCount();
 		}
 	}
 
@@ -231,6 +243,42 @@ public class VertexVoteAccepter {
 
 			return PlainTextStatsComponents.NOfVertices.equals(key);
 		}
+
+		@Override
+		public int supplyValueOfCharacteristicComponent(
+				Map<PlainTextStatsComponents, IntegerCounter> votesMap) {
+
+			return votesMap.get(characteristicComponent).getCount();
+		}
+	}
+
+	public int getGroupTotal() {
+
+		return hookMethodsInterface
+				.supplyValueOfCharacteristicComponent(votesMap);
+	}
+
+	public int sumVerticesVotesOverTypePartition() {
+
+		Set<PlainTextStatsComponents> inclusionComponents = new HashSet<PlainTextStatsComponents>();
+		inclusionComponents.add(PlainTextStatsComponents.NOfSinks);
+		inclusionComponents.add(PlainTextStatsComponents.NOfWhites);
+		inclusionComponents.add(PlainTextStatsComponents.NOfSources);
+
+		int result = 0;
+
+		for (Entry<PlainTextStatsComponents, IntegerCounter> entry : votesMap
+				.entrySet()) {
+
+			if (inclusionComponents.contains(entry.getKey()) == false) {
+				continue;
+			}
+
+			result = result + entry.getValue().getCount();
+		}
+
+		return result;
+
 	}
 
 }

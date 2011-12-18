@@ -16,7 +16,7 @@ public class PlainTextInfoComputationListener implements
 
 	Map<PipeFilter, VertexStatsRecorder> map;
 
-	PlainTextInfoComputationListener() {
+	public PlainTextInfoComputationListener() {
 		map = new HashMap<PipeFilter, VertexStatsRecorder>();
 	}
 
@@ -68,5 +68,10 @@ public class PlainTextInfoComputationListener implements
 			}
 		}
 
+	}
+
+	public boolean arePlainTextInfoConsistent() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
