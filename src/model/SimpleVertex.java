@@ -5,8 +5,6 @@ import java.io.Writer;
 import java.util.Set;
 import java.util.TreeSet;
 
-import model.VertexStatsRecorder.SimpleVertexVoteAccepter;
-
 import org.sbml.jsbml.Species;
 
 import dotInterface.DotExporter;
@@ -351,18 +349,10 @@ public class SimpleVertex implements Vertex {
 	@Override
 	public void publishYourStatsOn(VertexStatsRecorder vertexStatsRecorder) {
 
-		SimpleVertexVoteAccepter voteAccepter = vertexStatsRecorder
+		VertexVoteAccepter voteAccepter = vertexStatsRecorder
 				.recordSimpleVertex();
 
-		voteAccepter.pushEdges(neighbors.size());
-
-		if (isSink()) {
-			voteAccepter.pushSink();
-		} else if (isSource()) {
-			voteAccepter.pushSource();
-		} else {
-			voteAccepter.pushWhite();
-		}
+		this.voteOn(voteAccepter);
 	}
 
 	@Override
@@ -397,6 +387,21 @@ public class SimpleVertex implements Vertex {
 	@Override
 	public boolean isYourAncestorsEmpty() {
 		return directAncestors.size() == 0;
+	}
+
+	@Override
+	public void voteOn(VertexVoteAccepter voteAccepter) {
+
+		voteAccepter.pushEdges(neighbors.size());
+
+		if (isSink()) {
+			voteAccepter.pushSink();
+		} else if (isSource()) {
+			voteAccepter.pushSource();
+		} else {
+			voteAccepter.pushWhite();
+		}
+
 	}
 
 }

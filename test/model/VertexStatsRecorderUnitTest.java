@@ -39,6 +39,8 @@ public class VertexStatsRecorderUnitTest {
 		expected.put(PlainTextStatsComponents.NOfWhites, 2);
 
 		Assert.assertTrue(recorder.isSimpleVerticesVotesEquals(expected));
+		Assert.assertFalse(recorder
+				.isSimpleVerticesVotesEquals(new HashMap<PlainTextStatsComponents, Integer>()));
 
 	}
 
@@ -48,10 +50,13 @@ public class VertexStatsRecorderUnitTest {
 
 		ConnectedComponentWrapperVertex simple = VertexFactory
 				.makeConnectedComponentWrapperVertex();
+
 		ConnectedComponentWrapperVertex simple2 = VertexFactory
 				.makeConnectedComponentWrapperVertex();
+
 		ConnectedComponentWrapperVertex simple3 = VertexFactory
 				.makeConnectedComponentWrapperVertex();
+
 		ConnectedComponentWrapperVertex simple4 = VertexFactory
 				.makeConnectedComponentWrapperVertex();
 
@@ -85,6 +90,7 @@ public class VertexStatsRecorderUnitTest {
 		expectedFor3members.put(PlainTextStatsComponents.NOfSources, 1);
 		expectedFor3members.put(PlainTextStatsComponents.NOfSinks, 1);
 		expectedFor3members.put(PlainTextStatsComponents.NOfWhites, 0);
+		expectedFor3members.put(PlainTextStatsComponents.NOfEdges, 1);
 
 		Map<PlainTextStatsComponents, Integer> expectedFor2members = new HashMap<PlainTextStatsComponents, Integer>();
 
@@ -92,6 +98,7 @@ public class VertexStatsRecorderUnitTest {
 		expectedFor2members.put(PlainTextStatsComponents.NOfSources, 0);
 		expectedFor2members.put(PlainTextStatsComponents.NOfSinks, 0);
 		expectedFor2members.put(PlainTextStatsComponents.NOfWhites, 1);
+		expectedFor2members.put(PlainTextStatsComponents.NOfEdges, 1);
 
 		Map<PlainTextStatsComponents, Integer> expectedFor1members = new HashMap<PlainTextStatsComponents, Integer>();
 
@@ -99,6 +106,7 @@ public class VertexStatsRecorderUnitTest {
 		expectedFor1members.put(PlainTextStatsComponents.NOfSources, 0);
 		expectedFor1members.put(PlainTextStatsComponents.NOfSinks, 0);
 		expectedFor1members.put(PlainTextStatsComponents.NOfWhites, 1);
+		expectedFor1members.put(PlainTextStatsComponents.NOfEdges, 2);
 
 		Assert.assertTrue(recorder.isComponentsVotesEquals(3,
 				expectedFor3members));

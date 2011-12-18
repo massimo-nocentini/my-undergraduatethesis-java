@@ -167,7 +167,7 @@ public abstract class WrapperVertex implements Vertex {
 
 	@Override
 	public void publishYourStatsOn(VertexStatsRecorder vertexStatsRecorder) {
-
+		// wrappedVertex.publishYourStatsOn(vertexStatsRecorder);
 	}
 
 	@Override
@@ -183,6 +183,12 @@ public abstract class WrapperVertex implements Vertex {
 	@Override
 	public void brokeYourNeighborhoodRelations() {
 		wrappedVertex.brokeYourNeighborhoodRelations();
+	}
+
+	@Override
+	public void voteOn(VertexVoteAccepter voteAccepter) {
+
+		this.wrappedVertex.voteOn(voteAccepter);
 	}
 
 }

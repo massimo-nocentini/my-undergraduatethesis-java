@@ -3,8 +3,6 @@ package model;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import model.VertexStatsRecorder.ComponentVoteAccepter;
-
 public class ConnectedComponentWrapperVertex extends
 		VertexWithLabelWrapperVertex {
 
@@ -47,6 +45,16 @@ public class ConnectedComponentWrapperVertex extends
 		return true;
 	}
 
+	@Override
+	public void publishYourStatsOn(VertexStatsRecorder vertexStatsRecorder) {
+
+		VertexVoteAccepter voteAccepter = vertexStatsRecorder
+				.recordConnectedComponent(this.members.size());
+
+		this.voteOn(voteAccepter);
+
+	}
+
 	public boolean isMember(Vertex vertex) {
 		return members.contains(vertex);
 	}
@@ -58,20 +66,6 @@ public class ConnectedComponentWrapperVertex extends
 	@Override
 	protected String provideOutsideLabel() {
 		return "".concat(String.valueOf(members.size()));
-	}
-
-	@Override
-	public void publishYourStatsOn(VertexStatsRecorder vertexStatsRecorder) {
-		ComponentVoteAccepter voteAccepter = vertexStatsRecorder
-				.recordComponent(members.size());
-
-		if (isSink()) {
-			voteAccepter.pushSink();
-		} else if (isSource()) {
-			voteAccepter.pushSource();
-		} else {
-			voteAccepter.pushWhite();
-		}
 	}
 
 }

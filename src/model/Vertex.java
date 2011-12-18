@@ -10,20 +10,19 @@ import dotInterface.LineDecorator;
 
 public interface Vertex extends DotExportable, Comparable<Vertex> {
 
-	public abstract Vertex addNeighbour(Vertex neighbour);
+	public Vertex addNeighbour(Vertex neighbour);
 
-	public abstract void doOnNeighbors(VertexLogicApplier applier);
+	public void doOnNeighbors(VertexLogicApplier applier);
 
-	public abstract void doOnNeighbors(
-			VertexLogicApplierWithNeighborhoodRelation applier);
+	public void doOnNeighbors(VertexLogicApplierWithNeighborhoodRelation applier);
 
-	public abstract boolean isYourNeighborhoodEquals(Set<Vertex> products);
+	public boolean isYourNeighborhoodEquals(Set<Vertex> products);
 
-	public abstract boolean isYourNeighborhoodEmpty();
+	public boolean isYourNeighborhoodEmpty();
 
-	public abstract boolean isYourSpeciesId(String speciesId);
+	public boolean isYourSpeciesId(String speciesId);
 
-	public abstract boolean isYourCompartmentId(String compartmentId);
+	public boolean isYourCompartmentId(String compartmentId);
 
 	@Override
 	public abstract int hashCode();
@@ -31,51 +30,51 @@ public interface Vertex extends DotExportable, Comparable<Vertex> {
 	@Override
 	public abstract boolean equals(Object obj);
 
-	public abstract boolean haveYouSelfLoop();
+	public boolean haveYouSelfLoop();
 
-	public abstract boolean isYourOrigin(Species aSpecies);
+	public boolean isYourOrigin(Species aSpecies);
 
-	public abstract boolean isSink();
+	public boolean isSink();
 
-	public abstract boolean isSource();
+	public boolean isSource();
 
-	public abstract boolean isYourNeighbour(Vertex a);
+	public boolean isYourNeighbour(Vertex a);
 
-	public abstract boolean isNeighborsCountEquals(int guess);
+	public boolean isNeighborsCountEquals(int guess);
 
-	public abstract boolean matchCompartmentWith(Vertex otherVertex);
+	public boolean matchCompartmentWith(Vertex otherVertex);
 
-	public abstract boolean matchSpeciesWith(Vertex otherVertex);
+	public boolean matchSpeciesWith(Vertex otherVertex);
 
-	public abstract void collectYourDefinitionInto(Writer writer);
+	public void collectYourDefinitionInto(Writer writer);
 
-	public abstract LineDecorator getSourceDecorator();
+	public LineDecorator getSourceDecorator();
 
-	public abstract LineDecorator getIdentifierDecorator();
+	public LineDecorator getIdentifierDecorator();
 
-	public abstract LineDecorator getSquareBracketsDecorator();
+	public LineDecorator getSquareBracketsDecorator();
 
-	public abstract void collectEdgeDefinitionInto(Writer writer,
-			Vertex neighbour);
+	public void collectEdgeDefinitionInto(Writer writer, Vertex neighbour);
 
-	public abstract void collectVertexLabelOutsideBoxInto(Writer writer);
+	public void collectVertexLabelOutsideBoxInto(Writer writer);
 
 	// TODO: the following methods need to be unit tested each one
-	public abstract int compareYourCompartmentIdWith(String compartment_id);
+	public int compareYourCompartmentIdWith(String compartment_id);
 
-	public abstract int compareYourSpeciesIdWith(String species_id);
+	public int compareYourSpeciesIdWith(String species_id);
 
-	public abstract void addDirectAncestors(Vertex vertex);
+	public void addDirectAncestors(Vertex vertex);
 
-	public abstract SimpleVertex asSimpleVertex();
+	public SimpleVertex asSimpleVertex();
 
-	public abstract void publishYourStatsOn(
-			VertexStatsRecorder vertexStatsRecorder);
+	public void publishYourStatsOn(VertexStatsRecorder vertexStatsRecorder);
 
-	public abstract void brokeDirectAncestorRelationWith(Vertex source);
+	public void voteOn(VertexVoteAccepter voteAccepter);
 
-	public abstract void brokeYourNeighborhoodRelations();
+	public void brokeDirectAncestorRelationWith(Vertex source);
 
-	public abstract boolean isYourAncestorsEmpty();
+	public void brokeYourNeighborhoodRelations();
+
+	public boolean isYourAncestorsEmpty();
 
 }
