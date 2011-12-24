@@ -141,7 +141,7 @@ public class DotFileUtilHandler {
 		};
 
 		mapOnFilesInFolderFilteringByExtension(dotOutputFolderPathName(),
-				getDotFilenameExtension(), action);
+				getDotFilenameExtension(), action, false);
 	}
 
 	public interface DotUtilAction<T> {
@@ -149,11 +149,31 @@ public class DotFileUtilHandler {
 	}
 
 	public static void mapOnFilesInFolderFilteringByExtension(String folder,
-			String extensionFilter, DotUtilAction<File> action) {
+			String extensionFilter, DotUtilAction<File> action,
+			boolean recursiveDirectoryScanning) {
 
 		File dir = new File(folder);
 
 		for (File existingFile : dir.listFiles()) {
+
+			if (existingFile.isDirectory() == true
+					&& recursiveDirectoryScanning == true) {
+
+				// temporary filter to analyze only 'a'-starting folders
+				// if (existingFile.getName().startsWith("a") == false) {
+				// continue;
+				//
+				// }
+
+				mapOnFilesInFolderFilteringByExtension(
+						existingFile.getAbsolutePath(), extensionFilter,
+						action, recursiveDirectoryScanning);
+
+				// when we finish the recursive invocation we
+				// continue with the next element in the directory
+				// because the current scanned element is a directory
+				continue;
+			}
 
 			if (extensionFilter != null
 					&& existingFile.getName().endsWith(extensionFilter) == false) {
@@ -163,6 +183,7 @@ public class DotFileUtilHandler {
 
 			action.apply(existingFile);
 		}
+
 	}
 
 	public static void mapOnAllFilesInFolder(String folder,
@@ -170,7 +191,16 @@ public class DotFileUtilHandler {
 
 		// just delegate the work saying that no filter on the file extension
 		// must be considered
-		mapOnFilesInFolderFilteringByExtension(folder, null, action);
+		mapOnFilesInFolderFilteringByExtension(folder, null, action, false);
+	}
+
+	public static void mapOnAllFilesInFolder(String folder,
+			DotUtilAction<File> action, boolean recursively) {
+
+		// just delegate the work saying that no filter on the file extension
+		// must be considered
+		mapOnFilesInFolderFilteringByExtension(folder, null, action,
+				recursively);
 	}
 
 	public void produceSvgOutput() {

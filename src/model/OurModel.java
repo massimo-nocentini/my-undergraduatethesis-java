@@ -22,14 +22,7 @@ public class OurModel implements DotExportable {
 	private final Set<Vertex> vertices;
 
 	private OurModel(Set<Vertex> vertices) {
-
 		this.vertices = new TreeSet<Vertex>(vertices);
-
-		// this.vertices.addAll(vertices);
-
-		// for (Vertex vertex : vertices) {
-		// this.vertices.add(vertex);
-		// }
 	}
 
 	public boolean isEmpty() {

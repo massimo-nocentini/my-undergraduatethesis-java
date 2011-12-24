@@ -236,7 +236,6 @@ public class Connector {
 	}
 
 	public Set<Vertex> parseModel() {
-
 		return state.parse();
 	}
 

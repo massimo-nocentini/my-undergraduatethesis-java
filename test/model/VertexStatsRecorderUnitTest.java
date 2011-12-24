@@ -1,12 +1,25 @@
 package model;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
+
+import javax.xml.stream.XMLStreamException;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
+import org.sbml.jsbml.Model;
+import org.sbml.jsbml.SBMLDocument;
+import org.sbml.jsbml.SBMLReader;
+import org.sbml.jsbml.Species;
 
 import piping.PipeFilter;
 import piping.PipeFilterFactory;
@@ -233,6 +246,131 @@ public class VertexStatsRecorderUnitTest {
 
 		DotFileUtilHandler.mapOnAllFilesInFolder(
 				DotFileUtilHandler.getSbmlExampleModelsFolder(), action);
+
+	}
+
+	@Test
+	public void check_species_presence_in_various_sbml_models() {
+
+		this.internal_check_species_presence_in_sbml_models(
+				"maps-of-species-presence-among-multiple-new-curated-models",
+				DotFileUtilHandler.getSbmlExampleModelsFolder().concat(
+						"curated/"), false);
+	}
+
+	@Test
+	public void check_species_presence_in_various_sbml_models_contained_in_aae_folder() {
+
+		this.internal_check_species_presence_in_sbml_models(
+				"maps-of-species-presence-among-multiple-models-in-aae-folder",
+				DotFileUtilHandler.getSbmlExampleModelsFolder().concat("aae/"),
+				false);
+	}
+
+	@Test
+	public void check_species_presence_in_a_huge_number_of_sbml_models_recursively() {
+
+		this.internal_check_species_presence_in_sbml_models(
+				"maps-of-species-presence-among-a-huge-number-of-models-in-kyoto-folder",
+				DotFileUtilHandler.getSbmlExampleModelsFolder().concat(
+						"KEGG_R47-SBML_L2V1_nocd-20080728/"), true);
+	}
+
+	@Test
+	public void check_species_presence_in_old_sbml_models() {
+
+		this.internal_check_species_presence_in_sbml_models(
+				"maps-of-species-presence-among-multiple-old-models",
+				DotFileUtilHandler.getSbmlExampleModelsFolder(), false);
+	}
+
+	private static class IntegerForClosure {
+		private int count = 0;
+
+		public void Increment() {
+			count = count + 1;
+		}
+
+		@Override
+		public String toString() {
+			return "(COUNT " + String.valueOf(count) + ")";
+		}
+
+		public boolean isCountEquals(int other) {
+			return this.count == other;
+		}
+
+	}
+
+	private void internal_check_species_presence_in_sbml_models(
+			String outputFilename, String modelsContainingDirectory,
+			boolean recursively) {
+
+		final SortedMap<String, Integer> countBySpecies = new TreeMap<String, Integer>();
+
+		final IntegerForClosure analyzedModels = new IntegerForClosure();
+
+		DotUtilAction<File> action = new DotUtilAction<File>() {
+
+			@Override
+			public void apply(File element) {
+
+				Model model = null;
+				SBMLDocument document = null;
+
+				try {
+					document = (new SBMLReader()).readSBML(element);
+				} catch (FileNotFoundException e) {
+				} catch (XMLStreamException e) {
+				} catch (Exception e) {
+				}
+
+				if (document != null) {
+
+					analyzedModels.Increment();
+
+					model = document.getModel();
+
+					for (Species species : model.getListOfSpecies()) {
+
+						String id = (species.getId() + "-(" + species.getName()
+								+ ")" + "-(" + species.getCompartment() + ")")
+								.toUpperCase(new Locale("(all)"));
+
+						if (countBySpecies.containsKey(id)) {
+							int value = countBySpecies.get(id);
+							countBySpecies.remove(id);
+							countBySpecies.put(id, value + 1);
+						} else {
+							countBySpecies.put(id, 1);
+						}
+					}
+				}
+
+			}
+		};
+
+		DotFileUtilHandler.mapOnAllFilesInFolder(modelsContainingDirectory,
+				action, recursively);
+
+		// now we can generate the output file
+		Writer writer;
+		try {
+			writer = new FileWriter(DotFileUtilHandler
+					.dotOutputFolderPathName()
+					.concat(outputFilename)
+					.concat(DotFileUtilHandler
+							.getPlainTextFilenameExtensionToken()));
+
+			writer.write(countBySpecies.toString());
+
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		Assert.assertTrue(analyzedModels.isCountEquals(4137));
+		Assert.assertFalse(analyzedModels.isCountEquals(0));
 
 	}
 }

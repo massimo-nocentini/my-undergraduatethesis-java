@@ -1,8 +1,10 @@
 bin/
 test.sbml.xml
-dot-test-files/tests-output/*.svg
-dot-test-files/tests-output/*.dot
-dot-test-files/tests-output/*.txt
+sbml-test-files/aae
+sbml-test-files/curated
+sbml-test-files/KEGG_R47-SBML_L2V1_nocd-20080728
+dot-test-files/tests-output/
+
 *.log*
 dot-test-files/*.svg
 *~
