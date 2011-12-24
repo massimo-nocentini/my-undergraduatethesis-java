@@ -369,7 +369,7 @@ public class VertexStatsRecorderUnitTest {
 			e.printStackTrace();
 		}
 
-		Assert.assertTrue(analyzedModels.isCountEquals(4137));
+		Assert.assertTrue(analyzedModels.isCountEquals(72095));
 		Assert.assertFalse(analyzedModels.isCountEquals(0));
 
 	}
