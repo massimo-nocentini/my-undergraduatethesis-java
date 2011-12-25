@@ -10,6 +10,10 @@ import dotInterface.LineDecorator;
 
 public interface Vertex extends DotExportable, Comparable<Vertex> {
 
+	public interface DoAction<T> {
+		void apply(T item);
+	}
+
 	public Vertex addNeighbour(Vertex neighbour);
 
 	public void doOnNeighbors(VertexLogicApplier applier);
@@ -76,5 +80,7 @@ public interface Vertex extends DotExportable, Comparable<Vertex> {
 	public void brokeYourNeighborhoodRelations();
 
 	public boolean isYourAncestorsEmpty();
+
+	public void doWithVertexType(DoAction<VertexType> doer);
 
 }

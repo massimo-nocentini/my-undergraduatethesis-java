@@ -404,4 +404,18 @@ public class SimpleVertex implements Vertex {
 
 	}
 
+	@Override
+	public void doWithVertexType(DoAction<VertexType> doer) {
+
+		VertexType type = VertexType.Whites;
+
+		if (this.isSink()) {
+			type = VertexType.Sinks;
+		} else if (this.isSource()) {
+			type = VertexType.Sources;
+		}
+
+		doer.apply(type);
+	}
+
 }

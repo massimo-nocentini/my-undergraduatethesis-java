@@ -165,4 +165,38 @@ public class ConnectedComponentInfoRecorderUnitTest {
 			Assert.fail("The file should be present, inconsistency with the previous assertions.");
 		}
 	}
+
+	@Test
+	public void recording_an_isolated_connected_component_should_modify_the_data_structure() {
+
+		ConnectedComponentInfoRecorder recorder = new ConnectedComponentInfoRecorder();
+
+		ConnectedComponentWrapperVertex componentWrapperVertex = VertexFactory
+				.makeConnectedComponentWrapperVertex();
+
+		String species = "my_species";
+		String componentType = "sources";
+		int cardinality = 1;
+		String modelName = "model1";
+
+		// setting up the connected component to have one member and one
+		// neighbor in order to be a source (otherwise we cannot distinguish if
+		// it is a source or a sink)
+		componentWrapperVertex.includeMember(VertexFactory.makeSimpleVertex(
+				species, OurModel.getDefaultCompartmentId()));
+
+		componentWrapperVertex.addNeighbour(VertexFactory
+				.makeConnectedComponentWrapperVertex());
+
+		componentWrapperVertex.publishYourContentOn(recorder);
+
+		TreeMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> expectedMap = new TreeMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>>();
+
+		ConnectedComponentInfoDataStructure.putIntoMap(expectedMap, species,
+				componentType, cardinality, modelName);
+
+		Assert.assertTrue(recorder
+				.isDataStructureEquals(new ConnectedComponentInfoDataStructure(
+						expectedMap)));
+	}
 }

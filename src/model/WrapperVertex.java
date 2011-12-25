@@ -21,6 +21,11 @@ public abstract class WrapperVertex implements Vertex {
 		wrappedVertex = wrappingVertex;
 	}
 
+	@Override
+	public void doWithVertexType(DoAction<VertexType> doer) {
+		this.wrappedVertex.doWithVertexType(doer);
+	}
+
 	Vertex getWrappedVertex() {
 		return wrappedVertex;
 	}

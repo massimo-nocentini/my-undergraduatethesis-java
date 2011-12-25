@@ -68,4 +68,22 @@ public class ConnectedComponentWrapperVertex extends
 		return "".concat(String.valueOf(members.size()));
 	}
 
+	public void publishYourContentOn(
+			final ConnectedComponentInfoRecorder recorder) {
+
+		final int cardinality = this.members.size();
+
+		for (final Vertex member : this.members) {
+
+			member.doWithVertexType(new DoAction<VertexType>() {
+
+				@Override
+				public void apply(VertexType item) {
+					recorder.putTuple(member, item.toString(), cardinality,
+							modelName);
+				}
+			});
+
+		}
+	}
 }
