@@ -1,8 +1,11 @@
 package model;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
@@ -12,7 +15,13 @@ public class ConnectedComponentInfoRecorder {
 
 	private final ConnectedComponentInfoDataStructure dataStructure = new ConnectedComponentInfoDataStructure();
 
-	public static class ConnectedComponentInfoDataStructure {
+	public static class ConnectedComponentInfoDataStructure implements
+			Serializable {
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -9063923742355150277L;
 
 		private final SortedMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> map;
 
@@ -25,8 +34,27 @@ public class ConnectedComponentInfoRecorder {
 				SortedMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> other) {
 
 			this.map = other == null ? new TreeMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>>()
-					: new TreeMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>>(
-							other);
+					: other;
+		}
+
+		public ConnectedComponentInfoDataStructure(InputStream inputStream) {
+
+			ConnectedComponentInfoDataStructure deserialized = null;
+			try {
+				ObjectInputStream objectInputStream = new ObjectInputStream(
+						inputStream);
+
+				deserialized = (ConnectedComponentInfoDataStructure) objectInputStream
+						.readObject();
+
+				objectInputStream.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+
+			this.map = deserialized != null ? deserialized.map : null;
 		}
 
 		@Override
@@ -101,19 +129,48 @@ public class ConnectedComponentInfoRecorder {
 			this.map.get(species).get(componentType).get(cardinality)
 					.add(modelName);
 		}
+
+		public static void putIntoMap(
+				SortedMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> map,
+				String species, String componentType, Integer cardinality,
+				String modelName) {
+
+			// here we use an object of this class type in order to modify only
+			// the map using the behavior already written.
+			ConnectedComponentInfoDataStructure dataStructure = new ConnectedComponentInfoDataStructure(
+					map);
+
+			dataStructure.putSpecies(species);
+
+			dataStructure.putComponentType(species, componentType);
+
+			dataStructure.putCardinality(species, componentType, cardinality);
+
+			dataStructure.putModel(species, componentType, cardinality,
+					modelName);
+
+		}
+
+		public void serializeYourselfOn(OutputStream outputStream) {
+			try {
+				ObjectOutputStream objectOutputStream = new ObjectOutputStream(
+						outputStream);
+
+				objectOutputStream.writeObject(this);
+
+				objectOutputStream.close();
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public void putTuple(String species, String componentType,
 			Integer cardinality, String modelName) {
 
-		this.dataStructure.putSpecies(species);
-
-		this.dataStructure.putComponentType(species, componentType);
-
-		this.dataStructure.putCardinality(species, componentType, cardinality);
-
-		this.dataStructure.putModel(species, componentType, cardinality,
-				modelName);
+		ConnectedComponentInfoDataStructure.putIntoMap(this.dataStructure.map,
+				species, componentType, cardinality, modelName);
 
 	}
 
@@ -124,15 +181,8 @@ public class ConnectedComponentInfoRecorder {
 	}
 
 	public void writeDataStructure(OutputStream outputStream) {
-		try {
-			ObjectOutputStream objectOutputStream = new ObjectOutputStream(
-					outputStream);
 
-			objectOutputStream.writeObject(this.dataStructure.map);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		this.dataStructure.serializeYourselfOn(outputStream);
 	}
 
 }
