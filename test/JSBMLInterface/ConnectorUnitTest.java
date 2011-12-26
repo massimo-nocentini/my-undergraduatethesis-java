@@ -87,6 +87,12 @@ public class ConnectorUnitTest {
 		Connector.makeConnector(path).parseModel();
 	}
 
+	@Test(expected = UnsupportedOperationException.class)
+	public void fetching_model_name_from_empty_connector_should_throws_exception() {
+
+		Connector.makeConnector().fetchModelName();
+	}
+
 	@Test
 	public void makeOurModel() {
 		String path = "sbml-test-files/allCpdsMetabSmmReactionsCompounds.xml";
@@ -104,4 +110,5 @@ public class ConnectorUnitTest {
 
 		OurModel.makeOurModelFrom(path);
 	}
+
 }

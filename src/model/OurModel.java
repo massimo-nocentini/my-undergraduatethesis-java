@@ -87,28 +87,6 @@ public class OurModel implements DotExportable {
 		return this;
 	}
 
-	// public OurModel runDepthFirstSearch(final DfsExplorer dfsVertexExplorer,
-	// final Vertex startingVertex) {
-	//
-	// final Map<Vertex, ExploreStatedWrapperVertex> map =
-	// makeDfsVertexMetadataMap();
-	//
-	// dfsVertexExplorer.searchStarted(map);
-	//
-	// findVertexByExampleAndApplyLogicOnIt(startingVertex,
-	// new VertexLogicApplier() {
-	//
-	// @Override
-	// public void apply(Vertex vertex) {
-	// map.get(vertex).ifNotExplored(dfsVertexExplorer);
-	// }
-	// });
-	//
-	// dfsVertexExplorer.searchCompleted(map);
-	//
-	// return this;
-	// }
-
 	private Map<Vertex, ExploreStatedWrapperVertex> makeDfsVertexMetadataMap() {
 
 		final Map<Vertex, ExploreStatedWrapperVertex> map = new TreeMap<Vertex, ExploreStatedWrapperVertex>();

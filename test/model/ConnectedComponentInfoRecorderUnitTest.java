@@ -24,7 +24,7 @@ public class ConnectedComponentInfoRecorderUnitTest {
 
 		ConnectedComponentInfoRecorder recorder = new ConnectedComponentInfoRecorder();
 
-		String species = "my_species";
+		String species = "my_species_identifier";
 
 		TreeMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> someMap = new TreeMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>>();
 
@@ -47,7 +47,7 @@ public class ConnectedComponentInfoRecorderUnitTest {
 		ConnectedComponentInfoRecorder recorder = new ConnectedComponentInfoRecorder();
 
 		String species = "my_species";
-		String componentType = "sources";
+		String componentType = VertexType.Sources.toString();
 		int cardinality = 1;
 		String modelName = "model1";
 
@@ -80,7 +80,7 @@ public class ConnectedComponentInfoRecorderUnitTest {
 		ConnectedComponentInfoRecorder recorder = new ConnectedComponentInfoRecorder();
 
 		String species = "my_species";
-		String componentType = "sources";
+		String componentType = VertexType.Sources.toString();
 		int cardinality = 1;
 		String modelName = "model1";
 
@@ -121,7 +121,7 @@ public class ConnectedComponentInfoRecorderUnitTest {
 		ConnectedComponentInfoRecorder recorder = new ConnectedComponentInfoRecorder();
 
 		String species = "my_species";
-		String componentType = "sources";
+		String componentType = VertexType.Sources.toString();
 		int cardinality = 1;
 		String modelName = "model1";
 
@@ -174,10 +174,10 @@ public class ConnectedComponentInfoRecorderUnitTest {
 		ConnectedComponentWrapperVertex componentWrapperVertex = VertexFactory
 				.makeConnectedComponentWrapperVertex();
 
-		String species = "my_species";
-		String componentType = "sources";
+		String species = "my_species_identifier";
+		String componentType = VertexType.Sinks.toString();
 		int cardinality = 1;
-		String modelName = "model1";
+		String modelName = "model";
 
 		// setting up the connected component to have one member and one
 		// neighbor in order to be a source (otherwise we cannot distinguish if
@@ -185,15 +185,13 @@ public class ConnectedComponentInfoRecorderUnitTest {
 		componentWrapperVertex.includeMember(VertexFactory.makeSimpleVertex(
 				species, OurModel.getDefaultCompartmentId()));
 
-		componentWrapperVertex.addNeighbour(VertexFactory
-				.makeConnectedComponentWrapperVertex());
-
 		componentWrapperVertex.publishYourContentOn(recorder);
 
-		TreeMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> expectedMap = new TreeMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>>();
+		SortedMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> expectedMap = new TreeMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>>();
 
-		ConnectedComponentInfoDataStructure.putIntoMap(expectedMap, species,
-				componentType, cardinality, modelName);
+		ConnectedComponentInfoDataStructure.putIntoMap(expectedMap,
+				"MY_SPECIES_IDENTIFIER-()-(COMPARTMENT_ID)", componentType,
+				cardinality, modelName);
 
 		Assert.assertTrue(recorder
 				.isDataStructureEquals(new ConnectedComponentInfoDataStructure(

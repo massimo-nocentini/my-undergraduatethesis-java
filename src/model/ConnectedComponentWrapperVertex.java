@@ -92,7 +92,6 @@ public class ConnectedComponentWrapperVertex extends
 	}
 
 	public String findModelName() {
-		// TODO Auto-generated method stub
-		return null;
+		return "model";
 	}
 }
