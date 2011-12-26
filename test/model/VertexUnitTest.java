@@ -310,6 +310,23 @@ public class VertexUnitTest {
 	}
 
 	@Test
+	public void check_vertex_creation_with_species_name() {
+
+		String species_id = "species_id";
+		String species_name = "species_name";
+		String compartment_id = "compartment_id";
+
+		Vertex v = VertexFactory.makeSimpleVertex(species_id, species_name,
+				compartment_id);
+
+		Assert.assertNotNull(v);
+		Assert.assertTrue(v.isYourSpeciesId(species_id));
+		Assert.assertTrue(v.isYourSpeciesName(species_name));
+		Assert.assertTrue(v.isYourCompartmentId(compartment_id));
+		Assert.assertFalse(v.isYourOrigin(new Species()));
+	}
+
+	@Test
 	public void matchSpeciesCompartement() {
 
 		Vertex v1 = VertexFactory.makeSimpleVertex();

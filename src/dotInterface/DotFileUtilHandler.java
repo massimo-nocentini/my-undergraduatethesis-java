@@ -156,21 +156,25 @@ public class DotFileUtilHandler {
 
 		for (File existingFile : dir.listFiles()) {
 
-			if (existingFile.isDirectory() == true
-					&& recursiveDirectoryScanning == true) {
+			if (existingFile.isDirectory() == true) {
 
-				// temporary filter to analyze only 'a'-starting folders
-				// if (existingFile.getName().startsWith("a") == false) {
-				// continue;
-				//
-				// }
+				if (recursiveDirectoryScanning == true) {
 
-				mapOnFilesInFolderFilteringByExtension(
-						existingFile.getAbsolutePath(), extensionFilter,
-						action, recursiveDirectoryScanning);
+					// temporary filter to analyze only 'a'-starting folders
+					// if (existingFile.getName().startsWith("a") == false) {
+					// continue;
+					//
+					// }
 
-				// when we finish the recursive invocation we
-				// continue with the next element in the directory
+					mapOnFilesInFolderFilteringByExtension(
+							existingFile.getAbsolutePath(), extensionFilter,
+							action, recursiveDirectoryScanning);
+
+				}
+
+				// when we finish a possible recursive invocation (or we
+				// don't because the current path is a directory) we continue
+				// with the next element in the directory
 				// because the current scanned element is a directory
 				continue;
 			}
@@ -184,6 +188,10 @@ public class DotFileUtilHandler {
 			action.apply(existingFile);
 		}
 
+	}
+
+	public static String getSBMLFileExtension() {
+		return ".xml";
 	}
 
 	public static void mapOnAllFilesInFolder(String folder,

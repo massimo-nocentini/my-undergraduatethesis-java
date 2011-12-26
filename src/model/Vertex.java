@@ -11,7 +11,8 @@ import dotInterface.LineDecorator;
 public interface Vertex extends DotExportable, Comparable<Vertex> {
 
 	public interface DoAction<T> {
-		void apply(T item);
+		void apply(T item, String species_id, String species_name,
+				String compartment_id);
 	}
 
 	public Vertex addNeighbour(Vertex neighbour);
@@ -27,6 +28,8 @@ public interface Vertex extends DotExportable, Comparable<Vertex> {
 	public boolean isYourSpeciesId(String speciesId);
 
 	public boolean isYourCompartmentId(String compartmentId);
+
+	public boolean isYourSpeciesName(String species_name);
 
 	@Override
 	public abstract int hashCode();
@@ -69,8 +72,6 @@ public interface Vertex extends DotExportable, Comparable<Vertex> {
 
 	public void addDirectAncestors(Vertex vertex);
 
-	public SimpleVertex asSimpleVertex();
-
 	public void publishYourStatsOn(VertexStatsRecorder vertexStatsRecorder);
 
 	public void voteOn(VertexVoteAccepter voteAccepter);
@@ -82,5 +83,7 @@ public interface Vertex extends DotExportable, Comparable<Vertex> {
 	public boolean isYourAncestorsEmpty();
 
 	public void doWithVertexType(DoAction<VertexType> doer);
+
+	public String buildVertexUniqueIdentifier();
 
 }

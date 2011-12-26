@@ -39,14 +39,23 @@ public class SimpleVertex implements Vertex {
 
 	private final Set<Vertex> neighbors;
 
-	String species_id;
+	private final String species_id;
 
-	String compartment_id;
+	private final String species_name;
+
+	private final String compartment_id;
 
 	private final Set<Vertex> directAncestors;
 
 	private SimpleVertex(String species_id, String compartment_id) {
+		this(species_id, "", compartment_id);
+	}
+
+	private SimpleVertex(String species_id, String species_name,
+			String compartment_id) {
+
 		this.species_id = species_id;
+		this.species_name = species_name;
 		this.compartment_id = compartment_id;
 
 		neighbors = new TreeSet<Vertex>();
@@ -198,7 +207,7 @@ public class SimpleVertex implements Vertex {
 	}
 
 	static SimpleVertex makeVertex(String species_id, String compartment_id) {
-		return new SimpleVertex(species_id, compartment_id);
+		return makeVertex(species_id, "", compartment_id);
 	}
 
 	@Override
@@ -226,11 +235,6 @@ public class SimpleVertex implements Vertex {
 		// corretto
 		// invocare ricorsivamente.
 		this.directAncestors.add(vertex);
-	}
-
-	@Override
-	public SimpleVertex asSimpleVertex() {
-		return this;
 	}
 
 	@Override
@@ -415,7 +419,35 @@ public class SimpleVertex implements Vertex {
 			type = VertexType.Sources;
 		}
 
-		doer.apply(type);
+		doer.apply(type, this.species_id, this.species_name,
+				this.compartment_id);
 	}
 
+	@Override
+	public boolean isYourSpeciesName(String species_name) {
+
+		if (this.species_name == null) {
+			return false;
+		}
+
+		return this.species_name.equals(species_name);
+	}
+
+	@Override
+	public String buildVertexUniqueIdentifier() {
+		String identifier = this.species_id;
+
+		identifier = identifier + "-("
+				+ (this.species_name != null ? this.species_name : "") + ")";
+
+		identifier = identifier + "-(" + this.compartment_id + ")";
+
+		return identifier.toUpperCase();
+	}
+
+	static SimpleVertex makeVertex(String species_id, String species_name,
+			String compartment_id) {
+
+		return new SimpleVertex(species_id, species_name, compartment_id);
+	}
 }

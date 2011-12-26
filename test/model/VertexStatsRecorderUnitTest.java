@@ -244,12 +244,13 @@ public class VertexStatsRecorderUnitTest {
 			}
 		};
 
-		DotFileUtilHandler.mapOnAllFilesInFolder(
-				DotFileUtilHandler.getSbmlExampleModelsFolder(), action);
+		DotFileUtilHandler.mapOnFilesInFolderFilteringByExtension(
+				DotFileUtilHandler.getSbmlExampleModelsFolder(),
+				DotFileUtilHandler.getSBMLFileExtension(), action, false);
 
 	}
 
-	@Test
+	// @Test
 	public void check_species_presence_in_various_sbml_models() {
 
 		this.internal_check_species_presence_in_sbml_models(
@@ -258,7 +259,7 @@ public class VertexStatsRecorderUnitTest {
 						"curated/"), false);
 	}
 
-	@Test
+	// @Test
 	public void check_species_presence_in_various_sbml_models_contained_in_aae_folder() {
 
 		this.internal_check_species_presence_in_sbml_models(
@@ -267,16 +268,20 @@ public class VertexStatsRecorderUnitTest {
 				false);
 	}
 
-	@Test
+	// @Test
 	public void check_species_presence_in_a_huge_number_of_sbml_models_recursively() {
 
-		this.internal_check_species_presence_in_sbml_models(
-				"maps-of-species-presence-among-a-huge-number-of-models-in-kyoto-folder",
-				DotFileUtilHandler.getSbmlExampleModelsFolder().concat(
-						"KEGG_R47-SBML_L2V1_nocd-20080728/"), true);
+		IntegerForClosure analyzedModels = this
+				.internal_check_species_presence_in_sbml_models(
+						"maps-of-species-presence-among-a-huge-number-of-models-in-kyoto-folder",
+						DotFileUtilHandler.getSbmlExampleModelsFolder().concat(
+								"KEGG_R47-SBML_L2V1_nocd-20080728/"), true);
+
+		Assert.assertTrue(analyzedModels.isCountEquals(72095));
+		Assert.assertFalse(analyzedModels.isCountEquals(0));
 	}
 
-	@Test
+	// @Test
 	public void check_species_presence_in_old_sbml_models() {
 
 		this.internal_check_species_presence_in_sbml_models(
@@ -302,7 +307,7 @@ public class VertexStatsRecorderUnitTest {
 
 	}
 
-	private void internal_check_species_presence_in_sbml_models(
+	private IntegerForClosure internal_check_species_presence_in_sbml_models(
 			String outputFilename, String modelsContainingDirectory,
 			boolean recursively) {
 
@@ -369,8 +374,6 @@ public class VertexStatsRecorderUnitTest {
 			e.printStackTrace();
 		}
 
-		Assert.assertTrue(analyzedModels.isCountEquals(72095));
-		Assert.assertFalse(analyzedModels.isCountEquals(0));
-
+		return analyzedModels;
 	}
 }

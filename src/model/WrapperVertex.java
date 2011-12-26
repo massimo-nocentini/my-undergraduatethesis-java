@@ -61,6 +61,11 @@ public abstract class WrapperVertex implements Vertex {
 	}
 
 	@Override
+	public boolean isYourSpeciesName(String species_name) {
+		return this.wrappedVertex.isYourSpeciesName(species_name);
+	}
+
+	@Override
 	public boolean isYourCompartmentId(String compartmentId) {
 		return wrappedVertex.isYourCompartmentId(compartmentId);
 	}
@@ -161,11 +166,6 @@ public abstract class WrapperVertex implements Vertex {
 	}
 
 	@Override
-	public SimpleVertex asSimpleVertex() {
-		return wrappedVertex.asSimpleVertex();
-	}
-
-	@Override
 	public int compareTo(Vertex o) {
 		return wrappedVertex.compareTo(o);
 	}
@@ -194,6 +194,11 @@ public abstract class WrapperVertex implements Vertex {
 	public void voteOn(VertexVoteAccepter voteAccepter) {
 
 		this.wrappedVertex.voteOn(voteAccepter);
+	}
+
+	@Override
+	public String buildVertexUniqueIdentifier() {
+		return this.wrappedVertex.buildVertexUniqueIdentifier();
 	}
 
 }

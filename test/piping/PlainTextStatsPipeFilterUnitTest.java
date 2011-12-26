@@ -159,8 +159,9 @@ public class PlainTextStatsPipeFilterUnitTest {
 			}
 		};
 
-		DotFileUtilHandler.mapOnAllFilesInFolder(
-				DotFileUtilHandler.getSbmlExampleModelsFolder(), action);
+		DotFileUtilHandler.mapOnFilesInFolderFilteringByExtension(
+				DotFileUtilHandler.getSbmlExampleModelsFolder(),
+				DotFileUtilHandler.getSBMLFileExtension(), action, false);
 
 	}
 
@@ -227,8 +228,8 @@ public class PlainTextStatsPipeFilterUnitTest {
 			}
 		};
 
-		DotFileUtilHandler.mapOnAllFilesInFolder(
-				DotFileUtilHandler.getSbmlExampleModelsFolder(), action);
-
+		DotFileUtilHandler.mapOnFilesInFolderFilteringByExtension(
+				DotFileUtilHandler.getSbmlExampleModelsFolder(),
+				DotFileUtilHandler.getSBMLFileExtension(), action, false);
 	}
 }

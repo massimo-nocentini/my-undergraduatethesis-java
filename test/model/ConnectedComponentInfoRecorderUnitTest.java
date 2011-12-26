@@ -199,4 +199,5 @@ public class ConnectedComponentInfoRecorderUnitTest {
 				.isDataStructureEquals(new ConnectedComponentInfoDataStructure(
 						expectedMap)));
 	}
+
 }

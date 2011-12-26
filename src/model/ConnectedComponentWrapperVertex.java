@@ -72,18 +72,27 @@ public class ConnectedComponentWrapperVertex extends
 			final ConnectedComponentInfoRecorder recorder) {
 
 		final int cardinality = this.members.size();
+		final String modelName = this.findModelName();
 
 		for (final Vertex member : this.members) {
 
 			member.doWithVertexType(new DoAction<VertexType>() {
 
 				@Override
-				public void apply(VertexType item) {
-					recorder.putTuple(member, item.toString(), cardinality,
-							modelName);
+				public void apply(VertexType item, String species_id,
+						String species_name, String compartment_id) {
+
+					recorder.putTuple(member.buildVertexUniqueIdentifier(),
+							item.toString(), cardinality, modelName);
 				}
+
 			});
 
 		}
+	}
+
+	public String findModelName() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
