@@ -327,6 +327,46 @@ public class VertexUnitTest {
 	}
 
 	@Test
+	public void check_vertex_unique_identifier_with_species_name() {
+
+		String species_id = "species_id";
+		String species_name = "species_name";
+		String compartment_id = "compartment_id";
+
+		Vertex v = VertexFactory.makeSimpleVertex(species_id, species_name,
+				compartment_id);
+
+		String expected = species_id + "-(" + species_name + ")-("
+				+ compartment_id + ")";
+
+		Assert.assertEquals("SPECIES_ID-(SPECIES_NAME)-(COMPARTMENT_ID)",
+				expected.toUpperCase());
+
+		Assert.assertEquals(expected.toUpperCase(),
+				v.buildVertexUniqueIdentifier());
+	}
+
+	@Test
+	public void check_vertex_unique_identifier_without_species_name() {
+
+		String species_id = "species_id";
+		String species_name = "";
+		String compartment_id = "compartment_id";
+
+		Vertex v = VertexFactory.makeSimpleVertex(species_id, species_name,
+				compartment_id);
+
+		String expected = species_id + "-(" + species_name + ")-("
+				+ compartment_id + ")";
+
+		Assert.assertEquals("SPECIES_ID-()-(COMPARTMENT_ID)",
+				expected.toUpperCase());
+
+		Assert.assertEquals(expected.toUpperCase(),
+				v.buildVertexUniqueIdentifier());
+	}
+
+	@Test
 	public void matchSpeciesCompartement() {
 
 		Vertex v1 = VertexFactory.makeSimpleVertex();
