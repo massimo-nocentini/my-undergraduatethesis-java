@@ -27,6 +27,8 @@ public class Connector {
 		Set<Vertex> parse();
 
 		boolean canParse();
+
+		String fetchModelName();
 	}
 
 	private class StatelessConnectorState implements ConnectorState {
@@ -39,6 +41,11 @@ public class Connector {
 		@Override
 		public boolean canParse() {
 			return false;
+		}
+
+		@Override
+		public String fetchModelName() {
+			throw new UnsupportedOperationException();
 		}
 	}
 
@@ -92,6 +99,11 @@ public class Connector {
 		@Override
 		public boolean canParse() {
 			return true;
+		}
+
+		@Override
+		public String fetchModelName() {
+			return readModel(data_path).getName();
 		}
 	}
 
@@ -241,6 +253,10 @@ public class Connector {
 
 	public boolean canParse() {
 		return state.canParse();
+	}
+
+	public String fetchModelName() {
+		return state.fetchModelName();
 	}
 
 }

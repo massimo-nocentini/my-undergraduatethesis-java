@@ -13,6 +13,7 @@ import java.util.TreeSet;
 import junit.framework.Assert;
 
 import org.junit.Test;
+import org.sbml.jsbml.Model;
 
 import tarjan.DfsEventsListener;
 import tarjan.DfsEventsListenerNullImplementor;
@@ -394,5 +395,81 @@ public class OurModelUnitTest {
 		Assert.assertTrue(recorder.isCountOfSignals(1));
 		Assert.assertFalse(recorder.isCountOfSignals(0));
 		Assert.assertFalse(recorder.isCountOfSignals(49));
+	}
+
+	@Test
+	public void check_setting_model_name_building_from_vertex_set() {
+
+		Model model = new Model();
+		String name = "model_name";
+		model.setName(name);
+
+		OurModel ourModel = OurModel.makeOurModelFrom(new TreeSet<Vertex>(),
+				name);
+
+		Assert.assertTrue(ourModel.isModelNameEquals(name));
+		Assert.assertFalse(ourModel.isModelNameEquals(name.concat("_Smullyan")));
+		Assert.assertFalse(ourModel.isModelNameEquals(""));
+	}
+
+	@Test
+	public void check_setting_model_name_building_from_existing_models() {
+
+		OurModel bartonella_model = OurModel
+				.makeOurModelFrom(DotFileUtilHandler
+						.getSbmlExampleModelsFolder().concat(
+								"BartonellaQuintanaToulouse.xml"));
+		Assert.assertTrue(bartonella_model
+				.isModelNameEquals("Bartonella quintana"));
+		Assert.assertFalse(bartonella_model.isModelNameEquals(""));
+
+		OurModel candidatus_model = OurModel
+				.makeOurModelFrom(DotFileUtilHandler
+						.getSbmlExampleModelsFolder().concat(
+								"CandidatusSulciamuelleriSMDSEM.xml"));
+		Assert.assertTrue(candidatus_model
+				.isModelNameEquals("Candidatus Sulcia muelleri"));
+		Assert.assertFalse(candidatus_model.isModelNameEquals(""));
+
+		OurModel escherichia_model = OurModel
+				.makeOurModelFrom(DotFileUtilHandler
+						.getSbmlExampleModelsFolder().concat(
+								"EscherichiaColiK12.xml"));
+		Assert.assertTrue(escherichia_model
+				.isModelNameEquals("Escherichia coli"));
+		Assert.assertFalse(escherichia_model.isModelNameEquals(""));
+
+		OurModel mesorhizobium_model = OurModel
+				.makeOurModelFrom(DotFileUtilHandler
+						.getSbmlExampleModelsFolder().concat(
+								"MesorhizobiumLotiMAFF303099.xml"));
+		Assert.assertTrue(mesorhizobium_model
+				.isModelNameEquals("Mesorhizobium loti"));
+		Assert.assertFalse(mesorhizobium_model.isModelNameEquals(""));
+
+		OurModel pseudomonas_model = OurModel
+				.makeOurModelFrom(DotFileUtilHandler
+						.getSbmlExampleModelsFolder().concat(
+								"PseudomonasAeruginosaPAO1.xml"));
+		Assert.assertTrue(pseudomonas_model
+				.isModelNameEquals("Pseudomonas aeruginosa"));
+		Assert.assertFalse(pseudomonas_model.isModelNameEquals(""));
+
+		OurModel rhodobacter_model = OurModel
+				.makeOurModelFrom(DotFileUtilHandler
+						.getSbmlExampleModelsFolder().concat(
+								"RhodobacterSphaeroides241.xml"));
+		Assert.assertTrue(rhodobacter_model
+				.isModelNameEquals("Rhodobacter sphaeroides"));
+		Assert.assertFalse(rhodobacter_model.isModelNameEquals(""));
+
+		OurModel rickettsia_model = OurModel
+				.makeOurModelFrom(DotFileUtilHandler
+						.getSbmlExampleModelsFolder().concat(
+								"RickettsiaMassiliaeMTU5.xml"));
+		Assert.assertTrue(rickettsia_model
+				.isModelNameEquals("Rickettsia massiliae"));
+		Assert.assertFalse(rickettsia_model.isModelNameEquals(""));
+
 	}
 }
