@@ -253,8 +253,40 @@ public class ConnectedComponentInfoRecorderUnitTest {
 
 	@Test
 	public void building_map_from_only_one_model_should_produce_flat_result() {
+		ConnectedComponentInfoRecorder recorder = new ConnectedComponentInfoRecorder();
+
+		SortedMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> expectedMap = new TreeMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>>();
+
+		this.build_same_context_with_changes_on_model(recorder, "model_one",
+				expectedMap);
+
+		Assert.assertTrue(recorder
+				.isDataStructureEquals(new ConnectedComponentInfoDataStructure(
+						expectedMap)));
+	}
+
+	@Test
+	public void building_map_from_two_models_with_the_same_vertices_structures() {
 
 		ConnectedComponentInfoRecorder recorder = new ConnectedComponentInfoRecorder();
+
+		SortedMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> expectedMap = new TreeMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>>();
+
+		this.build_same_context_with_changes_on_model(recorder, "model_one",
+				expectedMap);
+
+		this.build_same_context_with_changes_on_model(recorder, "model_two",
+				expectedMap);
+
+		Assert.assertTrue(recorder
+				.isDataStructureEquals(new ConnectedComponentInfoDataStructure(
+						expectedMap)));
+	}
+
+	private void build_same_context_with_changes_on_model(
+			ConnectedComponentInfoRecorder recorder,
+			String modelName,
+			SortedMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> expectedMap) {
 
 		// creating the components
 		ConnectedComponentWrapperVertex scc_one = VertexFactory
@@ -265,8 +297,6 @@ public class ConnectedComponentInfoRecorderUnitTest {
 
 		ConnectedComponentWrapperVertex scc_three = VertexFactory
 				.makeConnectedComponentWrapperVertex();
-
-		String modelName = "model";
 
 		// creating the vertices
 		Vertex vertex_one = VertexFactory.makeSimpleVertex("species_one",
@@ -327,8 +357,6 @@ public class ConnectedComponentInfoRecorderUnitTest {
 		scc_two.publishYourContentOn(recorder);
 		scc_three.publishYourContentOn(recorder);
 
-		SortedMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> expectedMap = new TreeMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>>();
-
 		String species_identifier_suffix = "-()-(COMPARTMENT_ID)";
 
 		ConnectedComponentInfoDataStructure.putIntoMap(expectedMap,
@@ -349,9 +377,5 @@ public class ConnectedComponentInfoRecorderUnitTest {
 		ConnectedComponentInfoDataStructure.putIntoMap(expectedMap,
 				"SPECIES_SIX".concat(species_identifier_suffix),
 				VertexType.Sinks.toString(), 1, modelName);
-
-		Assert.assertTrue(recorder
-				.isDataStructureEquals(new ConnectedComponentInfoDataStructure(
-						expectedMap)));
 	}
 }
