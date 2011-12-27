@@ -74,21 +74,35 @@ public class ConnectedComponentWrapperVertex extends
 		final int cardinality = this.members.size();
 		final String modelName = this.findModelName();
 
-		for (final Vertex member : this.members) {
+		final Set<Vertex> local_members = this.members;
 
-			member.doWithVertexType(new DoAction<VertexType>() {
+		this.doWithVertexType(new DoAction<VertexType>() {
 
-				@Override
-				public void apply(VertexType item, String species_id,
-						String species_name, String compartment_id) {
+			@Override
+			public void apply(final VertexType componentVertexType,
+					String species_id, String species_name,
+					String compartment_id) {
 
-					recorder.putTuple(member.buildVertexUniqueIdentifier(),
-							item.toString(), cardinality, modelName);
+				for (final Vertex member : local_members) {
+
+					member.doWithVertexType(new DoAction<VertexType>() {
+
+						@Override
+						public void apply(VertexType memberVertexType,
+								String species_id, String species_name,
+								String compartment_id) {
+
+							recorder.putTuple(
+									member.buildVertexUniqueIdentifier(),
+									componentVertexType.toString(),
+									cardinality, modelName);
+						}
+
+					});
 				}
+			}
+		});
 
-			});
-
-		}
 	}
 
 	public String findModelName() {

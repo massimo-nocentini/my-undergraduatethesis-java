@@ -250,4 +250,108 @@ public class ConnectedComponentInfoRecorderUnitTest {
 
 		Assert.assertEquals(modelName, componentWrapperVertex.findModelName());
 	}
+
+	@Test
+	public void building_map_from_only_one_model_should_produce_flat_result() {
+
+		ConnectedComponentInfoRecorder recorder = new ConnectedComponentInfoRecorder();
+
+		// creating the components
+		ConnectedComponentWrapperVertex scc_one = VertexFactory
+				.makeConnectedComponentWrapperVertex();
+
+		ConnectedComponentWrapperVertex scc_two = VertexFactory
+				.makeConnectedComponentWrapperVertex();
+
+		ConnectedComponentWrapperVertex scc_three = VertexFactory
+				.makeConnectedComponentWrapperVertex();
+
+		String modelName = "model";
+
+		// creating the vertices
+		Vertex vertex_one = VertexFactory.makeSimpleVertex("species_one",
+				OurModel.getDefaultCompartmentId());
+
+		Vertex vertex_two = VertexFactory.makeSimpleVertex("species_two",
+				OurModel.getDefaultCompartmentId());
+
+		Vertex vertex_three = VertexFactory.makeSimpleVertex("species_three",
+				OurModel.getDefaultCompartmentId());
+
+		Vertex vertex_four = VertexFactory.makeSimpleVertex("species_four",
+				OurModel.getDefaultCompartmentId());
+
+		Vertex vertex_five = VertexFactory.makeSimpleVertex("species_five",
+				OurModel.getDefaultCompartmentId());
+
+		Vertex vertex_six = VertexFactory.makeSimpleVertex("species_six",
+				OurModel.getDefaultCompartmentId());
+
+		// setting up neighborhood relations
+		vertex_one.addNeighbour(vertex_two).addNeighbour(vertex_six);
+		vertex_two.addNeighbour(vertex_one).addNeighbour(vertex_three);
+		vertex_three.addNeighbour(vertex_four).addNeighbour(vertex_six);
+		vertex_four.addNeighbour(vertex_five);
+		vertex_five.addNeighbour(vertex_three);
+
+		// building the set in order to build the model
+		Set<Vertex> vertices = new HashSet<Vertex>();
+		vertices.add(vertex_one);
+		vertices.add(vertex_two);
+		vertices.add(vertex_three);
+		vertices.add(vertex_four);
+		vertices.add(vertex_five);
+		vertices.add(vertex_six);
+
+		// the following statement is needed only to update
+		// the vertices respect the container model relation
+		@SuppressWarnings("unused")
+		OurModel model = OurModel.makeOurModelFrom(vertices, modelName);
+
+		// including the vertices in the respective components
+		scc_one.includeMember(vertex_one);
+		scc_one.includeMember(vertex_two);
+
+		scc_two.includeMember(vertex_three);
+		scc_two.includeMember(vertex_four);
+		scc_two.includeMember(vertex_five);
+
+		scc_three.includeMember(vertex_six);
+
+		// building neighborhood relation about connected components
+		scc_one.addNeighbour(scc_two);
+		scc_two.addNeighbour(scc_three);
+
+		// publishing the informations
+		scc_one.publishYourContentOn(recorder);
+		scc_two.publishYourContentOn(recorder);
+		scc_three.publishYourContentOn(recorder);
+
+		SortedMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> expectedMap = new TreeMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>>();
+
+		String species_identifier_suffix = "-()-(COMPARTMENT_ID)";
+
+		ConnectedComponentInfoDataStructure.putIntoMap(expectedMap,
+				"SPECIES_ONE".concat(species_identifier_suffix),
+				VertexType.Sources.toString(), 2, modelName);
+		ConnectedComponentInfoDataStructure.putIntoMap(expectedMap,
+				"SPECIES_TWO".concat(species_identifier_suffix),
+				VertexType.Sources.toString(), 2, modelName);
+		ConnectedComponentInfoDataStructure.putIntoMap(expectedMap,
+				"SPECIES_THREE".concat(species_identifier_suffix),
+				VertexType.Whites.toString(), 3, modelName);
+		ConnectedComponentInfoDataStructure.putIntoMap(expectedMap,
+				"SPECIES_FOUR".concat(species_identifier_suffix),
+				VertexType.Whites.toString(), 3, modelName);
+		ConnectedComponentInfoDataStructure.putIntoMap(expectedMap,
+				"SPECIES_FIVE".concat(species_identifier_suffix),
+				VertexType.Whites.toString(), 3, modelName);
+		ConnectedComponentInfoDataStructure.putIntoMap(expectedMap,
+				"SPECIES_SIX".concat(species_identifier_suffix),
+				VertexType.Sinks.toString(), 1, modelName);
+
+		Assert.assertTrue(recorder
+				.isDataStructureEquals(new ConnectedComponentInfoDataStructure(
+						expectedMap)));
+	}
 }
