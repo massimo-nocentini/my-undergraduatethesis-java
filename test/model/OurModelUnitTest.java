@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import junit.framework.Assert;
+import model.Vertex.DoAction;
 
 import org.junit.Test;
 import org.sbml.jsbml.Model;
@@ -408,6 +409,7 @@ public class OurModelUnitTest {
 				name);
 
 		Assert.assertTrue(ourModel.isModelNameEquals(name));
+		Assert.assertEquals(name, ourModel.supplyModelName());
 		Assert.assertFalse(ourModel.isModelNameEquals(name.concat("_Smullyan")));
 		Assert.assertFalse(ourModel.isModelNameEquals(""));
 	}
@@ -472,4 +474,69 @@ public class OurModelUnitTest {
 		Assert.assertFalse(rickettsia_model.isModelNameEquals(""));
 
 	}
+
+	@Test
+	public void assigning_container_model_to_vertex_should_return_back_the_same_model() {
+
+		Vertex vertex = VertexFactory.makeSimpleVertex();
+
+		final String str = "called";
+
+		final OurModel model = OurModel.makeEmptyModel();
+
+		vertex.containedIn(model);
+
+		final StringBuilder watch_dog = new StringBuilder();
+
+		vertex.doWithParentModel(new DoAction<OurModel>() {
+
+			@Override
+			public void apply(OurModel item, String species_id,
+					String species_name, String compartment_id) {
+
+				watch_dog.append(str);
+
+				Assert.assertSame(model, item);
+			}
+		});
+
+		// we have to check this also in order to verify that the
+		// lambda is actually called.
+		Assert.assertEquals(str, watch_dog.toString());
+	}
+
+	@Test
+	public void building_a_model_from_some_vertices_should_assign_the_model_to_them() {
+
+		Set<Vertex> vertices = new HashSet<Vertex>();
+		Vertex v1 = VertexFactory.makeSimpleVertex();
+		Vertex v2 = VertexFactory.makeSimpleVertex();
+		Vertex v3 = VertexFactory.makeSimpleVertex();
+		Vertex v4 = VertexFactory.makeSimpleVertex();
+
+		// make a cycle
+		v1.addNeighbour(v2);
+		v2.addNeighbour(v3);
+		v3.addNeighbour(v1);
+
+		vertices.add(v1);
+		vertices.add(v2);
+		vertices.add(v3);
+		vertices.add(v4);
+
+		final OurModel model = OurModel.makeOurModelFrom(vertices);
+
+		for (Vertex vertex : vertices) {
+			vertex.doWithParentModel(new DoAction<OurModel>() {
+
+				@Override
+				public void apply(OurModel item, String species_id,
+						String species_name, String compartment_id) {
+
+					Assert.assertSame(model, item);
+				}
+			});
+		}
+	}
+
 }

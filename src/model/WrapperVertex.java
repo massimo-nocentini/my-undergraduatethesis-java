@@ -13,6 +13,16 @@ public abstract class WrapperVertex implements Vertex {
 	private final Vertex wrappedVertex;
 
 	@Override
+	public void containedIn(OurModel model) {
+		this.wrappedVertex.containedIn(model);
+	}
+
+	@Override
+	public void doWithParentModel(DoAction<OurModel> action) {
+		this.wrappedVertex.doWithParentModel(action);
+	}
+
+	@Override
 	public void collectVertexLabelOutsideBoxInto(Writer writer) {
 		wrappedVertex.collectVertexLabelOutsideBoxInto(writer);
 	}

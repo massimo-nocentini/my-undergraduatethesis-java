@@ -47,6 +47,8 @@ public class SimpleVertex implements Vertex {
 
 	private final Set<Vertex> directAncestors;
 
+	private OurModel container_model;
+
 	private SimpleVertex(String species_id, String compartment_id) {
 		this(species_id, "", compartment_id);
 	}
@@ -449,5 +451,17 @@ public class SimpleVertex implements Vertex {
 			String compartment_id) {
 
 		return new SimpleVertex(species_id, species_name, compartment_id);
+	}
+
+	@Override
+	public void doWithParentModel(DoAction<OurModel> action) {
+
+		action.apply(container_model, species_id, species_name,
+				compartment_id);
+	}
+
+	@Override
+	public void containedIn(OurModel model) {
+		this.container_model = model;
 	}
 }

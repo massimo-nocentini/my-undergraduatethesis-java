@@ -10,80 +10,84 @@ import dotInterface.LineDecorator;
 
 public interface Vertex extends DotExportable, Comparable<Vertex> {
 
-	public interface DoAction<T> {
+	interface DoAction<T> {
 		void apply(T item, String species_id, String species_name,
 				String compartment_id);
 	}
 
-	public Vertex addNeighbour(Vertex neighbour);
+	Vertex addNeighbour(Vertex neighbour);
 
-	public void doOnNeighbors(VertexLogicApplier applier);
+	void doOnNeighbors(VertexLogicApplier applier);
 
-	public void doOnNeighbors(VertexLogicApplierWithNeighborhoodRelation applier);
+	void doOnNeighbors(VertexLogicApplierWithNeighborhoodRelation applier);
 
-	public boolean isYourNeighborhoodEquals(Set<Vertex> products);
+	boolean isYourNeighborhoodEquals(Set<Vertex> products);
 
-	public boolean isYourNeighborhoodEmpty();
+	boolean isYourNeighborhoodEmpty();
 
-	public boolean isYourSpeciesId(String speciesId);
+	boolean isYourSpeciesId(String speciesId);
 
-	public boolean isYourCompartmentId(String compartmentId);
+	boolean isYourCompartmentId(String compartmentId);
 
-	public boolean isYourSpeciesName(String species_name);
-
-	@Override
-	public abstract int hashCode();
+	boolean isYourSpeciesName(String species_name);
 
 	@Override
-	public abstract boolean equals(Object obj);
+	abstract int hashCode();
 
-	public boolean haveYouSelfLoop();
+	@Override
+	abstract boolean equals(Object obj);
 
-	public boolean isYourOrigin(Species aSpecies);
+	boolean haveYouSelfLoop();
 
-	public boolean isSink();
+	boolean isYourOrigin(Species aSpecies);
 
-	public boolean isSource();
+	boolean isSink();
 
-	public boolean isYourNeighbour(Vertex a);
+	boolean isSource();
 
-	public boolean isNeighborsCountEquals(int guess);
+	boolean isYourNeighbour(Vertex a);
 
-	public boolean matchCompartmentWith(Vertex otherVertex);
+	boolean isNeighborsCountEquals(int guess);
 
-	public boolean matchSpeciesWith(Vertex otherVertex);
+	boolean matchCompartmentWith(Vertex otherVertex);
 
-	public void collectYourDefinitionInto(Writer writer);
+	boolean matchSpeciesWith(Vertex otherVertex);
 
-	public LineDecorator getSourceDecorator();
+	void collectYourDefinitionInto(Writer writer);
 
-	public LineDecorator getIdentifierDecorator();
+	LineDecorator getSourceDecorator();
 
-	public LineDecorator getSquareBracketsDecorator();
+	LineDecorator getIdentifierDecorator();
 
-	public void collectEdgeDefinitionInto(Writer writer, Vertex neighbour);
+	LineDecorator getSquareBracketsDecorator();
 
-	public void collectVertexLabelOutsideBoxInto(Writer writer);
+	void collectEdgeDefinitionInto(Writer writer, Vertex neighbour);
+
+	void collectVertexLabelOutsideBoxInto(Writer writer);
 
 	// TODO: the following methods need to be unit tested each one
-	public int compareYourCompartmentIdWith(String compartment_id);
+	int compareYourCompartmentIdWith(String compartment_id);
 
-	public int compareYourSpeciesIdWith(String species_id);
+	int compareYourSpeciesIdWith(String species_id);
 
-	public void addDirectAncestors(Vertex vertex);
+	void addDirectAncestors(Vertex vertex);
 
-	public void publishYourStatsOn(VertexStatsRecorder vertexStatsRecorder);
+	void publishYourStatsOn(VertexStatsRecorder vertexStatsRecorder);
 
-	public void voteOn(VertexVoteAccepter voteAccepter);
+	void voteOn(VertexVoteAccepter voteAccepter);
 
-	public void brokeDirectAncestorRelationWith(Vertex source);
+	void brokeDirectAncestorRelationWith(Vertex source);
 
-	public void brokeYourNeighborhoodRelations();
+	void brokeYourNeighborhoodRelations();
 
-	public boolean isYourAncestorsEmpty();
+	boolean isYourAncestorsEmpty();
 
-	public void doWithVertexType(DoAction<VertexType> doer);
+	void doWithVertexType(DoAction<VertexType> doer);
 
-	public String buildVertexUniqueIdentifier();
+	String buildVertexUniqueIdentifier();
+
+	void doWithParentModel(DoAction<OurModel> action);
+
+	void containedIn(OurModel model);
 
 }

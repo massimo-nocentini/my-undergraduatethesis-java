@@ -40,7 +40,13 @@ public class OurModel implements DotExportable {
 	}
 
 	public static OurModel makeOurModelFrom(Set<Vertex> vertices) {
-		return new OurModel(vertices);
+		OurModel model = new OurModel(vertices);
+
+		for (Vertex vertex : vertices) {
+			vertex.containedIn(model);
+		}
+
+		return model;
 	}
 
 	public static OurModel makeOurModelFrom(String path) {
@@ -249,6 +255,11 @@ public class OurModel implements DotExportable {
 	public boolean isModelNameEquals(String modelName) {
 
 		return this.name.equals(modelName);
+	}
+
+	public String supplyModelName() {
+
+		return this.name;
 	}
 
 }

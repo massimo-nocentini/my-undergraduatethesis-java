@@ -92,6 +92,29 @@ public class ConnectedComponentWrapperVertex extends
 	}
 
 	public String findModelName() {
-		return "model";
+
+		if (this.members.isEmpty()) {
+			throw new RuntimeException("Impossible to retrieve the model name.");
+		}
+
+		// at least an element is present in the members set
+		Vertex aMember = this.members.iterator().next();
+
+		final StringBuilder ourModelName = new StringBuilder();
+
+		// retrieve the model and access its model name
+		DoAction<OurModel> action = new DoAction<OurModel>() {
+
+			@Override
+			public void apply(OurModel item, String species_id,
+					String species_name, String compartment_id) {
+
+				ourModelName.append(item.supplyModelName());
+			}
+		};
+
+		aMember.doWithParentModel(action);
+
+		return ourModelName.toString();
 	}
 }

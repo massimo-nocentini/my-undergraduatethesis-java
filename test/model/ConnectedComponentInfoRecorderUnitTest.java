@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
@@ -60,6 +62,8 @@ public class ConnectedComponentInfoRecorderUnitTest {
 
 		TreeMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> unexpectedMap = new TreeMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>>();
 
+		// do some permutation on the expected values in order to distinguish
+		// this map from the previous one
 		ConnectedComponentInfoDataStructure.putIntoMap(unexpectedMap, species
 				+ "hello", componentType + "hello", cardinality + 2, modelName);
 
@@ -182,8 +186,16 @@ public class ConnectedComponentInfoRecorderUnitTest {
 		// setting up the connected component to have one member and one
 		// neighbor in order to be a source (otherwise we cannot distinguish if
 		// it is a source or a sink)
-		componentWrapperVertex.includeMember(VertexFactory.makeSimpleVertex(
-				species, OurModel.getDefaultCompartmentId()));
+		Vertex vertex = VertexFactory.makeSimpleVertex(species,
+				OurModel.getDefaultCompartmentId());
+
+		Set<Vertex> vertices = new HashSet<Vertex>();
+		vertices.add(vertex);
+
+		@SuppressWarnings("unused")
+		OurModel model = OurModel.makeOurModelFrom(vertices, modelName);
+
+		componentWrapperVertex.includeMember(vertex);
 
 		componentWrapperVertex.publishYourContentOn(recorder);
 
@@ -198,4 +210,44 @@ public class ConnectedComponentInfoRecorderUnitTest {
 						expectedMap)));
 	}
 
+	@Test(expected = RuntimeException.class)
+	public void connected_component_without_members_should_throw_exception_when_asked_for_model_name() {
+
+		ConnectedComponentWrapperVertex connected_component = VertexFactory
+				.makeConnectedComponentWrapperVertex();
+
+		connected_component.findModelName();
+	}
+
+	@Test
+	public void connected_component_with_some_members_should_find_something_when_asked_for_model_name() {
+
+		ConnectedComponentWrapperVertex componentWrapperVertex = VertexFactory
+				.makeConnectedComponentWrapperVertex();
+
+		String modelName = "model";
+
+		Vertex vertex_one = VertexFactory.makeSimpleVertex("species_one",
+				OurModel.getDefaultCompartmentId());
+
+		Vertex vertex_two = VertexFactory.makeSimpleVertex("species_two",
+				OurModel.getDefaultCompartmentId());
+
+		Vertex vertex_three = VertexFactory.makeSimpleVertex("species_three",
+				OurModel.getDefaultCompartmentId());
+
+		Set<Vertex> vertices = new HashSet<Vertex>();
+		vertices.add(vertex_one);
+		vertices.add(vertex_two);
+		vertices.add(vertex_three);
+
+		@SuppressWarnings("unused")
+		OurModel model = OurModel.makeOurModelFrom(vertices, modelName);
+
+		componentWrapperVertex.includeMember(vertex_one);
+		componentWrapperVertex.includeMember(vertex_two);
+		componentWrapperVertex.includeMember(vertex_three);
+
+		Assert.assertEquals(modelName, componentWrapperVertex.findModelName());
+	}
 }
