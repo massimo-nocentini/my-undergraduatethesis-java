@@ -83,6 +83,7 @@ public class ConnectorUnitTest {
 
 	@Test(expected = UnsupportedOperationException.class)
 	public void parseModelInducingErrorsExceptionTest() {
+
 		String path = null;
 		Connector.makeConnector(path).parseModel();
 	}

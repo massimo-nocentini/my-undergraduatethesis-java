@@ -24,13 +24,14 @@ import org.sbml.jsbml.Species;
 import piping.PipeFilter;
 import piping.PipeFilterFactory;
 import piping.PlainTextInfoComputationListener;
+import util.IntegerCounter;
 import dotInterface.DotFileUtilHandler;
 import dotInterface.DotFileUtilHandler.DotUtilAction;
 
 public class VertexStatsRecorderUnitTest {
 
 	@Test
-	public void recordSimpleVerticesVotes() {
+	public void record_stats_information_from_simple_vertices() {
 		VertexStatsRecorder recorder = new VertexStatsRecorder();
 
 		Vertex simple = VertexFactory.makeSimpleVertex();
@@ -61,6 +62,81 @@ public class VertexStatsRecorderUnitTest {
 		Assert.assertTrue(recorder.isSimpleVerticesVotesEquals(expected));
 		Assert.assertFalse(recorder
 				.isSimpleVerticesVotesEquals(new HashMap<PlainTextStatsComponents, Integer>()));
+
+	}
+
+	@Test
+	public void record_average_with_one_model_stats_information_from_simple_vertices_should_return_the_same() {
+		VertexStatsRecorder recorder = new VertexStatsRecorder();
+
+		Vertex simple = VertexFactory.makeSimpleVertex();
+		Vertex simple2 = VertexFactory.makeSimpleVertex();
+		Vertex simple3 = VertexFactory.makeSimpleVertex();
+		Vertex simple4 = VertexFactory.makeSimpleVertex();
+
+		simple.addNeighbour(simple2).addNeighbour(simple3)
+				.addNeighbour(simple4);
+
+		simple2.addNeighbour(simple3).addNeighbour(simple4);
+
+		simple3.addNeighbour(simple4);
+
+		simple.publishYourStatsOn(recorder);
+		simple2.publishYourStatsOn(recorder);
+		simple3.publishYourStatsOn(recorder);
+		simple4.publishYourStatsOn(recorder);
+
+		Map<PlainTextStatsComponents, Integer> expected = new HashMap<PlainTextStatsComponents, Integer>();
+
+		expected.put(PlainTextStatsComponents.NOfVertices, 4);
+		expected.put(PlainTextStatsComponents.NOfEdges, 6);
+		expected.put(PlainTextStatsComponents.NOfSources, 1);
+		expected.put(PlainTextStatsComponents.NOfSinks, 1);
+		expected.put(PlainTextStatsComponents.NOfWhites, 2);
+
+		Assert.assertTrue(recorder.average(1).isSimpleVerticesVotesEquals(
+				expected));
+		Assert.assertFalse(recorder.average(1).isSimpleVerticesVotesEquals(
+				new HashMap<PlainTextStatsComponents, Integer>()));
+
+	}
+
+	@Test
+	public void record_average_with_two_model_stats_information_from_simple_vertices_should_change() {
+		VertexStatsRecorder recorder = new VertexStatsRecorder();
+
+		Vertex simple = VertexFactory.makeSimpleVertex();
+		Vertex simple2 = VertexFactory.makeSimpleVertex();
+		Vertex simple3 = VertexFactory.makeSimpleVertex();
+		Vertex simple4 = VertexFactory.makeSimpleVertex();
+
+		simple.addNeighbour(simple2).addNeighbour(simple3)
+				.addNeighbour(simple4);
+
+		simple2.addNeighbour(simple3).addNeighbour(simple4);
+
+		simple3.addNeighbour(simple4);
+
+		simple.publishYourStatsOn(recorder);
+		simple2.publishYourStatsOn(recorder);
+		simple3.publishYourStatsOn(recorder);
+		simple4.publishYourStatsOn(recorder);
+
+		Map<PlainTextStatsComponents, Integer> expected = new HashMap<PlainTextStatsComponents, Integer>();
+
+		int counter = 2;
+
+		expected.put(PlainTextStatsComponents.NOfVertices, 4 / counter);
+		expected.put(PlainTextStatsComponents.NOfEdges, 6 / counter);
+		expected.put(PlainTextStatsComponents.NOfSources, 1 / counter);
+		expected.put(PlainTextStatsComponents.NOfSinks, 1 / counter);
+		expected.put(PlainTextStatsComponents.NOfWhites, 2 / counter);
+
+		Assert.assertTrue(recorder.average(counter)
+				.isSimpleVerticesVotesEquals(expected));
+		Assert.assertFalse(recorder.average(counter)
+				.isSimpleVerticesVotesEquals(
+						new HashMap<PlainTextStatsComponents, Integer>()));
 
 	}
 
@@ -207,8 +283,7 @@ public class VertexStatsRecorderUnitTest {
 
 	}
 
-	@Test
-	public void generating_massive_stats_reports_forall_sbml_models() {
+	public void scan_all_standard_sbml_models_should_produce_consistent_informations() {
 
 		DotUtilAction<File> action = new DotUtilAction<File>() {
 
@@ -229,15 +304,15 @@ public class VertexStatsRecorderUnitTest {
 
 				PlainTextInfoComputationListener plainTextInfoComputationListener = new PlainTextInfoComputationListener();
 
-				String test_method_name = "massive_stats_report-"
+				String pipeline_name = "massive-stats-info-check-consistency-"
 						.concat(element.getName().substring(0,
 								element.getName().lastIndexOf(".")));
 
-				secondPlainTextStatsPipeFilter.applyWithListener(
-						test_method_name,
+				secondPlainTextStatsPipeFilter.applyWithListener(pipeline_name,
 						OurModel.makeOurModelFrom(element.getAbsolutePath()),
 						plainTextInfoComputationListener);
 
+				// no output is produced.
 				Assert.assertTrue(plainTextInfoComputationListener
 						.arePlainTextInfoConsistent());
 
@@ -250,8 +325,7 @@ public class VertexStatsRecorderUnitTest {
 
 	}
 
-	// @Test
-	public void check_species_presence_in_various_sbml_models() {
+	public void check_species_presence_in_various_sbml_models_contained_in_curated_folder() {
 
 		this.internal_check_species_presence_in_sbml_models(
 				"maps-of-species-presence-among-multiple-new-curated-models",
@@ -259,7 +333,6 @@ public class VertexStatsRecorderUnitTest {
 						"curated/"), false);
 	}
 
-	// @Test
 	public void check_species_presence_in_various_sbml_models_contained_in_aae_folder() {
 
 		this.internal_check_species_presence_in_sbml_models(
@@ -268,52 +341,31 @@ public class VertexStatsRecorderUnitTest {
 				false);
 	}
 
-	// @Test
-	public void check_species_presence_in_a_huge_number_of_sbml_models_recursively() {
+	public void check_species_presence_in_a_huge_number_of_sbml_models_contained_in_kyoto_database() {
 
-		IntegerForClosure analyzedModels = this
+		IntegerCounter analyzedModels = this
 				.internal_check_species_presence_in_sbml_models(
 						"maps-of-species-presence-among-a-huge-number-of-models-in-kyoto-folder",
 						DotFileUtilHandler.getSbmlExampleModelsFolder().concat(
 								"KEGG_R47-SBML_L2V1_nocd-20080728/"), true);
 
-		Assert.assertTrue(analyzedModels.isCountEquals(72095));
-		Assert.assertFalse(analyzedModels.isCountEquals(0));
+		Assert.assertEquals((Integer) 72095, analyzedModels.getCount());
 	}
 
-	// @Test
-	public void check_species_presence_in_old_sbml_models() {
+	public void check_species_presence_in_standard_sbml_models() {
 
 		this.internal_check_species_presence_in_sbml_models(
 				"maps-of-species-presence-among-multiple-old-models",
 				DotFileUtilHandler.getSbmlExampleModelsFolder(), false);
 	}
 
-	private static class IntegerForClosure {
-		private int count = 0;
-
-		public void Increment() {
-			count = count + 1;
-		}
-
-		@Override
-		public String toString() {
-			return "(COUNT " + String.valueOf(count) + ")";
-		}
-
-		public boolean isCountEquals(int other) {
-			return this.count == other;
-		}
-
-	}
-
-	private IntegerForClosure internal_check_species_presence_in_sbml_models(
+	private IntegerCounter internal_check_species_presence_in_sbml_models(
 			String outputFilename, String modelsContainingDirectory,
 			boolean recursively) {
 
 		final SortedMap<String, Integer> countBySpecies = new TreeMap<String, Integer>();
 
-		final IntegerForClosure analyzedModels = new IntegerForClosure();
+		final IntegerCounter analyzedModels = new IntegerCounter();
 
 		DotUtilAction<File> action = new DotUtilAction<File>() {
 
@@ -332,7 +384,7 @@ public class VertexStatsRecorderUnitTest {
 
 				if (document != null) {
 
-					analyzedModels.Increment();
+					analyzedModels.increment();
 
 					model = document.getModel();
 

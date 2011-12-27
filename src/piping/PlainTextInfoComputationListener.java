@@ -80,4 +80,13 @@ public class PlainTextInfoComputationListener implements
 
 		return result;
 	}
+
+	public void writeOn(Writer writer, Integer counter) {
+
+		Map<PipeFilter, VertexStatsRecorder> average_map = new HashMap<PipeFilter, VertexStatsRecorder>();
+
+		for (Entry<PipeFilter, VertexStatsRecorder> entry : this.map.entrySet()) {
+			average_map.put(entry.getKey(), entry.getValue().average(counter));
+		}
+	}
 }

@@ -10,7 +10,7 @@ import dotInterface.DotFileUtilHandler;
 
 public class VertexStatsRecorder {
 
-	private final VertexVoteAccepter simpleVertexVoteAccepter;
+	private VertexVoteAccepter simpleVertexVoteAccepter;
 
 	private final Map<Integer, VertexVoteAccepter> componentsVoteAccepterByCCCardinality;
 
@@ -131,5 +131,22 @@ public class VertexStatsRecorder {
 
 		return isSimpleVerticesVoteAccepterConsistent()
 				&& isConnectedComponentsVoteAccepterConsistent();
+	}
+
+	public VertexStatsRecorder average(Integer counter) {
+
+		VertexStatsRecorder recorder = new VertexStatsRecorder();
+
+		recorder.simpleVertexVoteAccepter = this.simpleVertexVoteAccepter
+				.average(counter);
+
+		for (Entry<Integer, VertexVoteAccepter> entry : componentsVoteAccepterByCCCardinality
+				.entrySet()) {
+
+			recorder.componentsVoteAccepterByCCCardinality.put(entry.getKey(),
+					entry.getValue().average(counter));
+		}
+
+		return recorder;
 	}
 }

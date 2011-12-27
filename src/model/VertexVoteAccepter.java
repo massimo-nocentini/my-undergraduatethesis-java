@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import util.IntegerCounter;
 import dotInterface.DotFileUtilHandler;
 
 public class VertexVoteAccepter {
@@ -149,25 +150,6 @@ public class VertexVoteAccepter {
 		return result;
 	}
 
-	private static class IntegerCounter {
-		private int count = 0;
-
-		IntegerCounter increment() {
-			count = count + 1;
-			return this;
-		}
-
-		public void increment(int edges) {
-			for (int i = 0; i < edges; i = i + 1) {
-				increment();
-			}
-		}
-
-		public Integer getCount() {
-			return count;
-		}
-	}
-
 	interface VertexVoteAccepterHookMethods {
 
 		void putDedicateComponent(
@@ -281,4 +263,22 @@ public class VertexVoteAccepter {
 
 	}
 
+	public VertexVoteAccepter average(Integer counter) {
+
+		VertexVoteAccepter vertexVoteAccepter = new VertexVoteAccepter(
+				this.hookMethodsInterface);
+
+		for (Entry<PlainTextStatsComponents, IntegerCounter> entry : votesMap
+				.entrySet()) {
+
+			// here we have already the entry.getKey() inside the map of the new
+			// object because the right entries are added in the constructor
+			// using the same hook methods.
+			vertexVoteAccepter.votesMap.get(entry.getKey()).increment(
+					entry.getValue().getCount() / counter);
+
+		}
+
+		return vertexVoteAccepter;
+	}
 }

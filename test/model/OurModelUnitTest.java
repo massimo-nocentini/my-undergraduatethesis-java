@@ -480,13 +480,11 @@ public class OurModelUnitTest {
 
 		Vertex vertex = VertexFactory.makeSimpleVertex();
 
-		final String str = "called";
-
 		final OurModel model = OurModel.makeEmptyModel();
 
 		vertex.containedIn(model);
 
-		final StringBuilder watch_dog = new StringBuilder();
+		final CallbackSignalRecorder callbackSignalRecorder = new CallbackSignalRecorder();
 
 		vertex.doWithParentModel(new DoAction<OurModel>() {
 
@@ -494,7 +492,8 @@ public class OurModelUnitTest {
 			public void apply(OurModel item, String species_id,
 					String species_name, String compartment_id) {
 
-				watch_dog.append(str);
+				// register that actually this method has been called
+				callbackSignalRecorder.signal();
 
 				Assert.assertSame(model, item);
 			}
@@ -502,7 +501,7 @@ public class OurModelUnitTest {
 
 		// we have to check this also in order to verify that the
 		// lambda is actually called.
-		Assert.assertEquals(str, watch_dog.toString());
+		Assert.assertTrue(callbackSignalRecorder.isSignaled());
 	}
 
 	@Test
