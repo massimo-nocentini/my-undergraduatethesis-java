@@ -149,4 +149,26 @@ public class VertexStatsRecorder {
 
 		return recorder;
 	}
+
+	public void add(VertexStatsRecorder vertexStatsRecorder) {
+
+		this.simpleVertexVoteAccepter
+				.add(vertexStatsRecorder.simpleVertexVoteAccepter);
+
+		for (Entry<Integer, VertexVoteAccepter> entry : vertexStatsRecorder.componentsVoteAccepterByCCCardinality
+				.entrySet()) {
+
+			if (this.componentsVoteAccepterByCCCardinality.containsKey(entry
+					.getKey()) == false) {
+
+				this.componentsVoteAccepterByCCCardinality.put(entry.getKey(),
+						entry.getValue());
+			} else {
+
+				this.componentsVoteAccepterByCCCardinality.get(entry.getKey())
+						.add(entry.getValue());
+			}
+		}
+
+	}
 }

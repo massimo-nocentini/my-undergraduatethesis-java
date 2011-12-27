@@ -281,4 +281,18 @@ public class VertexVoteAccepter {
 
 		return vertexVoteAccepter;
 	}
+
+	public void add(VertexVoteAccepter vertexVoteAccepter) {
+
+		for (Entry<PlainTextStatsComponents, IntegerCounter> entry : vertexVoteAccepter.votesMap
+				.entrySet()) {
+
+			if (this.votesMap.containsKey(entry.getKey()) == false) {
+				this.votesMap.put(entry.getKey(), entry.getValue());
+			} else {
+				this.votesMap.get(entry.getKey()).increment(
+						entry.getValue().getCount());
+			}
+		}
+	}
 }

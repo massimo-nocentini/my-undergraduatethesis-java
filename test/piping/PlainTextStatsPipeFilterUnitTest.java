@@ -164,6 +164,7 @@ public class PlainTextStatsPipeFilterUnitTest {
 
 	}
 
+	@Test
 	public void generating_massive_average_stats_reports_forall_sbml_models_contained_in_standard_folder() {
 
 		PipeFilter firstPlainTextStatsPipeFilter = PipeFilterFactory

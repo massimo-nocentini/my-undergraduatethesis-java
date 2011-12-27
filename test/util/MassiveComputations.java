@@ -25,6 +25,9 @@ public class MassiveComputations {
 		plainTextStatsPipeFilterUnitTest
 				.generating_massive_stats_reports_forall_sbml_models_collapsing_sources_contained_in_standard_folder();
 
+		plainTextStatsPipeFilterUnitTest
+				.generating_massive_average_stats_reports_forall_sbml_models_contained_in_standard_folder();
+
 	}
 
 	private void vertex_stats_recorder_unit_tests_computations() {

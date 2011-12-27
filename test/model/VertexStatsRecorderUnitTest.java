@@ -141,7 +141,166 @@ public class VertexStatsRecorderUnitTest {
 	}
 
 	@Test
-	public void recordConnectedComponentsVotes() {
+	public void record_average_with_one_model_stats_information_from_connected_components() {
+		VertexStatsRecorder recorder = new VertexStatsRecorder();
+
+		ConnectedComponentWrapperVertex simple = VertexFactory
+				.makeConnectedComponentWrapperVertex();
+
+		ConnectedComponentWrapperVertex simple2 = VertexFactory
+				.makeConnectedComponentWrapperVertex();
+
+		ConnectedComponentWrapperVertex simple3 = VertexFactory
+				.makeConnectedComponentWrapperVertex();
+
+		ConnectedComponentWrapperVertex simple4 = VertexFactory
+				.makeConnectedComponentWrapperVertex();
+
+		simple.includeMember(VertexFactory.makeSimpleVertex());
+		simple.includeMember(VertexFactory.makeSimpleVertex());
+		simple.includeMember(VertexFactory.makeSimpleVertex());
+
+		simple.addNeighbour(simple2);
+
+		simple2.includeMember(VertexFactory.makeSimpleVertex());
+
+		simple2.addNeighbour(simple3).addNeighbour(simple4);
+
+		simple3.includeMember(VertexFactory.makeSimpleVertex());
+		simple3.includeMember(VertexFactory.makeSimpleVertex());
+
+		simple3.addNeighbour(simple4);
+
+		simple4.includeMember(VertexFactory.makeSimpleVertex());
+		simple4.includeMember(VertexFactory.makeSimpleVertex());
+		simple4.includeMember(VertexFactory.makeSimpleVertex());
+
+		simple.publishYourStatsOn(recorder);
+		simple2.publishYourStatsOn(recorder);
+		simple3.publishYourStatsOn(recorder);
+		simple4.publishYourStatsOn(recorder);
+
+		Map<PlainTextStatsComponents, Integer> expectedFor3members = new HashMap<PlainTextStatsComponents, Integer>();
+
+		expectedFor3members.put(PlainTextStatsComponents.NOfComponents, 2);
+		expectedFor3members.put(PlainTextStatsComponents.NOfSources, 1);
+		expectedFor3members.put(PlainTextStatsComponents.NOfSinks, 1);
+		expectedFor3members.put(PlainTextStatsComponents.NOfWhites, 0);
+		expectedFor3members.put(PlainTextStatsComponents.NOfEdges, 1);
+
+		Map<PlainTextStatsComponents, Integer> expectedFor2members = new HashMap<PlainTextStatsComponents, Integer>();
+
+		expectedFor2members.put(PlainTextStatsComponents.NOfComponents, 1);
+		expectedFor2members.put(PlainTextStatsComponents.NOfSources, 0);
+		expectedFor2members.put(PlainTextStatsComponents.NOfSinks, 0);
+		expectedFor2members.put(PlainTextStatsComponents.NOfWhites, 1);
+		expectedFor2members.put(PlainTextStatsComponents.NOfEdges, 1);
+
+		Map<PlainTextStatsComponents, Integer> expectedFor1members = new HashMap<PlainTextStatsComponents, Integer>();
+
+		expectedFor1members.put(PlainTextStatsComponents.NOfComponents, 1);
+		expectedFor1members.put(PlainTextStatsComponents.NOfSources, 0);
+		expectedFor1members.put(PlainTextStatsComponents.NOfSinks, 0);
+		expectedFor1members.put(PlainTextStatsComponents.NOfWhites, 1);
+		expectedFor1members.put(PlainTextStatsComponents.NOfEdges, 2);
+
+		int counter = 1;
+
+		Assert.assertTrue(recorder.average(counter).isComponentsVotesEquals(3,
+				expectedFor3members));
+		Assert.assertTrue(recorder.average(counter).isComponentsVotesEquals(2,
+				expectedFor2members));
+		Assert.assertTrue(recorder.average(counter).isComponentsVotesEquals(1,
+				expectedFor1members));
+
+	}
+
+	@Test
+	public void record_average_with_two_model_stats_information_from_connected_components() {
+		VertexStatsRecorder recorder = new VertexStatsRecorder();
+
+		ConnectedComponentWrapperVertex simple = VertexFactory
+				.makeConnectedComponentWrapperVertex();
+
+		ConnectedComponentWrapperVertex simple2 = VertexFactory
+				.makeConnectedComponentWrapperVertex();
+
+		ConnectedComponentWrapperVertex simple3 = VertexFactory
+				.makeConnectedComponentWrapperVertex();
+
+		ConnectedComponentWrapperVertex simple4 = VertexFactory
+				.makeConnectedComponentWrapperVertex();
+
+		simple.includeMember(VertexFactory.makeSimpleVertex());
+		simple.includeMember(VertexFactory.makeSimpleVertex());
+		simple.includeMember(VertexFactory.makeSimpleVertex());
+
+		simple.addNeighbour(simple2);
+
+		simple2.includeMember(VertexFactory.makeSimpleVertex());
+
+		simple2.addNeighbour(simple3).addNeighbour(simple4);
+
+		simple3.includeMember(VertexFactory.makeSimpleVertex());
+		simple3.includeMember(VertexFactory.makeSimpleVertex());
+
+		simple3.addNeighbour(simple4);
+
+		simple4.includeMember(VertexFactory.makeSimpleVertex());
+		simple4.includeMember(VertexFactory.makeSimpleVertex());
+		simple4.includeMember(VertexFactory.makeSimpleVertex());
+
+		simple.publishYourStatsOn(recorder);
+		simple2.publishYourStatsOn(recorder);
+		simple3.publishYourStatsOn(recorder);
+		simple4.publishYourStatsOn(recorder);
+
+		int counter = 1;
+
+		Map<PlainTextStatsComponents, Integer> expectedFor3members = new HashMap<PlainTextStatsComponents, Integer>();
+
+		expectedFor3members.put(PlainTextStatsComponents.NOfComponents,
+				2 / counter);
+		expectedFor3members.put(PlainTextStatsComponents.NOfSources,
+				1 / counter);
+		expectedFor3members.put(PlainTextStatsComponents.NOfSinks, 1 / counter);
+		expectedFor3members
+				.put(PlainTextStatsComponents.NOfWhites, 0 / counter);
+		expectedFor3members.put(PlainTextStatsComponents.NOfEdges, 1 / counter);
+
+		Map<PlainTextStatsComponents, Integer> expectedFor2members = new HashMap<PlainTextStatsComponents, Integer>();
+
+		expectedFor2members.put(PlainTextStatsComponents.NOfComponents,
+				1 / counter);
+		expectedFor2members.put(PlainTextStatsComponents.NOfSources,
+				0 / counter);
+		expectedFor2members.put(PlainTextStatsComponents.NOfSinks, 0 / counter);
+		expectedFor2members
+				.put(PlainTextStatsComponents.NOfWhites, 1 / counter);
+		expectedFor2members.put(PlainTextStatsComponents.NOfEdges, 1 / counter);
+
+		Map<PlainTextStatsComponents, Integer> expectedFor1members = new HashMap<PlainTextStatsComponents, Integer>();
+
+		expectedFor1members.put(PlainTextStatsComponents.NOfComponents,
+				1 / counter);
+		expectedFor1members.put(PlainTextStatsComponents.NOfSources,
+				0 / counter);
+		expectedFor1members.put(PlainTextStatsComponents.NOfSinks, 0 / counter);
+		expectedFor1members
+				.put(PlainTextStatsComponents.NOfWhites, 1 / counter);
+		expectedFor1members.put(PlainTextStatsComponents.NOfEdges, 2 / counter);
+
+		Assert.assertTrue(recorder.average(counter).isComponentsVotesEquals(3,
+				expectedFor3members));
+		Assert.assertTrue(recorder.average(counter).isComponentsVotesEquals(2,
+				expectedFor2members));
+		Assert.assertTrue(recorder.average(counter).isComponentsVotesEquals(1,
+				expectedFor1members));
+
+	}
+
+	@Test
+	public void record_stats_information_from_connected_components() {
 		VertexStatsRecorder recorder = new VertexStatsRecorder();
 
 		ConnectedComponentWrapperVertex simple = VertexFactory
