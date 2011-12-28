@@ -109,7 +109,25 @@ public class PlainTextStatsPipeFilterUnitTest {
 		// .isPlainTextInfoEquals(plainTextStatsPipeFilter, map));
 	}
 
+	@Test
+	public void generating_massive_stats_reports_forall_sbml_models_contained_in_aee_folder() {
+
+		this.internal_stats_builder(
+				DotFileUtilHandler.getSbmlExampleModelsFolder().concat("aae")
+						.concat(DotFileUtilHandler.getFileSeparator()),
+				"massive-stats-report-for-aae-models-", false);
+	}
+
+	@Test
 	public void generating_massive_stats_reports_forall_sbml_models_contained_in_standard_folder() {
+
+		this.internal_stats_builder(
+				DotFileUtilHandler.getSbmlExampleModelsFolder(),
+				"massive-stats-report-for-standard-models-", false);
+	}
+
+	private void internal_stats_builder(String directory,
+			final String base_prefix, boolean recursive) {
 
 		DotUtilAction<File> action = new DotUtilAction<File>() {
 
@@ -130,9 +148,8 @@ public class PlainTextStatsPipeFilterUnitTest {
 
 				PlainTextInfoComputationListener plainTextInfoComputationListener = new PlainTextInfoComputationListener();
 
-				String pipeline_name = "massive-stats-report-for-standard-models-"
-						.concat(element.getName().substring(0,
-								element.getName().lastIndexOf(".")));
+				String pipeline_name = base_prefix.concat(element.getName()
+						.substring(0, element.getName().lastIndexOf(".")));
 
 				secondPlainTextStatsPipeFilter.applyWithListener(pipeline_name,
 						OurModel.makeOurModelFrom(element.getAbsolutePath()),
@@ -158,9 +175,8 @@ public class PlainTextStatsPipeFilterUnitTest {
 			}
 		};
 
-		DotFileUtilHandler.mapOnFilesInFolderFilteringByExtension(
-				DotFileUtilHandler.getSbmlExampleModelsFolder(),
-				DotFileUtilHandler.getSBMLFileExtension(), action, false);
+		DotFileUtilHandler.mapOnFilesInFolderFilteringByExtension(directory,
+				DotFileUtilHandler.getSBMLFileExtension(), action, recursive);
 
 	}
 
