@@ -132,8 +132,8 @@ public class ConnectedComponentInfoRecorder {
 
 		public static void putIntoMap(
 				SortedMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> map,
-				String species, String componentType, Integer cardinality,
-				String modelName) {
+				String species, String component_type, Integer cardinality,
+				String model_name) {
 
 			// here we use an object of this class type in order to modify only
 			// the map using the behavior already written.
@@ -142,12 +142,12 @@ public class ConnectedComponentInfoRecorder {
 
 			dataStructure.putSpecies(species);
 
-			dataStructure.putComponentType(species, componentType);
+			dataStructure.putComponentType(species, component_type);
 
-			dataStructure.putCardinality(species, componentType, cardinality);
+			dataStructure.putCardinality(species, component_type, cardinality);
 
-			dataStructure.putModel(species, componentType, cardinality,
-					modelName);
+			dataStructure.putModel(species, component_type, cardinality,
+					model_name);
 
 		}
 

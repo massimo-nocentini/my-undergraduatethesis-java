@@ -12,7 +12,6 @@ import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -35,6 +34,8 @@ public class ListBoxTest extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 
 			l_items.addElement("Hello");
+
+			l_items.clear();
 
 			if (count < flavors.length) {
 				l_items.add(0, flavors[count]);
@@ -88,21 +89,5 @@ public class ListBoxTest extends JFrame {
 	public static void main(String[] args) {
 		int dimension = 500;
 		SwingConsole.run(new ListBoxTest(), dimension, dimension);
-	}
-
-	public static class SwingConsole {
-		public static void run(final JFrame f, final int width, final int height) {
-			SwingUtilities.invokeLater(new Runnable() {
-
-				@Override
-				public void run() {
-
-					f.setTitle(f.getClass().getSimpleName());
-					f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-					f.setSize(width, height);
-					f.setVisible(true);
-				}
-			});
-		}
 	}
 }
