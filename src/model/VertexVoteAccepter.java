@@ -275,11 +275,23 @@ public class VertexVoteAccepter {
 			// object because the right entries are added in the constructor
 			// using the same hook methods.
 			vertexVoteAccepter.votesMap.get(entry.getKey()).increment(
-					entry.getValue().getCount() / counter);
+					DivideAndRound(entry.getValue().getCount(), counter));
 
 		}
 
 		return vertexVoteAccepter;
+	}
+
+	public static int DivideAndRound(int divident, int divisor) {
+
+		int result = (divident / divisor);
+
+		if (divident % divisor != 0) {
+
+			result = result + 1;
+		}
+
+		return result;
 	}
 
 	public void add(VertexVoteAccepter vertexVoteAccepter) {
@@ -288,6 +300,7 @@ public class VertexVoteAccepter {
 				.entrySet()) {
 
 			if (this.votesMap.containsKey(entry.getKey()) == false) {
+
 				this.votesMap.put(entry.getKey(), entry.getValue());
 			} else {
 				this.votesMap.get(entry.getKey()).increment(

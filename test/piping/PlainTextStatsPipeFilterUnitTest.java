@@ -130,8 +130,8 @@ public class PlainTextStatsPipeFilterUnitTest {
 
 				PlainTextInfoComputationListener plainTextInfoComputationListener = new PlainTextInfoComputationListener();
 
-				String pipeline_name = "massive-stats-report-".concat(element
-						.getName().substring(0,
+				String pipeline_name = "massive-stats-report-for-standard-models-"
+						.concat(element.getName().substring(0,
 								element.getName().lastIndexOf(".")));
 
 				secondPlainTextStatsPipeFilter.applyWithListener(pipeline_name,
@@ -167,6 +167,23 @@ public class PlainTextStatsPipeFilterUnitTest {
 	@Test
 	public void generating_massive_average_stats_reports_forall_sbml_models_contained_in_standard_folder() {
 
+		this.internal_average_stats_builder(
+				DotFileUtilHandler.getSbmlExampleModelsFolder(),
+				"massive-average-stats-report-for-standard-models-", false);
+	}
+
+	@Test
+	public void generating_massive_average_stats_reports_forall_sbml_models_contained_in_aae_folder() {
+
+		this.internal_average_stats_builder(
+				DotFileUtilHandler.getSbmlExampleModelsFolder().concat("aae")
+						.concat(DotFileUtilHandler.getFileSeparator()),
+				"massive-average-stats-report-for-aae-models-", false);
+	}
+
+	private void internal_average_stats_builder(String directory,
+			final String base_prefix, boolean recursive) {
+
 		PipeFilter firstPlainTextStatsPipeFilter = PipeFilterFactory
 				.MakePlainTextStatsPipeFilter();
 
@@ -179,8 +196,6 @@ public class PlainTextStatsPipeFilterUnitTest {
 		secondPlainTextStatsPipeFilter.pipeAfter(tarjanPipeFilter);
 
 		final PlainTextInfoComputationListener plainTextInfoComputationListener = new PlainTextInfoComputationListener();
-
-		final String base_prefix = "massive-average-stats-report-";
 
 		final IntegerCounter counter = new IntegerCounter();
 
@@ -201,9 +216,8 @@ public class PlainTextStatsPipeFilterUnitTest {
 			}
 		};
 
-		DotFileUtilHandler.mapOnFilesInFolderFilteringByExtension(
-				DotFileUtilHandler.getSbmlExampleModelsFolder(),
-				DotFileUtilHandler.getSBMLFileExtension(), action, false);
+		DotFileUtilHandler.mapOnFilesInFolderFilteringByExtension(directory,
+				DotFileUtilHandler.getSBMLFileExtension(), action, recursive);
 
 		Writer writer;
 		try {
@@ -215,8 +229,9 @@ public class PlainTextStatsPipeFilterUnitTest {
 					.concat(DotFileUtilHandler
 							.getPlainTextFilenameExtensionToken()));
 
-			plainTextInfoComputationListener
-					.writeOn(writer, counter.getCount());
+			plainTextInfoComputationListener.average(counter.getCount())
+					.writeOn(writer);
+
 			writer.close();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -249,7 +264,7 @@ public class PlainTextStatsPipeFilterUnitTest {
 
 				PlainTextInfoComputationListener plainTextInfoComputationListener = new PlainTextInfoComputationListener();
 
-				String test_method_name = "massive-stats-report-sources-collapsed-"
+				String test_method_name = "massive-stats-report-sources-collapsed-for-standard-models-"
 						.concat(element.getName().substring(0,
 								element.getName().lastIndexOf(".")));
 

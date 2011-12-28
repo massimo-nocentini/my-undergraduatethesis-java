@@ -48,6 +48,7 @@ public class PlainTextInfoComputationListener implements
 			Object pipeFilterCustomOutput) {
 
 		if (pipeFilterCustomOutput instanceof VertexStatsRecorder) {
+
 			VertexStatsRecorder vertexStatsRecorder = (VertexStatsRecorder) pipeFilterCustomOutput;
 
 			if (map.containsKey(pipeFilter) == false) {
@@ -60,14 +61,7 @@ public class PlainTextInfoComputationListener implements
 
 	public void writeOn(Writer writer) {
 
-		this.internal_write_on(this.map, writer);
-	}
-
-	private void internal_write_on(
-			Map<PipeFilter, VertexStatsRecorder> local_map, Writer writer) {
-
-		for (Entry<PipeFilter, VertexStatsRecorder> entry : local_map
-				.entrySet()) {
+		for (Entry<PipeFilter, VertexStatsRecorder> entry : this.map.entrySet()) {
 			try {
 				writer.append(entry.getKey().collectPhaseInformation()
 						.concat(DotFileUtilHandler.getNewLineSeparator()));
@@ -92,14 +86,16 @@ public class PlainTextInfoComputationListener implements
 		return result;
 	}
 
-	public void writeOn(Writer writer, Integer counter) {
+	public PlainTextInfoComputationListener average(Integer count) {
 
-		Map<PipeFilter, VertexStatsRecorder> average_map = new HashMap<PipeFilter, VertexStatsRecorder>();
+		PlainTextInfoComputationListener computationListener = new PlainTextInfoComputationListener();
 
 		for (Entry<PipeFilter, VertexStatsRecorder> entry : this.map.entrySet()) {
-			average_map.put(entry.getKey(), entry.getValue().average(counter));
+			computationListener.map.put(entry.getKey(), entry.getValue()
+					.average(count));
 		}
 
-		this.internal_write_on(average_map, writer);
+		return computationListener;
+
 	}
 }

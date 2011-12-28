@@ -126,11 +126,16 @@ public class VertexStatsRecorderUnitTest {
 
 		int counter = 2;
 
-		expected.put(PlainTextStatsComponents.NOfVertices, 4 / counter);
-		expected.put(PlainTextStatsComponents.NOfEdges, 6 / counter);
-		expected.put(PlainTextStatsComponents.NOfSources, 1 / counter);
-		expected.put(PlainTextStatsComponents.NOfSinks, 1 / counter);
-		expected.put(PlainTextStatsComponents.NOfWhites, 2 / counter);
+		expected.put(PlainTextStatsComponents.NOfVertices,
+				VertexVoteAccepter.DivideAndRound(4, counter));
+		expected.put(PlainTextStatsComponents.NOfEdges,
+				VertexVoteAccepter.DivideAndRound(6, counter));
+		expected.put(PlainTextStatsComponents.NOfSources,
+				VertexVoteAccepter.DivideAndRound(1, counter));
+		expected.put(PlainTextStatsComponents.NOfSinks,
+				VertexVoteAccepter.DivideAndRound(1, counter));
+		expected.put(PlainTextStatsComponents.NOfWhites,
+				VertexVoteAccepter.DivideAndRound(2, counter));
 
 		Assert.assertTrue(recorder.average(counter)
 				.isSimpleVerticesVotesEquals(expected));
@@ -138,6 +143,17 @@ public class VertexStatsRecorderUnitTest {
 				.isSimpleVerticesVotesEquals(
 						new HashMap<PlainTextStatsComponents, Integer>()));
 
+	}
+
+	@Test
+	public void check_divide_and_round_utility_method() {
+
+		Assert.assertEquals(1, VertexVoteAccepter.DivideAndRound(4, 4));
+		Assert.assertEquals(2, VertexVoteAccepter.DivideAndRound(4, 2));
+		Assert.assertEquals(1, VertexVoteAccepter.DivideAndRound(1, 4));
+		Assert.assertEquals(0, VertexVoteAccepter.DivideAndRound(0, 4));
+		Assert.assertEquals(4, VertexVoteAccepter.DivideAndRound(16, 4));
+		Assert.assertEquals(4, VertexVoteAccepter.DivideAndRound(16, 5));
 	}
 
 	@Test
@@ -260,35 +276,41 @@ public class VertexStatsRecorderUnitTest {
 		Map<PlainTextStatsComponents, Integer> expectedFor3members = new HashMap<PlainTextStatsComponents, Integer>();
 
 		expectedFor3members.put(PlainTextStatsComponents.NOfComponents,
-				2 / counter);
+				VertexVoteAccepter.DivideAndRound(2, counter));
 		expectedFor3members.put(PlainTextStatsComponents.NOfSources,
-				1 / counter);
-		expectedFor3members.put(PlainTextStatsComponents.NOfSinks, 1 / counter);
-		expectedFor3members
-				.put(PlainTextStatsComponents.NOfWhites, 0 / counter);
-		expectedFor3members.put(PlainTextStatsComponents.NOfEdges, 1 / counter);
+				VertexVoteAccepter.DivideAndRound(1, counter));
+		expectedFor3members.put(PlainTextStatsComponents.NOfSinks,
+				VertexVoteAccepter.DivideAndRound(1, counter));
+		expectedFor3members.put(PlainTextStatsComponents.NOfWhites,
+				VertexVoteAccepter.DivideAndRound(0, counter));
+		expectedFor3members.put(PlainTextStatsComponents.NOfEdges,
+				VertexVoteAccepter.DivideAndRound(1, counter));
 
 		Map<PlainTextStatsComponents, Integer> expectedFor2members = new HashMap<PlainTextStatsComponents, Integer>();
 
 		expectedFor2members.put(PlainTextStatsComponents.NOfComponents,
-				1 / counter);
+				VertexVoteAccepter.DivideAndRound(1, counter));
 		expectedFor2members.put(PlainTextStatsComponents.NOfSources,
-				0 / counter);
-		expectedFor2members.put(PlainTextStatsComponents.NOfSinks, 0 / counter);
-		expectedFor2members
-				.put(PlainTextStatsComponents.NOfWhites, 1 / counter);
-		expectedFor2members.put(PlainTextStatsComponents.NOfEdges, 1 / counter);
+				VertexVoteAccepter.DivideAndRound(0, counter));
+		expectedFor2members.put(PlainTextStatsComponents.NOfSinks,
+				VertexVoteAccepter.DivideAndRound(0, counter));
+		expectedFor2members.put(PlainTextStatsComponents.NOfWhites,
+				VertexVoteAccepter.DivideAndRound(1, counter));
+		expectedFor2members.put(PlainTextStatsComponents.NOfEdges,
+				VertexVoteAccepter.DivideAndRound(1, counter));
 
 		Map<PlainTextStatsComponents, Integer> expectedFor1members = new HashMap<PlainTextStatsComponents, Integer>();
 
 		expectedFor1members.put(PlainTextStatsComponents.NOfComponents,
-				1 / counter);
+				VertexVoteAccepter.DivideAndRound(1, counter));
 		expectedFor1members.put(PlainTextStatsComponents.NOfSources,
-				0 / counter);
-		expectedFor1members.put(PlainTextStatsComponents.NOfSinks, 0 / counter);
-		expectedFor1members
-				.put(PlainTextStatsComponents.NOfWhites, 1 / counter);
-		expectedFor1members.put(PlainTextStatsComponents.NOfEdges, 2 / counter);
+				VertexVoteAccepter.DivideAndRound(0, counter));
+		expectedFor1members.put(PlainTextStatsComponents.NOfSinks,
+				VertexVoteAccepter.DivideAndRound(0, counter));
+		expectedFor1members.put(PlainTextStatsComponents.NOfWhites,
+				VertexVoteAccepter.DivideAndRound(1, counter));
+		expectedFor1members.put(PlainTextStatsComponents.NOfEdges,
+				VertexVoteAccepter.DivideAndRound(2, counter));
 
 		Assert.assertTrue(recorder.average(counter).isComponentsVotesEquals(3,
 				expectedFor3members));

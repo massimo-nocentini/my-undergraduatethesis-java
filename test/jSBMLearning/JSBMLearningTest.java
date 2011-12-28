@@ -462,12 +462,16 @@ public class JSBMLearningTest {
 		this.uniquenessTestCommonMethod("sbml-test-files/allCpdsMetabSmmReactionsCompounds.xml");
 	}
 
-	@Test
+	// @Test
 	public void uniquenessOfSpeciesIdInsideModelWithMultipleCompartments() {
 		/**
 		 * In this file there exists the species with id=CARDIOLIPIN that is
 		 * defined twice, one that belong to two different compartments at the
-		 * same time
+		 * same time.
+		 * 
+		 * WE COMMENT THIS TEST BECAUSE HAVING THE REQUIRED FILE IN THE SBML
+		 * MODEL EXAMPLE DOESN'T ALLOW A REAL TREATMENT OF THE MODEL BECAUSE IT
+		 * INTRODUCE REDUNDANCY.
 		 */
 		this.uniquenessTestCommonMethod("sbml-test-files/"
 				+ "allCpdsMetabSmmReactionsCompounds_multipleCompartments.xml");
