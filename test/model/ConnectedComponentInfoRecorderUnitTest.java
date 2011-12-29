@@ -202,7 +202,7 @@ public class ConnectedComponentInfoRecorderUnitTest {
 		SortedMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> expectedMap = new TreeMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>>();
 
 		ConnectedComponentInfoDataStructure.putIntoMap(expectedMap,
-				"MY_SPECIES_IDENTIFIER-()-(COMPARTMENT_ID)", componentType,
+				"MY_SPECIES_IDENTIFIER-(COMPARTMENT_ID)", componentType,
 				cardinality, modelName);
 
 		Assert.assertTrue(recorder
@@ -357,7 +357,9 @@ public class ConnectedComponentInfoRecorderUnitTest {
 		scc_two.publishYourContentOn(recorder);
 		scc_three.publishYourContentOn(recorder);
 
-		String species_identifier_suffix = "-()-(COMPARTMENT_ID)";
+		// for this species the suffix doesn't start with "-()-"
+		// because the species_name is an empty string.
+		String species_identifier_suffix = "-(COMPARTMENT_ID)";
 
 		ConnectedComponentInfoDataStructure.putIntoMap(expectedMap,
 				"SPECIES_ONE".concat(species_identifier_suffix),

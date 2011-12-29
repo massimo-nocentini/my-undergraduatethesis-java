@@ -356,10 +356,9 @@ public class VertexUnitTest {
 		Vertex v = VertexFactory.makeSimpleVertex(species_id, species_name,
 				compartment_id);
 
-		String expected = species_id + "-(" + species_name + ")-("
-				+ compartment_id + ")";
+		String expected = species_id + "-(" + compartment_id + ")";
 
-		Assert.assertEquals("SPECIES_ID-()-(COMPARTMENT_ID)",
+		Assert.assertEquals("SPECIES_ID-(COMPARTMENT_ID)",
 				expected.toUpperCase());
 
 		Assert.assertEquals(expected.toUpperCase(),
