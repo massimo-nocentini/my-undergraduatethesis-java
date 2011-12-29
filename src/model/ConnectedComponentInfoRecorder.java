@@ -164,6 +164,12 @@ public class ConnectedComponentInfoRecorder {
 				e.printStackTrace();
 			}
 		}
+
+		public void fill_datas_into(
+				SortedMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> map_to_fill_in) {
+
+			map_to_fill_in.putAll(this.map);
+		}
 	}
 
 	public void putTuple(String species, String componentType,

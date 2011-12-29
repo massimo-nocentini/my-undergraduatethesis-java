@@ -439,12 +439,19 @@ public class SimpleVertex implements Vertex {
 	public String buildVertexUniqueIdentifier() {
 		String identifier = this.species_id;
 
-		identifier = identifier + "-("
-				+ (this.species_name != null ? this.species_name : "") + ")";
+		if (this.species_name != null && this.species_name.length() > 0) {
+			identifier = identifier + "-(" + this.species_name + ")";
+		}
 
-		identifier = identifier + "-(" + this.compartment_id + ")";
+		identifier = (identifier + "-(" + this.compartment_id + ")")
+				.toUpperCase();
 
-		return identifier.toUpperCase();
+		int upper_bound = 50;
+		if (identifier.length() > upper_bound) {
+			identifier = identifier.substring(0, upper_bound - 3).concat("...");
+		}
+
+		return identifier;
 	}
 
 	static SimpleVertex makeVertex(String species_id, String species_name,
@@ -456,8 +463,7 @@ public class SimpleVertex implements Vertex {
 	@Override
 	public void doWithParentModel(DoAction<OurModel> action) {
 
-		action.apply(container_model, species_id, species_name,
-				compartment_id);
+		action.apply(container_model, species_id, species_name, compartment_id);
 	}
 
 	@Override

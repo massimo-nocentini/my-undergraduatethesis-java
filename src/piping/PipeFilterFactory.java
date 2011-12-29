@@ -2,28 +2,32 @@ package piping;
 
 public class PipeFilterFactory {
 
-	public static PipeFilter MakeDfsPipeFilter() {
+	public static DfsPipeFilter MakeDfsPipeFilter() {
 		return new DfsPipeFilter();
 	}
 
-	public static PipeFilter MakePrinterPipeFilter() {
+	public static PrinterPipeFilter MakePrinterPipeFilter() {
 		return new PrinterPipeFilter();
 	}
 
-	public static PipeFilter MakeByPassPipeFilter() {
+	public static ByPassPipeFilter MakeByPassPipeFilter() {
 		return new ByPassPipeFilter();
 	}
 
-	public static PipeFilter MakeTarjanPipeFilter() {
+	public static TarjanPipeFilter MakeTarjanPipeFilter() {
 		return new TarjanPipeFilter();
 	}
 
-	public static PipeFilter MakePlainTextStatsPipeFilter() {
+	public static PlainTextStatsPipeFilter MakePlainTextStatsPipeFilter() {
 		return new PlainTextStatsPipeFilter();
 	}
 
-	public static PipeFilter MakeSourcesCollapserPipeFilter() {
+	public static SourcesCollapserPipeFilter MakeSourcesCollapserPipeFilter() {
 		return new SourcesCollapserPipeFilter();
+	}
+
+	public static ConnectedComponentsInfoPipeFilter MakeConnectedComponentsInfoPipeFilter() {
+		return new ConnectedComponentsInfoPipeFilter();
 	}
 
 }

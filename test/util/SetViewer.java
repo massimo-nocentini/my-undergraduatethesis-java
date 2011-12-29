@@ -1,5 +1,6 @@
 package util;
 
+import java.awt.Dimension;
 import java.util.Collection;
 
 import javax.swing.DefaultListModel;
@@ -7,6 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.Border;
 
 public class SetViewer {
@@ -30,6 +32,7 @@ public class SetViewer {
 		list_model = new DefaultListModel();
 
 		list_box = new JList(list_model);
+		list_box.setMaximumSize(new Dimension(100, 100));
 		list_box.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list_box.addListSelectionListener(this.hookInterface
 				.supply_list_selection_listener(this));
@@ -37,7 +40,12 @@ public class SetViewer {
 
 	public void belong(JFrame container) {
 
-		container.add(new JScrollPane(list_box));
+		JScrollPane scrollPane = new JScrollPane(list_box);
+		scrollPane
+				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane
+				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		container.add(scrollPane);
 	}
 
 	public void useBorder(Border border) {
