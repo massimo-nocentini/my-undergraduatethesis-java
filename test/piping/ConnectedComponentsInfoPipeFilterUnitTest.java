@@ -13,6 +13,11 @@ import dotInterface.DotFileUtilHandler.DotUtilAction;
 
 public class ConnectedComponentsInfoPipeFilterUnitTest {
 
+	public static final File serialized_data_structure_for_standard_models_file_handler = new File(
+			DotFileUtilHandler
+					.dotOutputFolderPathName()
+					.concat("massive-connected-components-info-serialized-for-standard-models.datastructure"));
+
 	@Test
 	public void massive_tests_for_building_a_file_with_connected_components_infos_for_models_contained_in_standard_directory() {
 
@@ -46,12 +51,10 @@ public class ConnectedComponentsInfoPipeFilterUnitTest {
 				DotFileUtilHandler.getSBMLFileExtension(), action, false);
 
 		try {
+
 			connectedComponentsInfoPipeFilter
 					.writeOn(new FileOutputStream(
-							new File(
-									DotFileUtilHandler
-											.dotOutputFolderPathName()
-											.concat("massive-connected-components-info-serialized-for-standard-models.datastructure"))));
+							serialized_data_structure_for_standard_models_file_handler));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}

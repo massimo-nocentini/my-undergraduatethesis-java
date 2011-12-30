@@ -19,7 +19,7 @@ import javax.swing.border.Border;
 
 import model.ConnectedComponentInfoRecorder.ConnectedComponentInfoDataStructure;
 import model.VertexType;
-import dotInterface.DotFileUtilHandler;
+import piping.ConnectedComponentsInfoPipeFilterUnitTest;
 
 public class ResultViewer extends JFrame {
 
@@ -75,16 +75,16 @@ public class ResultViewer extends JFrame {
 
 		int dimension = 500;
 
-		File source_file = new File(
-				DotFileUtilHandler
-						.dotOutputFolderPathName()
-						.concat("massive-connected-components-info-serialized-for-standard-models.datastructure"));
+		File source_file = ConnectedComponentsInfoPipeFilterUnitTest.serialized_data_structure_for_standard_models_file_handler;
+
+		if (source_file.exists() == false) {
+
+			// running the test will generate the required data structure file
+			(new ConnectedComponentsInfoPipeFilterUnitTest())
+					.massive_tests_for_building_a_file_with_connected_components_infos_for_models_contained_in_standard_directory();
+		}
 
 		SortedMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> loaded_map = load_map_from_serialized_data_structure(source_file);
-
-		// modify this assignment to render your maps.
-		// SortedMap<String, SortedMap<String, SortedMap<Integer,
-		// SortedSet<String>>>> test_map = build_test_map();
 
 		SwingConsole.run(new ResultViewer(loaded_map), dimension, dimension);
 	}
