@@ -33,6 +33,7 @@ public class SetViewer {
 
 		list_box = new JList(list_model);
 		list_box.setMaximumSize(new Dimension(100, 100));
+		list_box.setMinimumSize(new Dimension(50, 100));
 		list_box.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list_box.addListSelectionListener(this.hookInterface
 				.supply_list_selection_listener(this));
@@ -61,16 +62,6 @@ public class SetViewer {
 		}
 
 		list_model.removeAllElements();
-
-		// // put the following statement in the hook methods interface.
-		// SwingUtilities.invokeLater(new Runnable() {
-		//
-		// @Override
-		// public void run() {
-		//
-		// }
-		// });
-
 	}
 
 	public void render(Object aMap) {
@@ -85,11 +76,6 @@ public class SetViewer {
 
 	public void add_to_model(final Collection<?> objects) {
 
-		// SwingUtilities.invokeLater(new Runnable() {
-		//
-		// @Override
-		// public void run() {
-
 		for (Object obj : objects) {
 			if (obj == null) {
 				continue;
@@ -97,7 +83,5 @@ public class SetViewer {
 
 			list_model.addElement(obj);
 		}
-		// }
-		// });
 	}
 }
