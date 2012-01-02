@@ -6,7 +6,7 @@ import java.io.Writer;
 import dotInterface.DotExporter;
 import dotInterface.DotFileUtilHandler;
 
-abstract class VertexWithLabelWrapperVertex extends WrapperVertex {
+public abstract class VertexWithLabelWrapperVertex extends WrapperVertex {
 
 	protected VertexWithLabelWrapperVertex(Vertex wrappingVertex) {
 		super(wrappingVertex);

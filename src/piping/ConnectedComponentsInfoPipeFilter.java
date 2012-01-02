@@ -37,9 +37,6 @@ public class ConnectedComponentsInfoPipeFilter extends PipeFilter {
 			}
 		});
 
-		// computationListener.onComputationFinished(this,
-		// connected_component_info_recorder);
-
 		// like a byPass pipe filter
 		return input_model;
 	}
