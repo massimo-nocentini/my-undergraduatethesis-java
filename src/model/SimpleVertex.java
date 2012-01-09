@@ -446,10 +446,10 @@ public class SimpleVertex implements Vertex {
 		identifier = (identifier + "-(" + this.compartment_id + ")")
 				.toUpperCase();
 
-		int upper_bound = 50;
-		if (identifier.length() > upper_bound) {
-			identifier = identifier.substring(0, upper_bound - 3).concat("...");
-		}
+		// int upper_bound = 50;
+		// if (identifier.length() > upper_bound) {
+		// identifier = identifier.substring(0, upper_bound - 3).concat("...");
+		// }
 
 		return identifier;
 	}

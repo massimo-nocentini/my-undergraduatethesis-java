@@ -228,6 +228,47 @@ public class ConnectedComponentInfoRecorder {
 			vertex_type_for_model.get(vertex_type).increment_by(members_count);
 		}
 
+		public Object[][] build_rows_data() {
+
+			int column_dimension = this.build_columns_data().length;
+
+			Object[][] rows_data = new Object[tuples_by_models.size()][column_dimension];
+			int row_index = 0;
+
+			for (String model : tuples_by_models.keySet()) {
+
+				Object[] row_data = new Object[column_dimension];
+				for (String vertex_type : tuples_by_models.get(model).keySet()) {
+
+					row_data[order_vertex_type(vertex_type)] = tuples_by_models
+							.get(model).get(vertex_type);
+				}
+
+				row_data[0] = model;
+
+				rows_data[row_index] = row_data;
+
+				row_index = row_index + 1;
+			}
+
+			return rows_data;
+		}
+
+		public int order_vertex_type(String vertex_type) {
+
+			int order = 3;
+
+			VertexType typed_vertex_type = VertexType.valueOf(vertex_type);
+
+			if (typed_vertex_type.equals(VertexType.Sources)) {
+				order = 1;
+			} else if (typed_vertex_type.equals(VertexType.Whites)) {
+				order = 2;
+			}
+
+			return order;
+		}
+
 		public static void put_tuples_by_species_into(
 				SortedMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> map,
 				String species, String component_type, Integer cardinality,
@@ -275,6 +316,17 @@ public class ConnectedComponentInfoRecorder {
 				SortedMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> map_to_fill_in) {
 
 			map_to_fill_in.putAll(this.tuples_by_species);
+		}
+
+		public Object[] build_columns_data() {
+
+			Object[] columnNames = {
+					"Models".concat(" (")
+							.concat(String.valueOf(tuples_by_models.size()))
+							.concat(")"), VertexType.Sources,
+					VertexType.Whites, VertexType.Sinks };
+
+			return columnNames;
 		}
 	}
 

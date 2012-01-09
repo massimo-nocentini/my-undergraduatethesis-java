@@ -3,11 +3,14 @@ package util;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import javax.swing.JList;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
+import model.ConnectedComponentInfoRecorder.ConnectedComponentInfoDataStructure;
 
 public interface SetViewerHookInterface {
 
@@ -50,16 +53,17 @@ public interface SetViewerHookInterface {
 
 		@SuppressWarnings("unchecked")
 		@Override
-		public void render(SetViewer setViewer, Object aMap) {
+		public void render(SetViewer setViewer, Object data_structure_as_object) {
 
-			try {
-				map = (SortedMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>>) aMap;
-			} catch (Exception e) {
-				map = null;
-				return;
+			if (data_structure_as_object instanceof ConnectedComponentInfoDataStructure) {
+
+				ConnectedComponentInfoDataStructure data_structure = (ConnectedComponentInfoDataStructure) data_structure_as_object;
+
+				map = new TreeMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>>();
+				data_structure.fill_datas_into(map);
+
+				setViewer.add_to_model(map.keySet());
 			}
-
-			setViewer.add_to_model(map.keySet());
 		}
 	}
 

@@ -16,6 +16,8 @@ import java.util.TreeMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.border.Border;
 
 import model.ConnectedComponentInfoRecorder.ConnectedComponentInfoDataStructure;
@@ -32,8 +34,7 @@ public class ResultViewer extends JFrame {
 
 	private List<SetViewer> set_viewers;
 
-	public ResultViewer(
-			SortedMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> map) {
+	public ResultViewer(ConnectedComponentInfoDataStructure data_structure) {
 
 		build_set_viewers();
 
@@ -47,7 +48,21 @@ public class ResultViewer extends JFrame {
 			set_viewer.useBorder(border);
 		}
 
-		set_viewers.iterator().next().render(map);
+		set_viewers.iterator().next().render(data_structure);
+
+		build_summary_table(data_structure);
+
+	}
+
+	private void build_summary_table(
+			ConnectedComponentInfoDataStructure data_structure) {
+
+		JTable summary_table = new JTable(data_structure.build_rows_data(),
+				data_structure.build_columns_data());
+
+		summary_table.setFillsViewportHeight(true);
+
+		add(new JScrollPane(summary_table));
 
 	}
 
@@ -80,9 +95,10 @@ public class ResultViewer extends JFrame {
 		// File source_file = checked_standard_models_file_handler();
 		File source_file = checked_BioCyc_models_file_handler();
 
-		SortedMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> loaded_map = load_map_from_serialized_data_structure(source_file);
+		ConnectedComponentInfoDataStructure data_structure = load_serialized_data_structure(source_file);
 
-		SwingConsole.run(new ResultViewer(loaded_map), dimension, dimension);
+		SwingConsole
+				.run(new ResultViewer(data_structure), dimension, dimension);
 	}
 
 	private static File checked_standard_models_file_handler() {
@@ -136,23 +152,20 @@ public class ResultViewer extends JFrame {
 		return serialized_datastructure_file;
 	}
 
-	private static SortedMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> load_map_from_serialized_data_structure(
+	private static ConnectedComponentInfoDataStructure load_serialized_data_structure(
 			File source_file) {
 
-		SortedMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> map = null;
+		ConnectedComponentInfoDataStructure data_structure = null;
 		try {
 			InputStream input_stream = new FileInputStream(source_file);
-			ConnectedComponentInfoDataStructure data_structure = new ConnectedComponentInfoDataStructure(
+			data_structure = new ConnectedComponentInfoDataStructure(
 					input_stream);
-
-			map = new TreeMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>>();
-			data_structure.fill_datas_into(map);
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 
-		return map;
+		return data_structure;
 	}
 
 	private static SortedMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> build_test_map() {
