@@ -1,6 +1,7 @@
 bin/
 test.sbml.xml
 sbml-test-files/aae
+sbml-test-files/BioCyc15.0/
 sbml-test-files/curated
 sbml-test-files/KEGG_R47-SBML_L2V1_nocd-20080728
 dot-test-files/tests-output/

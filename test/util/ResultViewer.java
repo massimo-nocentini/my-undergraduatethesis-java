@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -20,6 +21,7 @@ import javax.swing.border.Border;
 import model.ConnectedComponentInfoRecorder.ConnectedComponentInfoDataStructure;
 import model.VertexType;
 import piping.ConnectedComponentsInfoPipeFilterUnitTest;
+import dotInterface.DotFileUtilHandler;
 
 public class ResultViewer extends JFrame {
 
@@ -33,7 +35,7 @@ public class ResultViewer extends JFrame {
 	public ResultViewer(
 			SortedMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> map) {
 
-		this.build_set_viewers();
+		build_set_viewers();
 
 		setLayout(new FlowLayout());
 
@@ -75,18 +77,63 @@ public class ResultViewer extends JFrame {
 
 		int dimension = 500;
 
-		File source_file = ConnectedComponentsInfoPipeFilterUnitTest.serialized_data_structure_for_standard_models_file_handler;
-
-		if (source_file.exists() == false) {
-
-			// running the test will generate the required data structure file
-			(new ConnectedComponentsInfoPipeFilterUnitTest())
-					.massive_tests_for_building_a_file_with_connected_components_infos_for_models_contained_in_standard_directory();
-		}
+		// File source_file = checked_standard_models_file_handler();
+		File source_file = checked_BioCyc_models_file_handler();
 
 		SortedMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> loaded_map = load_map_from_serialized_data_structure(source_file);
 
 		SwingConsole.run(new ResultViewer(loaded_map), dimension, dimension);
+	}
+
+	private static File checked_standard_models_file_handler() {
+
+		File serialized_datastructure_file = ConnectedComponentsInfoPipeFilterUnitTest.serialized_data_structure_for_standard_models_file_handler;
+
+		if (serialized_datastructure_file.exists() == false) {
+
+			ConnectedComponentsInfoPipeFilterUnitTest
+					.apply_recording_on(
+							DotFileUtilHandler.getSbmlExampleModelsFolder(),
+							ConnectedComponentsInfoPipeFilterUnitTest.serialized_data_structure_for_standard_models_file_handler,
+							false, "standard-models");
+		}
+
+		return serialized_datastructure_file;
+	}
+
+	private static File checked_BioCyc_models_file_handler() {
+
+		File serialized_datastructure_file = ConnectedComponentsInfoPipeFilterUnitTest.serialized_data_structure_for_BioCyc_models_file_handler;
+
+		if (serialized_datastructure_file.exists() == false) {
+
+			File BioCyc_folder = new File(DotFileUtilHandler
+					.getSbmlExampleModelsFolder().concat("BioCyc15.0"));
+
+			if (BioCyc_folder.exists() == false) {
+
+				String uncompress_command = "tar -C "
+						.concat(DotFileUtilHandler
+								.getSbmlExampleModelsFolderAsFile()
+								.getAbsolutePath()).concat(" -xf ")
+						.concat(BioCyc_folder.getAbsolutePath())
+						.concat(".tar.gz");
+
+				try {
+					Runtime.getRuntime().exec(uncompress_command).waitFor();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+
+			ConnectedComponentsInfoPipeFilterUnitTest.apply_recording_on(
+					BioCyc_folder.getAbsolutePath(),
+					serialized_datastructure_file, true, "BioCyc-models");
+		}
+
+		return serialized_datastructure_file;
 	}
 
 	private static SortedMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> load_map_from_serialized_data_structure(
@@ -121,41 +168,42 @@ public class ResultViewer extends JFrame {
 		String model_name_five = "model_five";
 		String model_name_six = "model_six";
 
-		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(map, species_one,
-				VertexType.Sources.toString(), 3, model_name_one);
-		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(map, species_one,
-				VertexType.Sources.toString(), 3, model_name_two);
-		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(map, species_one,
-				VertexType.Sources.toString(), 3, model_name_three);
+		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(map,
+				species_one, VertexType.Sources.toString(), 3, model_name_one);
+		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(map,
+				species_one, VertexType.Sources.toString(), 3, model_name_two);
+		ConnectedComponentInfoDataStructure
+				.put_tuples_by_species_into(map, species_one,
+						VertexType.Sources.toString(), 3, model_name_three);
 
-		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(map, species_one,
-				VertexType.Sources.toString(), 1, model_name_one);
-		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(map, species_one,
-				VertexType.Sources.toString(), 1, model_name_two);
+		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(map,
+				species_one, VertexType.Sources.toString(), 1, model_name_one);
+		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(map,
+				species_one, VertexType.Sources.toString(), 1, model_name_two);
 
-		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(map, species_one,
-				VertexType.Sinks.toString(), 2, model_name_four);
-		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(map, species_one,
-				VertexType.Sinks.toString(), 2, model_name_five);
+		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(map,
+				species_one, VertexType.Sinks.toString(), 2, model_name_four);
+		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(map,
+				species_one, VertexType.Sinks.toString(), 2, model_name_five);
 
-		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(map, species_one,
-				VertexType.Whites.toString(), 1, model_name_six);
+		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(map,
+				species_one, VertexType.Whites.toString(), 1, model_name_six);
 
 		// the same settings for the second species.
-		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(map, species_two,
-				VertexType.Sources.toString(), 1, model_name_one);
+		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(map,
+				species_two, VertexType.Sources.toString(), 1, model_name_one);
 
-		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(map, species_two,
-				VertexType.Whites.toString(), 4, model_name_two);
-		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(map, species_two,
-				VertexType.Whites.toString(), 4, model_name_three);
-		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(map, species_two,
-				VertexType.Whites.toString(), 4, model_name_four);
-		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(map, species_two,
-				VertexType.Whites.toString(), 4, model_name_five);
+		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(map,
+				species_two, VertexType.Whites.toString(), 4, model_name_two);
+		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(map,
+				species_two, VertexType.Whites.toString(), 4, model_name_three);
+		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(map,
+				species_two, VertexType.Whites.toString(), 4, model_name_four);
+		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(map,
+				species_two, VertexType.Whites.toString(), 4, model_name_five);
 
-		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(map, species_two,
-				VertexType.Sinks.toString(), 1, model_name_six);
+		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(map,
+				species_two, VertexType.Sinks.toString(), 1, model_name_six);
 
 		return map;
 	}

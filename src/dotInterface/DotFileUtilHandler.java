@@ -51,6 +51,10 @@ public class DotFileUtilHandler {
 		return "sbml-test-files".concat(getFileSeparator());
 	}
 
+	public static File getSbmlExampleModelsFolderAsFile() {
+		return new File("sbml-test-files".concat(getFileSeparator()));
+	}
+
 	public static String getNewLineSeparator() {
 		return System.getProperty("line.separator");
 	}

@@ -13,13 +13,35 @@ import dotInterface.DotFileUtilHandler.DotUtilAction;
 
 public class ConnectedComponentsInfoPipeFilterUnitTest {
 
+	/**
+	 * This is the file handler that reference a destination for the standard
+	 * models data structure.
+	 */
 	public static final File serialized_data_structure_for_standard_models_file_handler = new File(
 			DotFileUtilHandler
 					.dotOutputFolderPathName()
 					.concat("massive-connected-components-info-serialized-for-standard-models.datastructure"));
 
+	/**
+	 * This is the file handler that reference a destination for the BioCyc
+	 * models data structure.
+	 */
+	public static final File serialized_data_structure_for_BioCyc_models_file_handler = new File(
+			DotFileUtilHandler
+					.dotOutputFolderPathName()
+					.concat("massive-connected-components-info-serialized-for-BioCyc-models.datastructure"));
+
 	@Test
 	public void massive_tests_for_building_a_file_with_connected_components_infos_for_models_contained_in_standard_directory() {
+
+		apply_recording_on(DotFileUtilHandler.getSbmlExampleModelsFolder(),
+				serialized_data_structure_for_standard_models_file_handler,
+				false, "standard-models");
+	}
+
+	public static void apply_recording_on(String scanning_folder,
+			File output_file, boolean recursive_scanning,
+			final String pipeline_prefix) {
 
 		final PipeFilter tarjanPipeFilter = PipeFilterFactory
 				.MakeTarjanPipeFilter();
@@ -34,27 +56,26 @@ public class ConnectedComponentsInfoPipeFilterUnitTest {
 			@Override
 			public void apply(File element) {
 
-				String pipeline_name = "massive-connected-components-info-serialized-for-standard-models-"
+				String pipeline_name = "massive-connected-components-info-serialized-for-"
+						.concat(pipeline_prefix)
+						.concat("-")
 						.concat(element.getName().substring(0,
 								element.getName().lastIndexOf(".")));
 
-				connectedComponentsInfoPipeFilter.applyWithListener(
-						pipeline_name,
-						OurModel.makeOurModelFrom(element.getAbsolutePath()),
-						new PipeFilterComputationListenerNullObject());
+				connectedComponentsInfoPipeFilter.apply(pipeline_name,
+						OurModel.makeOurModelFrom(element.getAbsolutePath()));
 
 			}
 		};
 
 		DotFileUtilHandler.mapOnFilesInFolderFilteringByExtension(
-				DotFileUtilHandler.getSbmlExampleModelsFolder(),
-				DotFileUtilHandler.getSBMLFileExtension(), action, false);
+				scanning_folder, DotFileUtilHandler.getSBMLFileExtension(),
+				action, recursive_scanning);
 
 		try {
 
-			connectedComponentsInfoPipeFilter
-					.writeOn(new FileOutputStream(
-							serialized_data_structure_for_standard_models_file_handler));
+			connectedComponentsInfoPipeFilter.writeOn(new FileOutputStream(
+					output_file));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
