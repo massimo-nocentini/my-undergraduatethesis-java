@@ -53,7 +53,7 @@ public class ConnectedComponentInfoRecorderUnitTest {
 		int cardinality = 1;
 		String modelName = "model1";
 
-		recorder.putTuple(species, componentType, cardinality, modelName);
+		recorder.recordTupleBySpecies(species, componentType, cardinality, modelName);
 
 		TreeMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> expectedMap = new TreeMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>>();
 
@@ -88,7 +88,7 @@ public class ConnectedComponentInfoRecorderUnitTest {
 		int cardinality = 1;
 		String modelName = "model1";
 
-		recorder.putTuple(species, componentType, cardinality, modelName);
+		recorder.recordTupleBySpecies(species, componentType, cardinality, modelName);
 
 		String pathname = DotFileUtilHandler
 				.dotOutputFolderPathName()
@@ -106,7 +106,7 @@ public class ConnectedComponentInfoRecorderUnitTest {
 			FileOutputStream fileOutputStream = new FileOutputStream(
 					destinationFile);
 
-			recorder.writeDataStructure(fileOutputStream);
+			recorder.toJavaSerialization(fileOutputStream);
 
 			fileOutputStream.close();
 
@@ -129,7 +129,7 @@ public class ConnectedComponentInfoRecorderUnitTest {
 		int cardinality = 1;
 		String modelName = "model1";
 
-		recorder.putTuple(species, componentType, cardinality, modelName);
+		recorder.recordTupleBySpecies(species, componentType, cardinality, modelName);
 
 		String pathname = DotFileUtilHandler
 				.dotOutputFolderPathName()
@@ -147,7 +147,7 @@ public class ConnectedComponentInfoRecorderUnitTest {
 			FileOutputStream fileOutputStream = new FileOutputStream(
 					destinationFile);
 
-			recorder.writeDataStructure(fileOutputStream);
+			recorder.toJavaSerialization(fileOutputStream);
 
 			fileOutputStream.close();
 

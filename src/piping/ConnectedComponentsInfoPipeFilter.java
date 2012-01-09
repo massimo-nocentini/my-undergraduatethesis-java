@@ -44,7 +44,7 @@ public class ConnectedComponentsInfoPipeFilter extends PipeFilter {
 	public void writeOn(OutputStream output_stream) {
 
 		this.connected_component_info_recorder
-				.writeDataStructure(output_stream);
+				.toJavaSerialization(output_stream);
 	}
 
 }

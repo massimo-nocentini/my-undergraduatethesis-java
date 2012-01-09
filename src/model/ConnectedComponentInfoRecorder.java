@@ -11,9 +11,32 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import util.IntegerCounter;
+
 public class ConnectedComponentInfoRecorder {
 
 	private final ConnectedComponentInfoDataStructure dataStructure = new ConnectedComponentInfoDataStructure();
+
+	private final SortedMap<String, SortedMap<String, ConnectedComponentPairCounter>> models_map = new TreeMap<String, SortedMap<String, ConnectedComponentPairCounter>>();
+
+	public static class ConnectedComponentPairCounter {
+
+		private final IntegerCounter components_counter = new IntegerCounter();
+		private final IntegerCounter vertices_counter = new IntegerCounter();
+
+		public void increment_by(int size) {
+			components_counter.increment();
+			vertices_counter.increment(size);
+		}
+
+		@Override
+		public String toString() {
+			return "(C: ".concat(components_counter.getCount().toString())
+					.concat(", V:")
+					.concat(vertices_counter.getCount().toString()).concat(")");
+		}
+
+	}
 
 	public static class ConnectedComponentInfoDataStructure implements
 			Serializable {
@@ -172,7 +195,7 @@ public class ConnectedComponentInfoRecorder {
 		}
 	}
 
-	public void putTuple(String species, String componentType,
+	public void recordTupleBySpecies(String species, String componentType,
 			Integer cardinality, String modelName) {
 
 		ConnectedComponentInfoDataStructure.putIntoMap(this.dataStructure.map,
@@ -186,9 +209,28 @@ public class ConnectedComponentInfoRecorder {
 		return this.dataStructure.equals(other);
 	}
 
-	public void writeDataStructure(OutputStream outputStream) {
+	public void toJavaSerialization(OutputStream outputStream) {
 
 		this.dataStructure.serializeYourselfOn(outputStream);
+	}
+
+	public void recordTupleByModel(String modelName, String vertex_type,
+			int members_count) {
+
+		if (this.models_map.containsKey(modelName) == false) {
+			this.models_map.put(modelName,
+					new TreeMap<String, ConnectedComponentPairCounter>());
+		}
+
+		SortedMap<String, ConnectedComponentPairCounter> vertex_type_for_model = this.models_map
+				.get(modelName);
+
+		if (vertex_type_for_model.containsKey(vertex_type) == false) {
+			vertex_type_for_model.put(vertex_type,
+					new ConnectedComponentPairCounter());
+		}
+
+		vertex_type_for_model.get(vertex_type).increment_by(members_count);
 	}
 
 }

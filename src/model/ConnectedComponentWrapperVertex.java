@@ -83,22 +83,15 @@ public class ConnectedComponentWrapperVertex extends
 					String species_id, String species_name,
 					String compartment_id) {
 
+				recorder.recordTupleByModel(modelName,
+						componentVertexType.toString(), local_members.size());
+
 				for (final Vertex member : local_members) {
 
-					member.doWithVertexType(new DoAction<VertexType>() {
-
-						@Override
-						public void apply(VertexType memberVertexType,
-								String species_id, String species_name,
-								String compartment_id) {
-
-							recorder.putTuple(
-									member.buildVertexUniqueIdentifier(),
-									componentVertexType.toString(),
-									cardinality, modelName);
-						}
-
-					});
+					recorder.recordTupleBySpecies(
+							member.buildVertexUniqueIdentifier(),
+							componentVertexType.toString(), cardinality,
+							modelName);
 				}
 			}
 		});

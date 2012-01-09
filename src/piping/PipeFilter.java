@@ -4,7 +4,7 @@ import model.OurModel;
 
 public abstract class PipeFilter {
 
-	private PipeFilter wrappedPipeFilter;
+	private PipeFilter next_filter;
 
 	/**
 	 * Package access for the constructor, only the factory can call it
@@ -20,7 +20,7 @@ public abstract class PipeFilter {
 		int levelsOfWrapping = 0;
 
 		if (this.isYourWrappedPipeFilterNotNull()) {
-			levelsOfWrapping = 1 + wrappedPipeFilter.computeLevelsOfWrapping();
+			levelsOfWrapping = 1 + next_filter.computeLevelsOfWrapping();
 		}
 
 		return levelsOfWrapping;
@@ -28,11 +28,11 @@ public abstract class PipeFilter {
 
 	public boolean isYourWrappedPipeFilterEquals(PipeFilter otherPipeFilter) {
 		return this.isYourWrappedPipeFilterNotNull()
-				&& wrappedPipeFilter.equals(otherPipeFilter);
+				&& next_filter.equals(otherPipeFilter);
 	}
 
 	public boolean isYourWrappedPipeFilterNotNull() {
-		return wrappedPipeFilter != null;
+		return next_filter != null;
 	}
 
 	public abstract boolean isYourTagEquals(AvailableFilters other);
@@ -58,7 +58,7 @@ public abstract class PipeFilter {
 
 		if (this.isYourWrappedPipeFilterNotNull()) {
 
-			workingModel = wrappedPipeFilter.applyWithListener(pipelineName,
+			workingModel = next_filter.applyWithListener(pipelineName,
 					workingModel, computationListener);
 		}
 
@@ -69,7 +69,7 @@ public abstract class PipeFilter {
 	}
 
 	public PipeFilter pipeAfter(PipeFilter pipeFilterToWrap) {
-		wrappedPipeFilter = pipeFilterToWrap;
+		next_filter = pipeFilterToWrap;
 		return this;
 	}
 
