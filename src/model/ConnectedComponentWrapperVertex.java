@@ -83,11 +83,15 @@ public class ConnectedComponentWrapperVertex extends
 					String species_id, String species_name,
 					String compartment_id) {
 
+				// this invocation will record the information to build a more
+				// summary report
 				recorder.recordTupleByModel(modelName,
 						componentVertexType.toString(), local_members.size());
 
 				for (final Vertex member : local_members) {
 
+					// this invocation will record detailed information species
+					// by species
 					recorder.recordTupleBySpecies(
 							member.buildVertexUniqueIdentifier(),
 							componentVertexType.toString(), cardinality,

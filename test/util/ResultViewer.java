@@ -121,40 +121,40 @@ public class ResultViewer extends JFrame {
 		String model_name_five = "model_five";
 		String model_name_six = "model_six";
 
-		ConnectedComponentInfoDataStructure.putIntoMap(map, species_one,
+		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(map, species_one,
 				VertexType.Sources.toString(), 3, model_name_one);
-		ConnectedComponentInfoDataStructure.putIntoMap(map, species_one,
+		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(map, species_one,
 				VertexType.Sources.toString(), 3, model_name_two);
-		ConnectedComponentInfoDataStructure.putIntoMap(map, species_one,
+		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(map, species_one,
 				VertexType.Sources.toString(), 3, model_name_three);
 
-		ConnectedComponentInfoDataStructure.putIntoMap(map, species_one,
+		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(map, species_one,
 				VertexType.Sources.toString(), 1, model_name_one);
-		ConnectedComponentInfoDataStructure.putIntoMap(map, species_one,
+		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(map, species_one,
 				VertexType.Sources.toString(), 1, model_name_two);
 
-		ConnectedComponentInfoDataStructure.putIntoMap(map, species_one,
+		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(map, species_one,
 				VertexType.Sinks.toString(), 2, model_name_four);
-		ConnectedComponentInfoDataStructure.putIntoMap(map, species_one,
+		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(map, species_one,
 				VertexType.Sinks.toString(), 2, model_name_five);
 
-		ConnectedComponentInfoDataStructure.putIntoMap(map, species_one,
+		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(map, species_one,
 				VertexType.Whites.toString(), 1, model_name_six);
 
 		// the same settings for the second species.
-		ConnectedComponentInfoDataStructure.putIntoMap(map, species_two,
+		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(map, species_two,
 				VertexType.Sources.toString(), 1, model_name_one);
 
-		ConnectedComponentInfoDataStructure.putIntoMap(map, species_two,
+		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(map, species_two,
 				VertexType.Whites.toString(), 4, model_name_two);
-		ConnectedComponentInfoDataStructure.putIntoMap(map, species_two,
+		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(map, species_two,
 				VertexType.Whites.toString(), 4, model_name_three);
-		ConnectedComponentInfoDataStructure.putIntoMap(map, species_two,
+		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(map, species_two,
 				VertexType.Whites.toString(), 4, model_name_four);
-		ConnectedComponentInfoDataStructure.putIntoMap(map, species_two,
+		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(map, species_two,
 				VertexType.Whites.toString(), 4, model_name_five);
 
-		ConnectedComponentInfoDataStructure.putIntoMap(map, species_two,
+		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(map, species_two,
 				VertexType.Sinks.toString(), 1, model_name_six);
 
 		return map;

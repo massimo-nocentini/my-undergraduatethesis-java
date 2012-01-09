@@ -14,6 +14,7 @@ import java.util.TreeMap;
 
 import junit.framework.Assert;
 import model.ConnectedComponentInfoRecorder.ConnectedComponentInfoDataStructure;
+import model.ConnectedComponentInfoRecorder.ConnectedComponentInfoDataStructure.ConnectedComponentPairCounter;
 
 import org.junit.Test;
 
@@ -34,11 +35,12 @@ public class ConnectedComponentInfoRecorderUnitTest {
 				new TreeMap<String, SortedMap<Integer, SortedSet<String>>>());
 
 		Assert.assertTrue(recorder
-				.isDataStructureEquals(new ConnectedComponentInfoDataStructure()));
+				.isDataStructureEquals(ConnectedComponentInfoDataStructure
+						.make_empty_datastructure()));
 
 		Assert.assertFalse(recorder
-				.isDataStructureEquals(new ConnectedComponentInfoDataStructure(
-						someMap)));
+				.isDataStructureEquals(ConnectedComponentInfoDataStructure
+						.make_datastructure_with_species_map(someMap)));
 
 		Assert.assertFalse(recorder.isDataStructureEquals(null));
 	}
@@ -53,27 +55,29 @@ public class ConnectedComponentInfoRecorderUnitTest {
 		int cardinality = 1;
 		String modelName = "model1";
 
-		recorder.recordTupleBySpecies(species, componentType, cardinality, modelName);
+		recorder.recordTupleBySpecies(species, componentType, cardinality,
+				modelName);
 
 		TreeMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> expectedMap = new TreeMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>>();
 
-		ConnectedComponentInfoDataStructure.putIntoMap(expectedMap, species,
-				componentType, cardinality, modelName);
+		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(
+				expectedMap, species, componentType, cardinality, modelName);
 
 		TreeMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> unexpectedMap = new TreeMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>>();
 
 		// do some permutation on the expected values in order to distinguish
 		// this map from the previous one
-		ConnectedComponentInfoDataStructure.putIntoMap(unexpectedMap, species
-				+ "hello", componentType + "hello", cardinality + 2, modelName);
+		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(
+				unexpectedMap, species + "hello", componentType + "hello",
+				cardinality + 2, modelName);
 
 		Assert.assertTrue(recorder
-				.isDataStructureEquals(new ConnectedComponentInfoDataStructure(
-						expectedMap)));
+				.isDataStructureEquals(ConnectedComponentInfoDataStructure
+						.make_datastructure_with_species_map(expectedMap)));
 
 		Assert.assertFalse(recorder
-				.isDataStructureEquals(new ConnectedComponentInfoDataStructure(
-						unexpectedMap)));
+				.isDataStructureEquals(ConnectedComponentInfoDataStructure
+						.make_datastructure_with_species_map(unexpectedMap)));
 
 		Assert.assertFalse(recorder.isDataStructureEquals(null));
 	}
@@ -88,7 +92,8 @@ public class ConnectedComponentInfoRecorderUnitTest {
 		int cardinality = 1;
 		String modelName = "model1";
 
-		recorder.recordTupleBySpecies(species, componentType, cardinality, modelName);
+		recorder.recordTupleBySpecies(species, componentType, cardinality,
+				modelName);
 
 		String pathname = DotFileUtilHandler
 				.dotOutputFolderPathName()
@@ -129,7 +134,8 @@ public class ConnectedComponentInfoRecorderUnitTest {
 		int cardinality = 1;
 		String modelName = "model1";
 
-		recorder.recordTupleBySpecies(species, componentType, cardinality, modelName);
+		recorder.recordTupleBySpecies(species, componentType, cardinality,
+				modelName);
 
 		String pathname = DotFileUtilHandler
 				.dotOutputFolderPathName()
@@ -181,7 +187,7 @@ public class ConnectedComponentInfoRecorderUnitTest {
 		String species = "my_species_identifier";
 		String componentType = VertexType.Sinks.toString();
 		int cardinality = 1;
-		String modelName = "model";
+		String model_name = "model";
 
 		// setting up the connected component to have one member and one
 		// neighbor in order to be a source (otherwise we cannot distinguish if
@@ -193,21 +199,27 @@ public class ConnectedComponentInfoRecorderUnitTest {
 		vertices.add(vertex);
 
 		@SuppressWarnings("unused")
-		OurModel model = OurModel.makeOurModelFrom(vertices, modelName);
+		OurModel model = OurModel.makeOurModelFrom(vertices, model_name);
 
 		componentWrapperVertex.includeMember(vertex);
 
 		componentWrapperVertex.publishYourContentOn(recorder);
 
-		SortedMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> expectedMap = new TreeMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>>();
+		SortedMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> expected_species_map = new TreeMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>>();
 
-		ConnectedComponentInfoDataStructure.putIntoMap(expectedMap,
-				"MY_SPECIES_IDENTIFIER-(COMPARTMENT_ID)", componentType,
-				cardinality, modelName);
+		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(
+				expected_species_map, "MY_SPECIES_IDENTIFIER-(COMPARTMENT_ID)",
+				componentType, cardinality, model_name);
+
+		SortedMap<String, SortedMap<String, ConnectedComponentPairCounter>> expected_models_map = new TreeMap<String, SortedMap<String, ConnectedComponentPairCounter>>();
+		ConnectedComponentInfoDataStructure.put_tuples_by_models_into(
+				expected_models_map, model_name, VertexType.Sinks.toString(),
+				cardinality);
 
 		Assert.assertTrue(recorder
-				.isDataStructureEquals(new ConnectedComponentInfoDataStructure(
-						expectedMap)));
+				.isDataStructureEquals(ConnectedComponentInfoDataStructure
+						.make_datastructure_with_both_maps(
+								expected_species_map, expected_models_map)));
 	}
 
 	@Test(expected = RuntimeException.class)
@@ -256,13 +268,15 @@ public class ConnectedComponentInfoRecorderUnitTest {
 		ConnectedComponentInfoRecorder recorder = new ConnectedComponentInfoRecorder();
 
 		SortedMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> expectedMap = new TreeMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>>();
+		SortedMap<String, SortedMap<String, ConnectedComponentPairCounter>> expected_models_map = new TreeMap<String, SortedMap<String, ConnectedComponentPairCounter>>();
 
 		this.build_same_context_with_changes_on_model(recorder, "model_one",
-				expectedMap);
+				expectedMap, expected_models_map);
 
 		Assert.assertTrue(recorder
-				.isDataStructureEquals(new ConnectedComponentInfoDataStructure(
-						expectedMap)));
+				.isDataStructureEquals(ConnectedComponentInfoDataStructure
+						.make_datastructure_with_both_maps(expectedMap,
+								expected_models_map)));
 	}
 
 	@Test
@@ -271,22 +285,25 @@ public class ConnectedComponentInfoRecorderUnitTest {
 		ConnectedComponentInfoRecorder recorder = new ConnectedComponentInfoRecorder();
 
 		SortedMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> expectedMap = new TreeMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>>();
+		SortedMap<String, SortedMap<String, ConnectedComponentPairCounter>> expected_models_map = new TreeMap<String, SortedMap<String, ConnectedComponentPairCounter>>();
 
 		this.build_same_context_with_changes_on_model(recorder, "model_one",
-				expectedMap);
+				expectedMap, expected_models_map);
 
 		this.build_same_context_with_changes_on_model(recorder, "model_two",
-				expectedMap);
+				expectedMap, expected_models_map);
 
 		Assert.assertTrue(recorder
-				.isDataStructureEquals(new ConnectedComponentInfoDataStructure(
-						expectedMap)));
+				.isDataStructureEquals(ConnectedComponentInfoDataStructure
+						.make_datastructure_with_both_maps(expectedMap,
+								expected_models_map)));
 	}
 
 	private void build_same_context_with_changes_on_model(
 			ConnectedComponentInfoRecorder recorder,
-			String modelName,
-			SortedMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> expectedMap) {
+			String model_name,
+			SortedMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> expected_species_map,
+			SortedMap<String, SortedMap<String, ConnectedComponentPairCounter>> expected_models_map) {
 
 		// creating the components
 		ConnectedComponentWrapperVertex scc_one = VertexFactory
@@ -336,7 +353,7 @@ public class ConnectedComponentInfoRecorderUnitTest {
 		// the following statement is needed only to update
 		// the vertices respect the container model relation
 		@SuppressWarnings("unused")
-		OurModel model = OurModel.makeOurModelFrom(vertices, modelName);
+		OurModel model = OurModel.makeOurModelFrom(vertices, model_name);
 
 		// including the vertices in the respective components
 		scc_one.includeMember(vertex_one);
@@ -361,23 +378,44 @@ public class ConnectedComponentInfoRecorderUnitTest {
 		// because the species_name is an empty string.
 		String species_identifier_suffix = "-(COMPARTMENT_ID)";
 
-		ConnectedComponentInfoDataStructure.putIntoMap(expectedMap,
+		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(
+				expected_species_map,
 				"SPECIES_ONE".concat(species_identifier_suffix),
-				VertexType.Sources.toString(), 2, modelName);
-		ConnectedComponentInfoDataStructure.putIntoMap(expectedMap,
+				VertexType.Sources.toString(), 2, model_name);
+		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(
+				expected_species_map,
 				"SPECIES_TWO".concat(species_identifier_suffix),
-				VertexType.Sources.toString(), 2, modelName);
-		ConnectedComponentInfoDataStructure.putIntoMap(expectedMap,
+				VertexType.Sources.toString(), 2, model_name);
+		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(
+				expected_species_map,
 				"SPECIES_THREE".concat(species_identifier_suffix),
-				VertexType.Whites.toString(), 3, modelName);
-		ConnectedComponentInfoDataStructure.putIntoMap(expectedMap,
+				VertexType.Whites.toString(), 3, model_name);
+		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(
+				expected_species_map,
 				"SPECIES_FOUR".concat(species_identifier_suffix),
-				VertexType.Whites.toString(), 3, modelName);
-		ConnectedComponentInfoDataStructure.putIntoMap(expectedMap,
+				VertexType.Whites.toString(), 3, model_name);
+		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(
+				expected_species_map,
 				"SPECIES_FIVE".concat(species_identifier_suffix),
-				VertexType.Whites.toString(), 3, modelName);
-		ConnectedComponentInfoDataStructure.putIntoMap(expectedMap,
+				VertexType.Whites.toString(), 3, model_name);
+		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(
+				expected_species_map,
 				"SPECIES_SIX".concat(species_identifier_suffix),
-				VertexType.Sinks.toString(), 1, modelName);
+				VertexType.Sinks.toString(), 1, model_name);
+
+		// this publish refers to scc_one
+		ConnectedComponentInfoDataStructure.put_tuples_by_models_into(
+				expected_models_map, model_name, VertexType.Sources.toString(),
+				2);
+
+		// this publish refers to scc_two
+		ConnectedComponentInfoDataStructure.put_tuples_by_models_into(
+				expected_models_map, model_name, VertexType.Whites.toString(),
+				3);
+
+		// this publish refers to scc_three
+		ConnectedComponentInfoDataStructure
+				.put_tuples_by_models_into(expected_models_map, model_name,
+						VertexType.Sinks.toString(), 1);
 	}
 }

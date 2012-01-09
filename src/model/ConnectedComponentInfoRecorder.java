@@ -15,49 +15,97 @@ import util.IntegerCounter;
 
 public class ConnectedComponentInfoRecorder {
 
-	private final ConnectedComponentInfoDataStructure dataStructure = new ConnectedComponentInfoDataStructure();
-
-	private final SortedMap<String, SortedMap<String, ConnectedComponentPairCounter>> models_map = new TreeMap<String, SortedMap<String, ConnectedComponentPairCounter>>();
-
-	public static class ConnectedComponentPairCounter {
-
-		private final IntegerCounter components_counter = new IntegerCounter();
-		private final IntegerCounter vertices_counter = new IntegerCounter();
-
-		public void increment_by(int size) {
-			components_counter.increment();
-			vertices_counter.increment(size);
-		}
-
-		@Override
-		public String toString() {
-			return "(C: ".concat(components_counter.getCount().toString())
-					.concat(", V:")
-					.concat(vertices_counter.getCount().toString()).concat(")");
-		}
-
-	}
+	private final ConnectedComponentInfoDataStructure dataStructure = ConnectedComponentInfoDataStructure
+			.make_empty_datastructure();
 
 	public static class ConnectedComponentInfoDataStructure implements
 			Serializable {
+
+		public static class ConnectedComponentPairCounter implements
+				Serializable {
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -714178501616999417L;
+			private final IntegerCounter components_counter = new IntegerCounter();
+			private final IntegerCounter vertices_counter = new IntegerCounter();
+
+			public void increment_by(int size) {
+				components_counter.increment();
+				vertices_counter.increment(size);
+			}
+
+			@Override
+			public String toString() {
+				return "(C: ".concat(components_counter.getCount().toString())
+						.concat(", V: ")
+						.concat(vertices_counter.getCount().toString())
+						.concat(")");
+			}
+
+			@Override
+			public int hashCode() {
+				return this.toString().hashCode();
+			}
+
+			@Override
+			public boolean equals(Object obj) {
+
+				if (obj == null) {
+					return false;
+				}
+
+				return toString().equals(obj.toString());
+			}
+
+		}
 
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = -9063923742355150277L;
 
-		private final SortedMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> map;
+		private final SortedMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> tuples_by_species;
+		private SortedMap<String, SortedMap<String, ConnectedComponentPairCounter>> tuples_by_models = new TreeMap<String, SortedMap<String, ConnectedComponentPairCounter>>();
 
-		public ConnectedComponentInfoDataStructure() {
-			this(
-					new TreeMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>>());
+		public static ConnectedComponentInfoDataStructure make_empty_datastructure() {
+			return new ConnectedComponentInfoDataStructure(
+					new TreeMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>>(),
+					new TreeMap<String, SortedMap<String, ConnectedComponentPairCounter>>());
 		}
 
-		public ConnectedComponentInfoDataStructure(
-				SortedMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> other) {
+		public static ConnectedComponentInfoDataStructure make_datastructure_with_species_map(
+				SortedMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> other_species_map) {
 
-			this.map = other == null ? new TreeMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>>()
-					: other;
+			return new ConnectedComponentInfoDataStructure(
+					other_species_map,
+					new TreeMap<String, SortedMap<String, ConnectedComponentPairCounter>>());
+		}
+
+		public static ConnectedComponentInfoDataStructure make_datastructure_with_models_map(
+				SortedMap<String, SortedMap<String, ConnectedComponentPairCounter>> other_models_map) {
+
+			return new ConnectedComponentInfoDataStructure(
+					new TreeMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>>(),
+					other_models_map);
+		}
+
+		public static ConnectedComponentInfoDataStructure make_datastructure_with_both_maps(
+				SortedMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> other_species_map,
+				SortedMap<String, SortedMap<String, ConnectedComponentPairCounter>> other_models_map) {
+
+			return new ConnectedComponentInfoDataStructure(other_species_map,
+					other_models_map);
+		}
+
+		private ConnectedComponentInfoDataStructure(
+				SortedMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> other_species_map,
+				SortedMap<String, SortedMap<String, ConnectedComponentPairCounter>> other_models_map) {
+
+			this.tuples_by_species = other_species_map;
+
+			this.tuples_by_models = other_models_map;
 		}
 
 		public ConnectedComponentInfoDataStructure(InputStream inputStream) {
@@ -77,14 +125,25 @@ public class ConnectedComponentInfoRecorder {
 				e.printStackTrace();
 			}
 
-			this.map = deserialized != null ? deserialized.map : null;
+			this.tuples_by_species = deserialized != null ? deserialized.tuples_by_species
+					: null;
+
+			this.tuples_by_models = deserialized != null ? deserialized.tuples_by_models
+					: null;
 		}
 
 		@Override
 		public int hashCode() {
 			final int prime = 31;
 			int result = 1;
-			result = prime * result + ((map == null) ? 0 : map.hashCode());
+			result = prime
+					* result
+					+ ((tuples_by_species == null) ? 0 : tuples_by_species
+							.hashCode());
+			result = prime
+					* result
+					+ ((tuples_by_models == null) ? 0 : tuples_by_models
+							.hashCode());
 			return result;
 		}
 
@@ -100,77 +159,101 @@ public class ConnectedComponentInfoRecorder {
 				return false;
 			}
 			ConnectedComponentInfoDataStructure other = (ConnectedComponentInfoDataStructure) obj;
-			if (map == null) {
-				if (other.map != null) {
+			if (tuples_by_species == null) {
+				if (other.tuples_by_species != null) {
 					return false;
 				}
-			} else if (!map.equals(other.map)) {
+			} else if (!tuples_by_species.equals(other.tuples_by_species)) {
+				return false;
+			}
+
+			if (tuples_by_models == null) {
+				if (other.tuples_by_models != null) {
+					return false;
+				}
+			} else if (!tuples_by_models.equals(other.tuples_by_models)) {
 				return false;
 			}
 			return true;
 		}
 
-		public void putSpecies(String species) {
+		public void record_tuples_by_species(String species,
+				String component_type, Integer cardinality, String model_name) {
 
-			if (this.map.containsKey(species) == false) {
+			if (this.tuples_by_species.containsKey(species) == false) {
 
-				this.map.put(
-						species,
-						new TreeMap<String, SortedMap<Integer, SortedSet<String>>>());
+				this.tuples_by_species
+						.put(species,
+								new TreeMap<String, SortedMap<Integer, SortedSet<String>>>());
 			}
-		}
 
-		public void putComponentType(String species, String componentType) {
-
-			SortedMap<String, SortedMap<Integer, SortedSet<String>>> mapBySpecies = this.map
+			SortedMap<String, SortedMap<Integer, SortedSet<String>>> mapBySpecies = this.tuples_by_species
 					.get(species);
 
-			if (mapBySpecies.containsKey(componentType) == false) {
+			if (mapBySpecies.containsKey(component_type) == false) {
 
-				mapBySpecies.put(componentType,
+				mapBySpecies.put(component_type,
 						new TreeMap<Integer, SortedSet<String>>());
 			}
 
-		}
-
-		public void putCardinality(String species, String componentType,
-				Integer cardinality) {
-
-			SortedMap<Integer, SortedSet<String>> mapBySpeciesAndComponent = this.map
-					.get(species).get(componentType);
+			SortedMap<Integer, SortedSet<String>> mapBySpeciesAndComponent = this.tuples_by_species
+					.get(species).get(component_type);
 
 			if (mapBySpeciesAndComponent.containsKey(cardinality) == false) {
 				mapBySpeciesAndComponent
 						.put(cardinality, new TreeSet<String>());
 			}
 
+			this.tuples_by_species.get(species).get(component_type)
+					.get(cardinality).add(model_name);
+
 		}
 
-		public void putModel(String species, String componentType,
-				Integer cardinality, String modelName) {
+		public void record_tuples_by_model(String model_name,
+				String vertex_type, int members_count) {
 
-			this.map.get(species).get(componentType).get(cardinality)
-					.add(modelName);
+			if (tuples_by_models.containsKey(model_name) == false) {
+				tuples_by_models.put(model_name,
+						new TreeMap<String, ConnectedComponentPairCounter>());
+			}
+
+			SortedMap<String, ConnectedComponentPairCounter> vertex_type_for_model = tuples_by_models
+					.get(model_name);
+
+			if (vertex_type_for_model.containsKey(vertex_type) == false) {
+				vertex_type_for_model.put(vertex_type,
+						new ConnectedComponentPairCounter());
+			}
+
+			vertex_type_for_model.get(vertex_type).increment_by(members_count);
 		}
 
-		public static void putIntoMap(
+		public static void put_tuples_by_species_into(
 				SortedMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> map,
 				String species, String component_type, Integer cardinality,
 				String model_name) {
 
 			// here we use an object of this class type in order to modify only
 			// the map using the behavior already written.
-			ConnectedComponentInfoDataStructure dataStructure = new ConnectedComponentInfoDataStructure(
-					map);
+			ConnectedComponentInfoDataStructure dataStructure = ConnectedComponentInfoDataStructure
+					.make_datastructure_with_species_map(map);
 
-			dataStructure.putSpecies(species);
+			dataStructure.record_tuples_by_species(species, component_type,
+					cardinality, model_name);
 
-			dataStructure.putComponentType(species, component_type);
+		}
 
-			dataStructure.putCardinality(species, component_type, cardinality);
+		public static void put_tuples_by_models_into(
+				SortedMap<String, SortedMap<String, ConnectedComponentPairCounter>> map,
+				String model_name, String vertex_type, int members_count) {
 
-			dataStructure.putModel(species, component_type, cardinality,
-					model_name);
+			// here we use an object of this class type in order to modify only
+			// the map using the behavior already written.
+			ConnectedComponentInfoDataStructure dataStructure = ConnectedComponentInfoDataStructure
+					.make_datastructure_with_models_map(map);
+
+			dataStructure.record_tuples_by_model(model_name, vertex_type,
+					members_count);
 
 		}
 
@@ -191,15 +274,16 @@ public class ConnectedComponentInfoRecorder {
 		public void fill_datas_into(
 				SortedMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> map_to_fill_in) {
 
-			map_to_fill_in.putAll(this.map);
+			map_to_fill_in.putAll(this.tuples_by_species);
 		}
 	}
 
 	public void recordTupleBySpecies(String species, String componentType,
 			Integer cardinality, String modelName) {
 
-		ConnectedComponentInfoDataStructure.putIntoMap(this.dataStructure.map,
-				species, componentType, cardinality, modelName);
+		ConnectedComponentInfoDataStructure.put_tuples_by_species_into(
+				this.dataStructure.tuples_by_species, species, componentType,
+				cardinality, modelName);
 
 	}
 
@@ -214,23 +298,12 @@ public class ConnectedComponentInfoRecorder {
 		this.dataStructure.serializeYourselfOn(outputStream);
 	}
 
-	public void recordTupleByModel(String modelName, String vertex_type,
+	public void recordTupleByModel(String model_name, String vertex_type,
 			int members_count) {
 
-		if (this.models_map.containsKey(modelName) == false) {
-			this.models_map.put(modelName,
-					new TreeMap<String, ConnectedComponentPairCounter>());
-		}
-
-		SortedMap<String, ConnectedComponentPairCounter> vertex_type_for_model = this.models_map
-				.get(modelName);
-
-		if (vertex_type_for_model.containsKey(vertex_type) == false) {
-			vertex_type_for_model.put(vertex_type,
-					new ConnectedComponentPairCounter());
-		}
-
-		vertex_type_for_model.get(vertex_type).increment_by(members_count);
+		ConnectedComponentInfoDataStructure.put_tuples_by_models_into(
+				this.dataStructure.tuples_by_models, model_name, vertex_type,
+				members_count);
 	}
 
 }

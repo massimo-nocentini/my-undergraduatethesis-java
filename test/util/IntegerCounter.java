@@ -1,7 +1,13 @@
 package util;
 
-public class IntegerCounter {
+import java.io.Serializable;
 
+public class IntegerCounter implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9015573416972462325L;
 	private int count = 0;
 
 	public IntegerCounter increment() {
