@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
@@ -18,11 +19,13 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.Border;
 
 import model.ConnectedComponentInfoRecorder.ConnectedComponentInfoDataStructure;
 import model.VertexType;
 import piping.ConnectedComponentsInfoPipeFilterUnitTest;
+import util.SetViewer.ModelsSelectionListener;
 import dotInterface.DotFileUtilHandler;
 
 public class ResultViewer extends JFrame {
@@ -34,7 +37,34 @@ public class ResultViewer extends JFrame {
 
 	private List<SetViewer> set_viewers;
 
+	private final ModelsSelectionListener modelsSelectionListener;
+
 	public ResultViewer(ConnectedComponentInfoDataStructure data_structure) {
+
+		final JTable summary_table = build_summary_table(data_structure);
+
+		modelsSelectionListener = new ModelsSelectionListener() {
+
+			@Override
+			public void selection_changed(Set<String> models) {
+
+				summary_table.clearSelection();
+
+				int columnIndex = 0;
+				for (String model : models) {
+					for (int rowIndex = 0; rowIndex < summary_table.getModel()
+							.getRowCount(); rowIndex = rowIndex + 1) {
+
+						if (model.equals(summary_table.getModel()
+								.getValueAt(rowIndex, columnIndex).toString())) {
+
+							summary_table.addRowSelectionInterval(rowIndex,
+									rowIndex);
+						}
+					}
+				}
+			}
+		};
 
 		build_set_viewers();
 
@@ -50,11 +80,9 @@ public class ResultViewer extends JFrame {
 
 		set_viewers.iterator().next().render(data_structure);
 
-		build_summary_table(data_structure);
-
 	}
 
-	private void build_summary_table(
+	private JTable build_summary_table(
 			ConnectedComponentInfoDataStructure data_structure) {
 
 		JTable summary_table = new JTable(data_structure.build_rows_data(),
@@ -62,8 +90,13 @@ public class ResultViewer extends JFrame {
 
 		summary_table.setFillsViewportHeight(true);
 
+		summary_table.setRowSelectionAllowed(true);
+		summary_table
+				.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+
 		add(new JScrollPane(summary_table));
 
+		return summary_table;
 	}
 
 	private void build_set_viewers() {
@@ -80,6 +113,15 @@ public class ResultViewer extends JFrame {
 
 		SetViewer species_set_viewer = new SetViewer(vertex_types_set_viewer,
 				new SetViewerHookInterface.ForSpecies());
+
+		species_set_viewer
+				.accept_models_selection_listener(modelsSelectionListener);
+		vertex_types_set_viewer
+				.accept_models_selection_listener(modelsSelectionListener);
+		cardinalities_set_viewer
+				.accept_models_selection_listener(modelsSelectionListener);
+		models_set_viewer
+				.accept_models_selection_listener(modelsSelectionListener);
 
 		set_viewers = new LinkedList<SetViewer>();
 		set_viewers.addAll(Arrays.<SetViewer> asList(new SetViewer[] {

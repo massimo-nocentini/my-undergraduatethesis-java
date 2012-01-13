@@ -2,6 +2,7 @@ package util;
 
 import java.awt.Dimension;
 import java.util.Collection;
+import java.util.Set;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
@@ -17,10 +18,21 @@ public class SetViewer {
 		void doOnWith(SetViewer viewer);
 	}
 
+	public static interface ModelsSelectionListener {
+		void selection_changed(Set<String> models);
+	}
+
 	private final JList list_box;
 	private final DefaultListModel list_model;
 	private final SetViewer next_set_viewer;
 	private final SetViewerHookInterface hookInterface;
+	private ModelsSelectionListener modelsSelectionListener;
+
+	public void accept_models_selection_listener(
+			ModelsSelectionListener modelsSelectionListener) {
+
+		this.modelsSelectionListener = modelsSelectionListener;
+	}
 
 	public SetViewer(SetViewer next_set_viewer,
 			SetViewerHookInterface hookInterface) {
@@ -83,5 +95,12 @@ public class SetViewer {
 
 			list_model.addElement(obj);
 		}
+	}
+
+	public void notify_models_for_selection(
+			Set<String> new_selected_models) {
+
+		this.modelsSelectionListener
+				.selection_changed(new_selected_models);
 	}
 }

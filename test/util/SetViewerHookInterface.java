@@ -45,7 +45,36 @@ public interface SetViewerHookInterface {
 
 					final String selected_item = selectedValue.toString();
 
-					setViewer.getNext().render(map.get(selected_item));
+					SortedMap<String, SortedMap<Integer, SortedSet<String>>> components_associated_to_selected_species = map
+							.get(selected_item);
+
+					setViewer.getNext().render(
+							components_associated_to_selected_species);
+
+					// here we build a set of models relatives to this selection
+					Set<String> models_associated_with_current_selection = new TreeSet<String>();
+					for (String component_type : components_associated_to_selected_species
+							.keySet()) {
+
+						for (Integer cardinality : components_associated_to_selected_species
+								.get(component_type).keySet()) {
+
+							// aggiungo l'insieme di modelli da cui e' stato
+							// possibile estrarre le informazioni relative alla
+							// species selezionata, esplorando ogni tipo di
+							// componente ed ogni cardinalita' di queste in
+							// quanto la selezione di una sola species non
+							// permette di poter raffinare la ricerca dei
+							// modelli.
+							models_associated_with_current_selection
+									.addAll(components_associated_to_selected_species
+											.get(component_type).get(
+													cardinality));
+						}
+					}
+
+					setViewer
+							.notify_models_for_selection(models_associated_with_current_selection);
 				}
 
 			};
@@ -93,7 +122,32 @@ public interface SetViewerHookInterface {
 
 					final String selected_item = selectedValue.toString();
 
-					setViewer.getNext().render(map.get(selected_item));
+					SortedMap<Integer, SortedSet<String>> cardinalities_associated_to_selected_component_type = map
+							.get(selected_item);
+
+					setViewer
+							.getNext()
+							.render(cardinalities_associated_to_selected_component_type);
+
+					// here we build a set of models relatives to this selection
+					Set<String> models_associated_with_current_selection = new TreeSet<String>();
+					for (Integer cardinality : cardinalities_associated_to_selected_component_type
+							.keySet()) {
+
+						// aggiungo l'insieme di modelli da cui e' stato
+						// possibile estrarre le informazioni relative alla
+						// species selezionata, esplorando ogni tipo di
+						// componente ed ogni cardinalita' di queste in
+						// quanto la selezione di una sola species non
+						// permette di poter raffinare la ricerca dei
+						// modelli.
+						models_associated_with_current_selection
+								.addAll(cardinalities_associated_to_selected_component_type
+										.get(cardinality));
+					}
+
+					setViewer
+							.notify_models_for_selection(models_associated_with_current_selection);
 				}
 
 			};
@@ -150,7 +204,20 @@ public interface SetViewerHookInterface {
 					final Integer selected_item = Integer
 							.valueOf(selected_value_as_string);
 
-					setViewer.getNext().render(map.get(selected_item));
+					SortedSet<String> models_associated_to_selected_cardinality = map
+							.get(selected_item);
+
+					setViewer.getNext().render(
+							models_associated_to_selected_cardinality);
+
+					// here we build a set of models relatives to this selection
+					Set<String> models_associated_with_current_selection = new TreeSet<String>();
+
+					models_associated_with_current_selection
+							.addAll(models_associated_to_selected_cardinality);
+
+					setViewer
+							.notify_models_for_selection(models_associated_with_current_selection);
 				}
 
 			};
@@ -194,26 +261,28 @@ public interface SetViewerHookInterface {
 						return;
 					}
 
-					// this listener haven't to do nothing
+					final JList sender = (JList) e.getSource();
+					Object selectedValue = sender.getSelectedValue();
 
-					// final JList sender = (JList) e.getSource();
-					// final String selected_item = sender.getSelectedValue()
-					// .toString();
-					//
-					// setViewer.doOnNext(new SetViewer.DoOn() {
-					//
-					// @Override
-					// public void doOnWith(SetViewer viewer) {
-					//
-					// // first we erase all the previous content
-					// viewer.clear();
-					//
-					// // after we ask to render to correct amount of
-					// // information
-					// viewer.render(map.get(selected_item));
-					// }
-					// });
+					if (selectedValue == null) {
+						return;
+					}
 
+					final String selected_item = selectedValue.toString();
+
+					// here we don't need to retrieve the associated elements of
+					// selected_item because we have no those elements. To be
+					// complete and standard with should pass to
+					// the other implementors an empty container, for brevity we
+					// avoid this technique.
+					// setViewer.getNext().render(new TreeSet<Object>());
+
+					// here we build a set of models relatives to this selection
+					Set<String> models_associated_with_current_selection = new TreeSet<String>();
+					models_associated_with_current_selection.add(selected_item);
+
+					setViewer
+							.notify_models_for_selection(models_associated_with_current_selection);
 				}
 
 			};
