@@ -1,7 +1,6 @@
 package util;
 
 import java.awt.Dimension;
-import java.util.Collection;
 import java.util.Set;
 
 import javax.swing.DefaultListModel;
@@ -20,6 +19,38 @@ public class SetViewer {
 
 	public static interface ModelsSelectionListener {
 		void selection_changed(Set<String> models);
+	}
+
+	public static interface ElementKeyRender {
+
+		Object get_key();
+
+		@Override
+		String toString();
+	}
+
+	public static class ListboxElementKeyRender implements ElementKeyRender {
+
+		private final Object key;
+		private final int size;
+
+		public ListboxElementKeyRender(Object key, int size) {
+			this.key = key;
+			this.size = size;
+		}
+
+		@Override
+		public Object get_key() {
+			return key;
+		}
+
+		@Override
+		public String toString() {
+
+			return key.toString().concat(" (").concat(String.valueOf(size))
+					.concat(")");
+		}
+
 	}
 
 	private final JList list_box;
@@ -86,21 +117,16 @@ public class SetViewer {
 		return next_set_viewer;
 	}
 
-	public void add_to_model(final Collection<?> objects) {
+	public void add_to_model(final Set<ElementKeyRender> renders) {
 
-		for (Object obj : objects) {
-			if (obj == null) {
-				continue;
-			}
+		for (ElementKeyRender obj : renders) {
 
 			list_model.addElement(obj);
 		}
 	}
 
-	public void notify_models_for_selection(
-			Set<String> new_selected_models) {
+	public void notify_models_for_selection(Set<String> new_selected_models) {
 
-		this.modelsSelectionListener
-				.selection_changed(new_selected_models);
+		this.modelsSelectionListener.selection_changed(new_selected_models);
 	}
 }

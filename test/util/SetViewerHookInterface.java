@@ -1,5 +1,6 @@
 package util;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
@@ -11,6 +12,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import model.ConnectedComponentInfoRecorder.ConnectedComponentInfoDataStructure;
+import util.SetViewer.ElementKeyRender;
+import util.SetViewer.ListboxElementKeyRender;
 
 public interface SetViewerHookInterface {
 
@@ -43,10 +46,14 @@ public interface SetViewerHookInterface {
 						return;
 					}
 
-					final String selected_item = selectedValue.toString();
+					if ((selectedValue instanceof ElementKeyRender) == false) {
+						return;
+					}
+
+					final ElementKeyRender selected_item = (ElementKeyRender) selectedValue;
 
 					SortedMap<String, SortedMap<Integer, SortedSet<String>>> components_associated_to_selected_species = map
-							.get(selected_item);
+							.get(selected_item.get_key());
 
 					setViewer.getNext().render(
 							components_associated_to_selected_species);
@@ -80,7 +87,6 @@ public interface SetViewerHookInterface {
 			};
 		}
 
-		@SuppressWarnings("unchecked")
 		@Override
 		public void render(SetViewer setViewer, Object data_structure_as_object) {
 
@@ -91,7 +97,13 @@ public interface SetViewerHookInterface {
 				map = new TreeMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>>();
 				data_structure.fill_datas_into(map);
 
-				setViewer.add_to_model(map.keySet());
+				Set<ElementKeyRender> renders = new HashSet<SetViewer.ElementKeyRender>();
+				for (String species : map.keySet()) {
+					renders.add(new ListboxElementKeyRender(species, map.get(
+							species).size()));
+				}
+
+				setViewer.add_to_model(renders);
 			}
 		}
 	}
@@ -120,10 +132,14 @@ public interface SetViewerHookInterface {
 						return;
 					}
 
-					final String selected_item = selectedValue.toString();
+					if ((selectedValue instanceof ElementKeyRender) == false) {
+						return;
+					}
+
+					final ElementKeyRender selected_item = (ElementKeyRender) selectedValue;
 
 					SortedMap<Integer, SortedSet<String>> cardinalities_associated_to_selected_component_type = map
-							.get(selected_item);
+							.get(selected_item.get_key());
 
 					setViewer
 							.getNext()
@@ -164,13 +180,18 @@ public interface SetViewerHookInterface {
 				return;
 			}
 
-			setViewer.add_to_model(map.keySet());
+			Set<ElementKeyRender> renders = new HashSet<SetViewer.ElementKeyRender>();
+			for (String vertex_type : map.keySet()) {
+				renders.add(new ListboxElementKeyRender(vertex_type, map.get(
+						vertex_type).size()));
+			}
+
+			setViewer.add_to_model(renders);
 		}
 	}
 
 	public class ForCardinalities implements SetViewerHookInterface {
 
-		private final static String model_count_separator = " (";
 		private SortedMap<Integer, SortedSet<String>> map = null;
 
 		@Override
@@ -193,19 +214,14 @@ public interface SetViewerHookInterface {
 						return;
 					}
 
-					// because the method 'render' insert a set of strings that
-					// we want to display on the listbox, here the selected item
-					// is a string
-					String selected_value_as_string = selectedValue.toString();
-					selected_value_as_string = selected_value_as_string
-							.substring(0, selected_value_as_string
-									.indexOf(model_count_separator));
+					if ((selectedValue instanceof ElementKeyRender) == false) {
+						return;
+					}
 
-					final Integer selected_item = Integer
-							.valueOf(selected_value_as_string);
+					final ElementKeyRender selected_item = (ElementKeyRender) selectedValue;
 
 					SortedSet<String> models_associated_to_selected_cardinality = map
-							.get(selected_item);
+							.get(selected_item.get_key());
 
 					setViewer.getNext().render(
 							models_associated_to_selected_cardinality);
@@ -234,13 +250,13 @@ public interface SetViewerHookInterface {
 				return;
 			}
 
-			Set<String> keySet = new TreeSet<String>();
-			for (Integer integer : map.keySet()) {
-				keySet.add(integer.toString() + model_count_separator
-						+ map.get(integer).size() + ")");
+			Set<ElementKeyRender> renders = new HashSet<SetViewer.ElementKeyRender>();
+			for (Integer cardinality : map.keySet()) {
+				renders.add(new ListboxElementKeyRender(cardinality, map.get(
+						cardinality).size()));
 			}
 
-			setViewer.add_to_model(keySet);
+			setViewer.add_to_model(renders);
 		}
 	}
 
@@ -268,7 +284,11 @@ public interface SetViewerHookInterface {
 						return;
 					}
 
-					final String selected_item = selectedValue.toString();
+					if ((selectedValue instanceof ElementKeyRender) == false) {
+						return;
+					}
+
+					final ElementKeyRender selected_item = (ElementKeyRender) selectedValue;
 
 					// here we don't need to retrieve the associated elements of
 					// selected_item because we have no those elements. To be
@@ -279,7 +299,8 @@ public interface SetViewerHookInterface {
 
 					// here we build a set of models relatives to this selection
 					Set<String> models_associated_with_current_selection = new TreeSet<String>();
-					models_associated_with_current_selection.add(selected_item);
+					models_associated_with_current_selection.add(selected_item
+							.get_key().toString());
 
 					setViewer
 							.notify_models_for_selection(models_associated_with_current_selection);
@@ -299,7 +320,12 @@ public interface SetViewerHookInterface {
 				return;
 			}
 
-			setViewer.add_to_model(map);
+			Set<ElementKeyRender> renders = new HashSet<SetViewer.ElementKeyRender>();
+			for (String model : map) {
+				renders.add(new ListboxElementKeyRender(model, 1));
+			}
+
+			setViewer.add_to_model(renders);
 		}
 	}
 
