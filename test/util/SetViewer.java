@@ -21,7 +21,8 @@ public class SetViewer {
 		void selection_changed(Set<String> models);
 	}
 
-	public static interface ElementKeyRender {
+	public static interface ElementKeyRender extends
+			Comparable<ElementKeyRender> {
 
 		Object get_key();
 
@@ -33,10 +34,18 @@ public class SetViewer {
 
 		private final Object key;
 		private final int size;
+		private final boolean append_size_information;
 
 		public ListboxElementKeyRender(Object key, int size) {
 			this.key = key;
 			this.size = size;
+			append_size_information = true;
+		}
+
+		public ListboxElementKeyRender(Object key) {
+			this.key = key;
+			size = -1;
+			append_size_information = false;
 		}
 
 		@Override
@@ -47,8 +56,21 @@ public class SetViewer {
 		@Override
 		public String toString() {
 
-			return key.toString().concat(" (").concat(String.valueOf(size))
-					.concat(")");
+			String result = key.toString();
+
+			if (append_size_information == true) {
+
+				result = result.concat(" (").concat(String.valueOf(size))
+						.concat(")");
+			}
+
+			return result;
+		}
+
+		@Override
+		public int compareTo(ElementKeyRender o) {
+
+			return this.toString().compareTo(o.toString());
 		}
 
 	}
@@ -75,11 +97,20 @@ public class SetViewer {
 		list_model = new DefaultListModel();
 
 		list_box = new JList(list_model);
-		list_box.setMaximumSize(new Dimension(100, 100));
-		list_box.setMinimumSize(new Dimension(50, 100));
+		// list_box.setSize(100, 400);
+		// list_box.setMaximumSize(hookInterface.get_maximum_size(this));
+		// list_box.setMinimumSize(hookInterface.get_minimum_size(this));
 		list_box.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list_box.addListSelectionListener(this.hookInterface
 				.supply_list_selection_listener(this));
+	}
+
+	public Dimension getDefaultMinimumSize() {
+		return new Dimension(50, 100);
+	}
+
+	public Dimension getDefaultMaximumSize() {
+		return new Dimension(100, 100);
 	}
 
 	public void belong(JFrame container) {
@@ -89,6 +120,7 @@ public class SetViewer {
 				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane
 				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+
 		container.add(scrollPane);
 	}
 

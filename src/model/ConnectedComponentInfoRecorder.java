@@ -6,6 +6,14 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.text.DecimalFormat;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
@@ -327,6 +335,92 @@ public class ConnectedComponentInfoRecorder {
 					VertexType.Whites, VertexType.Sinks };
 
 			return columnNames;
+		}
+
+		public Collection<String> build_statistical_info_grouping_by_component_type_combination() {
+
+			Map<Set<String>, IntegerCounter> working_map = new LinkedHashMap<Set<String>, IntegerCounter>();
+
+			Set<String> sources_only = new HashSet<String>();
+			sources_only.add(VertexType.Sources.toString());
+
+			Set<String> sinks_only = new HashSet<String>();
+			sinks_only.add(VertexType.Sinks.toString());
+
+			Set<String> whites_only = new HashSet<String>();
+			whites_only.add(VertexType.Whites.toString());
+
+			Set<String> sources_and_sinks = new HashSet<String>();
+			sources_and_sinks.add(VertexType.Sources.toString());
+			sources_and_sinks.add(VertexType.Sinks.toString());
+
+			Set<String> sources_and_whites = new HashSet<String>();
+			sources_and_whites.add(VertexType.Sources.toString());
+			sources_and_whites.add(VertexType.Whites.toString());
+
+			Set<String> sinks_and_whites = new HashSet<String>();
+			sinks_and_whites.add(VertexType.Sinks.toString());
+			sinks_and_whites.add(VertexType.Whites.toString());
+
+			Set<String> all_three_vertex_types = new HashSet<String>();
+			all_three_vertex_types.add(VertexType.Sources.toString());
+			all_three_vertex_types.add(VertexType.Sinks.toString());
+			all_three_vertex_types.add(VertexType.Whites.toString());
+
+			working_map.put(sources_only, new IntegerCounter());
+			working_map.put(sinks_only, new IntegerCounter());
+			working_map.put(whites_only, new IntegerCounter());
+			working_map.put(sources_and_sinks, new IntegerCounter());
+			working_map.put(sources_and_whites, new IntegerCounter());
+			working_map.put(sinks_and_whites, new IntegerCounter());
+			working_map.put(all_three_vertex_types, new IntegerCounter());
+
+			Set<String> working_collector = new HashSet<String>();
+			for (String species : this.tuples_by_species.keySet()) {
+
+				working_collector.clear();
+
+				SortedMap<String, SortedMap<Integer, SortedSet<String>>> component_types_by_species = tuples_by_species
+						.get(species);
+
+				for (String component_type : component_types_by_species
+						.keySet()) {
+
+					// here we call the valueOf method to be sure that the input
+					// String is a valid VertexType value
+					VertexType vertexType = VertexType.valueOf(component_type);
+
+					working_collector.add(vertexType.toString());
+
+				}
+
+				// now that we have finished to analize all the component types
+				// for the current species, we can increase the counter
+				working_map.get(working_collector).increment();
+			}
+
+			Collection<String> result = new LinkedList<String>();
+			int size = tuples_by_species.size();
+			result.add("(total_species: ".concat(String.valueOf(size).concat(
+					")")));
+			for (Entry<Set<String>, IntegerCounter> entry : working_map
+					.entrySet()) {
+
+				Integer count = entry.getValue().getCount();
+
+				DecimalFormat formatter = new DecimalFormat("#.###");
+				result.add("(types: "
+						.concat(entry.getKey().toString())
+						.concat(", count: ")
+						.concat(count.toString())
+						.concat(", distribution: ")
+						.concat(formatter.format((count / (double) size) * 100)
+								.concat("%")).concat(")"));
+
+			}
+
+			return result;
+
 		}
 	}
 

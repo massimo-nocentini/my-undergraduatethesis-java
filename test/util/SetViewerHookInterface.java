@@ -1,6 +1,6 @@
 package util;
 
-import java.util.HashSet;
+import java.awt.Dimension;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
@@ -20,6 +20,10 @@ public interface SetViewerHookInterface {
 	ListSelectionListener supply_list_selection_listener(SetViewer setViewer);
 
 	void render(SetViewer setViewer, Object aMap);
+
+	Dimension get_maximum_size(SetViewer setViewer);
+
+	Dimension get_minimum_size(SetViewer setViewer);
 
 	public class ForSpecies implements SetViewerHookInterface {
 
@@ -97,7 +101,7 @@ public interface SetViewerHookInterface {
 				map = new TreeMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>>();
 				data_structure.fill_datas_into(map);
 
-				Set<ElementKeyRender> renders = new HashSet<SetViewer.ElementKeyRender>();
+				Set<ElementKeyRender> renders = new TreeSet<SetViewer.ElementKeyRender>();
 				for (String species : map.keySet()) {
 					renders.add(new ListboxElementKeyRender(species, map.get(
 							species).size()));
@@ -105,6 +109,16 @@ public interface SetViewerHookInterface {
 
 				setViewer.add_to_model(renders);
 			}
+		}
+
+		@Override
+		public Dimension get_maximum_size(SetViewer setViewer) {
+			return new Dimension(100, 500);
+		}
+
+		@Override
+		public Dimension get_minimum_size(SetViewer setViewer) {
+			return new Dimension(100, 500);
 		}
 	}
 
@@ -180,13 +194,23 @@ public interface SetViewerHookInterface {
 				return;
 			}
 
-			Set<ElementKeyRender> renders = new HashSet<SetViewer.ElementKeyRender>();
+			Set<ElementKeyRender> renders = new TreeSet<SetViewer.ElementKeyRender>();
 			for (String vertex_type : map.keySet()) {
 				renders.add(new ListboxElementKeyRender(vertex_type, map.get(
 						vertex_type).size()));
 			}
 
 			setViewer.add_to_model(renders);
+		}
+
+		@Override
+		public Dimension get_maximum_size(SetViewer setViewer) {
+			return setViewer.getDefaultMaximumSize();
+		}
+
+		@Override
+		public Dimension get_minimum_size(SetViewer setViewer) {
+			return setViewer.getDefaultMinimumSize();
 		}
 	}
 
@@ -250,13 +274,23 @@ public interface SetViewerHookInterface {
 				return;
 			}
 
-			Set<ElementKeyRender> renders = new HashSet<SetViewer.ElementKeyRender>();
+			Set<ElementKeyRender> renders = new TreeSet<SetViewer.ElementKeyRender>();
 			for (Integer cardinality : map.keySet()) {
 				renders.add(new ListboxElementKeyRender(cardinality, map.get(
 						cardinality).size()));
 			}
 
 			setViewer.add_to_model(renders);
+		}
+
+		@Override
+		public Dimension get_maximum_size(SetViewer setViewer) {
+			return setViewer.getDefaultMaximumSize();
+		}
+
+		@Override
+		public Dimension get_minimum_size(SetViewer setViewer) {
+			return setViewer.getDefaultMinimumSize();
 		}
 	}
 
@@ -320,12 +354,22 @@ public interface SetViewerHookInterface {
 				return;
 			}
 
-			Set<ElementKeyRender> renders = new HashSet<SetViewer.ElementKeyRender>();
+			Set<ElementKeyRender> renders = new TreeSet<SetViewer.ElementKeyRender>();
 			for (String model : map) {
-				renders.add(new ListboxElementKeyRender(model, 1));
+				renders.add(new ListboxElementKeyRender(model));
 			}
 
 			setViewer.add_to_model(renders);
+		}
+
+		@Override
+		public Dimension get_maximum_size(SetViewer setViewer) {
+			return setViewer.getDefaultMaximumSize();
+		}
+
+		@Override
+		public Dimension get_minimum_size(SetViewer setViewer) {
+			return setViewer.getDefaultMinimumSize();
 		}
 	}
 

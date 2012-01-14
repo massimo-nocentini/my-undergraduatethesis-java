@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -16,10 +17,13 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
+import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.Border;
 
 import model.ConnectedComponentInfoRecorder.ConnectedComponentInfoDataStructure;
@@ -41,7 +45,12 @@ public class ResultViewer extends JFrame {
 
 	public ResultViewer(ConnectedComponentInfoDataStructure data_structure) {
 
-		final JTable summary_table = build_summary_table(data_structure);
+		setLayout(new FlowLayout());
+
+		Border border = BorderFactory
+				.createMatteBorder(1, 1, 2, 2, Color.BLACK);
+
+		final JTable summary_table = build_summary_table(data_structure, border);
 
 		modelsSelectionListener = new ModelsSelectionListener() {
 
@@ -66,27 +75,45 @@ public class ResultViewer extends JFrame {
 			}
 		};
 
-		build_set_viewers();
+		build_statistical_list_box(data_structure, border);
 
-		setLayout(new FlowLayout());
-
-		Border border = BorderFactory
-				.createMatteBorder(1, 1, 2, 2, Color.BLACK);
-
-		for (SetViewer set_viewer : this.set_viewers) {
-			set_viewer.belong(this);
-			set_viewer.useBorder(border);
-		}
+		build_set_viewers(border);
 
 		set_viewers.iterator().next().render(data_structure);
 
 	}
 
+	private void build_statistical_list_box(
+			ConnectedComponentInfoDataStructure data_structure, Border border) {
+		Collection<String> build_statistical_info_grouping_by_component_type_combination = data_structure
+				.build_statistical_info_grouping_by_component_type_combination();
+
+		DefaultListModel list_model = new DefaultListModel();
+		for (String item : build_statistical_info_grouping_by_component_type_combination) {
+			list_model.addElement(item);
+		}
+
+		JList list_box = new JList(list_model);
+
+		list_box.setBorder(border);
+		list_box.setSize(150, 100);
+
+		JScrollPane scrollPane = new JScrollPane(list_box);
+		scrollPane
+				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane
+				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+
+		this.add(scrollPane);
+	}
+
 	private JTable build_summary_table(
-			ConnectedComponentInfoDataStructure data_structure) {
+			ConnectedComponentInfoDataStructure data_structure, Border border) {
 
 		JTable summary_table = new JTable(data_structure.build_rows_data(),
 				data_structure.build_columns_data());
+
+		summary_table.setBorder(border);
 
 		summary_table.setFillsViewportHeight(true);
 
@@ -99,7 +126,7 @@ public class ResultViewer extends JFrame {
 		return summary_table;
 	}
 
-	private void build_set_viewers() {
+	private void build_set_viewers(Border border) {
 
 		SetViewer models_set_viewer = new SetViewer(null,
 				new SetViewerHookInterface.ForModels());
@@ -127,6 +154,11 @@ public class ResultViewer extends JFrame {
 		set_viewers.addAll(Arrays.<SetViewer> asList(new SetViewer[] {
 				species_set_viewer, vertex_types_set_viewer,
 				cardinalities_set_viewer, models_set_viewer }));
+
+		for (SetViewer set_viewer : this.set_viewers) {
+			set_viewer.belong(this);
+			set_viewer.useBorder(border);
+		}
 
 	}
 
