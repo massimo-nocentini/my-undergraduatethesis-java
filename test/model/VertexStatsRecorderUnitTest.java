@@ -537,11 +537,10 @@ public class VertexStatsRecorderUnitTest {
 						Assert.fail("Impossible to have a model without a name");
 					}
 
-					if (count_by_models.containsKey(model_name)) {
-						count_by_models.get(model_name).increment();
-					} else {
+					if (count_by_models.containsKey(model_name) == false) {
 						count_by_models.put(model_name, new IntegerCounter());
 					}
+					count_by_models.get(model_name).increment();
 				}
 
 			}
@@ -571,11 +570,17 @@ public class VertexStatsRecorderUnitTest {
 		Assert.assertEquals(92, count_by_models.size());
 
 		int exploded_count = 0;
+		int models_splitted_in_more_than_three_files = 0;
 		for (Entry<String, IntegerCounter> entry : count_by_models.entrySet()) {
 			exploded_count = exploded_count + entry.getValue().getCount();
+
+			if (entry.getValue().getCount() > 2) {
+				models_splitted_in_more_than_three_files = models_splitted_in_more_than_three_files + 1;
+			}
 		}
 
-		Assert.assertEquals(166, exploded_count);
+		Assert.assertEquals(167, exploded_count);
+		Assert.assertTrue(models_splitted_in_more_than_three_files > 1);
 
 	}
 
