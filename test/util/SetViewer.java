@@ -97,9 +97,6 @@ public class SetViewer {
 		list_model = new DefaultListModel();
 
 		list_box = new JList(list_model);
-		// list_box.setSize(100, 400);
-		// list_box.setMaximumSize(hookInterface.get_maximum_size(this));
-		// list_box.setMinimumSize(hookInterface.get_minimum_size(this));
 		list_box.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list_box.addListSelectionListener(this.hookInterface
 				.supply_list_selection_listener(this));

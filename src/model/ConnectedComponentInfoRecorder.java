@@ -410,8 +410,8 @@ public class ConnectedComponentInfoRecorder {
 				for (String component_type : component_types_by_species
 						.keySet()) {
 
-					for (Integer cardinality : component_types_by_species.get(
-							component_type).keySet()) {
+					cardinality_loop: for (Integer cardinality : component_types_by_species
+							.get(component_type).keySet()) {
 
 						for (String model : component_types_by_species.get(
 								component_type).get(cardinality)) {
@@ -420,6 +420,7 @@ public class ConnectedComponentInfoRecorder {
 									|| requested_models.contains(model)) {
 
 								include_in_result = true;
+								break cardinality_loop;
 							}
 						}
 					}
@@ -438,12 +439,14 @@ public class ConnectedComponentInfoRecorder {
 				}
 
 				if (include_in_result == true) {
-					analyzed_species = analyzed_species + 1;
-				}
 
-				// now that we have finished to analize all the component types
-				// for the current species, we can increase the counter
-				working_map.get(working_collector).increment();
+					analyzed_species = analyzed_species + 1;
+
+					// now that we have finished to analize all the component
+					// types
+					// for the current species, we can increase the counter
+					working_map.get(working_collector).increment();
+				}
 			}
 
 			Collection<String> result = new LinkedList<String>();

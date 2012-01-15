@@ -15,6 +15,7 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -25,6 +26,8 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.Border;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import model.ConnectedComponentInfoRecorder.ConnectedComponentInfoDataStructure;
 import model.VertexType;
@@ -42,6 +45,12 @@ public class ResultViewer extends JFrame {
 	private List<SetViewer> set_viewers;
 
 	private final ModelsSelectionListener modelsSelectionListener;
+
+	private final StatisticaInformationUpdater statisticaInformationUpdater;
+
+	private interface StatisticaInformationUpdater {
+		void update_by_requested_models(Set<String> models);
+	}
 
 	public ResultViewer(ConnectedComponentInfoDataStructure data_structure) {
 
@@ -75,7 +84,8 @@ public class ResultViewer extends JFrame {
 			}
 		};
 
-		build_statistical_list_box(data_structure, border);
+		statisticaInformationUpdater = build_statistical_list_box(
+				data_structure, border);
 
 		build_set_viewers(border);
 
@@ -83,15 +93,15 @@ public class ResultViewer extends JFrame {
 
 	}
 
-	private void build_statistical_list_box(
-			ConnectedComponentInfoDataStructure data_structure, Border border) {
-		Collection<String> build_statistical_info_grouping_by_component_type_combination = data_structure
-				.build_statistical_info_grouping_by_component_type_combination();
+	private StatisticaInformationUpdater build_statistical_list_box(
+			final ConnectedComponentInfoDataStructure data_structure,
+			Border border) {
 
-		DefaultListModel list_model = new DefaultListModel();
-		for (String item : build_statistical_info_grouping_by_component_type_combination) {
-			list_model.addElement(item);
-		}
+		final DefaultListModel list_model = new DefaultListModel();
+		update_list_model(
+				data_structure
+						.build_statistical_info_grouping_by_component_type_combination(),
+				list_model);
 
 		JList list_box = new JList(list_model);
 
@@ -105,12 +115,35 @@ public class ResultViewer extends JFrame {
 				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 
 		this.add(scrollPane);
+
+		return new StatisticaInformationUpdater() {
+
+			@Override
+			public void update_by_requested_models(Set<String> models) {
+				list_model.clear();
+				update_list_model(
+						data_structure
+								.build_statistical_info_grouping_by_component_type_combination(models),
+						list_model);
+			}
+		};
+	}
+
+	private void update_list_model(
+			Collection<String> build_statistical_info_grouping_by_component_type_combination,
+			final DefaultListModel list_model) {
+
+		for (String item : build_statistical_info_grouping_by_component_type_combination) {
+			list_model.addElement(item);
+		}
 	}
 
 	private JTable build_summary_table(
-			ConnectedComponentInfoDataStructure data_structure, Border border) {
+			final ConnectedComponentInfoDataStructure data_structure,
+			Border border) {
 
-		JTable summary_table = new JTable(data_structure.build_rows_data(),
+		final JTable summary_table = new JTable(
+				data_structure.build_rows_data(),
 				data_structure.build_columns_data());
 
 		summary_table.setBorder(border);
@@ -120,6 +153,31 @@ public class ResultViewer extends JFrame {
 		summary_table.setRowSelectionAllowed(true);
 		summary_table
 				.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+
+		summary_table.getSelectionModel().addListSelectionListener(
+				new ListSelectionListener() {
+
+					@Override
+					public void valueChanged(ListSelectionEvent e) {
+
+						if (e.getValueIsAdjusting()) {
+							return;
+						}
+
+						Set<String> selected_models = new TreeSet<String>();
+
+						for (int row_index : summary_table.getSelectedRows()) {
+
+							String model = summary_table.getModel()
+									.getValueAt(row_index, 0).toString();
+
+							selected_models.add(model);
+						}
+
+						statisticaInformationUpdater
+								.update_by_requested_models(selected_models);
+					}
+				});
 
 		add(new JScrollPane(summary_table));
 
