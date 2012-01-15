@@ -39,6 +39,9 @@ public class MassiveComputations {
 		vertexStatsRecorderUnitTest
 				.check_species_presence_in_various_sbml_models_contained_in_aae_folder();
 
+		vertexStatsRecorderUnitTest
+				.check_model_presence_in_various_sbml_models_contained_in_BioCyc_folder();
+
 		// vertexStatsRecorderUnitTest
 		// .check_species_presence_in_a_huge_number_of_sbml_models_contained_in_kyoto_database();
 

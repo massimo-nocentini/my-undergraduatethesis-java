@@ -8,6 +8,7 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -503,6 +504,78 @@ public class VertexStatsRecorderUnitTest {
 		DotFileUtilHandler.mapOnFilesInFolderFilteringByExtension(
 				DotFileUtilHandler.getSbmlExampleModelsFolder(),
 				DotFileUtilHandler.getSBMLFileExtension(), action, false);
+
+	}
+
+	@Test
+	public void check_model_presence_in_various_sbml_models_contained_in_BioCyc_folder() {
+
+		final SortedMap<String, IntegerCounter> count_by_models = new TreeMap<String, IntegerCounter>();
+
+		DotUtilAction<File> action = new DotUtilAction<File>() {
+
+			@Override
+			public void apply(File element) {
+
+				Model model = null;
+				SBMLDocument document = null;
+
+				try {
+					document = (new SBMLReader()).readSBML(element);
+				} catch (FileNotFoundException e) {
+				} catch (XMLStreamException e) {
+				} catch (Exception e) {
+				}
+
+				if (document != null) {
+
+					model = document.getModel();
+
+					String model_name = model.getName();
+
+					if (model_name == null) {
+						Assert.fail("Impossible to have a model without a name");
+					}
+
+					if (count_by_models.containsKey(model_name)) {
+						count_by_models.get(model_name).increment();
+					} else {
+						count_by_models.put(model_name, new IntegerCounter());
+					}
+				}
+
+			}
+		};
+
+		DotFileUtilHandler.mapOnAllFilesInFolder(DotFileUtilHandler
+				.getSbmlExampleModelsFolder().concat("BioCyc15.0/"), action,
+				true);
+
+		// now we can generate the output file
+		Writer writer;
+		try {
+			writer = new FileWriter(
+					DotFileUtilHandler
+							.dotOutputFolderPathName()
+							.concat("maps-of-models-presence-among-multiple-models-in-ByoCyc-folder")
+							.concat(DotFileUtilHandler
+									.getPlainTextFilenameExtensionToken()));
+
+			writer.write(count_by_models.toString());
+
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		Assert.assertEquals(92, count_by_models.size());
+
+		int exploded_count = 0;
+		for (Entry<String, IntegerCounter> entry : count_by_models.entrySet()) {
+			exploded_count = exploded_count + entry.getValue().getCount();
+		}
+
+		Assert.assertEquals(166, exploded_count);
 
 	}
 
