@@ -33,19 +33,19 @@ public class SetViewer {
 	public static class ListboxElementKeyRender implements ElementKeyRender {
 
 		private final Object key;
-		private final int size;
-		private final boolean append_size_information;
+		private final AdditionalInformationRenderer renderer;
 
-		public ListboxElementKeyRender(Object key, int size) {
-			this.key = key;
-			this.size = size;
-			append_size_information = true;
+		public static interface AdditionalInformationRenderer {
+
+			String get_representation();
+
+			boolean should_be_rendered();
 		}
 
-		public ListboxElementKeyRender(Object key) {
+		public ListboxElementKeyRender(Object key,
+				AdditionalInformationRenderer renderer) {
 			this.key = key;
-			size = -1;
-			append_size_information = false;
+			this.renderer = renderer;
 		}
 
 		@Override
@@ -58,10 +58,10 @@ public class SetViewer {
 
 			String result = key.toString();
 
-			if (append_size_information == true) {
+			if (renderer.should_be_rendered() == true) {
 
-				result = result.concat(" (").concat(String.valueOf(size))
-						.concat(")");
+				result = result.concat(" (")
+						.concat(renderer.get_representation()).concat(")");
 			}
 
 			return result;

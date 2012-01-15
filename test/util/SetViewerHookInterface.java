@@ -1,6 +1,9 @@
 package util;
 
 import java.awt.Dimension;
+import java.text.DecimalFormat;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
@@ -14,6 +17,7 @@ import javax.swing.event.ListSelectionListener;
 import model.ConnectedComponentInfoRecorder.ConnectedComponentInfoDataStructure;
 import util.SetViewer.ElementKeyRender;
 import util.SetViewer.ListboxElementKeyRender;
+import util.SetViewer.ListboxElementKeyRender.AdditionalInformationRenderer;
 
 public interface SetViewerHookInterface {
 
@@ -101,11 +105,78 @@ public interface SetViewerHookInterface {
 				map = new TreeMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>>();
 				data_structure.fill_datas_into(map);
 
+				Map<String, IntegerCounter> distribution_map = new TreeMap<String, IntegerCounter>();
+
 				Set<ElementKeyRender> renders = new TreeSet<SetViewer.ElementKeyRender>();
 				for (String species : map.keySet()) {
-					renders.add(new ListboxElementKeyRender(species, map.get(
-							species).size()));
+
+					distribution_map.put(species, new IntegerCounter());
+
+					for (String component_type : map.get(species).keySet()) {
+
+						for (Integer cardinality : map.get(species)
+								.get(component_type).keySet()) {
+
+							int size = map.get(species).get(component_type)
+									.get(cardinality).size();
+
+							distribution_map.get(species).increment(size);
+
+						}
+					}
 				}
+
+				// final int components_among_all_models = data_structure
+				// .compute_number_of_components_among_all_models();
+
+				int max_presence = Integer.MIN_VALUE;
+				for (final Entry<String, IntegerCounter> entry : distribution_map
+						.entrySet()) {
+
+					Integer presence = entry.getValue().getCount();
+
+					if (presence > max_presence) {
+						max_presence = presence;
+					}
+				}
+
+				// final Set<Double> frequencies = new TreeSet<Double>();
+				final int copy_of_max_presence = max_presence;
+
+				for (final Entry<String, IntegerCounter> entry : distribution_map
+						.entrySet()) {
+
+					AdditionalInformationRenderer renderer = new AdditionalInformationRenderer() {
+
+						@Override
+						public boolean should_be_rendered() {
+							return true;
+						}
+
+						@Override
+						public String get_representation() {
+
+							DecimalFormat formatter = new DecimalFormat(
+									"#.####");
+
+							double frequency = entry.getValue().getCount()
+									* (entry.getValue().getCount() / (double) copy_of_max_presence);
+
+							// frequencies.add(frequency);
+
+							return "weighed-freq: "
+									+ formatter.format(frequency);
+						}
+					};
+
+					renders.add(new ListboxElementKeyRender(entry.getKey(),
+							renderer));
+				}
+
+				// double total_frequency = 0;
+				// for (Double freq : frequencies) {
+				// total_frequency = total_frequency + freq;
+				// }
 
 				setViewer.add_to_model(renders);
 			}
@@ -195,9 +266,24 @@ public interface SetViewerHookInterface {
 			}
 
 			Set<ElementKeyRender> renders = new TreeSet<SetViewer.ElementKeyRender>();
-			for (String vertex_type : map.keySet()) {
-				renders.add(new ListboxElementKeyRender(vertex_type, map.get(
-						vertex_type).size()));
+			for (final String vertex_type : map.keySet()) {
+
+				AdditionalInformationRenderer renderer = new AdditionalInformationRenderer() {
+
+					@Override
+					public boolean should_be_rendered() {
+						return true;
+					}
+
+					@Override
+					public String get_representation() {
+						return ((Integer) map.get(vertex_type).size())
+								.toString();
+					}
+				};
+
+				renders.add(new ListboxElementKeyRender(vertex_type, renderer));
+
 			}
 
 			setViewer.add_to_model(renders);
@@ -275,9 +361,23 @@ public interface SetViewerHookInterface {
 			}
 
 			Set<ElementKeyRender> renders = new TreeSet<SetViewer.ElementKeyRender>();
-			for (Integer cardinality : map.keySet()) {
-				renders.add(new ListboxElementKeyRender(cardinality, map.get(
-						cardinality).size()));
+			for (final Integer cardinality : map.keySet()) {
+
+				AdditionalInformationRenderer renderer = new AdditionalInformationRenderer() {
+
+					@Override
+					public boolean should_be_rendered() {
+						return true;
+					}
+
+					@Override
+					public String get_representation() {
+						return ((Integer) map.get(cardinality).size())
+								.toString();
+					}
+				};
+
+				renders.add(new ListboxElementKeyRender(cardinality, renderer));
 			}
 
 			setViewer.add_to_model(renders);
@@ -356,7 +456,22 @@ public interface SetViewerHookInterface {
 
 			Set<ElementKeyRender> renders = new TreeSet<SetViewer.ElementKeyRender>();
 			for (String model : map) {
-				renders.add(new ListboxElementKeyRender(model));
+
+				AdditionalInformationRenderer renderer = new AdditionalInformationRenderer() {
+
+					@Override
+					public boolean should_be_rendered() {
+						return false;
+					}
+
+					@Override
+					public String get_representation() {
+						throw new RuntimeException(
+								"This method should not be called due to the should_be_rendered will");
+					}
+				};
+
+				renders.add(new ListboxElementKeyRender(model, renderer));
 			}
 
 			setViewer.add_to_model(renders);

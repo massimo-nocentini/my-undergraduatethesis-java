@@ -337,7 +337,28 @@ public class ConnectedComponentInfoRecorder {
 			return columnNames;
 		}
 
+		public int compute_number_of_components_among_all_models() {
+
+			IntegerCounter numer_of_components = new IntegerCounter();
+
+			for (String model : tuples_by_models.keySet()) {
+				for (String component_type : tuples_by_models.get(model)
+						.keySet()) {
+					numer_of_components.increment(tuples_by_models.get(model)
+							.get(component_type).components_counter.getCount());
+				}
+			}
+
+			return numer_of_components.getCount();
+		}
+
 		public Collection<String> build_statistical_info_grouping_by_component_type_combination() {
+
+			return build_statistical_info_grouping_by_component_type_combination(new TreeSet<String>());
+		}
+
+		public Collection<String> build_statistical_info_grouping_by_component_type_combination(
+				Set<String> requested_models) {
 
 			Map<Set<String>, IntegerCounter> working_map = new LinkedHashMap<Set<String>, IntegerCounter>();
 
@@ -376,6 +397,7 @@ public class ConnectedComponentInfoRecorder {
 			working_map.put(all_three_vertex_types, new IntegerCounter());
 
 			Set<String> working_collector = new HashSet<String>();
+			int analyzed_species = 0;
 			for (String species : this.tuples_by_species.keySet()) {
 
 				working_collector.clear();
@@ -383,15 +405,40 @@ public class ConnectedComponentInfoRecorder {
 				SortedMap<String, SortedMap<Integer, SortedSet<String>>> component_types_by_species = tuples_by_species
 						.get(species);
 
+				boolean include_in_result = false;
+
 				for (String component_type : component_types_by_species
 						.keySet()) {
 
-					// here we call the valueOf method to be sure that the input
-					// String is a valid VertexType value
-					VertexType vertexType = VertexType.valueOf(component_type);
+					for (Integer cardinality : component_types_by_species.get(
+							component_type).keySet()) {
 
-					working_collector.add(vertexType.toString());
+						for (String model : component_types_by_species.get(
+								component_type).get(cardinality)) {
 
+							if (requested_models.size() == 0
+									|| requested_models.contains(model)) {
+
+								include_in_result = true;
+							}
+						}
+					}
+
+					if (include_in_result == true) {
+
+						// here we call the valueOf method to be sure
+						// that the input
+						// String is a valid VertexType value
+						VertexType vertexType = VertexType
+								.valueOf(component_type);
+
+						working_collector.add(vertexType.toString());
+
+					}
+				}
+
+				if (include_in_result == true) {
+					analyzed_species = analyzed_species + 1;
 				}
 
 				// now that we have finished to analize all the component types
@@ -400,9 +447,10 @@ public class ConnectedComponentInfoRecorder {
 			}
 
 			Collection<String> result = new LinkedList<String>();
-			int size = tuples_by_species.size();
-			result.add("(total_species: ".concat(String.valueOf(size).concat(
-					")")));
+
+			result.add("(analyzed_species: ".concat(String.valueOf(
+					analyzed_species).concat(")")));
+
 			for (Entry<Set<String>, IntegerCounter> entry : working_map
 					.entrySet()) {
 
@@ -414,7 +462,8 @@ public class ConnectedComponentInfoRecorder {
 						.concat(", count: ")
 						.concat(count.toString())
 						.concat(", distribution: ")
-						.concat(formatter.format((count / (double) size) * 100)
+						.concat(formatter.format(
+								(count / (double) analyzed_species) * 100)
 								.concat("%")).concat(")"));
 
 			}
