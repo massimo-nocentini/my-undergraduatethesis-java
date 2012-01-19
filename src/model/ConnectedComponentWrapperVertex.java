@@ -86,7 +86,7 @@ public class ConnectedComponentWrapperVertex extends
 				// this invocation will record the information to build a more
 				// summary report
 				recorder.recordTupleByModel(modelName,
-						componentVertexType.toString(), local_members.size());
+						componentVertexType.toString(), local_members);
 
 				for (final Vertex member : local_members) {
 

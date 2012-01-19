@@ -43,6 +43,7 @@ public class ConnectedComponentsInfoPipeFilter extends PipeFilter {
 
 	public void writeOn(OutputStream output_stream) {
 
+		this.connected_component_info_recorder.close_pool();
 		this.connected_component_info_recorder
 				.toJavaSerialization(output_stream);
 	}

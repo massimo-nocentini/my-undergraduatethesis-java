@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import junit.framework.Assert;
 import model.ConnectedComponentInfoRecorder.ConnectedComponentInfoDataStructure;
@@ -214,7 +215,9 @@ public class ConnectedComponentInfoRecorderUnitTest {
 		SortedMap<String, SortedMap<String, ConnectedComponentPairCounter>> expected_models_map = new TreeMap<String, SortedMap<String, ConnectedComponentPairCounter>>();
 		ConnectedComponentInfoDataStructure.put_tuples_by_models_into(
 				expected_models_map, model_name, VertexType.Sinks.toString(),
-				cardinality);
+				vertices, null);
+
+		recorder.close_pool();
 
 		Assert.assertTrue(recorder
 				.isDataStructureEquals(ConnectedComponentInfoDataStructure
@@ -273,6 +276,8 @@ public class ConnectedComponentInfoRecorderUnitTest {
 		this.build_same_context_with_changes_on_model(recorder, "model_one",
 				expectedMap, expected_models_map);
 
+		recorder.close_pool();
+
 		Assert.assertTrue(recorder
 				.isDataStructureEquals(ConnectedComponentInfoDataStructure
 						.make_datastructure_with_both_maps(expectedMap,
@@ -292,6 +297,8 @@ public class ConnectedComponentInfoRecorderUnitTest {
 
 		this.build_same_context_with_changes_on_model(recorder, "model_two",
 				expectedMap, expected_models_map);
+
+		recorder.close_pool();
 
 		Assert.assertTrue(recorder
 				.isDataStructureEquals(ConnectedComponentInfoDataStructure
@@ -355,6 +362,17 @@ public class ConnectedComponentInfoRecorderUnitTest {
 		@SuppressWarnings("unused")
 		OurModel model = OurModel.makeOurModelFrom(vertices, model_name);
 
+		Set<Vertex> sources_vertices = new TreeSet<Vertex>();
+		Set<Vertex> whites_vertices = new TreeSet<Vertex>();
+		Set<Vertex> sinks_vertices = new TreeSet<Vertex>();
+
+		sources_vertices.add(vertex_one);
+		sources_vertices.add(vertex_two);
+		whites_vertices.add(vertex_three);
+		whites_vertices.add(vertex_four);
+		whites_vertices.add(vertex_five);
+		sinks_vertices.add(vertex_six);
+
 		// including the vertices in the respective components
 		scc_one.includeMember(vertex_one);
 		scc_one.includeMember(vertex_two);
@@ -406,16 +424,16 @@ public class ConnectedComponentInfoRecorderUnitTest {
 		// this publish refers to scc_one
 		ConnectedComponentInfoDataStructure.put_tuples_by_models_into(
 				expected_models_map, model_name, VertexType.Sources.toString(),
-				2);
+				sources_vertices, null);
 
 		// this publish refers to scc_two
 		ConnectedComponentInfoDataStructure.put_tuples_by_models_into(
 				expected_models_map, model_name, VertexType.Whites.toString(),
-				3);
+				whites_vertices, null);
 
 		// this publish refers to scc_three
-		ConnectedComponentInfoDataStructure
-				.put_tuples_by_models_into(expected_models_map, model_name,
-						VertexType.Sinks.toString(), 1);
+		ConnectedComponentInfoDataStructure.put_tuples_by_models_into(
+				expected_models_map, model_name, VertexType.Sinks.toString(),
+				sinks_vertices, null);
 	}
 }

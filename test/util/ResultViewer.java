@@ -254,7 +254,7 @@ public class ResultViewer extends JFrame {
 
 			ConnectedComponentsInfoPipeFilterUnitTest.apply_recording_on(
 					DotFileUtilHandler.getSbmlExampleModelsFolder().concat(
-							"BioCyc15.0/ECOUT455/"),
+							"BioCyc15.0/ACYPI/"),
 					serialized_datastructure_file, false, "standard-models");
 		}
 

@@ -507,7 +507,6 @@ public class VertexStatsRecorderUnitTest {
 
 	}
 
-	@Test
 	public void check_model_presence_in_various_sbml_models_contained_in_BioCyc_folder() {
 
 		final SortedMap<String, IntegerCounter> count_by_models = new TreeMap<String, IntegerCounter>();

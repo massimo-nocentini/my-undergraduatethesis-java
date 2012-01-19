@@ -445,7 +445,6 @@ public class SimpleVertex implements Vertex {
 		//
 		// identifier = (identifier + "-(" + this.compartment_id + ")")
 		// .toUpperCase();
-		//
 
 		return identifier;
 	}

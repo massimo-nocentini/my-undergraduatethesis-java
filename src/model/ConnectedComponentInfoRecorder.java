@@ -26,6 +26,57 @@ public class ConnectedComponentInfoRecorder {
 	private final ConnectedComponentInfoDataStructure dataStructure = ConnectedComponentInfoDataStructure
 			.make_empty_datastructure();
 
+	private final SortedMap<String, SortedMap<String, Set<Vertex>>> tuples_by_models_typed = new TreeMap<String, SortedMap<String, Set<Vertex>>>();
+	private final SortedMap<String, SortedMap<String, IntegerCounter>> components_by_models = new TreeMap<String, SortedMap<String, IntegerCounter>>();
+
+	public void recordTupleByModel(String model_name, String vertex_type,
+			Set<Vertex> members) {
+
+		if (tuples_by_models_typed.containsKey(model_name) == false) {
+			tuples_by_models_typed.put(model_name,
+					new TreeMap<String, Set<Vertex>>());
+
+			components_by_models.put(model_name,
+					new TreeMap<String, IntegerCounter>());
+		}
+
+		SortedMap<String, Set<Vertex>> vertex_type_for_model = tuples_by_models_typed
+				.get(model_name);
+
+		if (vertex_type_for_model.containsKey(vertex_type) == false) {
+			vertex_type_for_model.put(vertex_type, new TreeSet<Vertex>());
+
+			components_by_models.get(model_name).put(vertex_type,
+					new IntegerCounter());
+		}
+
+		components_by_models.get(model_name).get(vertex_type).increment();
+
+		Set<Vertex> stored_set = vertex_type_for_model.get(vertex_type);
+		for (Vertex possibly_new_vertex : members) {
+
+			if (stored_set.contains(possibly_new_vertex) == false) {
+				stored_set.add(possibly_new_vertex);
+			}
+		}
+
+	}
+
+	public void close_pool() {
+
+		for (String model_name : tuples_by_models_typed.keySet()) {
+
+			for (String vertex_type : tuples_by_models_typed.get(model_name)
+					.keySet()) {
+
+				this.dataStructure.record_tuples_by_model(model_name,
+						vertex_type, tuples_by_models_typed.get(model_name)
+								.get(vertex_type).size(), components_by_models);
+
+			}
+		}
+	}
+
 	public static class ConnectedComponentInfoDataStructure implements
 			Serializable {
 
@@ -39,9 +90,12 @@ public class ConnectedComponentInfoRecorder {
 			private final IntegerCounter components_counter = new IntegerCounter();
 			private final IntegerCounter vertices_counter = new IntegerCounter();
 
-			public void increment_by(int size) {
-				components_counter.increment();
+			public void increment_vertices(int size) {
 				vertices_counter.increment(size);
+			}
+
+			public void increment_components(int size) {
+				components_counter.increment(size);
 			}
 
 			@Override
@@ -190,7 +244,7 @@ public class ConnectedComponentInfoRecorder {
 			return true;
 		}
 
-		public void record_tuples_by_species(String species,
+		private void record_tuples_by_species(String species,
 				String component_type, Integer cardinality, String model_name) {
 
 			if (this.tuples_by_species.containsKey(species) == false) {
@@ -222,8 +276,11 @@ public class ConnectedComponentInfoRecorder {
 
 		}
 
-		public void record_tuples_by_model(String model_name,
-				String vertex_type, int members_count) {
+		private void record_tuples_by_model(
+				String model_name,
+				String vertex_type,
+				int members_count,
+				SortedMap<String, SortedMap<String, IntegerCounter>> components_by_models) {
 
 			if (tuples_by_models.containsKey(model_name) == false) {
 				tuples_by_models.put(model_name,
@@ -238,7 +295,12 @@ public class ConnectedComponentInfoRecorder {
 						new ConnectedComponentPairCounter());
 			}
 
-			vertex_type_for_model.get(vertex_type).increment_by(members_count);
+			vertex_type_for_model.get(vertex_type).increment_vertices(
+					members_count);
+
+			vertex_type_for_model.get(vertex_type).increment_components(
+					components_by_models.get(model_name).get(vertex_type)
+							.getCount());
 		}
 
 		public Object[][] build_rows_data() {
@@ -299,15 +361,17 @@ public class ConnectedComponentInfoRecorder {
 
 		public static void put_tuples_by_models_into(
 				SortedMap<String, SortedMap<String, ConnectedComponentPairCounter>> map,
-				String model_name, String vertex_type, int members_count) {
+				String model_name, String vertex_type, Set<Vertex> members,
+				SortedMap<String, SortedMap<String, IntegerCounter>> components) {
 
 			// here we use an object of this class type in order to modify only
 			// the map using the behavior already written.
 			ConnectedComponentInfoDataStructure dataStructure = ConnectedComponentInfoDataStructure
 					.make_datastructure_with_models_map(map);
 
+			;
 			dataStructure.record_tuples_by_model(model_name, vertex_type,
-					members_count);
+					members.size(), components);
 
 		}
 
@@ -500,14 +564,6 @@ public class ConnectedComponentInfoRecorder {
 	public void toJavaSerialization(OutputStream outputStream) {
 
 		this.dataStructure.serializeYourselfOn(outputStream);
-	}
-
-	public void recordTupleByModel(String model_name, String vertex_type,
-			int members_count) {
-
-		ConnectedComponentInfoDataStructure.put_tuples_by_models_into(
-				this.dataStructure.tuples_by_models, model_name, vertex_type,
-				members_count);
 	}
 
 }
