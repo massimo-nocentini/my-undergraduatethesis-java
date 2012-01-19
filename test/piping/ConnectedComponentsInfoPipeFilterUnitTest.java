@@ -22,6 +22,11 @@ public class ConnectedComponentsInfoPipeFilterUnitTest {
 					.dotOutputFolderPathName()
 					.concat("massive-connected-components-info-serialized-for-standard-models.datastructure"));
 
+	public static final File serialized_data_structure_for_first_BioCyc_model_file_handler = new File(
+			DotFileUtilHandler
+					.dotOutputFolderPathName()
+					.concat("massive-connected-components-info-serialized-for-first-BioCyc-model.datastructure"));
+
 	/**
 	 * This is the file handler that reference a destination for the BioCyc
 	 * models data structure.

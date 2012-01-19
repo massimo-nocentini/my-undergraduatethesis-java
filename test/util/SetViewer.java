@@ -58,6 +58,11 @@ public class SetViewer {
 
 			String result = key.toString();
 
+			int upper_bound = 80;
+			if (result.length() > upper_bound) {
+				result = result.substring(0, upper_bound - 3).concat("...");
+			}
+
 			if (renderer.should_be_rendered() == true) {
 
 				result = result.concat(" (")

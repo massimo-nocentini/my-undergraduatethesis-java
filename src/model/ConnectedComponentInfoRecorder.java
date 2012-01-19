@@ -133,11 +133,16 @@ public class ConnectedComponentInfoRecorder {
 				e.printStackTrace();
 			}
 
-			this.tuples_by_species = deserialized != null ? deserialized.tuples_by_species
-					: null;
+			if (deserialized != null) {
 
-			this.tuples_by_models = deserialized != null ? deserialized.tuples_by_models
-					: null;
+				this.tuples_by_species = deserialized.tuples_by_species;
+				this.tuples_by_models = deserialized.tuples_by_models;
+
+			} else {
+				this.tuples_by_species = null;
+				this.tuples_by_models = null;
+			}
+
 		}
 
 		@Override
@@ -405,11 +410,11 @@ public class ConnectedComponentInfoRecorder {
 				SortedMap<String, SortedMap<Integer, SortedSet<String>>> component_types_by_species = tuples_by_species
 						.get(species);
 
-				boolean include_in_result = false;
-
+				boolean include_species_in_result = false;
 				for (String component_type : component_types_by_species
 						.keySet()) {
 
+					boolean have_this_component_type_the_requested_models = false;
 					cardinality_loop: for (Integer cardinality : component_types_by_species
 							.get(component_type).keySet()) {
 
@@ -419,14 +424,15 @@ public class ConnectedComponentInfoRecorder {
 							if (requested_models.size() == 0
 									|| requested_models.contains(model)) {
 
-								include_in_result = true;
+								have_this_component_type_the_requested_models = true;
 								break cardinality_loop;
 							}
 						}
 					}
 
-					if (include_in_result == true) {
+					if (have_this_component_type_the_requested_models == true) {
 
+						include_species_in_result = true;
 						// here we call the valueOf method to be sure
 						// that the input
 						// String is a valid VertexType value
@@ -438,7 +444,7 @@ public class ConnectedComponentInfoRecorder {
 					}
 				}
 
-				if (include_in_result == true) {
+				if (include_species_in_result == true) {
 
 					analyzed_species = analyzed_species + 1;
 

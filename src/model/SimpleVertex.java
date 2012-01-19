@@ -439,17 +439,13 @@ public class SimpleVertex implements Vertex {
 	public String buildVertexUniqueIdentifier() {
 		String identifier = this.species_id;
 
-		if (this.species_name != null && this.species_name.length() > 0) {
-			identifier = identifier + "-(" + this.species_name + ")";
-		}
-
-		identifier = (identifier + "-(" + this.compartment_id + ")")
-				.toUpperCase();
-
-		int upper_bound = 80;
-		if (identifier.length() > upper_bound) {
-			identifier = identifier.substring(0, upper_bound - 3).concat("...");
-		}
+		// if (this.species_name != null && this.species_name.length() > 0) {
+		// identifier = identifier + "-(" + this.species_name + ")";
+		// }
+		//
+		// identifier = (identifier + "-(" + this.compartment_id + ")")
+		// .toUpperCase();
+		//
 
 		return identifier;
 	}

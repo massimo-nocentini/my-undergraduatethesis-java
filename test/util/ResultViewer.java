@@ -224,7 +224,6 @@ public class ResultViewer extends JFrame {
 
 		int dimension = 500;
 
-		// File source_file = checked_standard_models_file_handler();
 		File source_file = checked_BioCyc_models_file_handler();
 
 		ConnectedComponentInfoDataStructure data_structure = load_serialized_data_structure(source_file);
@@ -239,11 +238,24 @@ public class ResultViewer extends JFrame {
 
 		if (serialized_datastructure_file.exists() == false) {
 
-			ConnectedComponentsInfoPipeFilterUnitTest
-					.apply_recording_on(
-							DotFileUtilHandler.getSbmlExampleModelsFolder(),
-							ConnectedComponentsInfoPipeFilterUnitTest.serialized_data_structure_for_standard_models_file_handler,
-							false, "standard-models");
+			ConnectedComponentsInfoPipeFilterUnitTest.apply_recording_on(
+					DotFileUtilHandler.getSbmlExampleModelsFolder(),
+					serialized_datastructure_file, false, "standard-models");
+		}
+
+		return serialized_datastructure_file;
+	}
+
+	private static File checked_first_BioCyc_model_file_handler() {
+
+		File serialized_datastructure_file = ConnectedComponentsInfoPipeFilterUnitTest.serialized_data_structure_for_first_BioCyc_model_file_handler;
+
+		if (serialized_datastructure_file.exists() == false) {
+
+			ConnectedComponentsInfoPipeFilterUnitTest.apply_recording_on(
+					DotFileUtilHandler.getSbmlExampleModelsFolder().concat(
+							"BioCyc15.0/ECOUT455/"),
+					serialized_datastructure_file, false, "standard-models");
 		}
 
 		return serialized_datastructure_file;
