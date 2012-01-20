@@ -168,6 +168,12 @@ public class ResultViewer extends JFrame {
 
 						for (int row_index : summary_table.getSelectedRows()) {
 
+							if (row_index == summary_table.getRowCount() - 1) {
+								// this check is necessary in order to skip the
+								// average row
+								continue;
+							}
+
 							String model = summary_table.getModel()
 									.getValueAt(row_index, 0).toString();
 

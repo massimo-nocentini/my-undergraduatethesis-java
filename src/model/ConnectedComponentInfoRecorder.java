@@ -121,6 +121,17 @@ public class ConnectedComponentInfoRecorder {
 				return toString().equals(obj.toString());
 			}
 
+			public ConnectedComponentPairCounter average(int models_count) {
+				ConnectedComponentPairCounter averaged = new ConnectedComponentPairCounter();
+
+				averaged.components_counter.increment(this.components_counter
+						.getCount() / models_count);
+				averaged.vertices_counter.increment(this.vertices_counter
+						.getCount() / models_count);
+
+				return averaged;
+			}
+
 		}
 
 		/**
@@ -305,9 +316,11 @@ public class ConnectedComponentInfoRecorder {
 
 		public Object[][] build_rows_data() {
 
-			int column_dimension = this.build_columns_data().length;
+			Object[] build_columns_data = this.build_columns_data();
+			int column_dimension = build_columns_data.length;
 
-			Object[][] rows_data = new Object[tuples_by_models.size()][column_dimension];
+			int models_count = tuples_by_models.size();
+			Object[][] rows_data = new Object[models_count + 1][column_dimension];
 			int row_index = 0;
 
 			for (String model : tuples_by_models.keySet()) {
@@ -315,8 +328,11 @@ public class ConnectedComponentInfoRecorder {
 				Object[] row_data = new Object[column_dimension];
 				for (String vertex_type : tuples_by_models.get(model).keySet()) {
 
-					row_data[order_vertex_type(vertex_type)] = tuples_by_models
+					ConnectedComponentPairCounter pairCounter = tuples_by_models
 							.get(model).get(vertex_type);
+
+					row_data[order_vertex_type(vertex_type)] = pairCounter;
+
 				}
 
 				row_data[0] = model;
@@ -325,6 +341,36 @@ public class ConnectedComponentInfoRecorder {
 
 				row_index = row_index + 1;
 			}
+
+			Object[] average_row_data = new Object[column_dimension];
+
+			// we start from 1 in order to skip the model column
+			for (int column_index = 1; column_index < column_dimension; column_index = column_index + 1) {
+
+				VertexType column = (VertexType) build_columns_data[column_index];
+
+				ConnectedComponentPairCounter pair_counter_for_average = new ConnectedComponentPairCounter();
+
+				for (String model : tuples_by_models.keySet()) {
+
+					ConnectedComponentPairCounter pairCounter = tuples_by_models
+							.get(model).get(column.toString());
+
+					pair_counter_for_average.components_counter
+							.increment(pairCounter.components_counter
+									.getCount());
+
+					pair_counter_for_average.vertices_counter
+							.increment(pairCounter.vertices_counter.getCount());
+				}
+
+				average_row_data[order_vertex_type(column.toString())] = pair_counter_for_average
+						.average(models_count);
+			}
+
+			average_row_data[0] = "Average pairs";
+
+			rows_data[models_count] = average_row_data;
 
 			return rows_data;
 		}
