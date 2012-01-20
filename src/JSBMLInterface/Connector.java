@@ -103,7 +103,9 @@ public class Connector {
 
 		@Override
 		public String fetchModelName() {
-			return readModel(data_path).getName();
+
+			Model model = readModel(data_path);
+			return model.getName().concat("-").concat(model.getId());
 		}
 	}
 

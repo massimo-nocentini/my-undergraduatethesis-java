@@ -370,7 +370,7 @@ public class ConnectedComponentInfoRecorder {
 
 			average_row_data[0] = "Average pairs";
 
-			rows_data[models_count] = average_row_data;
+			rows_data[rows_data.length - 1] = average_row_data;
 
 			return rows_data;
 		}

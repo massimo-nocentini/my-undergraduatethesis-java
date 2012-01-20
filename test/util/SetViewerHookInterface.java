@@ -49,6 +49,7 @@ public interface SetViewerHookInterface {
 					Object selectedValue = sender.getSelectedValue();
 
 					if (selectedValue == null) {
+						setViewer.getNext().clear();
 						return;
 					}
 
@@ -233,6 +234,7 @@ public interface SetViewerHookInterface {
 					Object selectedValue = sender.getSelectedValue();
 
 					if (selectedValue == null) {
+						setViewer.getNext().clear();
 						return;
 					}
 
@@ -340,6 +342,7 @@ public interface SetViewerHookInterface {
 					Object selectedValue = sender.getSelectedValue();
 
 					if (selectedValue == null) {
+						setViewer.getNext().clear();
 						return;
 					}
 
