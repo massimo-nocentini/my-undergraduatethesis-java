@@ -467,12 +467,12 @@ public class ConnectedComponentInfoRecorder {
 			return numer_of_components.getCount();
 		}
 
-		public Collection<String> build_statistical_info_grouping_by_component_type_combination() {
+		public Collection<GlobalStatisticalGroupedInfoByType> build_statistical_info_grouping_by_component_type_combination() {
 
 			return build_statistical_info_grouping_by_component_type_combination(new TreeSet<String>());
 		}
 
-		public Collection<String> build_statistical_info_grouping_by_component_type_combination(
+		public Collection<GlobalStatisticalGroupedInfoByType> build_statistical_info_grouping_by_component_type_combination(
 				Set<String> requested_models) {
 
 			Map<Set<String>, IntegerCounter> working_map = new LinkedHashMap<Set<String>, IntegerCounter>();
@@ -565,29 +565,61 @@ public class ConnectedComponentInfoRecorder {
 				}
 			}
 
-			Collection<String> result = new LinkedList<String>();
+			Collection<GlobalStatisticalGroupedInfoByType> result = new LinkedList<GlobalStatisticalGroupedInfoByType>();
 
-			result.add("(analyzed_species: ".concat(String.valueOf(
-					analyzed_species).concat(")")));
+			// result.add("(analyzed_species: ".concat(String.valueOf(
+			// analyzed_species).concat(")")));
 
 			for (Entry<Set<String>, IntegerCounter> entry : working_map
 					.entrySet()) {
 
-				Integer count = entry.getValue().getCount();
+				GlobalStatisticalGroupedInfoByType info_object = new GlobalStatisticalGroupedInfoByType(
+						entry.getKey(), entry.getValue(), analyzed_species);
+
+				result.add(info_object);
+
+			}
+
+			return result;
+
+		}
+
+		public static class GlobalStatisticalGroupedInfoByType {
+
+			private final int analyzed_species;
+			private final Set<String> key;
+			private final IntegerCounter value;
+
+			public GlobalStatisticalGroupedInfoByType(Set<String> key,
+					IntegerCounter value, int analyzed_species) {
+
+				this.key = key;
+				this.value = value;
+
+				this.analyzed_species = analyzed_species;
+			}
+
+			@Override
+			public String toString() {
+				Integer count = value.getCount();
 
 				DecimalFormat formatter = new DecimalFormat("#.###");
-				result.add("(types: "
-						.concat(entry.getKey().toString())
+
+				return "(types: "
+						.concat(key.toString())
 						.concat(", count: ")
 						.concat(count.toString())
 						.concat(", distribution: ")
 						.concat(formatter.format(
 								(count / (double) analyzed_species) * 100)
-								.concat("%")).concat(")"));
+								.concat("%")).concat(")");
 
 			}
 
-			return result;
+			public boolean isKeyEquals(Set<String> other) {
+
+				return this.key.equals(other);
+			}
 
 		}
 	}

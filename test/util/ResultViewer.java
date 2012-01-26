@@ -2,6 +2,8 @@ package util;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -30,12 +32,31 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import model.ConnectedComponentInfoRecorder.ConnectedComponentInfoDataStructure;
+import model.ConnectedComponentInfoRecorder.ConnectedComponentInfoDataStructure.GlobalStatisticalGroupedInfoByType;
 import model.VertexType;
 import piping.ConnectedComponentsInfoPipeFilterUnitTest;
 import util.SetViewer.ModelsSelectionListener;
 import dotInterface.DotFileUtilHandler;
 
 public class ResultViewer extends JFrame {
+
+	public static class SuspendSelectionSemaphore {
+		private boolean suspend = false;
+
+		public void suspend() {
+			this.suspend = true;
+		}
+
+		public void resume() {
+			this.suspend = false;
+		}
+
+		public boolean isSelectionSuspended() {
+			return this.suspend;
+		}
+	}
+
+	private final SuspendSelectionSemaphore suspend_semaphore;
 
 	/**
 	 * auto generated version uid
@@ -55,6 +76,8 @@ public class ResultViewer extends JFrame {
 	public ResultViewer(ConnectedComponentInfoDataStructure data_structure) {
 
 		setLayout(new FlowLayout());
+
+		this.suspend_semaphore = new SuspendSelectionSemaphore();
 
 		Border border = BorderFactory
 				.createMatteBorder(1, 1, 2, 2, Color.BLACK);
@@ -85,7 +108,7 @@ public class ResultViewer extends JFrame {
 		};
 
 		statisticaInformationUpdater = build_statistical_list_box(
-				data_structure, border);
+				data_structure, border, summary_table);
 
 		build_set_viewers(border);
 
@@ -95,7 +118,7 @@ public class ResultViewer extends JFrame {
 
 	private StatisticaInformationUpdater build_statistical_list_box(
 			final ConnectedComponentInfoDataStructure data_structure,
-			Border border) {
+			Border border, final JTable summary_table) {
 
 		final DefaultListModel list_model = new DefaultListModel();
 		update_list_model(
@@ -103,7 +126,61 @@ public class ResultViewer extends JFrame {
 						.build_statistical_info_grouping_by_component_type_combination(),
 				list_model);
 
-		JList list_box = new JList(list_model);
+		final JList list_box = new JList(list_model);
+
+		list_box.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+
+				suspend_semaphore.suspend();
+
+				GlobalStatisticalGroupedInfoByType info_object = (GlobalStatisticalGroupedInfoByType) list_box
+						.getSelectedValue();
+
+				Set<String> species_to_select = new TreeSet<String>();
+
+				SortedMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>> map_to_fill_in = new TreeMap<String, SortedMap<String, SortedMap<Integer, SortedSet<String>>>>();
+				data_structure.fill_datas_into(map_to_fill_in);
+				for (String species : map_to_fill_in.keySet()) {
+
+					if (info_object.isKeyEquals(map_to_fill_in.get(species)
+							.keySet())) {
+						species_to_select.add(species);
+					}
+				}
+
+				set_viewers.iterator().next().select(species_to_select);
+
+				summary_table.clearSelection();
+
+				suspend_semaphore.resume();
+			}
+		});
 
 		list_box.setBorder(border);
 		list_box.setSize(150, 100);
@@ -121,6 +198,7 @@ public class ResultViewer extends JFrame {
 			@Override
 			public void update_by_requested_models(Set<String> models) {
 				list_model.clear();
+				// here we have to clear the actual selection.
 				update_list_model(
 						data_structure
 								.build_statistical_info_grouping_by_component_type_combination(models),
@@ -130,10 +208,10 @@ public class ResultViewer extends JFrame {
 	}
 
 	private void update_list_model(
-			Collection<String> build_statistical_info_grouping_by_component_type_combination,
+			Collection<GlobalStatisticalGroupedInfoByType> build_statistical_info_grouping_by_component_type_combination,
 			final DefaultListModel list_model) {
 
-		for (String item : build_statistical_info_grouping_by_component_type_combination) {
+		for (GlobalStatisticalGroupedInfoByType item : build_statistical_info_grouping_by_component_type_combination) {
 			list_model.addElement(item);
 		}
 	}
@@ -161,6 +239,10 @@ public class ResultViewer extends JFrame {
 					public void valueChanged(ListSelectionEvent e) {
 
 						if (e.getValueIsAdjusting()) {
+							return;
+						}
+
+						if (suspend_semaphore.isSelectionSuspended()) {
 							return;
 						}
 
@@ -230,7 +312,8 @@ public class ResultViewer extends JFrame {
 
 		int dimension = 500;
 
-		File source_file = checked_BioCyc_models_file_handler();
+		// File source_file = checked_BioCyc_models_file_handler();
+		File source_file = checked_standard_models_file_handler();
 
 		ConnectedComponentInfoDataStructure data_structure = load_serialized_data_structure(source_file);
 

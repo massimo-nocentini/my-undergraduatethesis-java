@@ -102,7 +102,7 @@ public class SetViewer {
 		list_model = new DefaultListModel();
 
 		list_box = new JList(list_model);
-		list_box.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		list_box.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		list_box.addListSelectionListener(this.hookInterface
 				.supply_list_selection_listener(this));
 	}
@@ -162,5 +162,18 @@ public class SetViewer {
 	public void notify_models_for_selection(Set<String> new_selected_models) {
 
 		this.modelsSelectionListener.selection_changed(new_selected_models);
+	}
+
+	public void select(Set<String> species_to_select) {
+
+		this.list_box.clearSelection();
+		for (Object obj : this.list_model.toArray()) {
+			ElementKeyRender typed_item = (ElementKeyRender) obj;
+			if (species_to_select.contains(typed_item.get_key().toString())) {
+
+				int indexOf = this.list_model.indexOf(obj);
+				this.list_box.addSelectionInterval(indexOf, indexOf);
+			}
+		}
 	}
 }
