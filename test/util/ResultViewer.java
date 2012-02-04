@@ -1,6 +1,7 @@
 package util;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -267,7 +268,9 @@ public class ResultViewer extends JFrame {
 					}
 				});
 
-		add(new JScrollPane(summary_table));
+		JScrollPane comp = new JScrollPane(summary_table);
+		comp.setPreferredSize(new Dimension(600, 600));
+		add(comp);
 
 		return summary_table;
 	}
@@ -312,8 +315,9 @@ public class ResultViewer extends JFrame {
 
 		int dimension = 500;
 
-		// File source_file = checked_BioCyc_models_file_handler();
-		File source_file = checked_standard_models_file_handler();
+		File source_file = checked_BioCyc_models_file_handler();
+		// File source_file = checked_standard_models_file_handler();
+		// File source_file = checked_first_BioCyc_model_file_handler();
 
 		ConnectedComponentInfoDataStructure data_structure = load_serialized_data_structure(source_file);
 

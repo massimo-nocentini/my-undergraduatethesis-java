@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -71,7 +72,7 @@ public class ConnectedComponentInfoRecorder {
 
 				this.dataStructure.record_tuples_by_model(model_name,
 						vertex_type, tuples_by_models_typed.get(model_name)
-								.get(vertex_type).size(), components_by_models);
+								.get(vertex_type), components_by_models);
 
 			}
 		}
@@ -89,9 +90,24 @@ public class ConnectedComponentInfoRecorder {
 			private static final long serialVersionUID = -714178501616999417L;
 			private final IntegerCounter components_counter = new IntegerCounter();
 			private final IntegerCounter vertices_counter = new IntegerCounter();
+			private final Set<String> set_of_members = new HashSet<String>();
+			private boolean members_already_added = false;
 
-			public void increment_vertices(int size) {
-				vertices_counter.increment(size);
+			public void increment_vertices(Set<Vertex> members) {
+				vertices_counter.increment(members.size());
+
+				if (members_already_added == true) {
+					throw new RuntimeException(
+							"Impossible to have more than one set of member due to uniqueness of models");
+				}
+
+				for (Vertex vertex : members) {
+					this.set_of_members.add(vertex
+							.buildVertexUniqueIdentifier());
+				}
+
+				members_already_added = true;
+
 			}
 
 			public void increment_components(int size) {
@@ -103,6 +119,8 @@ public class ConnectedComponentInfoRecorder {
 				return "(C: ".concat(components_counter.getCount().toString())
 						.concat(", V: ")
 						.concat(vertices_counter.getCount().toString())
+						.concat("/")
+						.concat(String.valueOf(set_of_members.size()))
 						.concat(")");
 			}
 
@@ -132,6 +150,20 @@ public class ConnectedComponentInfoRecorder {
 				return averaged;
 			}
 
+			public ConnectedComponentPairCounter filter_members_respect(
+					Set<String> members_to_intersect) {
+
+				ConnectedComponentPairCounter result = this.average(1);
+
+				for (String my_vertex : set_of_members) {
+
+					if (members_to_intersect.contains(my_vertex) == true) {
+						result.set_of_members.add(my_vertex);
+					}
+				}
+
+				return result;
+			}
 		}
 
 		/**
@@ -290,7 +322,7 @@ public class ConnectedComponentInfoRecorder {
 		private void record_tuples_by_model(
 				String model_name,
 				String vertex_type,
-				int members_count,
+				Set<Vertex> members,
 				SortedMap<String, SortedMap<String, IntegerCounter>> components_by_models) {
 
 			if (tuples_by_models.containsKey(model_name) == false) {
@@ -302,12 +334,12 @@ public class ConnectedComponentInfoRecorder {
 					.get(model_name);
 
 			if (vertex_type_for_model.containsKey(vertex_type) == false) {
+
 				vertex_type_for_model.put(vertex_type,
 						new ConnectedComponentPairCounter());
 			}
 
-			vertex_type_for_model.get(vertex_type).increment_vertices(
-					members_count);
+			vertex_type_for_model.get(vertex_type).increment_vertices(members);
 
 			vertex_type_for_model.get(vertex_type).increment_components(
 					components_by_models.get(model_name).get(vertex_type)
@@ -323,6 +355,14 @@ public class ConnectedComponentInfoRecorder {
 			Object[][] rows_data = new Object[models_count + 1][column_dimension];
 			int row_index = 0;
 
+			Set<String> sources_collecting_parameter = new TreeSet<String>();
+			Set<String> sinks_collecting_parameter = new TreeSet<String>();
+			Set<String> whites_collecting_parameter = new TreeSet<String>();
+
+			this.fill_in_collecting_parameter_with_sources_and_sinks_species(
+					sources_collecting_parameter, sinks_collecting_parameter,
+					whites_collecting_parameter);
+
 			for (String model : tuples_by_models.keySet()) {
 
 				Object[] row_data = new Object[column_dimension];
@@ -330,6 +370,21 @@ public class ConnectedComponentInfoRecorder {
 
 					ConnectedComponentPairCounter pairCounter = tuples_by_models
 							.get(model).get(vertex_type);
+
+					if (vertex_type.equals(VertexType.Sources.toString())) {
+
+						pairCounter = pairCounter
+								.filter_members_respect(sources_collecting_parameter);
+
+					} else if (vertex_type.equals(VertexType.Sinks.toString())) {
+
+						pairCounter = pairCounter
+								.filter_members_respect(sinks_collecting_parameter);
+					} else {
+
+						pairCounter = pairCounter
+								.filter_members_respect(whites_collecting_parameter);
+					}
 
 					row_data[order_vertex_type(vertex_type)] = pairCounter;
 
@@ -417,7 +472,7 @@ public class ConnectedComponentInfoRecorder {
 
 			;
 			dataStructure.record_tuples_by_model(model_name, vertex_type,
-					members.size(), components);
+					members, components);
 
 		}
 
@@ -582,6 +637,63 @@ public class ConnectedComponentInfoRecorder {
 
 			return result;
 
+		}
+
+		public void fill_in_collecting_parameter_with_sources_and_sinks_species(
+				Set<String> sources_collecting_parameter,
+				Set<String> sinks_collecting_parameter,
+				Set<String> whites_collecting_parameter) {
+
+			sources_collecting_parameter.clear();
+			sinks_collecting_parameter.clear();
+
+			Map<Set<String>, Set<String>> working_map = new HashMap<Set<String>, Set<String>>();
+
+			Set<String> sources_only = new HashSet<String>();
+			sources_only.add(VertexType.Sources.toString());
+
+			Set<String> sinks_only = new HashSet<String>();
+			sinks_only.add(VertexType.Sinks.toString());
+
+			Set<String> whites_only = new HashSet<String>();
+			whites_only.add(VertexType.Whites.toString());
+
+			working_map.put(sources_only, new HashSet<String>());
+			working_map.put(sinks_only, new HashSet<String>());
+			working_map.put(whites_only, new HashSet<String>());
+
+			Set<String> working_collector = new HashSet<String>();
+
+			for (String species : this.tuples_by_species.keySet()) {
+
+				working_collector.clear();
+
+				SortedMap<String, SortedMap<Integer, SortedSet<String>>> component_types_by_species = tuples_by_species
+						.get(species);
+
+				for (String component_type : component_types_by_species
+						.keySet()) {
+
+					// here we call the valueOf method to be sure
+					// that the input
+					// String is a valid VertexType value
+					VertexType vertexType = VertexType.valueOf(component_type);
+
+					working_collector.add(vertexType.toString());
+				}
+
+				// with this condition we are sure to consider only the species
+				// which are sources or sinks due the presence of only this two
+				// set in the working map
+				if (working_map.containsKey(working_collector)) {
+
+					working_map.get(working_collector).add(species);
+				}
+			}
+
+			sources_collecting_parameter.addAll(working_map.get(sources_only));
+			sinks_collecting_parameter.addAll(working_map.get(sinks_only));
+			whites_collecting_parameter.addAll(working_map.get(whites_only));
 		}
 
 		public static class GlobalStatisticalGroupedInfoByType {
