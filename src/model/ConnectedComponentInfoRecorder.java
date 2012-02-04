@@ -119,7 +119,7 @@ public class ConnectedComponentInfoRecorder {
 				return "(C: ".concat(components_counter.getCount().toString())
 						.concat(", V: ")
 						.concat(vertices_counter.getCount().toString())
-						.concat("/")
+						.concat(":")
 						.concat(String.valueOf(set_of_members.size()))
 						.concat(")");
 			}
@@ -380,10 +380,15 @@ public class ConnectedComponentInfoRecorder {
 
 						pairCounter = pairCounter
 								.filter_members_respect(sinks_collecting_parameter);
-					} else {
+
+					} else if (vertex_type.equals(VertexType.Whites.toString())) {
 
 						pairCounter = pairCounter
 								.filter_members_respect(whites_collecting_parameter);
+					} else {
+						throw new RuntimeException(
+								"Impossible to recognize the verte type: "
+										+ vertex_type);
 					}
 
 					row_data[order_vertex_type(vertex_type)] = pairCounter;
@@ -470,7 +475,6 @@ public class ConnectedComponentInfoRecorder {
 			ConnectedComponentInfoDataStructure dataStructure = ConnectedComponentInfoDataStructure
 					.make_datastructure_with_models_map(map);
 
-			;
 			dataStructure.record_tuples_by_model(model_name, vertex_type,
 					members, components);
 
