@@ -1,8 +1,10 @@
 package piping;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.TreeSet;
 
 import junit.framework.Assert;
@@ -114,6 +116,68 @@ public class OnePipingLevelUnitTest {
 		//
 		// Assert.assertTrue(dfsPipeFilter.isYourLevelOfWrapping(1));
 		// Assert.assertTrue(printerPipeFilter.isYourLevelOfWrapping(0));
+
+	}
+
+	@Test
+	public void OnePipingLevelUnitTest_Printer_Tarjan_PrinterPipe_Presentation() {
+		String pipelineName = "OnePipingLevelUnitTest_Printer_DFS_PrinterPipe_Presentation";
+
+		Set<Vertex> vertices = new HashSet<Vertex>();
+		Vertex a = VertexFactory.makeSimpleVertex();
+		Vertex b = VertexFactory.makeSimpleVertex();
+		Vertex c = VertexFactory.makeSimpleVertex();
+		Vertex d = VertexFactory.makeSimpleVertex();
+		Vertex e = VertexFactory.makeSimpleVertex();
+		Vertex f = VertexFactory.makeSimpleVertex();
+		Vertex g = VertexFactory.makeSimpleVertex();
+		Vertex h = VertexFactory.makeSimpleVertex();
+		Vertex i = VertexFactory.makeSimpleVertex();
+		Vertex l = VertexFactory.makeSimpleVertex();
+
+		// source strongly connected component
+		a.addNeighbour(b);
+		b.addNeighbour(a);
+
+		b.addNeighbour(c);
+
+		c.addNeighbour(e).addNeighbour(d);
+
+		e.addNeighbour(f).addNeighbour(g);
+		f.addNeighbour(e);
+
+		g.addNeighbour(h).addNeighbour(l);
+		h.addNeighbour(i);
+		i.addNeighbour(g);
+
+		d.addNeighbour(l);
+
+		vertices.add(a);
+		vertices.add(b);
+		vertices.add(c);
+		vertices.add(d);
+		vertices.add(e);
+		vertices.add(f);
+		vertices.add(g);
+		vertices.add(h);
+		vertices.add(i);
+		vertices.add(l);
+
+		PipeFilter printerPipeFilter = PipeFilterFactory
+				.MakePrinterPipeFilter();
+
+		PipeFilter tarjanPipeFilter = PipeFilterFactory.MakeTarjanPipeFilter();
+
+		PipeFilter secondPrinterPipeFilter = PipeFilterFactory
+				.MakePrinterPipeFilter();
+
+		secondPrinterPipeFilter.pipeAfter(tarjanPipeFilter
+				.pipeAfter(printerPipeFilter));
+
+		secondPrinterPipeFilter.apply(pipelineName,
+				OurModel.makeOurModelFrom(vertices, "graph-for-presentation"));
+
+		Assert.assertTrue(secondPrinterPipeFilter.isYourLevelOfWrapping(2));
 
 	}
 

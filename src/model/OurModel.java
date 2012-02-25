@@ -58,6 +58,22 @@ public class OurModel implements DotExportable {
 		return OurModel.makeOurModelFrom(vertices, model_name);
 	}
 
+	public static interface VertexTransformer {
+		Vertex transform(Vertex vertex);
+	}
+
+	public static OurModel makeOurModelFromExistingModelTransformingVertices(
+			OurModel model, VertexTransformer vertexTransformer) {
+
+		Set<Vertex> transformed_vertices = new HashSet<Vertex>();
+
+		for (Vertex vertex : model.vertices) {
+			transformed_vertices.add(vertexTransformer.transform(vertex));
+		}
+
+		return makeOurModelFrom(transformed_vertices, model.name);
+	}
+
 	@Override
 	public void acceptExporter(final DotExporter exporter) {
 

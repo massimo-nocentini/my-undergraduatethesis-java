@@ -3,12 +3,16 @@ package piping;
 import java.io.File;
 
 import junit.framework.Assert;
+import model.IgnoreVertexTypeDecorationVertex;
 import model.ModelsRepository;
 import model.OurModel;
+import model.OurModel.VertexTransformer;
+import model.Vertex;
 
 import org.junit.Test;
 
 import dotInterface.DotFileUtilHandler;
+import dotInterface.NullObjectLineDecorator;
 
 public class PrinterPipeFilterUnitTest {
 
@@ -46,6 +50,31 @@ public class PrinterPipeFilterUnitTest {
 	}
 
 	@Test
+	public void applicationOfPrinterPipeFilterOnTarjanModel_printing_without_vertex_type_color() {
+		String pipeName = "applicationOfPrinterPipeFilterOnTarjanModel_printing_without_vertex_type_color";
+
+		PipeFilter printerPipeFilter = PipeFilterFactory
+				.MakePrinterPipeFilter();
+
+		final OurModel tarjanModel = ModelsRepository.makeTarjanModel();
+
+		OurModel without_vertex_type = OurModel
+				.makeOurModelFromExistingModelTransformingVertices(tarjanModel,
+						new VertexTransformer() {
+
+							@Override
+							public Vertex transform(Vertex vertex) {
+
+								return new IgnoreVertexTypeDecorationVertex(
+										vertex, new NullObjectLineDecorator());
+							}
+						});
+
+		printerPipeFilter.apply(pipeName, without_vertex_type);
+
+	}
+
+	@Test
 	public void applicationOfPrinterPipeFilterOnPapadimitriouModel() {
 		String pipeName = "applicationOfPrinterPipeFilterOnPapadimitriouModel";
 
@@ -64,7 +93,8 @@ public class PrinterPipeFilterUnitTest {
 			}
 		}
 
-		final OurModel papadimitriouModel = ModelsRepository.makePapadimitriouModel();
+		final OurModel papadimitriouModel = ModelsRepository
+				.makePapadimitriouModel();
 
 		OurModel outputModel = printerPipeFilter.apply(pipeName,
 				papadimitriouModel);

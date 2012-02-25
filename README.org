@@ -1,0 +1,27 @@
+* Undergraduate Thesis - implementation
+  This project is what I implemented for my undergraduate thesis. It
+  concern a study of metabolic networks and join a problem in graph
+  theory about a variant of the problem of enumerating all directed
+  acyclic subgraph of a given directed graph.
+
+  I built a java library which aims to help the representation and
+  rendering of metabolic network, and graph in general.
+
+  The algorithm of major interest is the Tarjan algorithm for the
+  research of strongly connected components. However, there are some
+  other interesting point, like some functional programming paradigms
+  and the test-drive methodology.
+  
+  All content is written using the English language.
+
+** How to compile the project
+   The project can be imported directly into Eclipse (I used the
+   Indigo version) and can be compiled in an automatic way.
+
+   In order to use the abstractions is sufficient to reference the
+   project inside your own.
+
+   In order to visualize the frame for analyzing the statistical
+   information about a set of metabolic network is sufficient to run
+   as java application the class test/util/ResultViewer.java
+   
